@@ -1,0 +1,1541 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Blubird</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<script src="js/jquery.js"></script>
+	<script src="js/jquery.mobile-1.4.4.min.js"></script>
+	<script src="js/highcharts.js"></script>
+	<script src="js/funnel.js"></script>
+	
+	<!-- App 1st Commit -->
+	<!--version 1.0.1-->
+	<script src="js/app/amplify.min.js"></script>
+	<script src="js/app/md5.js"></script>
+	<script src="js/app/fastclick.js"></script>
+	<script src="js/app/jquery.tinysort.min.js"></script>
+	<script src="js/app/jsAjax-processing-script.js"></script>
+	<!-- ./commit -->
+	
+	<script>
+		$(function () {
+
+    $('#chart2').highcharts({
+        chart: {
+            type: 'pyramid',
+            marginRight: 100
+        },
+        title: {
+            text: '',
+            x: -50
+        },
+        plotOptions: {
+            series: {
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b> ({point.y:,.0f})',
+                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
+                    softConnector: true
+                }
+            }
+        },
+        legend: {
+            enabled: false
+        },
+        series: [{
+            name: 'Unique users',
+            data: [
+                ['Website visits',   1554],
+                ['Downloads',       1200],
+                ['Requested price list', 1000],
+                ['Invoice sent',    800],
+                ['Finalized',    700]
+            ]
+        }]
+    });
+});
+	</script>
+	
+	<link rel="stylesheet" href="css/jquery.mobile-1.4.4.css"/>
+	
+</head>
+<body>
+
+<div data-role="page" id="dashboard">
+	<div data-role="panel" id="menupanel-2" data-position="left" data-display="overlay" class="ui-panel ui-panel-position-left ui-panel-display-overlay ui-body-c ui-panel-animate ui-panel-closed" data-theme="b" style="background-color: #fff;  ">
+
+			<div class="ui-panel-inner" >
+			
+				<ul data-role="listview" data-theme="b">
+				
+					<li  class="lidec"><a class="ui-btn ui-icon-check ui-btn-icon-left" href="#sales">Sales</a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-info ui-btn-icon-left" href="#inventory">Inventory</a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-gear ui-btn-icon-left" href="#records">Records</a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier">Supplier</a></li>
+					
+					<li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" href="#settings">Settings</a></li>
+			
+				</ul>	
+			
+		
+			
+				
+			</div>
+			<div>
+				<img style="margin: 3em 4em !important;" src="css/images/icon.png" />
+			</div>
+			
+	</div>
+	<div data-role="header" data-theme="b">
+		
+		
+		<a href="#menupanel-2" data-ajax="false" rel="external" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
+		
+		<h1>Dashboard</h1>
+		<div data-role="navbar">
+			<ul>
+				<li>
+					<a class="notficns app-user-name" href="#" data-theme="a">
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div><!-- /header -->
+
+	<div role="main" class="ui-content" style="background-color: #f1f1f1;">
+		<div class="panl">
+			<h3>Total inventory value</h3>
+		
+			<h6 class="total-value-of-inventory">-</h6>
+		</div>
+		
+		<br>
+		
+		<div class="panl">
+			<div >
+				<h3>Today's total sales</h3>
+				<h2 class="today-total-sales-amount">0.00</h2>
+				
+				<h5>Today's top 5 selling products</h5>
+				<div id="chart1" style="width: 90%; height: 400px; font-weight: normal !important;"></div>
+			</div>	
+		</div>
+		
+		<br>
+		
+		
+		<div class="panl">
+			<h3>Today's gross earnings</h3>
+			<h6 class="today-gross-profit">0.00</h6>
+		</div>
+		
+		
+	</div><!-- /content -->
+
+	<div id="footer" data-role="footer"  data-theme="b" data-position="fixed">
+		<div class="ui-grid-c">
+			
+			<div class="ui-block-a">
+				
+					<a href="#inventory" data-role="button" data-theme="b" data-icon="grid" data-iconpos="top" data-transition="slideup" class="btn1">Inventory</a>
+				
+			</div>
+			<div class="ui-block-b">
+				
+					<a href="#sales" data-role="button" data-theme="b" data-icon="star" data-iconpos="top" data-transition="slideup" class="btn1">Sales</a>
+
+			</div>
+			<div class="ui-block-c">
+				
+					<a href="#records" data-role="button" data-theme="b" data-icon="edit" data-iconpos="top" data-transition="slideup" class="btn1">Records</a>
+					
+			</div>
+			<div class="ui-block-d">
+				
+					<a href="#suppliers" data-role="button" data-theme="b" data-icon="info" data-iconpos="top" class="btn2">Suppliers</a>
+					
+			</div>
+			
+		</div><!-- /grid-c -->
+	
+		
+	</div><!-- /footer -->
+		
+</div><!-- /page -->
+
+<div data-role="page" id="signup">
+	
+	<div role="main" class="ui-content" style="background-color: #fff;">
+				
+					<img style="margin: 3em 6em !important;" src="css/images/icon2.png" />
+						
+					<p style="border-bottom: 8px solid #4fc1e9"></p>
+					
+					<h1 style="color: rgb(112,112,112); text-align: center; margin-top: 1em !important;">SIGN UP FOR BLUBIRD</h1>
+						
+						<form method="post" action="" name="sign-up" id="sign-up-form">
+							<input type="hidden" name="key" id="key-field" value="" />
+							<input type="text" name="name" id="name-field" placeholder="Your Full Name" required data-validate="text" data-error-title="Invalid Name" data-error-msg="Provide a valid name" />
+							<input type="email" name="email" id="email-field" placeholder="Your Email Address" required data-validate="email" data-error-title="Invalid Email" data-error-msg="Provide a valid email" />
+							<input type="email" name="cemail" id="cemail-field" placeholder="Confirm Email" required data-validate="confirm-email" data-error-title="Non-matching Emails" data-error-msg="Emails do not match" />
+							<input type="password" name="password" id="password-field" placeholder="Password" required data-validate="password" data-error-title="Invalid Password" data-error-msg="Passwords must be at least 6 characters" />
+							<input type="submit" value="Sign Up" />
+						</form>
+						
+						<br>
+						<div class="ui-grid-a">
+							<div class="ui-block-a" style="width: 20%; height: 2em;">
+
+								<input type="checkbox" name="checkbox-1a" id="checkbox-1a" checked="" style="height: 2em;">
+							</div>
+							<div class="ui-block-b" style="width: 80%; font-size: 0.7em; padding-top: 0.4em;">
+								I agree to the <a href="policy.pdf">terms and privacy policies</a>
+							</div>
+						</div>
+						
+						<br>
+					<p style="border-bottom: 8px solid #4fc1e9"></p>
+				
+					<a href="#login" data-role="button" data-theme="b"  data-transition="slide" style="font-weight: normal !important; text-shadow: none;">SIGN UP</a>
+					<br>
+					<br>
+					<br>
+					<br>
+	</div><!-- /content -->
+	
+</div><!-- /page -->
+
+<div data-role="page" id="login">
+	
+	
+	<div role="main" class="ui-content" style="background-color: #fff;">
+				
+					<img style="margin: 3em 6em !important;" src="css/images/icon2.png" />
+						
+					<p style="border-bottom: 8px solid #4fc1e9"></p>
+					
+					<h1 style="color: rgb(112,112,112); text-align: center; margin-top: 1em !important;">LOGIN TO YOUR ACCOUNT</h1>
+					
+					
+					
+						<input type="text" name="textinput-fc" id="textinput-fc" placeholder="Email Address" value="">
+						<input type="text" name="textinput-fc" id="textinput-fc" placeholder="Password" value="">
+					
+				
+				
+				
+					<div class="ui-grid-a">
+						<div class="ui-block-a">
+								<a href="#dashboard" data-role="button" data-theme="b" data-transition="slide" style="font-weight: normal !important; text-shadow: none;">LOGIN</a>
+						</div>
+						<div class="ui-block-b">
+								<a href="#signup" data-role="button" data-theme="b"  data-transition="slide" style="font-weight: normal !important; text-shadow: none;">SIGN UP</a>
+						</div>
+					</div>
+					
+					<p style="border-bottom: 8px solid #4fc1e9"></p>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+	</div><!-- /content -->
+
+	
+		
+		
+</div><!-- /page -->
+
+<div data-role="page" id="setPricing" >
+		
+		<div data-role="header" data-theme="b">
+				<a href="#inventory" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="slide">Menu</a>
+				<h1>Set Pricing</h1>
+		</div><!-- /header -->
+		<div data-role="content" style="background-color: #c9c9c9 ">
+	
+				<div style="background-color: #43a2c4 !important; border-radius: 5px; ">
+					<div style="padding: 1em 1em 0em 1em;">
+					<select name="select-choice-a" id="select-choice-a" >
+							<option style="text-shadow: none !important;">Select Location</option>
+							
+							<option value="standard">Wuse 2</option>
+							<option value="rush">Maitama</option>
+							<option value="express">Gwarinpa</option>
+							<option value="overnight">Jabi</option>
+						</select>
+						
+						<select name="select-choice-a" id="select-choice-a" >
+							<option style="text-shadow: none !important;">Select Category</option>
+							<option value="standard">All</option>
+							<option value="rush">Beverages</option>
+							<option value="express">Detergents</option>
+							<option value="overnight">Personal Care</option>
+						</select>
+						<br>
+						<p style="border-bottom: 1px dotted #ccc;"></p>
+						<br>
+						<table data-role="table" id="table-column-toggle" data-mode="" class="ui-responsive table-stroke">
+						<thead>
+							<tr style="font-size:1em; font-weight: 100; background-color: #333; color: #fff; line-height: 1.4em; text-shadow: none;">
+								<td>Item</td>
+								<td style="text-align: center;">Selling Price(N)</td>
+                                
+								
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								
+								<td style="font-size: 0.8em; padding-top: 1.5em; color: white; text-shadow: none;">Coca Cola - 35cl</td>
+								<td style="font-size: 0.8em; font-weight: 100; text-align: center !important;">
+									<input type="text" name="text-basic" id="text-basic" value="100.00" >
+								</td>
+                                
+								
+							</tr>
+							<tr>
+								 
+								<td style="font-size: 0.8em; padding-top: 1.5em; color: white; text-shadow: none;">Pepsi - 50cl</td>
+								<td style="font-size: 0.8em; font-weight: 100; text-align: center; ">
+									<input type="text" name="text-basic" id="text-basic" value="120.00" >
+								</td>
+                               
+							</tr>
+							<tr>
+								 
+								<td style="font-size: 0.8em; padding-top: 1.5em; color: white; text-shadow: none;">Kellogs - Cornflakes</td>
+								<td style="font-size: 0.8em; font-weight: 100; text-align: center; ">
+									<input type="text" name="text-basic" id="text-basic" value="950.00" >
+								</td>
+                               
+								
+							</tr>
+							<tr>
+								 
+								<td style="font-size: 0.8em; padding-top: 1.5em; color: white; text-shadow: none;">Kellogs - Frosties</td>
+								<td style="font-size: 0.8em; font-weight: 100; text-align: center; ">
+									<input type="text" name="text-basic" id="text-basic" value="870.00" >
+								</td>
+                              
+								
+							</tr>
+							<tr>
+								 
+								<td style="font-size: 0.8em; padding-top: 1.5em; color: white; text-shadow: none;">Ariel - 1kg</td>
+								<td style="font-size: 0.8em; font-weight: 100; text-align: center; ">
+									<input type="text" name="text-basic" id="text-basic" value="250.00" >
+								</td>
+                               
+								
+							</tr>
+							<tr>
+								
+							</tr>
+
+       
+						</tbody>
+					</table>
+					<p style="border-bottom: 1px dotted #ccc;"></p>
+					<br>
+						
+					<br>
+					</div>
+				
+				
+				
+				
+				</div>
+				<a href="#cnfrmPricing" data-role="button" data-theme="a" data-icon="arrow-r" style="background-color:green; border: none; text-shadow: none; color: white !important;" >Finish</a>
+			</div>
+		</div>
+	
+<div data-role="page" id="newInventory">
+		
+		<div data-role="header" data-theme="b">
+			<a href="#inventory" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="slide">Menu</a>
+			<h1>New Inventory</h1>
+		</div><!-- /header -->
+
+		<div data-role="content" style="background: #f1f1f1; ">
+			<div style="background-color: #43a2c4 !important; border-radius: 5px; ">
+					<div style="padding: 0.5em 1em 0em 1em;">
+						
+						<form id="inventory-form" name="inventory" method="post" action="">
+						<input type="hidden" name="key" id="key-field" value="" />
+						
+						<select name="supplier" id="supplier-field" placeholder="Select Supplier" required data-validate="text" data-error-title="Invalid supplier" data-error-msg="Select a valid Supplier">
+							<option style="text-shadow: none !important;">Select Supplier</option>
+						</select>
+						
+						<select name="location" id="location-field" data-validate="text" data-error-title="Invalid Location" data-error-msg="Please provide a valid location">
+							<option value="" style="text-shadow: none !important;">Location</option>
+							<option value="wuse 2">Wuse 2</option>
+							<option value="maitama">Maitama</option>
+							<option value="zone 2">Zone 2</option>
+						</select>
+						
+						<select name="category" id="category-field" placeholder="Category" required data-validate="text" data-error-title="Invalid Category" data-error-msg="Please provide a valid category" >
+							<option value="" style="text-shadow: none !important;">Item Category</option>
+							<option value="alcohol">Alcohol</option>
+							<option value="baby and mom">Baby & Mom</option>
+							<option value="bakery">Bakery</option>
+							<option value="beverages">Beverages</option>
+							<option value="books">Books</option>
+							<option value="cereal">Cereal</option>
+							<option value="dairy and eggs">Dairy & Eggs</option>
+							<option value="first aid and tests">First Aid & Tests</option>
+							<option value="food cupboard">Food Cupboard</option>
+							<option value="fresh food">Fresh Food</option>
+							<option value="health and beauty">Health & Beauty</option>
+							<option value="household">Household</option>
+							<option value="ink and toners">Inks & Toners</option>
+							<option value="office supplies">Office Supplies</option>
+							<option value="oil and sauces">Oil & Sauces</option>
+							<option value="perfumes and colognes">Perfumes & Colognes</option>
+							<option value="sex and fertility">Sex & Fertility</option>
+							<option value="vitamins and supplements">Vitamins & Supplements</option>
+							<option value="washing liquid">Washing Liquid</option>
+						</select>
+						<p style="border-bottom: 1px dotted #ccc;"></p>
+						
+						<input type="text" name="item_barcode" id="item_barcode-field" placeholder="Scan Barcode" required data-validate="text" data-error-title="Invalid Barcode" data-error-msg="Please provide a valid barcode" />
+						
+						<input type="text" name="item_desc" id="item_desc-field" placeholder="Item Description" required data-validate="text" data-error-title="Invalid Item Description" data-error-msg="Please provide a valid item description" />
+						
+						<input type="number" name="item_qty" id="item_qty-field" min="0" step="1" placeholder="Item Quantity" required data-validate="number" data-error-title="Invalid Quantity" data-error-msg="Please provide a quantity" />
+						
+						<label for="date" style="color: white; text-shadow: none; ">Expiry Date:</label>
+						<input type="date" name="expiry_date" id="expiry_date-field" value="" data-validate="date" data-error-title="Invalid Expiry Date" data-error-msg="Please provide a valid expiry valid" />
+						
+						<div class="ui-grid-a">
+							<div class="ui-block-a" style="width: 50%; padding-right: 3px;">
+								<input type="number" name="selling_price" id="selling_price-field" min="0" step="any" placeholder="Unit Selling Price" required data-validate="number" data-error-title="Invalid Selling Price" data-error-msg="Please provide a valid Selling Price" />
+							</div>
+							<div class="ui-block-b" style="width: 50%; padding-left: 3px;">
+								<input type="number" name="cost_price" id="cost_price-field" min="0" step="any" placeholder="Unit Cost Price" required data-validate="number" data-error-title="Invalid Cost Price" data-error-msg="Please provide a valid Cost Price" />
+							</div>
+						</div>
+						<p style="float: right !important; font-family: 'Roboto Thin'; font-size: 1.2em !important; color: white;">GROSS MARGIN <span style="font-size: 2em;" id="inventory-gross-margin">-</span></p>
+						<br>
+						<br>
+						
+						<p style="border-bottom: 1px dotted #ccc;">&nbsp;</p>
+						
+						
+						<br>
+						
+						<input type="text" id="dummy-totalCostPrice" placeholder="Total Cost : " disabled="true" />
+						
+						<input type="number" name="amount_paid" id="amount_paid-field" min="0" step="any" placeholder="Amount Paid" required data-validate="number" data-error-title="Invalid Amount" data-error-msg="Please provide a valid amount" />
+						
+						<input type="hidden" name="amount_owed" id="amount_owed-field" placeholder="Amount Owed" data-validate="number" min="0" step="any" />
+						<input type="text" id="dummy-amntOwed" placeholder="Amount Owed : " disabled="true" />
+						<br />
+						
+						
+						<input type="submit" value="Save Item" />
+						<!--
+						<div data-role="collapsible">
+							
+							<h4 style="text-align: center !important; width: 100%;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;List Items</h4>
+							<p>
+							
+								<style type="text/css">
+									.newly-listed-inventory .ui-block-a{
+										width: 75%; padding-right: 3px; font-family: Roboto; font-size: 1.3em;
+									}
+									.newly-listed-inventory .ui-block-b{
+										width: 25%; padding-left: 3px; font-family: Roboto; font-size: 1.3em;
+									}
+								</style>
+								<div class="ui-grid-a" class="newly-listed-inventory">
+									<div class="ui-block-a" style="font-weight: bold !important;">
+										<p>Item</p>
+									</div>
+									<div class="ui-block-b" style="font-weight: bold !important;;">
+										<p>Qty</p>
+									</div>
+								</div>
+								<div class="ui-grid-a" class="newly-listed-inventory" id="newly-listed-inventory-container">
+									
+								</div>
+							
+							</p>
+						</div>
+						-->
+						<p style="border-bottom: 1px dotted rgb(112,112,112);"></p>
+						<br>
+					</form>
+					
+					</div>
+					
+				</div>
+				<!--
+				<a href="#" id="new-inventory-finish-button" data-role="button" data-theme="a" data-icon="arrow-r" style="background-color:green; border: none; text-shadow: none; color: white !important;" >Finish</a>
+				-->
+				
+				
+		</div><!-- /content -->
+
+		<div data-role="footer"  data-theme="b" >
+			&nbsp
+			<br>
+			&nbsp
+			<br>
+			
+		</div><!-- /footer -->
+		
+	</div><!-- /page -->
+
+<div data-role="page" id="stockLevels">
+		
+		<div data-role="header" data-theme="b">
+				<a href="#inventory" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="slide">Menu</a>
+				<h1>Item Stock Levels</h1>
+		</div><!-- /header -->
+		
+		<div data-role="content" style="background: #f1f1f1;">
+	
+				<div style="background-color: #43a2c4 !important; border-radius: 5px;">
+					<div style="padding: 1em 1em 0em 1em;">
+					
+						<select id="filter-location-field">
+							<option value="" style="text-shadow: none !important;">Location</option>
+							<option value="wuse 2">Wuse 2</option>
+							<option value="maitama">Maitama</option>
+							<option value="zone 2">Zone 2</option>
+						</select>
+						
+						<select id="filter-category-field">
+							<option value="" style="text-shadow: none !important;">Item Category</option>
+							<option value="alcohol">Alcohol</option>
+							<option value="baby and mom">Baby & Mom</option>
+							<option value="bakery">Bakery</option>
+							<option value="beverages">Beverages</option>
+							<option value="books">Books</option>
+							<option value="cereal">Cereal</option>
+							<option value="dairy and eggs">Dairy & Eggs</option>
+							<option value="first aid and tests">First Aid & Tests</option>
+							<option value="food cupboard">Food Cupboard</option>
+							<option value="fresh food">Fresh Food</option>
+							<option value="health and beauty">Health & Beauty</option>
+							<option value="household">Household</option>
+							<option value="ink and toners">Inks & Toners</option>
+							<option value="office supplies">Office Supplies</option>
+							<option value="oil and sauces">Oil & Sauces</option>
+							<option value="perfumes and colognes">Perfumes & Colognes</option>
+							<option value="sex and fertility">Sex & Fertility</option>
+							<option value="vitamins and supplements">Vitamins & Supplements</option>
+							<option value="washing liquid">Washing Liquid</option>
+						</select>
+						
+						<br>
+						<p style="border-bottom: 1px dotted #ccc;"></p>
+						<br>
+						
+						
+						<table data-role="table" id="table-column-toggle" data-mode="" class="ui-responsive table-stroke">
+						<thead>
+							<tr style="font-size:1em; font-weight: 100; background-color: #333; color: #fff;  line-height: 1.4em; text-shadow: none;">
+								<td>Item</td>
+								<td style="text-align: center;">Quantity</td>
+                                
+								
+							</tr>
+						</thead>
+						<style type="text/css">
+							#stockLevels-container tr td:nth-child(1){
+								font-size: 1em; color: white; text-shadow: none;
+							}
+							
+							#stockLevels-container tr td:nth-child(2){
+								font-size: 1em; font-weight: 100; color: white; text-align: center; text-shadow: none;
+							}
+						</style>
+						<tbody id="stockLevels-container">
+							
+						</tbody>
+					</table>
+						<br>
+						<br>
+						<p style="border-bottom: 1px dotted #ccc;"></p>
+						<!--
+						<br>
+						<a href="" data-role="button" data-theme="e" data-icon="arrow-r">Export as email</a>
+						-->
+						
+					</div>
+					<br>
+					
+				</div>
+				
+			</div>
+		
+</div>
+
+<div data-role="page" id="supplier">
+		<div data-role="panel" id="menupanel-3" data-position="left" data-display="overlay" class="ui-panel ui-panel-position-left ui-panel-display-overlay ui-body-c ui-panel-animate ui-panel-closed" data-theme="b" style="background-color: #fff;  ">
+
+			<div class="ui-panel-inner" >
+			
+				<ul data-role="listview" data-theme="b">
+				
+				
+					<li class="lidec"><a class="ui-btn ui-icon-home ui-btn-icon-left" href="#dashboard">Dashboard</a></li>
+					<li  class="lidec"><a class="ui-btn ui-icon-info ui-btn-icon-left" href="#inventory">Inventory</a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-gear ui-btn-icon-left" href="#records">Records</a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#sales">Sales</a></li>
+					
+					<li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" href="#suppliers">Settings</a></li>
+			
+				</ul>	
+			
+		
+			
+				
+			</div>
+			<div>
+				<img style="margin: 3em 4em !important;" src="css/images/icon.png" />
+			</div>
+			
+	</div>
+		<div data-role="header" data-theme="b">
+				<a href="#menupanel-3" data-ajax="false" rel="external" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext" data-transition="slide">Menu</a>
+				<h1>Supplier</h1>
+		</div><!-- /header -->
+		
+		<div data-role="content" style="background: #f1f1f1;">
+	
+				<div style="background-color: #43a2c4 !important; border-radius: 5px;">
+					<div style="padding: 1em 1em 0em 1em;">
+					
+					<select name="supplier" id="supplier-select-box">
+						<option value="new">Add New Supplier</option>
+					</select>
+					
+					<form method="post" action="" name="suppliers" id="suppliers-form">
+						<input type="hidden" name="key" id="key-field" value="" data-validate="text" />
+						<input type="text" name="supplier" id="supplier-field" placeholder="Supplier Name" required data-validate="text" data-error-title="Invalid supplier" data-error-msg="Provide a valid Supplier Name" />
+						<input type="text" name="location" id="location-field" placeholder="Supplier Location" required data-validate="text" data-error-title="Invalid Supplier Location" data-error-msg="Provide a valid supplier location" />
+						
+						<div class="ui-grid-a">
+							<div class="ui-block-a" style="width: 55% !important;"><input type="tel" name="mobile" id="mobile-field" data-validate="tel" placeholder="Mobile" protocol="tel:"></div>
+							<div class="ui-block-b" style="width: 45% !important;"><a  href="#" id="mobile-field-link" data-role="button" data-theme="b" data-icon="phone" style="height: 1em; font-weight: normal !important; text-shadow: none; background-color: green; border: none;">Call</a></div>
+						</div>
+						<div class="ui-grid-a">
+							<div class="ui-block-a" style="width: 55% !important;"><input type="email" name="email" id="email-field" data-validate="email" placeholder="Email" protocol="mailto:"></div>
+							<div class="ui-block-b" style="width: 45% !important;"><a href="#" id="email-field-link" data-role="button" data-theme="b" data-icon="mail" style="height: 1em; font-weight: normal !important; text-shadow: none; background-color: green; border: none;">Email</a></div>
+						</div>
+						
+						<input type="submit" value="Save" />
+					</form>
+						
+						
+						<p style="border-bottom: 1px dotted #ccc;"></p>
+						<br>
+						<style type="text/css">
+							#last-supply-activity-container td,
+							#suppliers-list-container td{
+								font-size: 1em; color: white; text-shadow: none;
+							}
+							#last-supply-activity-container tr,
+							#suppliers-list-container tr{
+								display:none;
+							}
+							#last-supply-activity-container tr:nth-child(1),
+							#last-supply-activity-container tr:nth-child(2),
+							#last-supply-activity-container tr:nth-child(3),
+							#last-supply-activity-container tr:nth-child(4),
+							#last-supply-activity-container tr:nth-child(5),
+							#suppliers-list-container tr:nth-child(1),
+							#suppliers-list-container tr:nth-child(2),
+							#suppliers-list-container tr:nth-child(3),
+							#suppliers-list-container tr:nth-child(4),
+							#suppliers-list-container tr:nth-child(5) {
+								display:block;
+							}
+							#last-supply-activity-container td:nth-child(2){
+								text-align:center;
+							}
+						</style>
+						<table data-role="table" id="table-column-toggle" data-mode="" class="ui-responsive table-stroke">
+						<thead>
+							<tr style="font-size:1em; font-weight: 100; background-color: #333; color: #fff;  line-height: 1.4em; text-shadow: none;">
+								<td>Suppliers</td>
+							</tr>
+						</thead>
+						<tbody id="suppliers-list-container">
+							
+						</tbody>
+						</table>
+						
+						<br>
+						
+						<p style="border-bottom: 1px dotted #ccc;"></p>
+						<br>
+						<span style="font-family: Roboto Thin; text-shadow: none; color: white; font-size: 1.3em; "><span id="last-supply-activity-supplier-name"></span> &rarr; Last Supply Activity &darr;</span>
+						<br>
+						<br>
+						
+						<div class="ui-grid-b" style="background:#111;">
+							<div class="ui-block-a" style="padding:0.5em;">
+								<label style="color: white; text-shadow: none; ">Item</label>
+							</div>
+							<div class="ui-block-b" style="padding:0.5em;">
+								<label style="color: white; text-shadow: none; ">Quantity</label>
+							</div>
+							<div class="ui-block-c" style="padding:0.5em;">
+								<label style="color: white; text-shadow: none; ">Date</label>
+							</div>
+						</div>
+						<div id="last-supply-activity-container" >
+							
+						</div>
+						
+						<br>
+						<p style="border-bottom: 1px dotted #ccc;"></p>	
+						<br>
+						<input type="text" id="supplier-amount-owed" placeholder="Amount Owed : " disabled="disabled" />
+						<br>
+						
+						
+					</div>
+					
+					
+					
+				</div>
+				
+			</div>
+		
+		</div>
+
+<div data-role="page" id="restock">
+		
+		<div data-role="header" data-theme="b">
+				<a href="#inventory" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="slide">Menu</a>
+				<h1>Manage Inventory</h1>
+			</div><!-- /header -->
+
+		<div data-role="content" style="background-color: #f1f1f1;">
+	
+				<div style="background-color: #43a2c4 !important; border-radius: 5px; ">
+		<div style="padding: 1em 1em 0em 1em;">
+			<form action="" method="post" name="stock" id="stock-form">
+				
+					<div style="padding: 1em 1em 0em 1em;">
+						<input type="hidden" name="key" id="key-field" value="" />
+						
+						<select id="filter-location-field" >
+							<option value="" style="text-shadow: none !important;">Location</option>
+							<option value="wuse 2">Wuse 2</option>
+							<option value="maitama">Maitama</option>
+							<option value="zone 2">Zone 2</option>
+						</select>
+						<select id="filter-category-field" >
+							<option value="" style="text-shadow: none !important;">Item Category</option>
+							<option value="alcohol">Alcohol</option>
+							<option value="baby and mom">Baby & Mom</option>
+							<option value="bakery">Bakery</option>
+							<option value="beverages">Beverages</option>
+							<option value="books">Books</option>
+							<option value="cereal">Cereal</option>
+							<option value="dairy and eggs">Dairy & Eggs</option>
+							<option value="first aid and tests">First Aid & Tests</option>
+							<option value="food cupboard">Food Cupboard</option>
+							<option value="fresh food">Fresh Food</option>
+							<option value="health and beauty">Health & Beauty</option>
+							<option value="household">Household</option>
+							<option value="ink and toners">Inks & Toners</option>
+							<option value="office supplies">Office Supplies</option>
+							<option value="oil and sauces">Oil & Sauces</option>
+							<option value="perfumes and colognes">Perfumes & Colognes</option>
+							<option value="sex and fertility">Sex & Fertility</option>
+							<option value="vitamins and supplements">Vitamins & Supplements</option>
+							<option value="washing liquid">Washing Liquid</option>
+						</select>
+						<br />
+						<select name="item_barcode" id="item_barcode-field" required data-validate="text" data-error-title="Invalid Item" data-error-msg="Please select a valid item">
+							<option style="text-shadow: none !important;">Select Item</option>
+						</select>
+						
+						<br />
+						<select name="supplier" id="supplier-field" placeholder="Select Supplier" required data-validate="text" data-error-title="Invalid supplier" data-error-msg="Select a valid Supplier" >
+							<option style="text-shadow: none !important;">Select Supplier</option>
+						</select>
+						<br />
+						
+						<div class="ui-grid-a">
+							<div class="ui-block-a" style="padding-right:0.5em;">
+								<label for="cost_price-field" style="color: white; text-shadow: none; ">Unit Cost Price:</label>
+								<input type="number" name="cost_price" id="cost_price-field" min="0" step="any" placeholder="Unit Cost Price" required data-validate="number" data-error-title="Invalid Cost Price" data-error-msg="Please provide a valid Cost Price" />
+							</div>
+							<div class="ui-block-b" style="padding-left:0.5em;">
+								<label for="selling_price-field" style="color: white; text-shadow: none; ">Unit Selling Price:</label>
+								<input type="number" name="selling_price" id="selling_price-field" min="0" step="any" placeholder="Unit Selling Price" required data-validate="number" data-error-title="Invalid Selling Price" data-error-msg="Please provide a valid Selling Price" />
+							</div>
+						</div>
+						<br />
+						<div class="ui-grid-a">
+							<div class="ui-block-a" style="padding-right:0.5em;">
+								<label for="item_qty-field" style="color: white; text-shadow: none; ">Item Quantity:</label>
+								<input type="number" name="item_qty" id="item_qty-field" min="0" step="1" placeholder="Item Quantity" required data-validate="number" data-error-title="Invalid Quantity" data-error-msg="Please provide a quantity" />
+							</div>
+							<div class="ui-block-b" style="padding-left:0.5em;">
+								<label for="expiry_date-field" style="color: white; text-shadow: none; ">Expiry Date:</label>
+								<input type="date" name="expiry_date" id="expiry_date-field" value="" data-validate="date" data-error-title="Invalid Expiry Date" data-error-msg="Please provide a valid expiry valid" />
+							</div>
+						</div>
+						
+						<p style="border-bottom: 1px dotted rgb(112,112,112);"></p>
+						
+						<input type="text" id="dummy-totalCostPrice" placeholder="Total Cost : " disabled="true" />
+						
+						<input type="number" name="amount_paid" id="amount_paid-field" min="0" step="any" placeholder="Amount Paid" required data-validate="number" data-error-title="Invalid Amount" data-error-msg="Please provide a valid amount" />
+						
+						<input type="hidden" name="amount_owed" id="amount_owed-field" placeholder="Amount Owed" data-validate="number" min="0" step="any" />
+						<input type="text" id="dummy-amntOwed" placeholder="Amount Owed : " disabled="true" />
+						
+						<p style="border-bottom: 1px dotted rgb(112,112,112);"></p>
+						<input type="submit" value="Finish" data-icon="arrow-r" />
+						<br>
+				</div>
+			</form>
+		</div>
+				
+			</div>
+			<br>	
+			<!--<a href="#cnfrmRI" data-role="button" data-theme="a" data-icon="arrow-r" style="background-color:green; border: none; text-shadow: none; color: white !important;" >Finish</a>	-->
+			</div>
+			
+		</div>
+		
+<div data-role="page" id="inventory">
+	<div data-role="panel" id="menupanel-4" data-position="left" data-display="overlay" class="ui-panel ui-panel-position-left ui-panel-display-overlay ui-body-c ui-panel-animate ui-panel-closed" data-theme="b" style="background-color: #fff; ">
+
+			<div class="ui-panel-inner" >
+			<ul data-role="listview" data-theme="b">
+				
+				
+					<li class="lidec"><a class="ui-btn ui-icon-home ui-btn-icon-left" href="#dashboard">Dashboard</a></li>
+						<li  class="lidec"><a class="ui-btn ui-icon-check ui-btn-icon-left" href="#sales">Sales</a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-gear ui-btn-icon-left" href="#records">Records</a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier">Supplier</a></li>
+					
+					<li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" href="#settings">Settings</a></li>
+			
+				</ul>	
+		
+			
+				
+			</div>
+		<div>
+				<img style="margin: 3em 4em !important;" src="css/images/icon.png" />
+			</div>
+			
+		</div>
+	<div data-role="header" data-theme="b">
+		
+		
+		<a href="#menupanel-4" data-ajax="false" rel="external" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
+		
+		<h1>Inventory</h1>
+		<div data-role="navbar">
+			<ul>
+				<li>
+					<a class="notficns" href="#" data-theme="a" >
+						<marquee class="rbto" behavior="scroll" scrollamount="3" direction="left" > Kellogs Cereal exipiring on 26/10/2014 &nbsp;&nbsp; || &nbsp;&nbsp; Mr Obinna supplied Coca Cola 50cl, Pepsi 35cl on 25/11/2014 
+						</marquee>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div><!-- /header -->
+
+	<div role="main" class="ui-content" style="background-color: #f1f1f1;">
+				
+						
+					<div class="panl">
+						<h3>Total inventory value</h3>
+						<h6 style="font-size:1.8em;" class="total-value-of-inventory">-</h6>
+					</div>	
+					<br />
+					<div class="panl">
+						<h3>Total items in-stock</h3>
+						<h6 style="font-size:1.8em;" class="total-items-in-stock">-</h6>
+					</div>
+				
+					
+					<a href="#newInventory" data-role="button" data-theme="b" data-icon="arrow-r" data-transition="slide" style="font-weight: normal !important; text-shadow: none;">New Inventory</a>
+				
+					<a href="#restock" data-role="button" data-theme="b" data-icon="arrow-r" data-transition="slide" style="font-weight: normal !important; text-shadow: none;">Manage Inventory</a>
+					
+					
+					<div class="panl">
+					<h3>Inventory stock levels</h3>
+					<br>
+					<style type="text/css">
+						#inventory-levels-container > div{
+							display:none;
+						}
+						#inventory-levels-container > div:nth-child(1),
+						#inventory-levels-container > div:nth-child(2),
+						#inventory-levels-container > div:nth-child(3),
+						#inventory-levels-container > div:nth-child(4),
+						#inventory-levels-container > div:nth-child(5),
+						#inventory-levels-container > div:nth-child(6){
+							display:block;
+						}
+						
+					</style>
+					<div style="border: 2px solid #bee8f7; font-size: 0.65em;">
+						<div class="ui-grid-b" id="inventory-levels-container">
+							
+						</div><!-- /grid-c -->
+						
+					</div>
+					
+					</div>
+					
+					<a href="#stockLevels" data-role="button" data-theme="b" data-icon="arrow-r" data-transition="slide" style="font-weight: normal !important; text-shadow: none;">View Stock Levels</a>
+					
+					<!--
+					<a href="#setPricing" data-role="button" data-theme="b" data-icon="arrow-r" data-transition="slide" style="font-weight: normal !important; text-shadow: none;">Set Pricing</a>
+					-->
+				
+		
+	</div><!-- /content -->
+
+	
+		<div data-role="footer"  data-theme="b" >
+			&nbsp
+			<br>
+			&nbsp
+			<br>
+			
+		</div><!-- /footer -->
+		
+</div><!-- /page -->
+
+<div data-role="page" id="sales">
+		<div data-role="panel" id="menupanel-1" data-position="left" data-display="overlay" class="ui-panel ui-panel-position-left ui-panel-display-overlay ui-body-c ui-panel-animate ui-panel-closed" data-theme="b" style="background-color: #fff;  ">
+
+			<div class="ui-panel-inner" >
+			
+				<ul data-role="listview" data-theme="b">
+				
+				
+					<li class="lidec"><a class="ui-btn ui-icon-home ui-btn-icon-left" href="#dashboard">Dashboard</a></li>
+					<li  class="lidec"><a class="ui-btn ui-icon-info ui-btn-icon-left" href="#inventory">Inventory</a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-gear ui-btn-icon-left" href="#records">Records</a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier">Supplier</a></li>
+					
+					<li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" href="#settings">Settings</a></li>
+			
+				</ul>	
+			
+		
+			
+				
+			</div>
+			<div>
+				<img style="margin: 3em 4em !important;" src="css/images/icon.png" />
+			</div>
+			
+	</div>
+		
+
+		
+		<div data-role="header" data-theme="b" >
+				<a href="#menupanel-1" data-ajax="false" rel="external" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
+				<h1>Sales</h1>
+		</div><!-- /header -->
+
+		<div data-role="content" style="background-color: #f1f1f1;background-image: url(css/images/bg.png); background-repeat: repeat;">
+			
+			<div style="border-radius: 5px;" id="sales-inventory-list-container">
+			
+			</div>
+			 
+			<br>	
+						
+			<div style="background-color: #43a2c4; padding: 10px; border-radius: 5px; text-shadow: none; color: white;">
+				
+				
+				<div >
+					<style type="text/css">
+						#sales-table-body td{
+							padding-top: 1em; font-size: 1em; font-weight: 100 ;
+							vertical-align:middle;
+						}
+						#sales-table-body td:nth-child(2){
+							text-align:center;
+							position:relative;
+						}
+						#sales-table-body td:nth-child(3){
+							text-align:right;
+							position:relative;
+						}
+						#sales-table-body td input[type="number"]{
+							width:100%;
+							padding:0.2em 0;
+						}
+						
+						#sales-table-body td a{
+							border: #43a2c4; position:absolute; top:0.25em; right:0; z-index:100; display:none;
+						}
+						
+					</style>
+					
+					<table data-role="table" id="table-column-toggle" data-mode="" class="ui-responsive table-stroke">
+						<thead>
+							<tr style=" font-size: 0.8em; font-weight: bold; color: #fff; border-bottom: 1px dotted #ccc; line-height: 1.4em;">
+								<td style="width: 30%;">Item</td>
+								<td style="width: 15%; text-align: center;">Units</td>
+								<td style="width: 15%; text-align: right;">Value (&#8358;)</td>
+								
+							</tr>
+						</thead>
+						<tbody id="sales-table-body" style="font-family: Roboto Thin;">
+							
+							<tr style="background-color: rgb(112,112,112); color: white; text-shadow: none; border-radius: 5px !important; ">
+								 <td style="font-size: 1em; text-shadow: none;">Sub-total</td>
+								 <td></td>
+								 <td style="font-size: 1em; text-shadow: none; font-weight: bold; text-align: right;" id="this-sale-subtotal-amount">0.00</td>
+								
+								
+							</tr>
+       
+						</tbody>
+					</table>
+					
+				</div>
+					
+			
+			</div>
+			
+			<br>
+			
+			<div style="background-color: #43a2c4; padding: 10px; border-radius: 5px; text-shadow: none; color: white;">
+			
+			<form>
+				<div style="display: inline;">V.A.T &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" data-role="flipswitch" name="vat-on-off-switch" id="vat-on-off-switch" checked="checked" /> <span id="this-sale-total-amount-vat" style="float:right; padding-top:0.7em; margin-right:0.4em;">0.00</span></div>
+				
+				
+				<p style="border-bottom: 1px dotted #fff !important;"></p>
+				
+				<div style="display: inline;">Discount &nbsp;&nbsp;<input type="checkbox" data-role="flipswitch" name="discount-on-off-switch" id="discount-on-off-switch"> <span id="this-sale-total-amount-discount" style="float:right; padding-top:0.7em; margin-right:0.4em;">0.00</span></div>
+			
+			</form>
+			
+			</div>
+			
+				<br>
+					
+				<div style="background-color: rgb(112,112,112); padding: 10px; border-radius: 5px; text-shadow: none; color: white; font-family: Roboto Thin; font-size: 1.7em;">
+				Total: &nbsp; <b id="this-sale-total-amount">0.00</b>
+				</div>
+				<br>
+				
+				
+			 	<a href="#confirm-this-sale-popup" id="confirm-this-sale-popup-display-button" data-role="button" data-rel="popup" data-theme="b" data-icon="arrow-r" data-transition="slide" data-position-to="origin" style="font-weight: normal !important; text-shadow: none; background-color: green; border: none;">Check Out</a>
+			
+			 	<a href="#" id="cancel-order-button" data-role="button" data-theme="b" data-icon="arrow-r" data-transition="slide" style="background-color: red; border: red; font-weight: normal !important; text-shadow: none;">Cancel Order</a>
+				
+				
+			<div data-role="popup" id="confirm-this-sale-popup" data-overlay-theme="b" data-theme="a" data-dismissible="false" style="width: 100%;">
+				<div data-role="header" data-theme="b">
+				<h1 style="font-size: 1em; text-shadow: none;" id="this-sale-checkout-total">Total &rarr; 0.00</h1>
+				</div>
+				<div role="main" class="ui-content">
+					<label for="this-sale-change">Change:</label>
+					<div id="this-sale-change">
+						0.00
+					</div>
+					<label for="payOption">Payment Method:</label>
+					<select name="payOption" id="payOption" data-role="slider">
+						<option value="cash" style="text-shadow: none !important;">Cash</option>
+						<option value="card" style="text-shadow: none !important;">Card</option>
+					</select>
+					<label for="text-basic">Please enter amount tendered:</label>
+					<input type="number" min="0" step="any" name="amount_tendered" id="amount_tendered-field" value="" />
+					<input type="button" value="Confirm" id="confirm-this-sale-button" />
+					<a href="#" data-role="button" data-rel="back">Cancel</a>
+					
+				</div>
+			</div>
+
+				<!---->
+				<div data-role="popup" id="receipt" class="ui-content" style="max-width:280px">
+				<a href="#sale" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+				<br>
+				<table data-role="table" id="table-column-toggle" data-mode="" class="ui-responsive table-stroke">
+						<thead>
+							<tr style="border-radius: 5px; border: 1px solid #333; font-size: 0.8em; font-weight: bold; color: #fff; background-color: #333; line-height: 1.4em; text-shadow: none">
+								<td style="width: 60%;">Item</td>
+								<td style="width: 35%; text-align: center;">Value (N)</td>
+								
+
+							</tr>
+						</thead>
+						<tbody style="font-family: Arial; color: #333;">
+							<tr>
+								
+								<td style="padding-top: 1em; font-size: 1em; color: #333;">Coca Cola - 35cl<b>&nbsp;(3)</b></td>
+								<td style="padding-top: 1em; font-size: 1em; font-weight: 100; text-align: center; "><b>100.00</b></td>
+								
+								
+								
+							</tr>
+							<tr>
+								 
+								 <td style="padding-top: 1em; font-size: 1em;  color: #333;">Pepsi - 50cl<b>&nbsp;(3)</b></td>
+								 <td style="padding-top: 1em; font-size: 1em; font-weight: 100; text-align: center;"><b>120.00</b></td>
+								 
+								
+							</tr>
+							<tr>
+								 
+								 <td style="padding-top: 1em; font-size: 1em;  color: #333;">Kellogs - Cornflakes<b>&nbsp;(1)</b></td>
+								 <td style="padding-top: 1em; font-size: 1em; font-weight: 100; text-align: center;"><b>950.00</b></td>
+								
+								
+							</tr>
+							<tr>
+								 
+								 <td style="padding-top: 1em; font-size: 1em; color: #333;">Kellogs - Frosties<b>&nbsp;(1)</b></td>
+								 <td style="padding-top: 1em; font-size: 1em; font-weight: 100; text-align: center;"><b>870.00<b/></td>
+								 
+								 
+							</tr>
+							<tr style="border-bottom: 1px dotted #fff !important;">
+								 <td style="padding-top: 1em; font-size: 1em;  color: #333;">Ariel - 1kg<b>&nbsp;(2)</b> </td>
+								 <td style="padding-top: 1em; font-size: 1em; font-weight: 100; text-align: center;"><b>250.00</b></td>
+								  
+								 
+							</tr>
+							<tr style="">
+								 <td style="padding-top: 1em; font-size: 1em;  color: #333;text-indent: 2em;"><b>Subtotal</b></td>
+								 <td style="!important;padding-top: 1em; font-size: 1em; font-weight: 100; text-align: center;"><b>2290.00</b></td>
+								  
+								 
+							</tr>
+							<tr style="border-bottom: 1px dotted #fff !important;">
+								 <td style="padding-top: 1em; font-size: 1em;  color: #333;text-indent: 2em;"><b>VAT/Discount</b></td>
+								 <td style="padding-top: 1em; font-size: 1em; font-weight: 100; text-align: center;"><b>0.00</b></td>
+								  
+								 
+							</tr>
+							<tr style="border-bottom: 1px dotted #fff !important;">
+								 <td style="padding-top: 1em; font-size: 1em;  color: #333;text-indent: 2em;"><b>TOTAL</b></td>
+								 <td style="padding-top: 1em; font-size: 1em; font-weight: 100; text-align: center;"><b>2290.00</b></td>
+								  
+								 
+							</tr>
+							<tr style="border-bottom: 1px dotted #fff !important;">
+								 <td style="padding-top: 1em; font-size: 1em;  color: #333;text-indent: 2em;"><b>Cash</b></td>
+								 <td style="padding-top: 1em; font-size: 1em; font-weight: 100; text-align: center;"><b>2500.00</b></td>
+								  
+								 
+							</tr>
+							<tr style="border-bottom: 1px dotted #fff !important;">
+								 <td style="padding-top: 1em; font-size: 1em;  color: #333;text-indent: 2em;">Change</td>
+								 <td style="padding-top: 1em; font-size: 1em; font-weight: 100; text-align: center;">210.00</td>
+								  
+								 
+							</tr>
+							
+							
+							
+							
+       
+						</tbody>
+					</table>
+				
+				
+			</div>
+		
+		</div><!-- /content -->
+
+		<div data-role="footer"  data-position="fixed">
+			
+		</div>
+		
+	</div><!-- /page -->
+
+	
+</div>	
+
+</div>
+
+<div data-role="page" id="cnfrmPricing">
+				
+		<div data-role="header" data-theme="b" >
+				
+				<h1>Confirmation</h1>
+		</div><!-- /header -->
+
+		<div data-role="content" style="background-color: #f1f1f1;">
+			
+			
+			<div class="panl">
+					<div>
+						<img style="margin: 3em 4em !important;" src="css/images/icon2.png" />
+					</div>
+					<div >
+						<h3>You successfully changed the pricing of :</h3>
+						<br>
+						<span style="margin-bottom:0.2em; font-weight: 2.2em !important; display: block;"><b>1.</b> Coca Cola - 35cl <b>(N 100.00)</b></span>
+						<span style="margin-bottom:0.2em;font-weight: 2.2em !important; display: block;"><b>2.</b> Pepsi - 35cl <b>(N 80.00)</b></span>
+						<span style="margin-bottom:0.2em; font-weight: 2.2em !important; display: block;"><b>3.</b> Evian Water - 50cl <b>(N 120.00)</b></span>
+						<br>
+						
+					</div>	
+			</div>
+			<br>
+			
+			
+			<a href="#dashboard" data-role="button" data-theme="b" data-icon="home" data-transition="slide" style="font-weight: normal !important; text-shadow: none; border: none;">Go To Dashboard</a>
+		
+		</div><!-- /content -->
+
+		<div data-role="footer"  data-position="fixed">
+			
+		</div>
+		
+	</div><!-- /page -->	
+
+<div data-role="page" id="confirmation">
+				
+		<div data-role="header" data-theme="b" >
+				
+				<h1>Confirmation</h1>
+		</div><!-- /header -->
+
+		<div data-role="content" style="background-color: #f1f1f1;">
+			
+			<div class="panl">
+					<div>
+						<img style="margin: 3em 4em !important;" src="css/images/icon2.png" />
+					</div>
+					<div >
+						<h3 style="text-align: center;">You have successfully added</h3>
+					
+						<h6 style="text-align: center;" id="newly-added-inventory-total">-</h6>
+						
+						<h3 style="text-align: center;">worth of inventory.</h3>
+					</div>	
+			</div>
+			<br>
+			<a href="#newInventory" data-role="button" data-theme="b" data-icon="arrow-l" data-transition="slide" style="font-weight: normal !important; text-shadow: none; border: none;">Add Inventory</a>
+			
+			<a href="#sales" data-role="button" data-theme="b" data-icon="check" data-transition="slide" style="font-weight: normal !important; text-shadow: none; border: none;">New Sale</a>
+			
+			<a href="#dashboard" data-role="button" data-theme="b" data-icon="home" data-transition="slide" style="font-weight: normal !important; text-shadow: none; border: none;">Go To Dashboard</a>
+		
+		</div><!-- /content -->
+
+		<div data-role="footer"  data-position="fixed">
+			
+		</div>
+		
+	</div><!-- /page -->
+
+<div data-role="page" id="cnfrmRI">
+				
+		<div data-role="header" data-theme="b" >
+				
+				<h1>Confirmation</h1>
+		</div><!-- /header -->
+
+		<div data-role="content" style="background-color: #f1f1f1;">
+			
+			
+			<div class="panl">
+					<div>
+						<img style="margin: 3em 4em !important;" src="css/images/icon2.png" />
+					</div>
+					<div >
+						<h3 style="text-align: center;">You have successfully added</h3>
+					
+						<h6 style="text-align: center;">N 7,560.00</h6>
+						
+						<h3 style="text-align: center;">worth of inventory.</h3>
+					</div>	
+			</div>
+			<br>
+			<a href="#newInventory" data-role="button" data-theme="b" data-icon="arrow-l" data-transition="slide" style="font-weight: normal !important; text-shadow: none; border: none;">Add Inventory</a>
+			
+			<a href="#sales" data-role="button" data-theme="b" data-icon="check" data-transition="slide" style="font-weight: normal !important; text-shadow: none; border: none;">New Sale</a>
+			
+			<a href="#dashboard" data-role="button" data-theme="b" data-icon="home" data-transition="slide" style="font-weight: normal !important; text-shadow: none; border: none;">Go To Dashboard</a>
+		
+		</div><!-- /content -->
+
+		<div data-role="footer"  data-position="fixed">
+			
+		</div>
+		
+	</div><!-- /page -->	
+
+<div data-role="page" id="records">
+		<div data-role="panel" id="menupanel-6" data-position="left" data-display="overlay" class="ui-panel ui-panel-position-left ui-panel-display-overlay ui-body-c ui-panel-animate ui-panel-closed" data-theme="b" style="background-color: #fff; ">
+
+			<div class="ui-panel-inner" >
+			
+				<ul data-role="listview" data-theme="b">
+				
+					<li class="lidec"><a class="ui-btn ui-icon-home ui-btn-icon-left" href="#dashboard">Dashboard</a></li>
+					<li  class="lidec"><a class="ui-btn ui-icon-check ui-btn-icon-left" href="#sales">Sales</a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-gear ui-btn-icon-left" href="#inventory">Inventory</a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier">Supplier</a></li>
+					
+					<li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" href="#settings">Settings</a></li>
+			
+				</ul>	
+			
+		
+			
+				
+			</div>
+		<div>
+				<img style="margin: 3em 4em !important;" src="css/images/icon.png" />
+			</div>
+			
+		</div>
+	<div data-role="header" data-theme="b">
+		
+		
+		<a href="#menupanel-6" data-ajax="false" rel="external" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
+		
+		<h1>Records</h1>
+		
+	</div><!-- /header -->
+		
+		<div data-role="content" style="background-color: #f1f1f1;background-image: url(css/images/bg.png); background-repeat: repeat;">
+			
+			<style type="text/css">
+				#sales-records-container ul li a{
+					font-weight: normal; background-color: #4fc1e9;
+				}
+			</style>
+			<div data-role="tabs" id="tabs">
+			  <div data-role="navbar">
+				<ul>
+				  <li><a href="#one" data-ajax="false" class="ui-btn-active">Sales</a></li>
+				  <!--<li><a href="#two" data-ajax="false">Inventory</a></li>-->
+				
+			  </div>
+			  <div id="one" class="ui-body-d ui-content">
+				<div style="  border-radius: 8px; ">
+			
+			<div data-role="popup" id="popupRecords" class="ui-content" style="max-width:280px">
+				<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+				<br>
+				<table data-role="table" id="table-column-toggle" data-mode="" class="ui-responsive table-stroke">
+				<thead>
+					<tr style=" font-size: 0.8em; font-weight: bold; color: #fff; background-color: #333; line-height: 1.4em; text-shadow: none">
+						<td style="width: 60%;">Item</td>
+						<td style="width: 35%; text-align: center;">Value (&#8358;)</td>
+					</tr>
+				</thead>
+				<style type="text/css">	
+					#sales-record-pop-container td:nth-child(1),
+					#sales-record-pop-container td:nth-child(2){
+						padding-top: 1em; font-size: 1em; color: #333;
+					}
+					tfoot td{
+						padding-top: 1em; font-size: 1em; color: #333;
+					}
+					tfoot td,
+					#sales-record-pop-container td{
+						vertical-align:middle;
+					}
+					tfoot td:nth-child(2){
+						padding-top: 1em;
+					}
+					tfoot td:nth-child(2),
+					#sales-record-pop-container td:nth-child(2){
+						font-weight: 100; text-align: right; 
+					}
+					.details-hide{
+						display:none !important;
+					}
+				</style>
+				<tbody style="font-family: Arial; color: #333;" id="sales-record-pop-container">
+					
+				</tbody>	
+				<tfoot id="less-details">	
+					<tr style="border-bottom: 1px dotted #fff !important;">
+						 <td style="padding-top: 1em; font-size: 1em;  color: #333; text-indent:2em;"><b>TOTAL</b></td>
+						 <td><b id="sales-record-total-1">0.00</b></td>
+					</tr>
+					<tr>
+						 <td colspan="2"><input type="button" value="Show Details" data-mini="true" class="sales-records-details-toggle" /></td>
+					</tr>
+				</tfoot>	
+				<tfoot id="more-details" class="details-hide">	
+					<tr class="sales-records-details">
+						 <td style="padding-top: 1em; font-size: 1em;  color: #333;text-indent: 2em;"><b>Subtotal</b></td>
+						 <td><b id="sales-record-sub-total">0.00</b></td>
+					</tr>
+					<tr  class="sales-records-details" style="border-bottom: 1px dotted #fff !important;">
+						 <td style="padding-top: 1em; font-size: 1em;  color: #333;text-indent: 2em;"><b>VAT</b></td>
+						 <td><b id="sales-record-vat">0.00</b></td>
+					</tr>
+					<tr  class="sales-records-details" style="border-bottom: 1px dotted #fff !important;">
+						 <td style="padding-top: 1em; font-size: 1em;  color: #333;text-indent: 2em;"><b>Discount</b></td>
+						 <td><b id="sales-record-discount">0.00</b></td>
+					</tr>
+					<tr style="border-bottom: 1px dotted #fff !important;">
+						 <td style="padding-top: 1em; font-size: 1em;  color: #333; text-indent:2em;"><b>TOTAL</b></td>
+						 <td><b id="sales-record-total">0.00</b></td>
+					</tr>
+					<tr  class="sales-records-details" style="border-bottom: 1px dotted #fff !important;">
+						 <td style="padding-top: 1em; font-size: 1em;  color: #333;text-indent: 2em;"><b>Cash</b></td>
+						 <td><b id="sales-record-amount-paid">0.00</b></td>
+					</tr>
+					<tr  class="sales-records-details" style="border-bottom: 1px dotted #fff !important;">
+						 <td style="padding-top: 1em; font-size: 1em;  color: #333;text-indent: 2em;">Change</td>
+						 <td id="sales-record-change">0.00</td>
+					</tr>
+					<tr>
+						<td colspan="2"><input type="button" value="Hide Details" class="sales-records-details-toggle" data-mini="true"/></td>
+					</tr>
+				</tfoot>
+				</table>
+				
+				
+			</div>
+             
+			<div data-role="collapsible-set" data-theme="b" data-content-theme="a" id="sales-records-container">
+			
+			<div style="" data-role="collapsible" data-theme="b" data-content-theme="a" data-inset="false">
+				<h3 style="font-weight: 100 !important;">Today<span style="float: right; "><b id="today-sales-records-days-total">-</b></span></h3>
+				<div id="today-sales-records">
+				
+				</div>
+			</div><!-- /collapsible -->
+            
+			<div style="" data-role="collapsible" data-theme="b" data-content-theme="a" data-inset="false">
+				<h3 style="font-weight: 100 !important;">24 hours ago<span style="float: right; "><b id="one-day-sales-total">-</b></span></h3>
+				<div id="one-day-records">
+				
+				</div>
+			</div><!-- /collapsible -->
+                
+			<div style="" data-role="collapsible" data-theme="b" data-content-theme="a" data-inset="false">
+				<h3 style="font-weight: 100 !important;">Two days ago<span style="float: right; "><b id="two-day-sales-total">-</b></span></h3>
+				<div id="two-day-records">
+				
+				</div>
+			</div><!-- /collapsible -->
+                
+			<div style="" data-role="collapsible" data-theme="b" data-content-theme="a" data-inset="false">
+			 <h3 style="font-weight: 100 !important;">This Month<span style="float: right;"><b id="today-sales-records-months-total">N 69,170</b></span></h3>
+				<div id="today-sales-records-months">
+				</div>
+			</div><!-- /collapsible -->
+
+		</div>
+			</div>
+			  </div>
+			  <!--
+			  <div id="two">
+				<ul data-role="listview" data-inset="true">
+					<li><a href="#">Today</a></li>
+					<li><a href="#">14/4/2014</a></li>
+					<li><a href="#">13/4/2014</a></li>
+					<li><a href="#">12/4/2014</a></li>
+					<li><a href="#">11/4/2014</a></li>
+				</ul>
+			  </div>
+			  -->
+			</div>
+			
+			
+		</div>
+		
+		
+		
+		
+		<div data-role="footer"  data-theme="b" >
+			&nbsp
+			<br>
+			&nbsp
+			<br>
+			
+		</div><!-- /footer -->
+	
+	</div>
+	
+</div>
+
+</body>
+
+<div data-role="page" id="settings">
+		<div data-role="panel" id="menupanel-7" data-position="left" data-display="overlay" class="ui-panel ui-panel-position-left ui-panel-display-overlay ui-body-c ui-panel-animate ui-panel-closed" data-theme="b" style="background-color: #fff;  ">
+
+			<div class="ui-panel-inner" >
+			
+				<ul data-role="listview" data-theme="b">
+				
+				
+					<li class="lidec"><a class="ui-btn ui-icon-home ui-btn-icon-left" href="#dashboard">Dashboard</a></li>
+					<li  class="lidec"><a class="ui-btn ui-icon-info ui-btn-icon-left" href="#inventory">Inventory</a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-gear ui-btn-icon-left" href="#records">Records</a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#sales">Sales</a></li>
+					
+					<li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" href="#supplier">Supplier</a></li>
+			
+				</ul>	
+			
+			</div>
+			<div>
+				<img style="margin: 3em 4em !important;" src="css/images/icon.png" />
+			</div>
+			
+	</div>
+		<div data-role="header" data-theme="b">
+				<a href="#menupanel-7" data-ajax="false" rel="external" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext" data-transition="slide">Menu</a>
+				<h1>Settings</h1>
+		</div><!-- /header -->
+		
+		<div data-role="content" style="background: #f1f1f1;">
+	
+				<div style="background-color: #43a2c4 !important; border-radius: 5px;">
+					<div style="padding: 1em 1em 0em 1em;">
+						
+						<form method="post" action="" name="sign-up" id="sign-up-form">
+							<input type="hidden" name="key" id="key-field" value="" />
+							<input type="text" name="name" id="name-field" placeholder="Your Full Name" required data-validate="text" data-error-title="Invalid Name" data-error-msg="Provide a valid name" />
+							<input type="email" name="email" id="email-field" placeholder="Your Email Address" required data-validate="email" data-error-title="Invalid Email" data-error-msg="Provide a valid email" />
+							
+							<input type="hidden" name="cemail" id="cemail-field" placeholder="Confirm Email" data-validate="text"  />
+							
+							<input type="hidden" name="password" id="password-field" placeholder="Password" data-validate="text" />
+							
+							<input type="number" name="low_stock_level" id="low_stock_level-field" placeholder="Low Stock level threshold" data-validate="number" step="1" min="10" max="1000" />
+							
+							<input type="number" name="vat" id="vat-field" placeholder="Set VAT (%)" data-validate="number" step="any" min="0" />
+							
+							<input type="number" name="discount" id="discount-field" placeholder="Set Discount (%)" data-validate="number" step="any" min="0" />
+							
+							<p style="border-bottom: 1px dotted #ccc;"></p>
+							<input type="submit" value="Update" />
+							<br />
+						</form>
+						
+						
+					</div>
+					
+					
+					
+				</div>
+				
+			</div>
+		
+		</div>
+
+</html>
