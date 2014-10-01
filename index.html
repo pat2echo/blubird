@@ -18,45 +18,6 @@
 	<script src="js/app/jsAjax-processing-script.js"></script>
 	<!-- ./commit -->
 	
-	<script>
-		$(function () {
-
-    $('#chart2').highcharts({
-        chart: {
-            type: 'pyramid',
-            marginRight: 100
-        },
-        title: {
-            text: '',
-            x: -50
-        },
-        plotOptions: {
-            series: {
-                dataLabels: {
-                    enabled: true,
-                    format: '<b>{point.name}</b> ({point.y:,.0f})',
-                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
-                    softConnector: true
-                }
-            }
-        },
-        legend: {
-            enabled: false
-        },
-        series: [{
-            name: 'Unique users',
-            data: [
-                ['Website visits',   1554],
-                ['Downloads',       1200],
-                ['Requested price list', 1000],
-                ['Invoice sent',    800],
-                ['Finalized',    700]
-            ]
-        }]
-    });
-});
-	</script>
-	
 	<link rel="stylesheet" href="css/jquery.mobile-1.4.4.css"/>
 	
 </head>
@@ -76,8 +37,8 @@
 					
 					<li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" href="#settings">Settings</a></li>
 			
-				</ul>	
-			
+				</ul>
+				
 		
 			
 				
@@ -104,6 +65,7 @@
 	</div><!-- /header -->
 
 	<div role="main" class="ui-content" style="background-color: #f1f1f1;">
+		<input type="button" value="SCAN" id="button-scan" />
 		<div class="panl">
 			<h3>Total inventory value</h3>
 		
