@@ -84,6 +84,19 @@ function validate( $element , unfocused ){
 				err = true;
 			}
 		break;
+		case 'confirm-password':
+			var pw = $element.val();
+			var $pws = $element.parents('form').find('input[type="password"]');
+			if( $pws ){
+				if( $pws.length > 1 ) {
+					$pws.each(function(){
+						if( pw != $(this).val() )err = true;
+					});
+				}else{
+					if( pw != $pws.val() )err = true;
+				}
+			}
+		break;
 		}
 		
 		if( err ){
@@ -413,10 +426,6 @@ function successful_submit_action( stored ){
 	};
 	display_popup_notice( settings );
 };
-
-var storedObjects = amplify.store();
-	
-console.log('all',  storedObjects );
 
 function add_to_list_of_suppliers( data ){
 	if( storeObjects[ 'suppliers_list' ] ){
@@ -1128,7 +1137,7 @@ $( document ).on( "pagecreate", "#newInventory", function() {
 				
 				$('form#inventory-form').submit();
 				
-				$.mobile.navigate( "#confirmation", { transition : "slide" });
+				$.mobile.navigate( "#confirmation", { transition : "none" });
 			});
 			
 		}else{
@@ -1822,16 +1831,11 @@ var search_limit_interval = 20;
 function clearSingleData( key ){
 	amplify.store( key , null );
 };
-
-	
-	var storedObjects = amplify.store();
-	
-	console.log('all',  storedObjects );
 	
 function clearData(){
 	var storedObjects = amplify.store();
 	
-	console.log('all',  storedObjects );
+	//console.log('all',  storedObjects );
 	//ga('send', 'pageview', {'page': '/user-triggered-refresh' , 'title': 'User Refreshed App' });
 	
 	$.each( storedObjects , function ( key , value ){

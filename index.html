@@ -9,7 +9,7 @@
 	<script src="js/highcharts.js"></script>
 	<script src="js/funnel.js"></script>
 	
-	<!-- App 1st Commit -->
+	<!-- App 2nd Commit -->
 	<!--version 1.0.1-->
 	<script src="js/app/amplify.min.js"></script>
 	<script src="js/app/md5.js"></script>
@@ -138,22 +138,22 @@
 			
 			<div class="ui-block-a">
 				
-					<a href="#inventory" data-role="button" data-theme="b" data-icon="grid" data-iconpos="top" data-transition="slideup" class="btn1">Inventory</a>
+					<a href="#inventory" data-role="button" data-theme="b" data-icon="grid" data-iconpos="top" data-transition="none" class="btn1">Inventory</a>
 				
 			</div>
 			<div class="ui-block-b">
 				
-					<a href="#sales" data-role="button" data-theme="b" data-icon="star" data-iconpos="top" data-transition="slideup" class="btn1">Sales</a>
+					<a href="#sales" data-role="button" data-theme="b" data-icon="star" data-iconpos="top" data-transition="none" class="btn1">Sales</a>
 
 			</div>
 			<div class="ui-block-c">
 				
-					<a href="#records" data-role="button" data-theme="b" data-icon="edit" data-iconpos="top" data-transition="slideup" class="btn1">Records</a>
+					<a href="#records" data-role="button" data-theme="b" data-icon="edit" data-iconpos="top" data-transition="none" class="btn1">Records</a>
 					
 			</div>
 			<div class="ui-block-d">
 				
-					<a href="#suppliers" data-role="button" data-theme="b" data-icon="info" data-iconpos="top" class="btn2">Suppliers</a>
+					<a href="#supplier" data-role="button" data-transition="none" data-theme="b" data-icon="info" data-iconpos="top" class="btn2">Suppliers</a>
 					
 			</div>
 			
@@ -176,10 +176,15 @@
 						
 						<form method="post" action="" name="sign-up" id="sign-up-form">
 							<input type="hidden" name="key" id="key-field" value="" />
+							
 							<input type="text" name="name" id="name-field" placeholder="Your Full Name" required data-validate="text" data-error-title="Invalid Name" data-error-msg="Provide a valid name" />
+							
 							<input type="email" name="email" id="email-field" placeholder="Your Email Address" required data-validate="email" data-error-title="Invalid Email" data-error-msg="Provide a valid email" />
-							<input type="email" name="cemail" id="cemail-field" placeholder="Confirm Email" required data-validate="confirm-email" data-error-title="Non-matching Emails" data-error-msg="Emails do not match" />
+							
 							<input type="password" name="password" id="password-field" placeholder="Password" required data-validate="password" data-error-title="Invalid Password" data-error-msg="Passwords must be at least 6 characters" />
+							
+							<input type="password" name="cpassword" id="cpassword-field" placeholder="Confirm Password" required data-validate="confirm-password" data-error-title="Non-matching Password" data-error-msg="Passwords must match" />
+							
 							<input type="submit" value="Sign Up" />
 						</form>
 						
@@ -197,7 +202,7 @@
 						<br>
 					<p style="border-bottom: 8px solid #4fc1e9"></p>
 				
-					<a href="#login" data-role="button" data-theme="b"  data-transition="slide" style="font-weight: normal !important; text-shadow: none;">SIGN UP</a>
+					<a href="#login" data-role="button" data-theme="b"  data-transition="none" style="font-weight: normal !important; text-shadow: none;">SIGN UP</a>
 					<br>
 					<br>
 					<br>
@@ -227,10 +232,10 @@
 				
 					<div class="ui-grid-a">
 						<div class="ui-block-a">
-								<a href="#dashboard" data-role="button" data-theme="b" data-transition="slide" style="font-weight: normal !important; text-shadow: none;">LOGIN</a>
+								<a href="#dashboard" data-role="button" data-theme="b" data-transition="none" style="font-weight: normal !important; text-shadow: none;">LOGIN</a>
 						</div>
 						<div class="ui-block-b">
-								<a href="#signup" data-role="button" data-theme="b"  data-transition="slide" style="font-weight: normal !important; text-shadow: none;">SIGN UP</a>
+								<a href="#signup" data-role="button" data-theme="b"  data-transition="none" style="font-weight: normal !important; text-shadow: none;">SIGN UP</a>
 						</div>
 					</div>
 					
@@ -250,7 +255,7 @@
 <div data-role="page" id="setPricing" >
 		
 		<div data-role="header" data-theme="b">
-				<a href="#inventory" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="slide">Menu</a>
+				<a href="#inventory" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
 				<h1>Set Pricing</h1>
 		</div><!-- /header -->
 		<div data-role="content" style="background-color: #c9c9c9 ">
@@ -354,7 +359,7 @@
 <div data-role="page" id="newInventory">
 		
 		<div data-role="header" data-theme="b">
-			<a href="#inventory" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="slide">Menu</a>
+			<a href="#inventory" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
 			<h1>New Inventory</h1>
 		</div><!-- /header -->
 
@@ -492,7 +497,7 @@
 <div data-role="page" id="stockLevels">
 		
 		<div data-role="header" data-theme="b">
-				<a href="#inventory" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="slide">Menu</a>
+				<a href="#inventory" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
 				<h1>Item Stock Levels</h1>
 		</div><!-- /header -->
 		
@@ -602,7 +607,7 @@
 			
 	</div>
 		<div data-role="header" data-theme="b">
-				<a href="#menupanel-3" data-ajax="false" rel="external" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext" data-transition="slide">Menu</a>
+				<a href="#menupanel-3" data-ajax="false" rel="external" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext" data-transition="none">Menu</a>
 				<h1>Supplier</h1>
 		</div><!-- /header -->
 		
@@ -714,7 +719,7 @@
 <div data-role="page" id="restock">
 		
 		<div data-role="header" data-theme="b">
-				<a href="#inventory" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="slide">Menu</a>
+				<a href="#inventory" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
 				<h1>Manage Inventory</h1>
 			</div><!-- /header -->
 
@@ -867,9 +872,9 @@
 					</div>
 				
 					
-					<a href="#newInventory" data-role="button" data-theme="b" data-icon="arrow-r" data-transition="slide" style="font-weight: normal !important; text-shadow: none;">New Inventory</a>
+					<a href="#newInventory" data-role="button" data-theme="b" data-icon="arrow-r" data-transition="none" style="font-weight: normal !important; text-shadow: none;">New Inventory</a>
 				
-					<a href="#restock" data-role="button" data-theme="b" data-icon="arrow-r" data-transition="slide" style="font-weight: normal !important; text-shadow: none;">Manage Inventory</a>
+					<a href="#restock" data-role="button" data-theme="b" data-icon="arrow-r" data-transition="none" style="font-weight: normal !important; text-shadow: none;">Manage Inventory</a>
 					
 					
 					<div class="panl">
@@ -898,10 +903,10 @@
 					
 					</div>
 					
-					<a href="#stockLevels" data-role="button" data-theme="b" data-icon="arrow-r" data-transition="slide" style="font-weight: normal !important; text-shadow: none;">View Stock Levels</a>
+					<a href="#stockLevels" data-role="button" data-theme="b" data-icon="arrow-r" data-transition="none" style="font-weight: normal !important; text-shadow: none;">View Stock Levels</a>
 					
 					<!--
-					<a href="#setPricing" data-role="button" data-theme="b" data-icon="arrow-r" data-transition="slide" style="font-weight: normal !important; text-shadow: none;">Set Pricing</a>
+					<a href="#setPricing" data-role="button" data-theme="b" data-icon="arrow-r" data-transition="none" style="font-weight: normal !important; text-shadow: none;">Set Pricing</a>
 					-->
 				
 		
@@ -1039,9 +1044,9 @@
 				<br>
 				
 				
-			 	<a href="#confirm-this-sale-popup" id="confirm-this-sale-popup-display-button" data-role="button" data-rel="popup" data-theme="b" data-icon="arrow-r" data-transition="slide" data-position-to="origin" style="font-weight: normal !important; text-shadow: none; background-color: green; border: none;">Check Out</a>
+			 	<a href="#confirm-this-sale-popup" id="confirm-this-sale-popup-display-button" data-role="button" data-rel="popup" data-theme="b" data-icon="arrow-r" data-transition="none" data-position-to="origin" style="font-weight: normal !important; text-shadow: none; background-color: green; border: none;">Check Out</a>
 			
-			 	<a href="#" id="cancel-order-button" data-role="button" data-theme="b" data-icon="arrow-r" data-transition="slide" style="background-color: red; border: red; font-weight: normal !important; text-shadow: none;">Cancel Order</a>
+			 	<a href="#" id="cancel-order-button" data-role="button" data-theme="b" data-icon="arrow-r" data-transition="none" style="background-color: red; border: red; font-weight: normal !important; text-shadow: none;">Cancel Order</a>
 				
 				
 			<div data-role="popup" id="confirm-this-sale-popup" data-overlay-theme="b" data-theme="a" data-dismissible="false" style="width: 100%;">
@@ -1196,7 +1201,7 @@
 			<br>
 			
 			
-			<a href="#dashboard" data-role="button" data-theme="b" data-icon="home" data-transition="slide" style="font-weight: normal !important; text-shadow: none; border: none;">Go To Dashboard</a>
+			<a href="#dashboard" data-role="button" data-theme="b" data-icon="home" data-transition="none" style="font-weight: normal !important; text-shadow: none; border: none;">Go To Dashboard</a>
 		
 		</div><!-- /content -->
 
@@ -1228,11 +1233,11 @@
 					</div>	
 			</div>
 			<br>
-			<a href="#newInventory" data-role="button" data-theme="b" data-icon="arrow-l" data-transition="slide" style="font-weight: normal !important; text-shadow: none; border: none;">Add Inventory</a>
+			<a href="#newInventory" data-role="button" data-theme="b" data-icon="arrow-l" data-transition="none" style="font-weight: normal !important; text-shadow: none; border: none;">Add Inventory</a>
 			
-			<a href="#sales" data-role="button" data-theme="b" data-icon="check" data-transition="slide" style="font-weight: normal !important; text-shadow: none; border: none;">New Sale</a>
+			<a href="#sales" data-role="button" data-theme="b" data-icon="check" data-transition="none" style="font-weight: normal !important; text-shadow: none; border: none;">New Sale</a>
 			
-			<a href="#dashboard" data-role="button" data-theme="b" data-icon="home" data-transition="slide" style="font-weight: normal !important; text-shadow: none; border: none;">Go To Dashboard</a>
+			<a href="#dashboard" data-role="button" data-theme="b" data-icon="home" data-transition="none" style="font-weight: normal !important; text-shadow: none; border: none;">Go To Dashboard</a>
 		
 		</div><!-- /content -->
 
@@ -1265,11 +1270,11 @@
 					</div>	
 			</div>
 			<br>
-			<a href="#newInventory" data-role="button" data-theme="b" data-icon="arrow-l" data-transition="slide" style="font-weight: normal !important; text-shadow: none; border: none;">Add Inventory</a>
+			<a href="#newInventory" data-role="button" data-theme="b" data-icon="arrow-l" data-transition="none" style="font-weight: normal !important; text-shadow: none; border: none;">Add Inventory</a>
 			
-			<a href="#sales" data-role="button" data-theme="b" data-icon="check" data-transition="slide" style="font-weight: normal !important; text-shadow: none; border: none;">New Sale</a>
+			<a href="#sales" data-role="button" data-theme="b" data-icon="check" data-transition="none" style="font-weight: normal !important; text-shadow: none; border: none;">New Sale</a>
 			
-			<a href="#dashboard" data-role="button" data-theme="b" data-icon="home" data-transition="slide" style="font-weight: normal !important; text-shadow: none; border: none;">Go To Dashboard</a>
+			<a href="#dashboard" data-role="button" data-theme="b" data-icon="home" data-transition="none" style="font-weight: normal !important; text-shadow: none; border: none;">Go To Dashboard</a>
 		
 		</div><!-- /content -->
 
@@ -1498,7 +1503,7 @@
 			
 	</div>
 		<div data-role="header" data-theme="b">
-				<a href="#menupanel-7" data-ajax="false" rel="external" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext" data-transition="slide">Menu</a>
+				<a href="#menupanel-7" data-ajax="false" rel="external" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext" data-transition="none">Menu</a>
 				<h1>Settings</h1>
 		</div><!-- /header -->
 		
@@ -1512,9 +1517,9 @@
 							<input type="text" name="name" id="name-field" placeholder="Your Full Name" required data-validate="text" data-error-title="Invalid Name" data-error-msg="Provide a valid name" />
 							<input type="email" name="email" id="email-field" placeholder="Your Email Address" required data-validate="email" data-error-title="Invalid Email" data-error-msg="Provide a valid email" />
 							
-							<input type="hidden" name="cemail" id="cemail-field" placeholder="Confirm Email" data-validate="text"  />
-							
 							<input type="hidden" name="password" id="password-field" placeholder="Password" data-validate="text" />
+							
+							<input type="hidden" name="cpassword" id="cpassword-field" placeholder="Confirm Password" data-validate="text" />
 							
 							<input type="number" name="low_stock_level" id="low_stock_level-field" placeholder="Low Stock level threshold" data-validate="number" step="1" min="10" max="1000" />
 							
