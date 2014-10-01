@@ -326,7 +326,7 @@
 			<div style="background-color: #43a2c4 !important; border-radius: 5px; ">
 					<div style="padding: 0.5em 1em 0em 1em;">
 					
-						<input type="button" value="SCAN" id="button-scan" />
+						
 						
 						<form id="inventory-form" name="inventory" method="post" action="">
 						<input type="hidden" name="key" id="key-field" value="" />
@@ -366,7 +366,14 @@
 						</select>
 						<p style="border-bottom: 1px dotted #ccc;"></p>
 						
-						<input type="text" name="item_barcode" id="item_barcode-field" placeholder="Scan Barcode" required data-validate="text" data-error-title="Invalid Barcode" data-error-msg="Please provide a valid barcode" />
+						<div class="ui-grid-a">
+							<div class="ui-block-a" style="width: 50%; padding-right: 3px;">
+								<input type="text" name="item_barcode" id="item_barcode-field" placeholder="Scan Barcode" required data-validate="text" data-error-title="Invalid Barcode" data-error-msg="Please provide a valid barcode" />
+							</div>
+							<div class="ui-block-b" style="width: 50%; padding-left: 3px;">
+								<input type="button" value="SCAN" id="button-scan" />
+							</div>
+						</div>
 						
 						<input type="text" name="item_desc" id="item_desc-field" placeholder="Item Description" required data-validate="text" data-error-title="Invalid Item Description" data-error-msg="Please provide a valid item description" />
 						

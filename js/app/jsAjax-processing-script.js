@@ -1077,10 +1077,15 @@ $( document ).on( "pagecreate", "#newInventory", function() {
 	.on('click', function(){
 		cordova.plugins.barcodeScanner.scan(
 		  function (result) {
-			  alert("We got a barcode\n" +
+			 $('form#inventory-form')
+			.find( 'input#item_barcode-field' )
+			.val( result.text );
+			
+			 alert("We got a barcode\n" +
 					"Result: " + result.text + "\n" +
-					"Format: " + result.format + "\n" +
-					"Cancelled: " + result.cancelled);
+					"Format: " + result.format + "\n" );
+					
+			
 		  }, 
 		  function (error) {
 			  alert("Scanning failed: " + error);
