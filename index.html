@@ -18,6 +18,7 @@
 	<script src="js/app/jsAjax-processing-script.js"></script>
 	<!-- ./commit -->
 	
+	<script type="text/javascript" src="cordova.js"></script>
 	<link rel="stylesheet" href="css/jquery.mobile-1.4.4.css"/>
 	
 </head>
@@ -65,7 +66,7 @@
 	</div><!-- /header -->
 
 	<div role="main" class="ui-content" style="background-color: #f1f1f1;">
-		<input type="button" value="SCAN" id="button-scan" />
+		
 		<div class="panl">
 			<h3>Total inventory value</h3>
 		
@@ -146,27 +147,23 @@
 							<input type="password" name="password" id="password-field" placeholder="Password" required data-validate="password" data-error-title="Invalid Password" data-error-msg="Passwords must be at least 6 characters" />
 							
 							<input type="password" name="cpassword" id="cpassword-field" placeholder="Confirm Password" required data-validate="confirm-password" data-error-title="Non-matching Password" data-error-msg="Passwords must match" />
+								
+							<div class="ui-grid-a">
+								<div class="ui-block-a" style="width: 20%; height: 2em;">
+
+									<input type="checkbox" name="checkbox-1a" id="checkbox-1a" checked="" style="height: 2em;">
+								</div>
+								<div class="ui-block-b" style="width: 80%; font-size: 0.7em; padding-top: 0.4em;">
+									I agree to the <a href="policy.pdf">terms and privacy policies</a>
+								</div>
+							</div>
 							
-							<input type="submit" value="Sign Up" />
+							<br>
+						<p style="border-bottom: 8px solid #4fc1e9"></p>
+							<input type="submit" value="Sign Up" data-theme="b" />
 						</form>
 						
 						<br>
-						<div class="ui-grid-a">
-							<div class="ui-block-a" style="width: 20%; height: 2em;">
-
-								<input type="checkbox" name="checkbox-1a" id="checkbox-1a" checked="" style="height: 2em;">
-							</div>
-							<div class="ui-block-b" style="width: 80%; font-size: 0.7em; padding-top: 0.4em;">
-								I agree to the <a href="policy.pdf">terms and privacy policies</a>
-							</div>
-						</div>
-						
-						<br>
-					<p style="border-bottom: 8px solid #4fc1e9"></p>
-				
-					<a href="#login" data-role="button" data-theme="b"  data-transition="none" style="font-weight: normal !important; text-shadow: none;">SIGN UP</a>
-					<br>
-					<br>
 					<br>
 					<br>
 	</div><!-- /content -->
@@ -328,6 +325,8 @@
 		<div data-role="content" style="background: #f1f1f1; ">
 			<div style="background-color: #43a2c4 !important; border-radius: 5px; ">
 					<div style="padding: 0.5em 1em 0em 1em;">
+					
+						<input type="button" value="SCAN" id="button-scan" />
 						
 						<form id="inventory-form" name="inventory" method="post" action="">
 						<input type="hidden" name="key" id="key-field" value="" />

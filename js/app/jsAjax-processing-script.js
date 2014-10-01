@@ -539,20 +539,6 @@ $( document ).on( "pagecreate", "#dashboard", function() {
 			//registered
 			$('.app-user-name').text( 'Welcome ' + userInfo.name + '!' );
 			
-			$('#button-scan')
-			.on('click', function(){
-				cordova.plugins.barcodeScanner.scan(
-				  function (result) {
-					  alert("We got a barcode\n" +
-							"Result: " + result.text + "\n" +
-							"Format: " + result.format + "\n" +
-							"Cancelled: " + result.cancelled);
-				  }, 
-				  function (error) {
-					  alert("Scanning failed: " + error);
-				  }
-			   );
-			});
 		}else{
 			//signup
 			$.mobile.navigate( "#signup", { transition : "none" });
@@ -1086,6 +1072,21 @@ function get_last_supply_activity_html( stock ){
 };
 
 $( document ).on( "pagecreate", "#newInventory", function() {
+	
+	$('#button-scan')
+	.on('click', function(){
+		cordova.plugins.barcodeScanner.scan(
+		  function (result) {
+			  alert("We got a barcode\n" +
+					"Result: " + result.text + "\n" +
+					"Format: " + result.format + "\n" +
+					"Cancelled: " + result.cancelled);
+		  }, 
+		  function (error) {
+			  alert("Scanning failed: " + error);
+		  }
+	   );
+	});
 	
 	if( customUUID ){
 		
