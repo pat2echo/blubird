@@ -9,7 +9,7 @@
 	<script src="js/highcharts.js"></script>
 	<script src="js/funnel.js"></script>
 	
-	<!-- App 2nd Commit -->
+	<!-- App 2nd Commit / demo data -->
 	<!--version 1.0.1-->
 	<script src="js/app/amplify.min.js"></script>
 	<script src="js/app/md5.js"></script>
@@ -97,31 +97,14 @@
 	</div><!-- /content -->
 
 	<div id="footer" data-role="footer"  data-theme="b" data-position="fixed">
-		<div class="ui-grid-c">
-			
-			<div class="ui-block-a">
-				
-					<a href="#inventory" data-role="button" data-theme="b" data-icon="grid" data-iconpos="top" data-transition="none" class="btn1">Inventory</a>
-				
-			</div>
-			<div class="ui-block-b">
-				
-					<a href="#sales" data-role="button" data-theme="b" data-icon="star" data-iconpos="top" data-transition="none" class="btn1">Sales</a>
-
-			</div>
-			<div class="ui-block-c">
-				
-					<a href="#records" data-role="button" data-theme="b" data-icon="edit" data-iconpos="top" data-transition="none" class="btn1">Records</a>
-					
-			</div>
-			<div class="ui-block-d">
-				
-					<a href="#supplier" data-role="button" data-transition="none" data-theme="b" data-icon="info" data-iconpos="top" class="btn2">Suppliers</a>
-					
-			</div>
-			
-		</div><!-- /grid-c -->
-	
+		<div data-role="navbar" data-grid="c" class="footer-nav-bar">
+			<ul>
+				<li><a href="#inventory"  data-icon="grid" data-iconpos="top" data-transition="none" class=" ui-btn-active">Inventory</a></li>
+				<li><a href="#sales"  data-icon="star" data-iconpos="top" data-transition="none" class="">Sales</a></li>
+				<li><a href="#records"  data-icon="edit" data-iconpos="top" data-transition="none" class="">Records</a></li>
+				<li><a href="#supplier"  data-icon="info" data-iconpos="top" data-transition="none" class="">Suppliers</a></li>
+			</ul>
+		</div><!-- /navbar -->
 		
 	</div><!-- /footer -->
 		
@@ -186,9 +169,6 @@
 						<input type="text" name="textinput-fc" id="textinput-fc" placeholder="Email Address" value="">
 						<input type="text" name="textinput-fc" id="textinput-fc" placeholder="Password" value="">
 					
-				
-				
-				
 					<div class="ui-grid-a">
 						<div class="ui-block-a">
 								<a href="#dashboard" data-role="button" data-theme="b" data-transition="none" style="font-weight: normal !important; text-shadow: none;">LOGIN</a>
@@ -682,7 +662,20 @@
 				
 			</div>
 		
-		</div>
+		
+	<div id="footer-1" data-role="footer"  data-theme="b" data-position="fixed">
+		<div data-role="navbar" data-grid="c" class="footer-nav-bar">
+			<ul>
+				<li><a href="#inventory"  data-icon="grid" data-iconpos="top" data-transition="none" class=" ui-btn-active">Inventory</a></li>
+				<li><a href="#sales"  data-icon="star" data-iconpos="top" data-transition="none" class="">Sales</a></li>
+				<li><a href="#records"  data-icon="edit" data-iconpos="top" data-transition="none" class="">Records</a></li>
+				<li><a href="#supplier"  data-icon="info" data-iconpos="top" data-transition="none" class="">Suppliers</a></li>
+			</ul>
+		</div><!-- /navbar -->
+		
+	</div><!-- /footer -->
+		
+</div>
 
 <div data-role="page" id="restock">
 		
@@ -881,13 +874,17 @@
 	</div><!-- /content -->
 
 	
-		<div data-role="footer"  data-theme="b" >
-			&nbsp
-			<br>
-			&nbsp
-			<br>
-			
-		</div><!-- /footer -->
+	<div id="footer-2" data-role="footer"  data-theme="b" data-position="fixed">
+		<div data-role="navbar" data-grid="c" class="footer-nav-bar">
+			<ul>
+				<li><a href="#inventory"  data-icon="grid" data-iconpos="top" data-transition="none" class=" ui-btn-active">Inventory</a></li>
+				<li><a href="#sales"  data-icon="star" data-iconpos="top" data-transition="none" class="">Sales</a></li>
+				<li><a href="#records"  data-icon="edit" data-iconpos="top" data-transition="none" class="">Records</a></li>
+				<li><a href="#supplier"  data-icon="info" data-iconpos="top" data-transition="none" class="">Suppliers</a></li>
+			</ul>
+		</div><!-- /navbar -->
+		
+	</div><!-- /footer -->
 		
 </div><!-- /page -->
 
@@ -1137,7 +1134,17 @@
 		
 	</div><!-- /page -->
 
-	
+		<div id="footer-3" data-role="footer"  data-theme="b" data-position="fixed">
+		<div data-role="navbar" data-grid="c" class="footer-nav-bar">
+			<ul>
+				<li><a href="#inventory"  data-icon="grid" data-iconpos="top" data-transition="none" class=" ui-btn-active">Inventory</a></li>
+				<li><a href="#sales"  data-icon="star" data-iconpos="top" data-transition="none" class="">Sales</a></li>
+				<li><a href="#records"  data-icon="edit" data-iconpos="top" data-transition="none" class="">Records</a></li>
+				<li><a href="#supplier"  data-icon="info" data-iconpos="top" data-transition="none" class="">Suppliers</a></li>
+			</ul>
+		</div><!-- /navbar -->
+		
+	</div><!-- /footer -->
 </div>	
 
 </div>
@@ -1300,20 +1307,7 @@
 				  <!--<li><a href="#two" data-ajax="false">Inventory</a></li>-->
 				
 			  </div>
-			  <div id="one" class="ui-body-d ui-content">
-				<div style="  border-radius: 8px; ">
-			
-			<div data-role="popup" id="popupRecords" class="ui-content" style="max-width:280px">
-				<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
-				<br>
-				<table data-role="table" id="table-column-toggle" data-mode="" class="ui-responsive table-stroke">
-				<thead>
-					<tr style=" font-size: 0.8em; font-weight: bold; color: #fff; background-color: #333; line-height: 1.4em; text-shadow: none">
-						<td style="width: 60%;">Item</td>
-						<td style="width: 35%; text-align: center;">Value (&#8358;)</td>
-					</tr>
-				</thead>
-				<style type="text/css">	
+			  <style type="text/css">	
 					#sales-record-pop-container td:nth-child(1),
 					#sales-record-pop-container td:nth-child(2){
 						padding-top: 1em; font-size: 1em; color: #333;
@@ -1336,6 +1330,20 @@
 						display:none !important;
 					}
 				</style>
+				
+			  <div id="one" class="ui-body-d ui-content">
+				<div style="  border-radius: 8px; ">
+			
+			<div data-role="popup" id="popupRecords" class="ui-content" style="max-width:280px">
+				<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+				<br>
+				<table data-role="table" id="table-column-toggle" data-mode="" class="ui-responsive table-stroke">
+				<thead>
+					<tr style=" font-size: 0.8em; font-weight: bold; color: #fff; background-color: #333; line-height: 1.4em; text-shadow: none">
+						<td style="width: 60%;">Item</td>
+						<td style="width: 35%; text-align: center;">Value (&#8358;)</td>
+					</tr>
+				</thead>
 				<tbody style="font-family: Arial; color: #333;" id="sales-record-pop-container">
 					
 				</tbody>	
@@ -1443,6 +1451,17 @@
 	
 	</div>
 	
+	<div id="footer-4" data-role="footer"  data-theme="b" data-position="fixed">
+		<div data-role="navbar" data-grid="c" class="footer-nav-bar">
+			<ul>
+				<li><a href="#inventory"  data-icon="grid" data-iconpos="top" data-transition="none" class=" ui-btn-active">Inventory</a></li>
+				<li><a href="#sales"  data-icon="star" data-iconpos="top" data-transition="none" class="">Sales</a></li>
+				<li><a href="#records"  data-icon="edit" data-iconpos="top" data-transition="none" class="">Records</a></li>
+				<li><a href="#supplier"  data-icon="info" data-iconpos="top" data-transition="none" class="">Suppliers</a></li>
+			</ul>
+		</div><!-- /navbar -->
+		
+	</div><!-- /footer -->
 </div>
 
 </body>
@@ -1499,7 +1518,6 @@
 							<input type="submit" value="Update" />
 							<br />
 						</form>
-						
 						
 					</div>
 					

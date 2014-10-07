@@ -4932,4 +4932,6 @@ width: 80% !important;
 .btn2{
 width: 78% !important;
 }
-	
+.footer-nav-bar li{
+	border-right:1px solid #B0D8E6;
+}
