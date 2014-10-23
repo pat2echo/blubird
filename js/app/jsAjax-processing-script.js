@@ -1835,7 +1835,7 @@ $( document ).on( "pagecreate", "#settings", function() {
 $( document ).on( "pageshow", "#settings", function() {
 	//check for registered user details
 	//var userInfo = get_user_info();
-	window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
+	
 	window.requestFileSystem( window.TEMPORARY , 1024 /*5MB*/, onInitFs, errorHandler);
 	
 	alert( 'ext'+cordova.file.externalRootDirectory );
@@ -1854,34 +1854,20 @@ $( document ).on( "pageshow", "#settings", function() {
 	} );
 	*/
 });
+	window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
+	var ffs = null;
 	
 	function onInitFs(fs) {
-	  alert(15);
+	  ffs = fs;
 	  alert('Opened file system: ' + fs.name);
 	  alert('root: ' + fs.root);
-	  fs.root.getDirectory('databank', {create: true}, function(dirEntry) {
-		alert('dir'+ dirEntry);
-		
+	  fs.root.getDirectory('databank/', {create: true}, function(dirEntry) {
+		$.each(dirEntry, function(k,v){
+			alert( k + ' = '+ v );
+		});
 	  }, errorHandler);
 	 
-	 var dirNameD = '';
-	 var dirName = 'databank/';
-	  var src = $('#newInventory').find('#myImage').attr('src');
-	  
-	  fs.root.getFile(src, {}, function(fileEntry) {
-
-		fs.root.getDirectory(dirName, {}, function(dirEntry) {
-			alert('dir'+dirEntry);
-		  fileEntry.moveTo( fs.root, dirEntry+'thesavedfile.jpg' );
-		  dirNameD = dirEntry;
-		}, errorHandler);
-
-	  }, errorHandler);
-	
-		$('#newInventory')
-		.find('#myImage-1')
-		.attr('src',dirNameD );
-		
+	 	
 		var dirReader = fs.root.createReader();
 		var filelist = '';
 		dirReader.readEntries(function(entries) {
@@ -3754,8 +3740,27 @@ function gotPicture( imageURI ) {
 	
 	alert('file loc '+imageURI);
 	
-	window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
-	window.requestFileSystem( window.TEMPORARY , 1024 /*5MB*/, onInitFs, errorHandler);
+	var image1 = document.getElementById('myImage-1');
+	image1.src = imageURI;
+	if( ffs ){
+		
+	 var dirName = 'databank/';
+	  var src = imageURI;
+	  ffs.root.getFile(src, {}, function(fileEntry) {
+		$.each(fileEntry, function(k,v){
+			alert( k + ' =file= '+ v );
+		});
+		ffs.root.getDirectory(dirName, {}, function(dirEntry) {
+			$.each(dirEntry, function(k,v){
+				alert( k + ' =dir= '+ v );
+			});
+		  fileEntry.moveTo( dirEntry );
+		}, errorHandler);
+
+	  }, errorHandler);
+	}else{
+		alert(90);
+	}
 	
 	//get file
 	//fileSystem.getDirectory("blubird", {create: true, exclusive: false}, gotDirectory , onFail );
