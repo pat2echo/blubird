@@ -1835,12 +1835,12 @@ $( document ).on( "pagecreate", "#settings", function() {
 $( document ).on( "pageshow", "#settings", function() {
 	//check for registered user details
 	//var userInfo = get_user_info();
-	
-    window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
+	window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
 	window.requestFileSystem( window.TEMPORARY , 1024 /*5MB*/, onInitFs, errorHandler);
 	
 	alert( 'ext'+cordova.file.externalRootDirectory );
 	alert( 'ext'+cordova.file.applicationStorageDirectory );
+	
 	alert( 'ext'+cordova.file.externalApplicationStorageDirectory );
 	/*
 	$.each( userInfo , function( k , v ){
@@ -1854,12 +1854,51 @@ $( document ).on( "pageshow", "#settings", function() {
 	} );
 	*/
 });
-
+	
 	function onInitFs(fs) {
+	  
 	  alert('Opened file system: ' + fs.name);
+	  alert('root: ' + fs.root);
 	  fs.root.getDirectory('databank', {create: true}, function(dirEntry) {
-		console.log('dir', dirEntry);
+		alert('dir'+ dirEntry);
+		
 	  }, errorHandler);
+	 
+	 var dirNameD = '';
+	 var dirName = 'databank/';
+	  var src = $('#newInventory').find('#myImage').attr('src');
+	  
+	  fs.root.getFile(src, {}, function(fileEntry) {
+
+		fs.root.getDirectory(dirName, {}, function(dirEntry) {
+			alert('dir'+dirEntry);
+		  fileEntry.moveTo( fs.root, dirEntry+'thesavedfile.jpg' );
+		  dirNameD = dirEntry;
+		}, errorHandler);
+
+	  }, errorHandler);
+	
+		$('#newInventory')
+		.find('#myImage-1')
+		.attr('src',dirNameD );
+		
+		var dirReader = fs.root.createReader();
+		var filelist = '';
+		dirReader.readEntries(function(entries) {
+		  if (!entries.length) {
+			filelist = 'Filesystem is empty.';
+		  } else {
+			filelist = '';
+		  }
+
+		  var li = '';
+		  for (var i = 0, entry; entry = entries[i]; ++i) {
+			li += '<span>'+ entry.name+ '</span>';
+		  }
+		  filelist = li;
+		  
+		  alert(filelist);
+		}, errorHandler);
 	};
 
 	function errorHandler(e) {
@@ -3708,43 +3747,16 @@ function piechart( data ){
 function gotPicture( imageURI ) {
     var image = document.getElementById('myImage');
     image.src = imageURI;
-	alert('file loc '+imageURI);
-	
+		
 	$('#newInventory')
 	.find('input[name="item_image"]')
 	.val( imageURI );
+	
+	alert('file loc '+imageURI);
+	
+	window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
+	window.requestFileSystem( window.TEMPORARY , 1024 /*5MB*/, onInitFs, errorHandler);
+	
 	//get file
 	//fileSystem.getDirectory("blubird", {create: true, exclusive: false}, gotDirectory , onFail );
 };
-function readEntries(entries){
-	for(var i=0,len=entries.length; i<len; i++)
-	{
-	//Name of the picture within "DCIM/Camera"
-	alert(entries[i].name);
-	}
-};
-function onFail(message) {
-    alert('Failed because: ' + message);
-};
-
-function onSuccess(fileSystem) {
-    gfileSystem = fileSystem;
-	alert('fils sys name '+fileSystem.name);
-    alert('root '+fileSystem.root.name);
-    alert('root fullpath '+fileSystem.root.fullpath);
-	
-	fileSystem.getDirectory("blubird/", {create: true, exclusive: false}, gotDirectory , onFail );
-};
-
-function gotDirectory( dirEntry ){
-	// Get a directory reader
-	var directoryReader = dirEntry.createReader();
-	//console.log('dir', directoryReader );
-	// Get a list of all the entries in the directory
-	directoryReader.readEntries( readEntries , onFail );
-};
-//read file system
-function onDeviceReady(){
-	window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onSuccess, null);
-};
-//document.addEventListener("deviceready", onDeviceReady, false );
