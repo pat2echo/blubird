@@ -1971,6 +1971,8 @@ $( document ).on( "pagecreate", "#newInventory", function() {
 	.on('click', function(e){
 		e.preventDefault();
 		
+		alert( 'App Dir: '+ cordova.file.applicationDirectory );
+		
 		navigator.camera.getPicture(gotPicture, onFail,  { quality : 50, 
 		  destinationType : Camera.DestinationType.FILE_URI, 
 		  sourceType : Camera.PictureSourceType.CAMERA, 
