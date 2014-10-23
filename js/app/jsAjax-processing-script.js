@@ -1840,7 +1840,7 @@ $( document ).on( "pageshow", "#settings", function() {
 	window.requestFileSystem( window.TEMPORARY , 1024 /*5MB*/, onInitFs, errorHandler);
 	
 	alert( 'ext'+cordova.file.externalRootDirectory );
-	alert( 'ext'+cordova.file.externalDataDirectory );
+	alert( 'ext'+cordova.file.applicationStorageDirectory );
 	alert( 'ext'+cordova.file.externalApplicationStorageDirectory );
 	/*
 	$.each( userInfo , function( k , v ){
