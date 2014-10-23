@@ -1834,39 +1834,15 @@ $( document ).on( "pagecreate", "#settings", function() {
 
 $( document ).on( "pageshow", "#settings", function() {
 	//check for registered user details
-	var userInfo = get_user_info();
+	//var userInfo = get_user_info();
 	
-	document.addEventListener("deviceready", onDeviceReady, false );
-	function onDeviceReady(){
-		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onSuccess, null);
-	};
-	function readEntries(entries){
-	for(var i=0,len=entries.length; i<len; i++)
-	{
-	//Name of the picture within "DCIM/Camera"
-	alert(entries[i].name);
-	}
-};
-function onFail(message) {
-    alert('Failed because: ' + message);
-};
-
-function onSuccess(fileSystem) {
-    gfileSystem = fileSystem;
-	alert('fils sys name '+fileSystem.name);
-    alert('root '+fileSystem.root.name);
-    alert('root fullpath '+fileSystem.root.fullpath);
+    window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
+	window.requestFileSystem( window.TEMPORARY , 1024 /*5MB*/, onInitFs, errorHandler);
 	
-	fileSystem.getDirectory("blubird/", {create: true, exclusive: false}, gotDirectory , onFail );
-};
-
-function gotDirectory( dirEntry ){
-	// Get a directory reader
-	var directoryReader = dirEntry.createReader();
-	//console.log('dir', directoryReader );
-	// Get a list of all the entries in the directory
-	directoryReader.readEntries( readEntries , onFail );
-};
+	alert( 'ext'+cordova.file.externalRootDirectory );
+	alert( 'ext'+cordova.file.externalDataDirectory );
+	alert( 'ext'+cordova.file.externalApplicationStorageDirectory );
+	/*
 	$.each( userInfo , function( k , v ){
 		switch( k ){
 		default:
@@ -1876,8 +1852,19 @@ function gotDirectory( dirEntry ){
 		break;
 		}
 	} );
-	
+	*/
 });
+
+	function onInitFs(fs) {
+	  alert('Opened file system: ' + fs.name);
+	  fs.root.getDirectory('databank', {create: true}, function(dirEntry) {
+		console.log('dir', dirEntry);
+	  }, errorHandler);
+	};
+
+	function errorHandler(e) {
+		console.log('err',e);
+  };
 
 function get_last_supply_activity_html( stock ){
 	var date = new Date(stock.creationtimestamp);
@@ -3729,4 +3716,35 @@ function gotPicture( imageURI ) {
 	//get file
 	//fileSystem.getDirectory("blubird", {create: true, exclusive: false}, gotDirectory , onFail );
 };
+function readEntries(entries){
+	for(var i=0,len=entries.length; i<len; i++)
+	{
+	//Name of the picture within "DCIM/Camera"
+	alert(entries[i].name);
+	}
+};
+function onFail(message) {
+    alert('Failed because: ' + message);
+};
+
+function onSuccess(fileSystem) {
+    gfileSystem = fileSystem;
+	alert('fils sys name '+fileSystem.name);
+    alert('root '+fileSystem.root.name);
+    alert('root fullpath '+fileSystem.root.fullpath);
+	
+	fileSystem.getDirectory("blubird/", {create: true, exclusive: false}, gotDirectory , onFail );
+};
+
+function gotDirectory( dirEntry ){
+	// Get a directory reader
+	var directoryReader = dirEntry.createReader();
+	//console.log('dir', directoryReader );
+	// Get a list of all the entries in the directory
+	directoryReader.readEntries( readEntries , onFail );
+};
 //read file system
+function onDeviceReady(){
+	window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onSuccess, null);
+};
+//document.addEventListener("deviceready", onDeviceReady, false );
