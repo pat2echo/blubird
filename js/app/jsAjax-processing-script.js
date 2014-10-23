@@ -1971,13 +1971,13 @@ $( document ).on( "pagecreate", "#newInventory", function() {
 	.on('click', function(e){
 		e.preventDefault();
 		
-		navigator.camera.getPicture(gotPicture, onFail,  { quality : 40, 
+		navigator.camera.getPicture(gotPicture, onFail,  { quality : 50, 
 		  destinationType : Camera.DestinationType.FILE_URI, 
 		  sourceType : Camera.PictureSourceType.CAMERA, 
 		  allowEdit : true,
 		  encodingType: Camera.EncodingType.JPEG,
-		  targetWidth: 120,
-		  targetHeight: 120 } );
+		  targetWidth: 200,
+		  targetHeight: 200 } );
 	 });
   
 });
@@ -3691,6 +3691,10 @@ function gotPicture( imageURI ) {
     var image = document.getElementById('myImage');
     image.src = imageURI;
 	alert('file loc '+imageURI);
+	
+	$('#newInventory')
+	.find('input[name="item_image"]')
+	.val( imageURI );
 	//get file
 	//fileSystem.getDirectory("blubird", {create: true, exclusive: false}, gotDirectory , onFail );
 };
