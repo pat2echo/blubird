@@ -1971,13 +1971,13 @@ $( document ).on( "pagecreate", "#newInventory", function() {
 	.on('click', function(e){
 		e.preventDefault();
 		
-		navigator.camera.getPicture(onSuccess, onFail,  { quality : 25, 
+		navigator.camera.getPicture(gotPicture, onFail,  { quality : 40, 
 		  destinationType : Camera.DestinationType.FILE_URI, 
 		  sourceType : Camera.PictureSourceType.CAMERA, 
 		  allowEdit : true,
 		  encodingType: Camera.EncodingType.JPEG,
-		  targetWidth: 90,
-		  targetHeight: 90 } );
+		  targetWidth: 120,
+		  targetHeight: 120 } );
 	 });
   
 });
