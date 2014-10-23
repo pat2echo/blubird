@@ -3,11 +3,14 @@
 <head>
 	<title>Blubird</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	
+	<meta name="mobile-web-app-capable" content="yes">
 	<script src="js/jquery.js"></script>
 	<script src="js/jquery.mobile-1.4.4.min.js"></script>
 	<script src="js/highcharts.js"></script>
 	<script src="js/funnel.js"></script>
+	<script src="js/iscroll.js" ></script>
+	<script src="js/jquery.mobile.iscrollview.js" ></script>
+	
 	
 	<!-- App 2nd Commit / demo data -->
 	<!--version 1.0.1-->
@@ -19,1140 +22,539 @@
 	<!-- ./commit -->
 	
 	<script type="text/javascript" src="cordova.js"></script>
-	<link rel="stylesheet" href="css/jquery.mobile-1.4.4.css"/>
 	
+	<style type="text/css">
+		/*Virtual Progress Bar*/
+		#progress-bar-container,
+		.progress-bar-container-complete,
+		.progress-bar-container{
+			height:3.5px;
+			margin-bottom:-1px;
+		}
+		.progress-bar-container-complete,
+		.virtual-progress-bar{
+			height:3.5px;
+			width:100%;
+			position:relative;
+		}
+		.progress-bar-container-complete,
+		.virtual-progress-bar .progress-bar{
+			height:100%;
+			/*background:#f6e492;*/
+			background:#1109F3;
+			/*
+			border-top:2px solid #f6e492;
+			border-bottom:1px solid #978634;*/
+			/*background:linear-gradient(to bottom, #978634, #6d5c0a);*/
+		}
+	</style>
+	
+	 <script>
+    (function (window, $) {
+  
+  $(function() {
+    
+    
+    $('.ripple').on('click', function (event) {
+	event.preventDefault();
+  
+      var $div = $('<div/>'),
+          btnOffset = $(this).offset(),
+      		xPos = event.pageX - btnOffset.left,
+      		yPos = event.pageY - btnOffset.top;
+      
+
+      
+      $div.addClass('ripple-effect');
+      var $ripple = $(".ripple-effect");
+      
+      $ripple.css("height", $(this).height());
+      $ripple.css("width", $(this).height());
+      $div
+        .css({
+          top: yPos - ($ripple.height()/2),
+          left: xPos - ($ripple.width()/2),
+          background: $(this).data("ripple-color")
+        }) 
+        .appendTo($(this));
+
+      window.setTimeout(function(){
+        $div.remove();
+		
+      }, 2000);
+	  
+	  
+    });
+    
+  });
+  
+})(window, jQuery);
+  </script>
+	<script>
+	$(function () {
+    $('#chart3').highcharts({
+        title: {
+            text: ''
+        },
+		 tooltip: {
+            pointFormat: '{series.name}: N <b>{point.y}</b>'
+        },
+        xAxis: {
+            categories: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+        },
+        labels: {
+            items: [{
+                html: '',
+                style: {
+                    left: '28em',
+                    top: '0.5em',
+                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'black'
+                }
+            }]
+        },
+		
+        series: [{
+            type: 'column',
+            name: 'Total Sales',
+			color: 'rgb(124,181,236)',
+            data: [32560, 29450, 26100, 27830, 32400]
+        },{
+            type: 'column',
+            name: 'Gross Profit',
+			color: 'rgb(144,237,125)',
+            data: [9840, 5730, 5180, 7290, 9740]
+        }, ]
+    });
+});
+	</script>
+	
+	<script>
+		$(function () {
+
+    $('#chart2').highcharts({
+        chart: {
+            type: 'pyramid',
+            marginRight: 100
+        },
+        title: {
+            text: '',
+            x: -50
+        },
+        plotOptions: {
+            series: {
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b> ({point.y:,.0f})',
+                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
+                    softConnector: true
+                }
+            }
+        },
+        legend: {
+            enabled: false
+        },
+		
+        series: [{
+            name: 'Stock Level',
+            data: [
+                ['Coca Cola - 50cl', 10],
+                ['Ariel - 1kg', 7],
+                ['Kellogs - Frosties', 7],
+                ['Pepsi - 50cl', 6],
+                ['Kellogs - Cornflakes', 5]
+            ]
+        }]
+    });
+});
+
+	</script>
+	
+	<script>
+	$(function () {
+    $('#chart4').highcharts({
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: 0,
+            plotShadow: false
+        },
+        title: {
+            text: '',
+            align: 'center',
+            verticalAlign: 'middle',
+            y: -180
+        },
+		
+        subtitle: {
+            text: '',
+			y: 40
+        },
+        tooltip: {
+             pointFormat: '<b>{point.y}</b> items in stock'
+        },
+        plotOptions: {
+            pie: {
+                dataLabels: {
+                    enabled: true,
+                    distance: -50,
+                    style: {
+                        fontWeight: 'bold',
+                        color: 'white',
+                        textShadow: '0px 1px 2px black'
+                    }
+                },
+                startAngle: -110,
+                endAngle: 110,
+                center: ['50%', '75%']
+            }
+        },
+        series: [{
+            type: 'pie',
+            name: 'Top Selling Categories',
+            innerSize: '50%',
+            data: [
+                ['Coca Cola - 50cl',   10],
+                ['Coca Cola - 35cl',       9],
+                ['Kellogs Cereal - Cornflakes', 7],
+                ['Kellogs Cereal - Frosties',    4],
+                ['Ariel - 1kg',     2],
+                
+            ]
+        }]
+    });
+});
+	</script>
+	
+	<script>
+	$(function () {
+
+    $('#chart5').highcharts({
+        chart: {
+            type: 'pyramid',
+            marginRight: 100
+        },
+        title: {
+            text: '',
+           
+        },
+		subtitle: {
+            text: '',
+			
+        },
+		 tooltip: {
+             pointFormat: '<b>{point.y}</b> items in stock'
+        },
+        plotOptions: {
+            series: {
+                dataLabels: {
+                    enabled: true,
+                    
+                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
+                    softConnector: true
+                }
+            }
+        },
+        legend: {
+            enabled: false
+        },
+        series: [{
+            name: 'Stock Level',
+            data: [
+                ['Ariel - 1kg', 2],
+                ['Kellogs - Cornflakes',  4],
+                ['Evian water 50cl', 6],
+                ['Pepsi 50cl', 7],
+                ['Coca Cola 35cl', 8]
+            ]
+        }]
+    });
+});
+</script>
+	
+	<style>
+		.products .ui-listview li .ui-btn p {
+		color: #fff;
+	}
+		 .products .ui-listview li .ui-btn .ui-li-aside {
+		color: #eee;
+	}
+
+		
+		.products .ui-content {
+		overflow: scroll !important;
+			padding:0 0 0 2em; /* 9px */
+		}
+		.products .ui-listview li {
+			
+			position: relative;
+			display: inline-table;
+			float:left;
+			width: 8em !important; /* 33.3333% incl. 2 x 1.2% margin */
+			height: 11em; /* 232p */
+			margin: 0.5em;
+		}
+		.products .ui-listview li > .ui-btn {
+			-webkit-box-sizing: border-box; /* include padding and border in height so we can set it to 100% */
+			-moz-box-sizing: border-box;
+			-ms-box-sizing: border-box;
+			box-sizing: border-box;
+			height: 100%;
+		}
+		.products .ui-listview li.ui-li-has-thumb .ui-li-thumb {
+			
+			margin: 0.5em 0.5em !important;
+			height: auto; /* To keep aspect ratio. */
+			max-width: 100% !important; /* 33.3333% incl. 2 x 1.2% margin */
+			max-height: 100%; /* 232p */
+		}
+	   
+		.products .ui-listview li,
+		.products .ui-listview li .ui-btn,
+		.products .ui-listview .ui-li-thumb {
+			-webkit-border-radius: inherit;
+			border-radius: inherit;
+		}
+	   
+		.products .ui-listview .ui-btn-icon-right:after {
+			display: none;
+		}
+	   
+		.products .ui-listview h2,
+		.products .ui-listview p {
+			white-space: normal;
+			overflow: hidden;
+			position: absolute;
+			left: 0;
+			right: 0;
+		}
+	   
+		.products .ui-listview h2 {
+			font-size: 1.25em;
+			margin: 0;
+			padding: .125em 1em;
+			bottom: 50%;
+		}
+		.products .ui-listview p {
+			font-size: 1em;
+			font-weight: normal !important;
+			margin: 0;
+			padding: 0em 0.5em;
+			min-height: 50%;
+			bottom: 0;
+			border: 1px solid #43A2C4;
+		}
+	   
+		.ui-listview .ui-li-has-thumb h2,
+		.ui-listview .ui-li-has-thumb p {
+			
+		 
+		}
+		.ui-listview .ui-li-has-thumb h2 {
+			bottom: 35%;
+		}
+		.ui-listview .ui-li-has-thumb p {
+			min-height: 15%;
+		}
+		
+		.products .ui-listview .ui-li-aside {
+			padding: .125em .625em;
+			width: 2em !important;
+			min-height: 0;
+			top: 0;
+			left: auto;
+			bottom: auto;
+			/* Custom styling. */
+			background: #990099;
+			background: rgba(153,0,153,.85);
+			-webkit-border-top-right-radius: inherit;
+			border-top-right-radius: inherit;
+			-webkit-border-bottom-left-radius: inherit;
+			border-bottom-left-radius: inherit;
+			-webkit-border-bottom-right-radius: 0;
+			border-bottom-right-radius: 0;
+		}
+		
+		.products .ui-listview li {
+		  
+		}
+	  
+		.products .ui-listview li > .ui-btn:hover {
+		   
+		}
+	   
+		.products .ui-listview li,
+		.products .ui-listview .ui-btn {
+			-webkit-transition: all 500ms ease;
+			-moz-transition: all 500ms ease;
+			-o-transition: all 500ms ease;
+			-ms-transition: all 500ms ease;
+			transition: all 500ms ease;
+		}
+	
+	
+	.ripple{
+	  overflow:hidden;
+	}
+
+	.ripple-effect{
+	  position: absolute;
+	  border-radius: 50%;
+	  width: 45px;
+	  height:45px;
+	  background: #4bb2cf;
+
+	-webkit-animation: ripple-animation 2s;
+	-moz-animation: ripple-animation 2s;
+	-o-animation: ripple-animation 2s;
+	-ms-animation: ripple-animation 2s;
+	 animation: ripple-animation 2s;
+	 
+	}
+
+
+	@keyframes ripple-animation {
+		from {
+		  -webkit-transform: scale(1);
+		  -moz-transform: scale(1);
+	      -o-transform: scale(1);
+	      -ms-transform: scale(1);
+		  transform: scale(1);
+		  
+		   -webkit- opacity: 0.4;
+		  -moz- opacity: 0.4;
+	      -o- opacity: 0.4;
+	      -ms- opacity: 0.4;
+		  
+		  opacity: 0.4;
+		}
+		to {
+		   -webkit-transform: scale(100);
+		  -moz-transform: scale(100);
+	      -o-transform: scale(100);
+	      -ms-transform: scale(100);
+		  transform: scale(100);
+		 
+		    -webkit- opacity: 0;
+		  -moz- opacity: 0;
+	      -o- opacity: 0;
+	      -ms- opacity: 0;
+		  
+		  opacity: 0;
+		}
+	}
+	
+
+	</style>
+	
+	<link rel="stylesheet" href="css/jquery.mobile-1.4.4.css"/>
+	<link href="css/jquery.mobile.iscrollview.css" media="screen" rel="stylesheet" type="text/css" />
+	<link href="css/jquery.mobile.iscrollview-pull.css" media="screen" rel="stylesheet" type="text/css" />
 </head>
 <body>
 
-<div data-role="page" id="dashboard">
-	<div data-role="panel" id="menupanel-2" data-position="left" data-display="overlay" class="ui-panel ui-panel-position-left ui-panel-display-overlay ui-body-c ui-panel-animate ui-panel-closed" data-theme="b" style="background-color: #fff;  ">
+<div data-role="page" id="dashboard" >
+	<div data-role="panel" id="menupanel-1" data-position="left" data-display="overlay" class="ui-panel ui-panel-position-left ui-panel-display-overlay ui-body-c ui-panel-animate ui-panel-closed" data-theme="b" style="background-color: #fff;  ">
 
 			<div class="ui-panel-inner" >
 			
 				<ul data-role="listview" data-theme="b">
 				
-					<li  class="lidec"><a class="ui-btn ui-icon-check ui-btn-icon-left" href="#sales">Sales</a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-info ui-btn-icon-left" href="#inventory">Inventory</a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-gear ui-btn-icon-left" href="#records">Records</a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier">Supplier</a></li>
-					
-					<li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" href="#settings">Settings</a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-shop ui-btn-icon-left" href="#sales"><b>Sales</b></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-info ui-btn-icon-left" href="#inventory"><b>Inventory</b><span class="ui-li-count ui-btn-corner-all">164</span></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-calendar ui-btn-icon-left" href="#records"><b>Records</b></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all">6</span></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#ntfcns"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all">3</span></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-gear ui-btn-icon-left" href="#settings"><b>Settings</b></a></li>
 			
-				</ul>
-				
-		
+				</ul>	
 			
-				
 			</div>
 			<div>
 				<img style="margin: 3em 4em !important;" src="css/images/icon.png" />
 			</div>
 			
 	</div>
-	<div data-role="header" data-theme="b">
+	<div data-role="header" id="hd" data-position="fixed" data-tap-toggle="false" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  >
+		
+		<a href="#menupanel-1" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
+		<a href=""  class="ui-btn ui-shadow ui-corner-all ui-icon-recycle ui-btn-icon-notext">Refresh</a>
+		
+		<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Dashboard</h1>
 		
 		
-		<a href="#menupanel-2" data-ajax="false" rel="external" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
-		
-		<h1>Dashboard</h1>
-		<div data-role="navbar">
-			<ul>
-				<li>
-					<a class="notficns app-user-name" href="#" data-theme="a">
-					</a>
-				</li>
-			</ul>
-		</div>
 	</div><!-- /header -->
 
 	<div role="main" class="ui-content" style="background-color: #f1f1f1;">
-		
-		<div class="panl">
-			<h3>Total inventory value</h3>
-		
-			<h6 class="total-value-of-inventory">-</h6>
-		</div>
-		
-		<br>
-		
-		<div class="panl">
-			<div >
-				<h3>Today's total sales</h3>
-				<h2 class="today-total-sales-amount">0.00</h2>
-				
-				<h5>Today's top 5 selling products</h5>
-				<div id="chart1" style="width: 90%; height: 400px; font-weight: normal !important;"></div>
-			</div>	
-		</div>
-		
-		<br>
-		
-		
-		<div class="panl">
-			<h3>Today's gross earnings</h3>
-			<h6 class="today-gross-profit">0.00</h6>
-		</div>
-		
-		
-	</div><!-- /content -->
-
-	<div id="footer" data-role="footer"  data-theme="b" data-position="fixed">
-		<div data-role="navbar" data-grid="c" class="footer-nav-bar">
-			<ul>
-				<li><a href="#inventory"  data-icon="grid" data-iconpos="top" data-transition="none" class=" ui-btn-active">Inventory</a></li>
-				<li><a href="#sales"  data-icon="star" data-iconpos="top" data-transition="none" class="">Sales</a></li>
-				<li><a href="#records"  data-icon="edit" data-iconpos="top" data-transition="none" class="">Records</a></li>
-				<li><a href="#supplier"  data-icon="info" data-iconpos="top" data-transition="none" class="">Suppliers</a></li>
-			</ul>
-		</div><!-- /navbar -->
-		
-	</div><!-- /footer -->
-		
-</div><!-- /page -->
-
-<div data-role="page" id="signup">
-	
-	<div role="main" class="ui-content" style="background-color: #fff;">
-				
-					<img style="margin: 3em 6em !important;" src="css/images/icon2.png" />
-						
-					<p style="border-bottom: 8px solid #4fc1e9"></p>
-					
-					<h1 style="color: rgb(112,112,112); text-align: center; margin-top: 1em !important;">SIGN UP FOR BLUBIRD</h1>
-						
-						<form method="post" action="" name="sign-up" id="sign-up-form">
-							<input type="hidden" name="key" id="key-field" value="" />
-							
-							<input type="text" name="name" id="name-field" placeholder="Your Full Name" required data-validate="text" data-error-title="Invalid Name" data-error-msg="Provide a valid name" />
-							
-							<input type="email" name="email" id="email-field" placeholder="Your Email Address" required data-validate="email" data-error-title="Invalid Email" data-error-msg="Provide a valid email" />
-							
-							<input type="password" name="password" id="password-field" placeholder="Password" required data-validate="password" data-error-title="Invalid Password" data-error-msg="Passwords must be at least 6 characters" />
-							
-							<input type="password" name="cpassword" id="cpassword-field" placeholder="Confirm Password" required data-validate="confirm-password" data-error-title="Non-matching Password" data-error-msg="Passwords must match" />
-								
-							<div class="ui-grid-a">
-								<div class="ui-block-a" style="width: 20%; height: 2em;">
-
-									<input type="checkbox" name="checkbox-1a" id="checkbox-1a" checked="" style="height: 2em;">
-								</div>
-								<div class="ui-block-b" style="width: 80%; font-size: 0.7em; padding-top: 0.4em;">
-									I agree to the <a href="policy.pdf">terms and privacy policies</a>
-								</div>
-							</div>
-							
-							<br>
-						<p style="border-bottom: 8px solid #4fc1e9"></p>
-							<input type="submit" value="Sign Up" data-theme="b" />
-						</form>
-						
-						<br>
-					<br>
-					<br>
-					<br>
-					<br>
-					<br>
-					<br>
-	</div><!-- /content -->
-	
-</div><!-- /page -->
-
-<div data-role="page" id="login">
-	
-	
-	<div role="main" class="ui-content" style="background-color: #fff;">
-				
-					<img style="margin: 3em 6em !important;" src="css/images/icon2.png" />
-						
-					<p style="border-bottom: 8px solid #4fc1e9"></p>
-					
-					<h1 style="color: rgb(112,112,112); text-align: center; margin-top: 1em !important;">LOGIN TO YOUR ACCOUNT</h1>
-					
-					
-					
-						<input type="text" name="textinput-fc" id="textinput-fc" placeholder="Email Address" value="">
-						<input type="text" name="textinput-fc" id="textinput-fc" placeholder="Password" value="">
-					
-					<div class="ui-grid-a">
+					<div class="ui-grid-a" >
 						<div class="ui-block-a">
-								<a href="#dashboard" data-role="button" data-theme="b" data-transition="none" style="font-weight: normal !important; text-shadow: none;">LOGIN</a>
+							<div class="panl">
+								<h3>Todays total sales <span style="font-size:0.7em;" class="today-total-sales-units">(0)</span></h3>
+								<h6 style="color: #43a2c4;" class="today-total-sales-amount">0.00</h6>
+							</div>
 						</div>
+						
 						<div class="ui-block-b">
-								<a href="#signup" data-role="button" data-theme="b"  data-transition="none" style="font-weight: normal !important; text-shadow: none;">SIGN UP</a>
+							<div class="panl">
+								<h3>Todays gross earnings</h3>
+								<h6 style="color: #43a2c4;" class="today-gross-profit">0.00</h6>
+							</div>
 						</div>
+						
 					</div>
+				
+					<div class="ui-grid-a" >
+						
+						<div class="ui-block-a">
+							<div class="panl">
+								<h3>Total inventory value</h3>
+								<h6 class="total-value-of-inventory">0.00</h6>
+							</div>
+						</div>
+						
+						<div class="ui-block-b">
+							<div class="panl">
+								<h3>Total number of items <span style="font-size:0.7em;" class="total-unique-inventory-items">(0)</span></h3>
+								<h6 class="total-items-in-stock">0</h6>
+							</div>
+						</div>
+						
+					</div>
+				
 					
-					<p style="border-bottom: 8px solid #4fc1e9"></p>
+				
+				<div class="panl">
+					<div >
+						<h3>This week's daily sales</h3>
+						<br>
+						<br>
+						<div id="chart3" style="width: 90%; height: 400px; font-weight: normal !important;"></div>
+					</div>	
+				</div>	
+					
 					<br>
+				
+				<div class="panl">
+					<div >
+						<h3>Todays top 5 selling products </h3>
+						<br>
+						<br>
+						<div id="chart1" style="width: 90%; height: 400px; font-weight: normal !important;"></div>
+					</div>	
+				</div>	
+					
 					<br>
-					<br>
-					<br>
-					<br>
+							
+				
+			
+				
 	</div><!-- /content -->
 
 	
-		
-		
-</div><!-- /page -->
-
-<div data-role="page" id="setPricing" >
-		
-		<div data-role="header" data-theme="b">
-				<a href="#inventory" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
-				<h1>Set Pricing</h1>
-		</div><!-- /header -->
-		<div data-role="content" style="background-color: #c9c9c9 ">
-	
-				<div style="background-color: #43a2c4 !important; border-radius: 5px; ">
-					<div style="padding: 1em 1em 0em 1em;">
-					<select name="select-choice-a" id="select-choice-a" >
-							<option style="text-shadow: none !important;">Select Location</option>
-							
-							<option value="standard">Wuse 2</option>
-							<option value="rush">Maitama</option>
-							<option value="express">Gwarinpa</option>
-							<option value="overnight">Jabi</option>
-						</select>
-						
-						<select name="select-choice-a" id="select-choice-a" >
-							<option style="text-shadow: none !important;">Select Category</option>
-							<option value="standard">All</option>
-							<option value="rush">Beverages</option>
-							<option value="express">Detergents</option>
-							<option value="overnight">Personal Care</option>
-						</select>
-						<br>
-						<p style="border-bottom: 1px dotted #ccc;"></p>
-						<br>
-						<table data-role="table" id="table-column-toggle" data-mode="" class="ui-responsive table-stroke">
-						<thead>
-							<tr style="font-size:1em; font-weight: 100; background-color: #333; color: #fff; line-height: 1.4em; text-shadow: none;">
-								<td>Item</td>
-								<td style="text-align: center;">Selling Price(N)</td>
-                                
-								
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								
-								<td style="font-size: 0.8em; padding-top: 1.5em; color: white; text-shadow: none;">Coca Cola - 35cl</td>
-								<td style="font-size: 0.8em; font-weight: 100; text-align: center !important;">
-									<input type="text" name="text-basic" id="text-basic" value="100.00" >
-								</td>
-                                
-								
-							</tr>
-							<tr>
-								 
-								<td style="font-size: 0.8em; padding-top: 1.5em; color: white; text-shadow: none;">Pepsi - 50cl</td>
-								<td style="font-size: 0.8em; font-weight: 100; text-align: center; ">
-									<input type="text" name="text-basic" id="text-basic" value="120.00" >
-								</td>
-                               
-							</tr>
-							<tr>
-								 
-								<td style="font-size: 0.8em; padding-top: 1.5em; color: white; text-shadow: none;">Kellogs - Cornflakes</td>
-								<td style="font-size: 0.8em; font-weight: 100; text-align: center; ">
-									<input type="text" name="text-basic" id="text-basic" value="950.00" >
-								</td>
-                               
-								
-							</tr>
-							<tr>
-								 
-								<td style="font-size: 0.8em; padding-top: 1.5em; color: white; text-shadow: none;">Kellogs - Frosties</td>
-								<td style="font-size: 0.8em; font-weight: 100; text-align: center; ">
-									<input type="text" name="text-basic" id="text-basic" value="870.00" >
-								</td>
-                              
-								
-							</tr>
-							<tr>
-								 
-								<td style="font-size: 0.8em; padding-top: 1.5em; color: white; text-shadow: none;">Ariel - 1kg</td>
-								<td style="font-size: 0.8em; font-weight: 100; text-align: center; ">
-									<input type="text" name="text-basic" id="text-basic" value="250.00" >
-								</td>
-                               
-								
-							</tr>
-							<tr>
-								
-							</tr>
-
-       
-						</tbody>
-					</table>
-					<p style="border-bottom: 1px dotted #ccc;"></p>
-					<br>
-						
-					<br>
-					</div>
-				
-				
-				
-				
-				</div>
-				<a href="#cnfrmPricing" data-role="button" data-theme="a" data-icon="arrow-r" style="background-color:green; border: none; text-shadow: none; color: white !important;" >Finish</a>
-			</div>
-		</div>
-	
-<div data-role="page" id="newInventory">
-		
-		<div data-role="header" data-theme="b">
-			<a href="#inventory" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
-			<h1>New Inventory</h1>
-		</div><!-- /header -->
-
-		<div data-role="content" style="background: #f1f1f1; ">
-			<div style="background-color: #43a2c4 !important; border-radius: 5px; ">
-					<div style="padding: 0.5em 1em 0em 1em;">
-					
-						
-						
-						<form id="inventory-form" name="inventory" method="post" action="">
-						<input type="hidden" name="key" id="key-field" value="" />
-						
-						<select name="supplier" id="supplier-field" placeholder="Select Supplier" required data-validate="text" data-error-title="Invalid supplier" data-error-msg="Select a valid Supplier">
-							<option style="text-shadow: none !important;">Select Supplier</option>
-						</select>
-						
-						<select name="location" id="location-field" data-validate="text" data-error-title="Invalid Location" data-error-msg="Please provide a valid location">
-							<option value="" style="text-shadow: none !important;">Location</option>
-							<option value="wuse 2">Wuse 2</option>
-							<option value="maitama">Maitama</option>
-							<option value="zone 2">Zone 2</option>
-						</select>
-						
-						<select name="category" id="category-field" placeholder="Category" required data-validate="text" data-error-title="Invalid Category" data-error-msg="Please provide a valid category" >
-							<option value="" style="text-shadow: none !important;">Item Category</option>
-							<option value="alcohol">Alcohol</option>
-							<option value="baby and mom">Baby & Mom</option>
-							<option value="bakery">Bakery</option>
-							<option value="beverages">Beverages</option>
-							<option value="books">Books</option>
-							<option value="cereal">Cereal</option>
-							<option value="dairy and eggs">Dairy & Eggs</option>
-							<option value="first aid and tests">First Aid & Tests</option>
-							<option value="food cupboard">Food Cupboard</option>
-							<option value="fresh food">Fresh Food</option>
-							<option value="health and beauty">Health & Beauty</option>
-							<option value="household">Household</option>
-							<option value="ink and toners">Inks & Toners</option>
-							<option value="office supplies">Office Supplies</option>
-							<option value="oil and sauces">Oil & Sauces</option>
-							<option value="perfumes and colognes">Perfumes & Colognes</option>
-							<option value="sex and fertility">Sex & Fertility</option>
-							<option value="vitamins and supplements">Vitamins & Supplements</option>
-							<option value="washing liquid">Washing Liquid</option>
-						</select>
-						<p style="border-bottom: 1px dotted #ccc;"></p>
-						
-						<div class="ui-grid-a">
-							<div class="ui-block-a" style="width: 50%; padding-right: 3px;">
-								<input type="text" name="item_barcode" id="item_barcode-field" placeholder="Scan Barcode" required data-validate="text" data-error-title="Invalid Barcode" data-error-msg="Please provide a valid barcode" />
-							</div>
-							<div class="ui-block-b" style="width: 50%; padding-left: 3px;">
-								<input type="button" value="SCAN" id="button-scan" />
-							</div>
-						</div>
-						
-						<input type="text" name="item_desc" id="item_desc-field" placeholder="Item Description" required data-validate="text" data-error-title="Invalid Item Description" data-error-msg="Please provide a valid item description" />
-						
-						<input type="number" name="item_qty" id="item_qty-field" min="0" step="1" placeholder="Item Quantity" required data-validate="number" data-error-title="Invalid Quantity" data-error-msg="Please provide a quantity" />
-						
-						<label for="date" style="color: white; text-shadow: none; ">Expiry Date:</label>
-						<input type="date" name="expiry_date" id="expiry_date-field" value="" data-validate="date" data-error-title="Invalid Expiry Date" data-error-msg="Please provide a valid expiry valid" />
-						
-						<div class="ui-grid-a">
-							<div class="ui-block-a" style="width: 50%; padding-right: 3px;">
-								<input type="number" name="selling_price" id="selling_price-field" min="0" step="any" placeholder="Unit Selling Price" required data-validate="number" data-error-title="Invalid Selling Price" data-error-msg="Please provide a valid Selling Price" />
-							</div>
-							<div class="ui-block-b" style="width: 50%; padding-left: 3px;">
-								<input type="number" name="cost_price" id="cost_price-field" min="0" step="any" placeholder="Unit Cost Price" required data-validate="number" data-error-title="Invalid Cost Price" data-error-msg="Please provide a valid Cost Price" />
-							</div>
-						</div>
-						<p style="float: right !important; font-family: 'Roboto Thin'; font-size: 1.2em !important; color: white;">GROSS MARGIN <span style="font-size: 2em;" id="inventory-gross-margin">-</span></p>
-						<br>
-						<br>
-						
-						<p style="border-bottom: 1px dotted #ccc;">&nbsp;</p>
-						
-						
-						<br>
-						
-						<input type="text" id="dummy-totalCostPrice" placeholder="Total Cost : " disabled="true" />
-						
-						<input type="number" name="amount_paid" id="amount_paid-field" min="0" step="any" placeholder="Amount Paid" required data-validate="number" data-error-title="Invalid Amount" data-error-msg="Please provide a valid amount" />
-						
-						<input type="hidden" name="amount_owed" id="amount_owed-field" placeholder="Amount Owed" data-validate="number" min="0" step="any" />
-						<input type="text" id="dummy-amntOwed" placeholder="Amount Owed : " disabled="true" />
-						<br />
-						
-						
-						<input type="submit" value="Save Item" />
-						<!--
-						<div data-role="collapsible">
-							
-							<h4 style="text-align: center !important; width: 100%;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;List Items</h4>
-							<p>
-							
-								<style type="text/css">
-									.newly-listed-inventory .ui-block-a{
-										width: 75%; padding-right: 3px; font-family: Roboto; font-size: 1.3em;
-									}
-									.newly-listed-inventory .ui-block-b{
-										width: 25%; padding-left: 3px; font-family: Roboto; font-size: 1.3em;
-									}
-								</style>
-								<div class="ui-grid-a" class="newly-listed-inventory">
-									<div class="ui-block-a" style="font-weight: bold !important;">
-										<p>Item</p>
-									</div>
-									<div class="ui-block-b" style="font-weight: bold !important;;">
-										<p>Qty</p>
-									</div>
-								</div>
-								<div class="ui-grid-a" class="newly-listed-inventory" id="newly-listed-inventory-container">
-									
-								</div>
-							
-							</p>
-						</div>
-						-->
-						<p style="border-bottom: 1px dotted rgb(112,112,112);"></p>
-						<br>
-					</form>
-					
-					</div>
-					
-				</div>
-				<!--
-				<a href="#" id="new-inventory-finish-button" data-role="button" data-theme="a" data-icon="arrow-r" style="background-color:green; border: none; text-shadow: none; color: white !important;" >Finish</a>
-				-->
-				
-				
-		</div><!-- /content -->
-
-		<div data-role="footer"  data-theme="b" >
-			&nbsp
-			<br>
-			&nbsp
-			<br>
+		<div data-role="footer" style="background: #fff; border: none;">
+			
 			
 		</div><!-- /footer -->
 		
-	</div><!-- /page -->
-
-<div data-role="page" id="stockLevels">
-		
-		<div data-role="header" data-theme="b">
-				<a href="#inventory" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
-				<h1>Item Stock Levels</h1>
-		</div><!-- /header -->
-		
-		<div data-role="content" style="background: #f1f1f1;">
-	
-				<div style="background-color: #43a2c4 !important; border-radius: 5px;">
-					<div style="padding: 1em 1em 0em 1em;">
-					
-						<select id="filter-location-field">
-							<option value="" style="text-shadow: none !important;">Location</option>
-							<option value="wuse 2">Wuse 2</option>
-							<option value="maitama">Maitama</option>
-							<option value="zone 2">Zone 2</option>
-						</select>
-						
-						<select id="filter-category-field">
-							<option value="" style="text-shadow: none !important;">Item Category</option>
-							<option value="alcohol">Alcohol</option>
-							<option value="baby and mom">Baby & Mom</option>
-							<option value="bakery">Bakery</option>
-							<option value="beverages">Beverages</option>
-							<option value="books">Books</option>
-							<option value="cereal">Cereal</option>
-							<option value="dairy and eggs">Dairy & Eggs</option>
-							<option value="first aid and tests">First Aid & Tests</option>
-							<option value="food cupboard">Food Cupboard</option>
-							<option value="fresh food">Fresh Food</option>
-							<option value="health and beauty">Health & Beauty</option>
-							<option value="household">Household</option>
-							<option value="ink and toners">Inks & Toners</option>
-							<option value="office supplies">Office Supplies</option>
-							<option value="oil and sauces">Oil & Sauces</option>
-							<option value="perfumes and colognes">Perfumes & Colognes</option>
-							<option value="sex and fertility">Sex & Fertility</option>
-							<option value="vitamins and supplements">Vitamins & Supplements</option>
-							<option value="washing liquid">Washing Liquid</option>
-						</select>
-						
-						<br>
-						<p style="border-bottom: 1px dotted #ccc;"></p>
-						<br>
-						
-						
-						<table data-role="table" id="table-column-toggle" data-mode="" class="ui-responsive table-stroke">
-						<thead>
-							<tr style="font-size:1em; font-weight: 100; background-color: #333; color: #fff;  line-height: 1.4em; text-shadow: none;">
-								<td>Item</td>
-								<td style="text-align: center;">Quantity</td>
-                                
-								
-							</tr>
-						</thead>
-						<style type="text/css">
-							#stockLevels-container tr td:nth-child(1){
-								font-size: 1em; color: white; text-shadow: none;
-							}
-							
-							#stockLevels-container tr td:nth-child(2){
-								font-size: 1em; font-weight: 100; color: white; text-align: center; text-shadow: none;
-							}
-						</style>
-						<tbody id="stockLevels-container">
-							
-						</tbody>
-					</table>
-						<br>
-						<br>
-						<p style="border-bottom: 1px dotted #ccc;"></p>
-						<!--
-						<br>
-						<a href="" data-role="button" data-theme="e" data-icon="arrow-r">Export as email</a>
-						-->
-						
-					</div>
-					<br>
-					
-				</div>
-				
-			</div>
-		
-</div>
-
-<div data-role="page" id="supplier">
-		<div data-role="panel" id="menupanel-3" data-position="left" data-display="overlay" class="ui-panel ui-panel-position-left ui-panel-display-overlay ui-body-c ui-panel-animate ui-panel-closed" data-theme="b" style="background-color: #fff;  ">
-
-			<div class="ui-panel-inner" >
-			
-				<ul data-role="listview" data-theme="b">
-				
-				
-					<li class="lidec"><a class="ui-btn ui-icon-home ui-btn-icon-left" href="#dashboard">Dashboard</a></li>
-					<li  class="lidec"><a class="ui-btn ui-icon-info ui-btn-icon-left" href="#inventory">Inventory</a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-gear ui-btn-icon-left" href="#records">Records</a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#sales">Sales</a></li>
-					
-					<li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" href="#suppliers">Settings</a></li>
-			
-				</ul>	
-			
-		
-			
-				
-			</div>
-			<div>
-				<img style="margin: 3em 4em !important;" src="css/images/icon.png" />
-			</div>
-			
-	</div>
-		<div data-role="header" data-theme="b">
-				<a href="#menupanel-3" data-ajax="false" rel="external" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext" data-transition="none">Menu</a>
-				<h1>Supplier</h1>
-		</div><!-- /header -->
-		
-		<div data-role="content" style="background: #f1f1f1;">
-	
-				<div style="background-color: #43a2c4 !important; border-radius: 5px;">
-					<div style="padding: 1em 1em 0em 1em;">
-					
-					<select name="supplier" id="supplier-select-box">
-						<option value="new">Add New Supplier</option>
-					</select>
-					
-					<form method="post" action="" name="suppliers" id="suppliers-form">
-						<input type="hidden" name="key" id="key-field" value="" data-validate="text" />
-						<input type="text" name="supplier" id="supplier-field" placeholder="Supplier Name" required data-validate="text" data-error-title="Invalid supplier" data-error-msg="Provide a valid Supplier Name" />
-						<input type="text" name="location" id="location-field" placeholder="Supplier Location" required data-validate="text" data-error-title="Invalid Supplier Location" data-error-msg="Provide a valid supplier location" />
-						
-						<div class="ui-grid-a">
-							<div class="ui-block-a" style="width: 55% !important;"><input type="tel" name="mobile" id="mobile-field" data-validate="tel" placeholder="Mobile" protocol="tel:"></div>
-							<div class="ui-block-b" style="width: 45% !important;"><a  href="#" id="mobile-field-link" data-role="button" data-theme="b" data-icon="phone" style="height: 1em; font-weight: normal !important; text-shadow: none; background-color: green; border: none;">Call</a></div>
-						</div>
-						<div class="ui-grid-a">
-							<div class="ui-block-a" style="width: 55% !important;"><input type="email" name="email" id="email-field" data-validate="email" placeholder="Email" protocol="mailto:"></div>
-							<div class="ui-block-b" style="width: 45% !important;"><a href="#" id="email-field-link" data-role="button" data-theme="b" data-icon="mail" style="height: 1em; font-weight: normal !important; text-shadow: none; background-color: green; border: none;">Email</a></div>
-						</div>
-						
-						<input type="submit" value="Save" />
-					</form>
-						
-						
-						<p style="border-bottom: 1px dotted #ccc;"></p>
-						<br>
-						<style type="text/css">
-							#last-supply-activity-container td,
-							#suppliers-list-container td{
-								font-size: 1em; color: white; text-shadow: none;
-							}
-							#last-supply-activity-container tr,
-							#suppliers-list-container tr{
-								display:none;
-							}
-							#last-supply-activity-container tr:nth-child(1),
-							#last-supply-activity-container tr:nth-child(2),
-							#last-supply-activity-container tr:nth-child(3),
-							#last-supply-activity-container tr:nth-child(4),
-							#last-supply-activity-container tr:nth-child(5),
-							#suppliers-list-container tr:nth-child(1),
-							#suppliers-list-container tr:nth-child(2),
-							#suppliers-list-container tr:nth-child(3),
-							#suppliers-list-container tr:nth-child(4),
-							#suppliers-list-container tr:nth-child(5) {
-								display:block;
-							}
-							#last-supply-activity-container td:nth-child(2){
-								text-align:center;
-							}
-						</style>
-						<table data-role="table" id="table-column-toggle" data-mode="" class="ui-responsive table-stroke">
-						<thead>
-							<tr style="font-size:1em; font-weight: 100; background-color: #333; color: #fff;  line-height: 1.4em; text-shadow: none;">
-								<td>Suppliers</td>
-							</tr>
-						</thead>
-						<tbody id="suppliers-list-container">
-							
-						</tbody>
-						</table>
-						
-						<br>
-						
-						<p style="border-bottom: 1px dotted #ccc;"></p>
-						<br>
-						<span style="font-family: Roboto Thin; text-shadow: none; color: white; font-size: 1.3em; "><span id="last-supply-activity-supplier-name"></span> &rarr; Last Supply Activity &darr;</span>
-						<br>
-						<br>
-						
-						<div class="ui-grid-b" style="background:#111;">
-							<div class="ui-block-a" style="padding:0.5em;">
-								<label style="color: white; text-shadow: none; ">Item</label>
-							</div>
-							<div class="ui-block-b" style="padding:0.5em;">
-								<label style="color: white; text-shadow: none; ">Quantity</label>
-							</div>
-							<div class="ui-block-c" style="padding:0.5em;">
-								<label style="color: white; text-shadow: none; ">Date</label>
-							</div>
-						</div>
-						<div id="last-supply-activity-container" >
-							
-						</div>
-						
-						<br>
-						<p style="border-bottom: 1px dotted #ccc;"></p>	
-						<br>
-						<input type="text" id="supplier-amount-owed" placeholder="Amount Owed : " disabled="disabled" />
-						<br>
-						
-						
-					</div>
-					
-					
-					
-				</div>
-				
-			</div>
-		
-		
-	<div id="footer-1" data-role="footer"  data-theme="b" data-position="fixed">
-		<div data-role="navbar" data-grid="c" class="footer-nav-bar">
-			<ul>
-				<li><a href="#inventory"  data-icon="grid" data-iconpos="top" data-transition="none" class=" ui-btn-active">Inventory</a></li>
-				<li><a href="#sales"  data-icon="star" data-iconpos="top" data-transition="none" class="">Sales</a></li>
-				<li><a href="#records"  data-icon="edit" data-iconpos="top" data-transition="none" class="">Records</a></li>
-				<li><a href="#supplier"  data-icon="info" data-iconpos="top" data-transition="none" class="">Suppliers</a></li>
-			</ul>
-		</div><!-- /navbar -->
-		
-	</div><!-- /footer -->
-		
-</div>
-
-<div data-role="page" id="restock">
-		
-		<div data-role="header" data-theme="b">
-				<a href="#inventory" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
-				<h1>Manage Inventory</h1>
-			</div><!-- /header -->
-
-		<div data-role="content" style="background-color: #f1f1f1;">
-	
-				<div style="background-color: #43a2c4 !important; border-radius: 5px; ">
-		<div style="padding: 1em 1em 0em 1em;">
-			<form action="" method="post" name="stock" id="stock-form">
-				
-					<div style="padding: 1em 1em 0em 1em;">
-						<input type="hidden" name="key" id="key-field" value="" />
-						
-						<select id="filter-location-field" >
-							<option value="" style="text-shadow: none !important;">Location</option>
-							<option value="wuse 2">Wuse 2</option>
-							<option value="maitama">Maitama</option>
-							<option value="zone 2">Zone 2</option>
-						</select>
-						<select id="filter-category-field" >
-							<option value="" style="text-shadow: none !important;">Item Category</option>
-							<option value="alcohol">Alcohol</option>
-							<option value="baby and mom">Baby & Mom</option>
-							<option value="bakery">Bakery</option>
-							<option value="beverages">Beverages</option>
-							<option value="books">Books</option>
-							<option value="cereal">Cereal</option>
-							<option value="dairy and eggs">Dairy & Eggs</option>
-							<option value="first aid and tests">First Aid & Tests</option>
-							<option value="food cupboard">Food Cupboard</option>
-							<option value="fresh food">Fresh Food</option>
-							<option value="health and beauty">Health & Beauty</option>
-							<option value="household">Household</option>
-							<option value="ink and toners">Inks & Toners</option>
-							<option value="office supplies">Office Supplies</option>
-							<option value="oil and sauces">Oil & Sauces</option>
-							<option value="perfumes and colognes">Perfumes & Colognes</option>
-							<option value="sex and fertility">Sex & Fertility</option>
-							<option value="vitamins and supplements">Vitamins & Supplements</option>
-							<option value="washing liquid">Washing Liquid</option>
-						</select>
-						<br />
-						<select name="item_barcode" id="item_barcode-field" required data-validate="text" data-error-title="Invalid Item" data-error-msg="Please select a valid item">
-							<option style="text-shadow: none !important;">Select Item</option>
-						</select>
-						
-						<br />
-						<select name="supplier" id="supplier-field" placeholder="Select Supplier" required data-validate="text" data-error-title="Invalid supplier" data-error-msg="Select a valid Supplier" >
-							<option style="text-shadow: none !important;">Select Supplier</option>
-						</select>
-						<br />
-						
-						<div class="ui-grid-a">
-							<div class="ui-block-a" style="padding-right:0.5em;">
-								<label for="cost_price-field" style="color: white; text-shadow: none; ">Unit Cost Price:</label>
-								<input type="number" name="cost_price" id="cost_price-field" min="0" step="any" placeholder="Unit Cost Price" required data-validate="number" data-error-title="Invalid Cost Price" data-error-msg="Please provide a valid Cost Price" />
-							</div>
-							<div class="ui-block-b" style="padding-left:0.5em;">
-								<label for="selling_price-field" style="color: white; text-shadow: none; ">Unit Selling Price:</label>
-								<input type="number" name="selling_price" id="selling_price-field" min="0" step="any" placeholder="Unit Selling Price" required data-validate="number" data-error-title="Invalid Selling Price" data-error-msg="Please provide a valid Selling Price" />
-							</div>
-						</div>
-						<br />
-						<div class="ui-grid-a">
-							<div class="ui-block-a" style="padding-right:0.5em;">
-								<label for="item_qty-field" style="color: white; text-shadow: none; ">Item Quantity:</label>
-								<input type="number" name="item_qty" id="item_qty-field" min="0" step="1" placeholder="Item Quantity" required data-validate="number" data-error-title="Invalid Quantity" data-error-msg="Please provide a quantity" />
-							</div>
-							<div class="ui-block-b" style="padding-left:0.5em;">
-								<label for="expiry_date-field" style="color: white; text-shadow: none; ">Expiry Date:</label>
-								<input type="date" name="expiry_date" id="expiry_date-field" value="" data-validate="date" data-error-title="Invalid Expiry Date" data-error-msg="Please provide a valid expiry valid" />
-							</div>
-						</div>
-						
-						<p style="border-bottom: 1px dotted rgb(112,112,112);"></p>
-						
-						<input type="text" id="dummy-totalCostPrice" placeholder="Total Cost : " disabled="true" />
-						
-						<input type="number" name="amount_paid" id="amount_paid-field" min="0" step="any" placeholder="Amount Paid" required data-validate="number" data-error-title="Invalid Amount" data-error-msg="Please provide a valid amount" />
-						
-						<input type="hidden" name="amount_owed" id="amount_owed-field" placeholder="Amount Owed" data-validate="number" min="0" step="any" />
-						<input type="text" id="dummy-amntOwed" placeholder="Amount Owed : " disabled="true" />
-						
-						<p style="border-bottom: 1px dotted rgb(112,112,112);"></p>
-						<input type="submit" value="Finish" data-icon="arrow-r" />
-						<br>
-				</div>
-			</form>
-		</div>
-				
-			</div>
-			<br>	
-			<!--<a href="#cnfrmRI" data-role="button" data-theme="a" data-icon="arrow-r" style="background-color:green; border: none; text-shadow: none; color: white !important;" >Finish</a>	-->
-			</div>
-			
-		</div>
-		
-<div data-role="page" id="inventory">
-	<div data-role="panel" id="menupanel-4" data-position="left" data-display="overlay" class="ui-panel ui-panel-position-left ui-panel-display-overlay ui-body-c ui-panel-animate ui-panel-closed" data-theme="b" style="background-color: #fff; ">
-
-			<div class="ui-panel-inner" >
-			<ul data-role="listview" data-theme="b">
-				
-				
-					<li class="lidec"><a class="ui-btn ui-icon-home ui-btn-icon-left" href="#dashboard">Dashboard</a></li>
-						<li  class="lidec"><a class="ui-btn ui-icon-check ui-btn-icon-left" href="#sales">Sales</a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-gear ui-btn-icon-left" href="#records">Records</a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier">Supplier</a></li>
-					
-					<li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" href="#settings">Settings</a></li>
-			
-				</ul>	
-		
-			
-				
-			</div>
-		<div>
-				<img style="margin: 3em 4em !important;" src="css/images/icon.png" />
-			</div>
-			
-		</div>
-	<div data-role="header" data-theme="b">
-		
-		
-		<a href="#menupanel-4" data-ajax="false" rel="external" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
-		
-		<h1>Inventory</h1>
-		<div data-role="navbar">
-			<ul>
-				<li>
-					<a class="notficns" href="#" data-theme="a" >
-						<!--
-						<marquee class="rbto" behavior="scroll" scrollamount="3" direction="left" > Kellogs Cereal exipiring on 26/10/2014 &nbsp;&nbsp; || &nbsp;&nbsp; Mr Obinna supplied Coca Cola 50cl, Pepsi 35cl on 25/11/2014 
-						</marquee>
-						-->
-					</a>
-				</li>
-			</ul>
-		</div>
-	</div><!-- /header -->
-
-	<div role="main" class="ui-content" style="background-color: #f1f1f1;">
-				
-						
-					<div class="panl">
-						<h3>Total inventory value</h3>
-						<h6 style="font-size:1.8em;" class="total-value-of-inventory">-</h6>
-					</div>	
-					<br />
-					<div class="panl">
-						<h3>Total items in-stock</h3>
-						<h6 style="font-size:1.8em;" class="total-items-in-stock">-</h6>
-					</div>
-				
-					
-					<a href="#newInventory" data-role="button" data-theme="b" data-icon="arrow-r" data-transition="none" style="font-weight: normal !important; text-shadow: none;">New Inventory</a>
-				
-					<a href="#restock" data-role="button" data-theme="b" data-icon="arrow-r" data-transition="none" style="font-weight: normal !important; text-shadow: none;">Manage Inventory</a>
-					
-					
-					<div class="panl">
-					<h3>Inventory stock levels</h3>
-					<br>
-					<style type="text/css">
-						#inventory-levels-container > div{
-							display:none;
-						}
-						#inventory-levels-container > div:nth-child(1),
-						#inventory-levels-container > div:nth-child(2),
-						#inventory-levels-container > div:nth-child(3),
-						#inventory-levels-container > div:nth-child(4),
-						#inventory-levels-container > div:nth-child(5),
-						#inventory-levels-container > div:nth-child(6){
-							display:block;
-						}
-						
-					</style>
-					<div style="border: 2px solid #bee8f7; font-size: 0.65em;">
-						<div class="ui-grid-b" id="inventory-levels-container">
-							
-						</div><!-- /grid-c -->
-						
-					</div>
-					
-					</div>
-					
-					<a href="#stockLevels" data-role="button" data-theme="b" data-icon="arrow-r" data-transition="none" style="font-weight: normal !important; text-shadow: none;">View Stock Levels</a>
-					
-					<!--
-					<a href="#setPricing" data-role="button" data-theme="b" data-icon="arrow-r" data-transition="none" style="font-weight: normal !important; text-shadow: none;">Set Pricing</a>
-					-->
-				
-		
-	</div><!-- /content -->
-
-	
-	<div id="footer-2" data-role="footer"  data-theme="b" data-position="fixed">
-		<div data-role="navbar" data-grid="c" class="footer-nav-bar">
-			<ul>
-				<li><a href="#inventory"  data-icon="grid" data-iconpos="top" data-transition="none" class=" ui-btn-active">Inventory</a></li>
-				<li><a href="#sales"  data-icon="star" data-iconpos="top" data-transition="none" class="">Sales</a></li>
-				<li><a href="#records"  data-icon="edit" data-iconpos="top" data-transition="none" class="">Records</a></li>
-				<li><a href="#supplier"  data-icon="info" data-iconpos="top" data-transition="none" class="">Suppliers</a></li>
-			</ul>
-		</div><!-- /navbar -->
-		
-	</div><!-- /footer -->
-		
 </div><!-- /page -->
-
-<div data-role="page" id="sales">
-		<div data-role="panel" id="menupanel-1" data-position="left" data-display="overlay" class="ui-panel ui-panel-position-left ui-panel-display-overlay ui-body-c ui-panel-animate ui-panel-closed" data-theme="b" style="background-color: #fff;  ">
-
-			<div class="ui-panel-inner" >
-			
-				<ul data-role="listview" data-theme="b">
-				
-				
-					<li class="lidec"><a class="ui-btn ui-icon-home ui-btn-icon-left" href="#dashboard">Dashboard</a></li>
-					<li  class="lidec"><a class="ui-btn ui-icon-info ui-btn-icon-left" href="#inventory">Inventory</a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-gear ui-btn-icon-left" href="#records">Records</a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier">Supplier</a></li>
-					
-					<li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" href="#settings">Settings</a></li>
-			
-				</ul>	
-			
-		
-			
-				
-			</div>
-			<div>
-				<img style="margin: 3em 4em !important;" src="css/images/icon.png" />
-			</div>
-			
-	</div>
-		
-
-		
-		<div data-role="header" data-theme="b" >
-				<a href="#menupanel-1" data-ajax="false" rel="external" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
-				<h1>Sales</h1>
-		</div><!-- /header -->
-
-		<div data-role="content" style="background-color: #f1f1f1;background-image: url(css/images/bg.png); background-repeat: repeat;">
-			
-			<div style="border-radius: 5px;" id="sales-inventory-list-container">
-			
-			</div>
-			 
-			<br>	
-						
-			<div style="background-color: #43a2c4; padding: 10px; border-radius: 5px; text-shadow: none; color: white;">
-				
-				
-				<div >
-					<style type="text/css">
-						#sales-table-body td{
-							padding-top: 1em; font-size: 1em; font-weight: 100 ;
-							vertical-align:middle;
-						}
-						#sales-table-body td:nth-child(2){
-							text-align:center;
-							position:relative;
-						}
-						#sales-table-body td:nth-child(3){
-							text-align:right;
-							position:relative;
-						}
-						#sales-table-body td input[type="number"]{
-							width:100%;
-							padding:0.2em 0;
-						}
-						
-						#sales-table-body td a{
-							border: #43a2c4; position:absolute; top:0.25em; right:0; z-index:100; display:none;
-						}
-						
-					</style>
-					
-					<table data-role="table" id="table-column-toggle" data-mode="" class="ui-responsive table-stroke">
-						<thead>
-							<tr style=" font-size: 0.8em; font-weight: bold; color: #fff; border-bottom: 1px dotted #ccc; line-height: 1.4em;">
-								<td style="width: 30%;">Item</td>
-								<td style="width: 15%; text-align: center;">Units</td>
-								<td style="width: 15%; text-align: right;">Value (&#8358;)</td>
-								
-							</tr>
-						</thead>
-						<tbody id="sales-table-body" style="font-family: Roboto Thin;">
-							
-							<tr style="background-color: rgb(112,112,112); color: white; text-shadow: none; border-radius: 5px !important; ">
-								 <td style="font-size: 1em; text-shadow: none;">Sub-total</td>
-								 <td></td>
-								 <td style="font-size: 1em; text-shadow: none; font-weight: bold; text-align: right;" id="this-sale-subtotal-amount">0.00</td>
-								
-								
-							</tr>
-       
-						</tbody>
-					</table>
-					
-				</div>
-					
-			
-			</div>
-			
-			<br>
-			
-			<div style="background-color: #43a2c4; padding: 10px; border-radius: 5px; text-shadow: none; color: white;">
-			
-			<form>
-				<div style="display: inline;">V.A.T &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" data-role="flipswitch" name="vat-on-off-switch" id="vat-on-off-switch" checked="checked" /> <span id="this-sale-total-amount-vat" style="float:right; padding-top:0.7em; margin-right:0.4em;">0.00</span></div>
-				
-				
-				<p style="border-bottom: 1px dotted #fff !important;"></p>
-				
-				<div style="display: inline;">Discount &nbsp;&nbsp;<input type="checkbox" data-role="flipswitch" name="discount-on-off-switch" id="discount-on-off-switch"> <span id="this-sale-total-amount-discount" style="float:right; padding-top:0.7em; margin-right:0.4em;">0.00</span></div>
-			
-			</form>
-			
-			</div>
-			
-				<br>
-					
-				<div style="background-color: rgb(112,112,112); padding: 10px; border-radius: 5px; text-shadow: none; color: white; font-family: Roboto Thin; font-size: 1.7em;">
-				Total: &nbsp; <b id="this-sale-total-amount">0.00</b>
-				</div>
-				<br>
-				
-				
-			 	<a href="#confirm-this-sale-popup" id="confirm-this-sale-popup-display-button" data-role="button" data-rel="popup" data-theme="b" data-icon="arrow-r" data-transition="none" data-position-to="origin" style="font-weight: normal !important; text-shadow: none; background-color: green; border: none;">Check Out</a>
-			
-			 	<a href="#" id="cancel-order-button" data-role="button" data-theme="b" data-icon="arrow-r" data-transition="none" style="background-color: red; border: red; font-weight: normal !important; text-shadow: none;">Cancel Order</a>
-				
-				
-			<div data-role="popup" id="confirm-this-sale-popup" data-overlay-theme="b" data-theme="a" data-dismissible="false" style="width: 100%;">
-				<div data-role="header" data-theme="b">
-				<h1 style="font-size: 1em; text-shadow: none;" id="this-sale-checkout-total">Total &rarr; 0.00</h1>
-				</div>
-				<div role="main" class="ui-content">
-					<label for="this-sale-change">Change:</label>
-					<div id="this-sale-change">
-						0.00
-					</div>
-					<label for="payOption">Payment Method:</label>
-					<select name="payOption" id="payOption" data-role="slider">
-						<option value="cash" style="text-shadow: none !important;">Cash</option>
-						<option value="card" style="text-shadow: none !important;">Card</option>
-					</select>
-					<label for="text-basic">Please enter amount tendered:</label>
-					<input type="number" min="0" step="any" name="amount_tendered" id="amount_tendered-field" value="" />
-					<input type="button" value="Confirm" id="confirm-this-sale-button" />
-					<a href="#" data-role="button" data-rel="back">Cancel</a>
-					
-				</div>
-			</div>
-
-				<!---->
-				<div data-role="popup" id="receipt" class="ui-content" style="max-width:280px">
-				<a href="#sale" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
-				<br>
-				<table data-role="table" id="table-column-toggle" data-mode="" class="ui-responsive table-stroke">
-						<thead>
-							<tr style="border-radius: 5px; border: 1px solid #333; font-size: 0.8em; font-weight: bold; color: #fff; background-color: #333; line-height: 1.4em; text-shadow: none">
-								<td style="width: 60%;">Item</td>
-								<td style="width: 35%; text-align: center;">Value (N)</td>
-								
-
-							</tr>
-						</thead>
-						<tbody style="font-family: Arial; color: #333;">
-							<tr>
-								
-								<td style="padding-top: 1em; font-size: 1em; color: #333;">Coca Cola - 35cl<b>&nbsp;(3)</b></td>
-								<td style="padding-top: 1em; font-size: 1em; font-weight: 100; text-align: center; "><b>100.00</b></td>
-								
-								
-								
-							</tr>
-							<tr>
-								 
-								 <td style="padding-top: 1em; font-size: 1em;  color: #333;">Pepsi - 50cl<b>&nbsp;(3)</b></td>
-								 <td style="padding-top: 1em; font-size: 1em; font-weight: 100; text-align: center;"><b>120.00</b></td>
-								 
-								
-							</tr>
-							<tr>
-								 
-								 <td style="padding-top: 1em; font-size: 1em;  color: #333;">Kellogs - Cornflakes<b>&nbsp;(1)</b></td>
-								 <td style="padding-top: 1em; font-size: 1em; font-weight: 100; text-align: center;"><b>950.00</b></td>
-								
-								
-							</tr>
-							<tr>
-								 
-								 <td style="padding-top: 1em; font-size: 1em; color: #333;">Kellogs - Frosties<b>&nbsp;(1)</b></td>
-								 <td style="padding-top: 1em; font-size: 1em; font-weight: 100; text-align: center;"><b>870.00<b/></td>
-								 
-								 
-							</tr>
-							<tr style="border-bottom: 1px dotted #fff !important;">
-								 <td style="padding-top: 1em; font-size: 1em;  color: #333;">Ariel - 1kg<b>&nbsp;(2)</b> </td>
-								 <td style="padding-top: 1em; font-size: 1em; font-weight: 100; text-align: center;"><b>250.00</b></td>
-								  
-								 
-							</tr>
-							<tr style="">
-								 <td style="padding-top: 1em; font-size: 1em;  color: #333;text-indent: 2em;"><b>Subtotal</b></td>
-								 <td style="!important;padding-top: 1em; font-size: 1em; font-weight: 100; text-align: center;"><b>2290.00</b></td>
-								  
-								 
-							</tr>
-							<tr style="border-bottom: 1px dotted #fff !important;">
-								 <td style="padding-top: 1em; font-size: 1em;  color: #333;text-indent: 2em;"><b>VAT/Discount</b></td>
-								 <td style="padding-top: 1em; font-size: 1em; font-weight: 100; text-align: center;"><b>0.00</b></td>
-								  
-								 
-							</tr>
-							<tr style="border-bottom: 1px dotted #fff !important;">
-								 <td style="padding-top: 1em; font-size: 1em;  color: #333;text-indent: 2em;"><b>TOTAL</b></td>
-								 <td style="padding-top: 1em; font-size: 1em; font-weight: 100; text-align: center;"><b>2290.00</b></td>
-								  
-								 
-							</tr>
-							<tr style="border-bottom: 1px dotted #fff !important;">
-								 <td style="padding-top: 1em; font-size: 1em;  color: #333;text-indent: 2em;"><b>Cash</b></td>
-								 <td style="padding-top: 1em; font-size: 1em; font-weight: 100; text-align: center;"><b>2500.00</b></td>
-								  
-								 
-							</tr>
-							<tr style="border-bottom: 1px dotted #fff !important;">
-								 <td style="padding-top: 1em; font-size: 1em;  color: #333;text-indent: 2em;">Change</td>
-								 <td style="padding-top: 1em; font-size: 1em; font-weight: 100; text-align: center;">210.00</td>
-								  
-								 
-							</tr>
-							
-							
-							
-							
-       
-						</tbody>
-					</table>
-				
-				
-			</div>
-		
-		</div><!-- /content -->
-
-		<div id="footer-3" data-role="footer"  data-theme="b" data-position="fixed">
-		<div data-role="navbar" data-grid="c" class="footer-nav-bar">
-			<ul>
-				<li><a href="#inventory"  data-icon="grid" data-iconpos="top" data-transition="none" class=" ui-btn-active">Inventory</a></li>
-				<li><a href="#sales"  data-icon="star" data-iconpos="top" data-transition="none" class="">Sales</a></li>
-				<li><a href="#records"  data-icon="edit" data-iconpos="top" data-transition="none" class="">Records</a></li>
-				<li><a href="#supplier"  data-icon="info" data-iconpos="top" data-transition="none" class="">Suppliers</a></li>
-			</ul>
-		</div><!-- /navbar -->
-		
-	</div><!-- /footer -->
-	
-		
-	</div><!-- /page -->
-
-		
-</div>	
-
-</div>
 
 <div data-role="page" id="cnfrmPricing">
 				
@@ -1171,9 +573,23 @@
 					<div >
 						<h3>You successfully changed the pricing of :</h3>
 						<br>
-						<span style="margin-bottom:0.2em; font-weight: 2.2em !important; display: block;"><b>1.</b> Coca Cola - 35cl <b>(N 100.00)</b></span>
-						<span style="margin-bottom:0.2em;font-weight: 2.2em !important; display: block;"><b>2.</b> Pepsi - 35cl <b>(N 80.00)</b></span>
-						<span style="margin-bottom:0.2em; font-weight: 2.2em !important; display: block;"><b>3.</b> Evian Water - 50cl <b>(N 120.00)</b></span>
+						<style type="text/css">
+							
+						</style>
+						
+						<table data-role="table" class="inventory ui-responsive">
+						<thead>
+							<tr>
+								<td>#</td>
+								<td>Item</td>
+								<td>Cost Price</td>
+								<td>Selling Price</td>
+							</tr>
+						</thead>
+						<tbody id="selling-price-of-items">
+							
+						</tbody>
+						</table>
 						<br>
 						
 					</div>	
@@ -1181,7 +597,11 @@
 			<br>
 			
 			
-			<a href="#dashboard" data-role="button" data-theme="b" data-icon="home" data-transition="none" style="font-weight: normal !important; text-shadow: none; border: none;">Go To Dashboard</a>
+			<a href="#setPricing" data-role="button" data-theme="b" data-icon="back" data-transition="none" style="font-weight: normal !important; text-shadow: none; border: none;">Back</a>
+			
+			<a href="#inventory" data-role="button" data-theme="b" data-icon="forward" data-transition="none" style="font-weight: normal !important; text-shadow: none; border: none;">Inventory</a>
+			
+			<a href="#dashboard" data-role="button" data-theme="b" data-icon="home" data-transition="none" style="font-weight: normal !important; text-shadow: none; border: none;">Dashboard</a>
 		
 		</div><!-- /content -->
 
@@ -1200,6 +620,7 @@
 
 		<div data-role="content" style="background-color: #f1f1f1;">
 			
+			
 			<div class="panl">
 					<div>
 						<img style="margin: 3em 4em !important;" src="css/images/icon2.png" />
@@ -1207,7 +628,7 @@
 					<div >
 						<h3 style="text-align: center;">You have successfully added</h3>
 					
-						<h6 style="text-align: center;" id="newly-added-inventory-total">-</h6>
+						<h6 style="text-align: center;">N 21,560.00</h6>
 						
 						<h3 style="text-align: center;">worth of inventory.</h3>
 					</div>	
@@ -1265,18 +686,18 @@
 	</div><!-- /page -->	
 
 <div data-role="page" id="records">
-		<div data-role="panel" id="menupanel-6" data-position="left" data-display="overlay" class="ui-panel ui-panel-position-left ui-panel-display-overlay ui-body-c ui-panel-animate ui-panel-closed" data-theme="b" style="background-color: #fff; ">
+		<div data-role="panel" id="menupanel-2" data-position="left" data-display="overlay" class="ui-panel ui-panel-position-left ui-panel-display-overlay ui-body-c ui-panel-animate ui-panel-closed" data-theme="b" style="background-color: #fff; ">
 
 			<div class="ui-panel-inner" >
 			
 				<ul data-role="listview" data-theme="b">
 				
-					<li class="lidec"><a class="ui-btn ui-icon-home ui-btn-icon-left" href="#dashboard">Dashboard</a></li>
-					<li  class="lidec"><a class="ui-btn ui-icon-check ui-btn-icon-left" href="#sales">Sales</a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-gear ui-btn-icon-left" href="#inventory">Inventory</a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier">Supplier</a></li>
-					
-					<li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" href="#settings">Settings</a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-home ui-btn-icon-left" href="#dashboard"><b>Dashboard</b></a></li>
+					<li  class="lidec"><a class="ui-btn ui-icon-check ui-btn-icon-left" href="#sales"><b>Sales</b></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-gear ui-btn-icon-left" href="#inventory"><b>Inventory</b><span class="ui-li-count ui-btn-corner-all">38</span></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all">6</span></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notfcns"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all">3</span></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" href="#settings"><b>Settings</b></a></li>
 			
 				</ul>	
 			
@@ -1289,17 +710,17 @@
 			</div>
 			
 		</div>
-	<div data-role="header" data-theme="b">
+	
+	<div data-role="header" id="hd" data-theme="b" style="height: 4em;">
 		
-		
-		<a href="#menupanel-6" data-ajax="false" rel="external" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
+		<a href="#menupanel-2" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
 		
 		<h1>Records</h1>
 		
 	</div><!-- /header -->
 		
-		<div data-role="content" style="background-color: #f1f1f1;background-image: url(css/images/bg.png); background-repeat: repeat;">
-			
+	<div data-role="content" style="background-color: #f1f1f1;background-image: url(css/images/bg.png); background-repeat: repeat;">
+		
 			<style type="text/css">
 				#sales-records-container ul li a{
 					font-weight: normal; background-color: #4fc1e9;
@@ -1398,28 +819,28 @@
 			<div data-role="collapsible-set" data-theme="b" data-content-theme="a" id="sales-records-container">
 			
 			<div style="" data-role="collapsible" data-theme="b" data-content-theme="a" data-inset="false">
-				<h3 style="font-weight: 100 !important;">Today<span style="float: right; "><b id="today-sales-records-days-total">-</b></span></h3>
+				<h5 style="font-weight: 100 !important;">Today<span style="float: right; "><b id="today-sales-records-days-total">-</b></span></h5>
 				<div id="today-sales-records">
 				
 				</div>
 			</div><!-- /collapsible -->
             
 			<div style="" data-role="collapsible" data-theme="b" data-content-theme="a" data-inset="false">
-				<h3 style="font-weight: 100 !important;">24 hours ago<span style="float: right; "><b id="one-day-sales-total">-</b></span></h3>
+				<h5 style="font-weight: 100 !important;">24 hours ago<span style="float: right; "><b id="one-day-sales-total">-</b></span></h5>
 				<div id="one-day-records">
 				
 				</div>
 			</div><!-- /collapsible -->
                 
 			<div style="" data-role="collapsible" data-theme="b" data-content-theme="a" data-inset="false">
-				<h3 style="font-weight: 100 !important;">Two days ago<span style="float: right; "><b id="two-day-sales-total">-</b></span></h3>
+				<h5 style="font-weight: 100 !important;">Two days ago<span style="float: right; "><b id="two-day-sales-total">-</b></span></h5>
 				<div id="two-day-records">
 				
 				</div>
 			</div><!-- /collapsible -->
                 
 			<div style="" data-role="collapsible" data-theme="b" data-content-theme="a" data-inset="false">
-			 <h3 style="font-weight: 100 !important;">This Month<span style="float: right;"><b id="today-sales-records-months-total">N 69,170</b></span></h3>
+			 <h5 style="font-weight: 100 !important;">This Month<span style="float: right;"><b id="today-sales-records-months-total">0.00</b></span></h5>
 				<div id="today-sales-records-months">
 				</div>
 			</div><!-- /collapsible -->
@@ -1427,95 +848,2210 @@
 		</div>
 			</div>
 			  </div>
-			  <!--
-			  <div id="two">
-				<ul data-role="listview" data-inset="true">
-					<li><a href="#">Today</a></li>
-					<li><a href="#">14/4/2014</a></li>
-					<li><a href="#">13/4/2014</a></li>
-					<li><a href="#">12/4/2014</a></li>
-					<li><a href="#">11/4/2014</a></li>
-				</ul>
-			  </div>
-			  -->
 			</div>
-			
-			
-		</div>
 		
-		
-		
-		
-		<div id="footer-4" data-role="footer"  data-theme="b" data-position="fixed">
-		<div data-role="navbar" data-grid="c" class="footer-nav-bar">
-			<ul>
-				<li><a href="#inventory"  data-icon="grid" data-iconpos="top" data-transition="none" class=" ui-btn-active">Inventory</a></li>
-				<li><a href="#sales"  data-icon="star" data-iconpos="top" data-transition="none" class="">Sales</a></li>
-				<li><a href="#records"  data-icon="edit" data-iconpos="top" data-transition="none" class="">Records</a></li>
-				<li><a href="#supplier"  data-icon="info" data-iconpos="top" data-transition="none" class="">Suppliers</a></li>
-			</ul>
-		</div><!-- /navbar -->
+	</div>
+	
+	<div data-role="footer"  data-theme="b" >
+		&nbsp
+		<br>
+		&nbsp
+		<br>
 		
 	</div><!-- /footer -->
+</div><!--./records-page-->
+
+<div data-role="page" id="signup">
 	
-	</div>
+	<div role="main" class="ui-content" style="background-color: #fff;">
+		<div class="progress-bar-container">
+		
+		</div>
+					<img style="margin: 3em 6em !important;" src="css/images/icon2.png" />
+						
+					<p style="border-bottom: 8px solid #4fc1e9"></p>
+					
+					<h1 style="color: rgb(112,112,112); text-align: center; margin-top: 1em !important;">SIGN UP FOR BLUBIRD</h1>
+					
+						<form method="post" action="?action=app_users&todo=save_signup_data" name="sign-up" id="sign-up-form" remote-storage=1 >
+							<input type="hidden" name="key" id="key-field" value="" />
+							
+							<input type="text" name="name" id="name-field" placeholder="Your Full Name" required data-validate="text" data-error-title="Invalid Name" data-error-msg="Provide a valid name" />
+							
+							<input type="email" name="email" id="email-field" placeholder="Your Email Address" required data-validate="email" data-error-title="Invalid Email" data-error-msg="Provide a valid email" />
+							
+							<input type="password" name="password" id="password-field" placeholder="Password" required data-validate="password" data-error-title="Invalid Password" data-error-msg="Passwords must be at least 6 characters" />
+							
+							<input type="password" name="cpassword" id="cpassword-field" placeholder="Confirm Password" required data-validate="confirm-password" data-error-title="Non-matching Password" data-error-msg="Passwords must match" />
+								
+							<div class="ui-grid-a">
+								<div class="ui-block-a" style="width: 20%; height: 2em;">
+
+									<input type="checkbox" name="checkbox-1a" id="checkbox-1a" checked="" style="height: 2em;">
+								</div>
+								<div class="ui-block-b" style="width: 80%; font-size: 0.7em; padding-top: 0.4em;">
+									I agree to the <a href="policy.pdf">terms and privacy policies</a>
+								</div>
+							</div>
+							
+							<br>
+							<p style="border-bottom: 8px solid #4fc1e9"></p>
+							<input type="submit" value="Sign Up" data-theme="b" />
+							<label style="text-align:center;">Already have an account?</label>
+							<a href="#login" data-theme="a" data-transition="none" data-role="button">Login</a>
+						</form>
+						
+						<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					
+	</div><!-- /content -->
+	
+</div><!-- /page -->
+
+<div data-role="page" id="login">
+	
+	<div role="main" class="ui-content" style="background-color: #fff;">
+		
+		<div class="progress-bar-container">		
+		</div>
+		
+		<img style="margin: 3em 6em !important;" src="css/images/icon2.png" />
+			
+		<p style="border-bottom: 8px solid #4fc1e9"></p>
+		
+		<h1 style="color: rgb(112,112,112); text-align: center; margin-top: 1em !important;">LOGIN TO YOUR ACCOUNT</h1>
+		
+		<form method="post" action="?action=app_users&todo=login" name="login" id="login-form" remote-storage=1 >
+			<input type="hidden" name="key" id="key-field" value="" />
+			
+			<input type="email" name="email" id="email-field" placeholder="Your Email Address" required data-validate="email" data-error-title="Invalid Email" data-error-msg="Provide a valid email" />
+			
+			<input type="password" name="password" id="password-field" placeholder="Password" required data-validate="password" data-error-title="Invalid Password" data-error-msg="Passwords must be at least 6 characters" />
+			
+			<br>
+			<p style="border-bottom: 8px solid #4fc1e9"></p>
+			
+			<div class="ui-grid-a">
+			<div class="ui-block-a">
+				<input type="submit" value="Login" data-theme="b" />
+			</div>
+			<div class="ui-block-b">
+				<a href="#signup" data-role="button" data-theme="b"  data-transition="none" >SIGN UP</a>
+			</div>
+		</div>
+		
+		</form>
+			
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+	</div><!-- /content -->
+	
+</div><!-- /page -->
+
+<div data-role="page" id="update-progress">
+	
+	<div role="main" class="ui-content" style="background-color: #fff;">
+		
+		<p style="text-align:center">
+			<img align="center" src="css/images/icon2.png" />
+		</p>
+		<h1 style="color: rgb(112,112,112); text-align: center;">Data Transfer Progress...</h1>
+		<div class="progress-bar-container"></div>
+		
+		<ol id="update-progress-area">
+			<li>
+				Downloading...
+			</li>
+		</ol>
+		
+	</div><!-- /content -->
+	
+</div><!-- /page -->
+
+<div data-role="page" id="setPricing" >
+		
+		<div data-role="header" id="hd" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);" >
+				<a href="#inventory" class="upload-queue ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none" data-ajax="false">Menu</a>
+				<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Set Pricing</h1>
+		</div><!-- /header -->
+		<div data-role="content" style="background-color: #f1f1f1; ">
+	
+				<div style="background-color: #43a2c4 !important; border-radius: 5px; ">
+					<div style="padding: 1em 1em 0em 1em;">
+					
+					<div class="ui-grid-b" >
+							<div class="ui-block-a">
+								<select id="filter-category-field" >
+									<option value="" style="text-shadow: none !important;">All Categories</option>
+								</select>
+							</div>
+						
+							<div class="ui-block-b">
+								
+								<select id="filter-item-field" >
+									<option style="text-shadow: none !important;">Select Item</option>
+								</select>
+								
+							</div>
+						
+							<div class="ui-block-c">
+								
+								<select id="filter-stores-field" >
+									<option style="text-shadow: none !important;">Select Store</option>
+								</select>
+								
+							</div>
+						
+						</div>
+						<br>
+							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						<br>
+						<div style="padding: 0.5em 1.5em 0.5em 1.5em;">
+						<table data-role="table"  style="" class="inventory ui-responsive" >
+							
+							<thead>
+							   <tr style="padding: 0em !important;">
+								 <th></th>
+								 <th style="padding-right: 0.5em;">Item</th>
+								 <th style="width: 15%; padding-right: 0.5em;  text-align: center !important;">Qty</th>
+								 <th style="width: 15%; padding-right: 0.5em;  text-align: center !important;">Cost Price (&#8358;)</th>
+								 <th style="width: 25%; padding-right: 0.5em;  text-align: center !important;">Selling Price (&#8358;)</th>
+							   </tr>
+							 </thead>
+							 <style type="text/css">
+								
+								tbody.stockLevels-container tr td{
+									vertical-align:middle;
+									display:table-cell;
+									text-shadow: none; color: black;
+									font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;
+								}
+								tbody.stockLevels-container tr:nth-child(odd) td{
+									background-color: #bde3ea; 
+								}
+								tbody.stockLevels-container tr:nth-child(even) td{
+									background-color: #fff;
+								}
+								
+								tbody.stockLevels-container tr td:nth-child(3),
+								tbody.stockLevels-container tr td:nth-child(4){
+									text-align: center !important;
+								}
+								thead{
+									background-color: #333; color: #fff !important;
+									font-family: Roboto Thin;
+								}
+							</style>
+							<tbody class="stockLevels-container">
+								
+							</tbody>
+							</table>
+						
+						</div>
+					
+					<br>
+						
+					<br>
+					</div>
+				
+				
+				
+				
+				</div>
+				<br>
+				<div class="ui-grid-a" >
+					<div class="ui-block-a" >
+						<a href="#inventory" data-role="button" data-theme="a" data-icon="delete" style="margin: 0em 0.5em 0em 0em; background-color:red; border: red; text-shadow: none; color: white !important;" ><b>Discard Changes</b></a>
+					</div>
+					
+					<div class="ui-block-b">
+						<button id="set-inventory-pricing-1" href="#" data-role="button" data-theme="a" data-icon="arrow-r" style="margin: 0em 0.5em 0em 0em; background-color:green; border: green; text-shadow: none; color: white !important;" ><b>Finish</b></button>
+					</div>
+				</div>
+				<br>
+				<br>
+				<br>
+				
+			</div>
+		</div>
+	
+<div data-role="page" id="newInventory">
+		
+		<div data-role="header" data-theme="b"  data-position="fixed" data-toggle="false" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);" >
+				<a href="#inventory" class="upload-queue ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
+				<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">New Inventory</h1>
+		</div><!-- /header -->
+
+		<div data-role="content" style="background: #fff; ">
+			<div style="background-color: #43a2c4 !important; border-radius: 5px; ">
+					<div style="padding: 0.5em 1.5em 0.5em 1.5em;">
+						
+						<br>
+						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						<br>
+						
+						<form id="inventory-form" name="inventory" method="post" action="">
+						<input type="hidden" name="key" id="key-field" value="" />
+						
+						
+						<div class="ui-grid-a" >
+							<div class="ui-block-a">
+								
+									<select id="item-select-field" >
+										<option style="text-shadow: none !important;"> - Select Item - </option>
+									</select>
+								
+							</div>
+						
+							<div class="ui-block-b">
+								
+								<select name="category" id="category-field" placeholder="Category" required data-validate="text" data-error-title="Invalid Category" data-error-msg="Please provide a valid category" >
+									<option value="" style="text-shadow: none !important;">Item Category</option>
+								</select>
+								
+							</div>
+						
+						</div>
+						
+						<p style="border-bottom: 1px dotted #ccc;"></p>
+						
+						<div class="ui-grid-a">
+							<div class="ui-block-a" style="width: 50%; padding-right: 3px;">
+								<input type="text"  name="item_barcode" id="item_barcode-field" placeholder="Barcode Number" style="height: 2.65em;" required data-validate="barcode" data-error-title="Invalid Barcode" data-error-msg="Please provide a valid barcode, barcodes cannot begin with zero(0)" />
+							</div>
+							<div class="ui-block-b" style="width: 50%; padding-left: 3px;">
+								<a href="#" class="button-scan" data-role="button" data-theme="a" data-icon="camera"  style="background-color:green; border: none; text-shadow: none; color: white !important; " >Scan Barcode</a>
+							</div>
+						</div>
+						
+						<div class="ui-grid-a">
+							<div class="ui-block-a" style="width: 50%; padding-right: 3px;">
+								
+							<img src="image bank/default.jpg" id="myImage" style="float: right; height: 4em;">
+							</div>
+						
+							<div class="ui-block-b" style="width: 50%; padding-left: 3px;">
+								<a href="#" id="capture-image-button" data-role="button" data-theme="a" data-icon="camera"  style="background-color:green; border: none; text-shadow: none; color: white !important; " >Take Picture</a>
+							</div>
+						</div>
+						<br>
+						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						<br>
+						<input type="text" name="item_desc" id="item_desc-field" placeholder="Item Description" required data-validate="text" data-error-title="Invalid Item Description" data-error-msg="Please provide a valid item description" />
+						
+						<br />
+						
+						
+						<input type="submit" value="Save Item" />
+						
+						<br>
+					</form>
+					
+						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						
+						<br>
+						<table data-role="table"  style="" class="inventory ui-responsive " >
+							
+						<style type="text/css">
+							tbody#newly-listed-inventory-container tr td:nth-child(1){
+								width: 10px !important;  background-color: #fff !important; text-align: center;
+							}
+							tbody#newly-listed-inventory-container tr td img{
+								height: 4em;
+							}
+							tbody#newly-listed-inventory-container tr td{
+								vertical-align:middle;
+							}
+							tbody#newly-listed-inventory-container tr td:nth-child(2){
+								text-shadow: none; color: black; font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;
+							}
+							tbody#newly-listed-inventory-container tr:nth-child(odd){
+								background-color: #bde3ea;
+							}
+							tbody#newly-listed-inventory-container tr:nth-child(even){
+								background-color: #fff;
+							}
+							tbody#newly-listed-inventory-container tr{
+								display:none;
+							}
+							tbody#newly-listed-inventory-container tr:nth-child(1),
+							tbody#newly-listed-inventory-container tr:nth-child(2),
+							tbody#newly-listed-inventory-container tr:nth-child(3),
+							tbody#newly-listed-inventory-container tr:nth-child(4),
+							tbody#newly-listed-inventory-container tr:nth-child(5){
+								display:table-row;
+							}
+							tbody#newly-listed-inventory-container tr:nth-child(odd){
+								background-color: #bde3ea; 
+							}
+							tbody#newly-listed-inventory-container tr:nth-child(even){
+								background-color: #fff;
+							}
+						</style>
+							<thead style="font-family: Roboto Thin; font-size:0.9em; font-weight: 100; background-color: #43a2c4; color: #fff;  line-height: 1.4em; text-shadow: none;">
+							   <tr style="padding: 0em !important;">
+								 <th></th>
+								 <th style="padding-right: 0.5em;">Item</th>
+								 <th style="padding-right: 0.5em;">Created On</th>
+							   </tr>
+							 </thead>
+							 <tbody id="newly-listed-inventory-container">
+							   
+							 </tbody>
+							</table>
+							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						</div>
+						<br>
+						
+						<br>
+						
+					</div>
+					
+				</div>
+				<br>
+				
+		</div><!-- /content -->
+
+		<div data-role="footer" >
+			
+		</div><!-- /footer -->
+		
+	</div><!-- /page -->
+
 	
 </div>
 
-</body>
+<div data-role="page" id="damages">
+		
+		<div data-role="header" data-theme="b"  data-position="fixed" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);" >
+				<a href="#inventory" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
+				<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Damages</h1>
+		</div><!-- /header -->
 
-<div data-role="page" id="settings">
-		<div data-role="panel" id="menupanel-7" data-position="left" data-display="overlay" class="ui-panel ui-panel-position-left ui-panel-display-overlay ui-body-c ui-panel-animate ui-panel-closed" data-theme="b" style="background-color: #fff;  ">
+		<div data-role="content" style="background: #fff; ">
+			<div style="background-color: #43a2c4 !important; border-radius: 5px; ">
+					<div style="padding: 0.5em 1em 0em 1em;">
+						<div class="ui-grid-a" >
+							<div class="ui-block-a">
+								
+									<select name="select-choice-a" id="select-choice-a" >
+										<option style="text-shadow: none !important;">Select Category</option>
+										<option value="standard">New Supplier</option>
+										<option value="rush">Mrs Adekeye</option>
+										<option value="express">Mr Obinna</option>
+										<option value="overnight">Miss Aisha</option>
+									</select>
+								
+							</div>
+						
+							<div class="ui-block-b">
+								
+									<select name="select-choice-a" id="select-choice-a" >
+										<option style="text-shadow: none !important;">Select Item</option>
+										<option value="standard">New Category</option>
+										<option value="cereal">Cereal</option>
+										<option value="washing liquid">Washing Liquid</option>
+										<option value="beverages">Beverages</option>
+										<option value="beverages">General</option>
+									</select>
+								
+							</div>
+						
+						</div>
+						
+						<p style="text-align: center; font-family: Roboto Thin !important; font-size: 2.2em !important; color: white;">or</p>
+						
+						<div class="ui-grid-a">
+							<div class="ui-block-a" style="width: 50%; padding-right: 3px;">
+								
+								
+								<input type="text"  name="itemBarcode" id="itemBarcode" placeholder="Barcode Number" style="height: 2.65em;">
+							
+							</div>
+						
+							<div class="ui-block-b" style="width: 50%; padding-left: 3px;">
+								<a href="#" data-role="button" data-theme="a" data-icon="camera"  style="background-color:green; border: none; text-shadow: none; color: white !important; " >Scan Barcode</a>
+							</div>
+						
+						</div>
+						
+						
+						<div class="ui-grid-a">
+							<div class="ui-block-a" style="width: 50%; padding-right: 3px;">
+								<input type="text" name="itemDesc" id="itemDesc" placeholder="Item Selling Price" style="height: 2.65em;">	
+							</div>
+						
+							<div class="ui-block-b" style="width: 50%; padding-left: 3px;">
+								<input type="number" name="itemQty" id="itemQty" placeholder="Quantity of Items Damaged" style="height: 2.65em;">
+							</div>
+						
+						</div>
+						<br>
+						<label for="textarea" style="text-shadow: none; font-family: Roboto Thin !important; font-size: 1.7em !important; color: white;">Please describe the damages</label>
+						<textarea cols="40" rows="8" name="textarea" id="textarea" class="ui-input-text ui-shadow-inset ui-body-inherit ui-corner-all ui-textinput-autogrow" style="height: 51px;"></textarea>
+						
+						<br>
+						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						<br>
+						<a href="#" data-role="button" data-theme="a" data-icon="plus"  style="background-color:green; border: none; text-shadow: none; color: white !important; " >Save Damage Report</a>
+						
+						<br>
+					</div>
+					
+				</div>
+					
+				
+				
+				
+				
+		</div><!-- /content -->
+
+		<div data-role="footer">
+			
+		</div><!-- /footer -->
+		
+	</div><!-- /page -->
+
+<div data-role="page" id="stockLevels">
+		
+		<div data-role="header" id="hd" data-theme="b" style="height: 3.5em;">
+				<a href="#inventory" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
+				<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Item Stock Levels</h1>
+		</div><!-- /header -->
+		
+		<div data-role="content" style="background: #fff;">
+	
+				<div style="background-color: #43a2c4 !important; border-radius: 5px;">
+					<div style="padding: 1em 1em 0em 1em;">
+					
+						<div class="ui-grid-a" >
+							<div class="ui-block-a">
+								<select id="filter-category-field" >
+									<option value="" style="text-shadow: none !important;">All Categories</option>
+								</select>
+							</div>
+							
+							<div class="ui-block-b">
+								<select id="filter-stores-field" >
+									<option style="text-shadow: none !important;">Select Store</option>
+								</select>
+							</div>
+						
+						</div>
+						<br>
+							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						<br>
+						<div style="padding: 0.5em 1.5em 0.5em 1.5em;">
+						
+						<table data-role="table"  style="" class="inventory ui-responsive" >
+							
+							<thead style="font-family: Roboto Thin; opacity: 0.6; font-size:0.9em; font-weight: 100; background-color: #000; color:#fff;  line-height: 1.4em; text-shadow: none;">
+							   <tr style="padding: 0em !important;">
+								 <th></th>
+								 <th style="padding-right: 0.5em;">Product</th>
+								 <th style="width:5%; padding-right: 0.5em;">Qty</th>
+								 
+								 <th style="width: 20%; padding-right: 0.5em;  text-align: center !important;">Selling Price (&#8358;)</th>
+								
+								
+								 <th style="padding-right: 0.5em; text-align: center !important;">Supplier</th>
+							   </tr>
+							 </thead>
+							 <style type="text/css">
+								tbody.stockLevels-container tr td:nth-child(1) img{
+									max-height:60px;
+								}
+								
+								tbody.stockLevels-container tr td{
+									vertical-align:middle;
+									display:table-cell;
+									text-shadow: none; color: black;
+									font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;
+								}
+								tbody.stockLevels-container tr:nth-child(odd) td{
+									background-color: #bde3ea; 
+								}
+								tbody.stockLevels-container tr:nth-child(even) td{
+									background-color: #fff;
+								}
+								
+								tbody.stockLevels-container tr td:nth-child(1){
+									width: 10px !important;  background-color: #fff; text-align: center;
+								}
+								tbody.stockLevels-container tr td:nth-child(5){
+									font-size: 1em;
+								}
+								tbody.stockLevels-container tr td:nth-child(4){
+									text-align: center !important;
+								}
+								tbody.stockLevels-container tr td a{
+									color: white !important; background-color: green !important; margin: 0.3em 0 0 0.5em !important; font-family: 'Roboto Thin' !important; font-weight: normal !important; text-shadow: none !important; border: none !important;
+								}
+							</style>
+							<tbody class="stockLevels-container">
+								
+							</tbody>
+							</table>
+							
+							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						</div>
+						<br>
+						<br>
+							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						<br>
+						<a href="" data-role="button" data-theme="e" data-icon="arrow-r">Export as email</a>
+						
+						
+					</div>
+					<br>
+					
+				</div>
+				
+			</div>
+		
+</div>
+
+</div>
+
+<div data-role="page" id="supplier">
+		<div data-role="panel" id="menupanel-3" data-position="left" data-display="overlay" class="ui-panel ui-panel-position-left ui-panel-display-overlay ui-body-c ui-panel-animate ui-panel-closed" data-theme="b" style="background-color: #fff;  ">
 
 			<div class="ui-panel-inner" >
 			
 				<ul data-role="listview" data-theme="b">
 				
 				
-					<li class="lidec"><a class="ui-btn ui-icon-home ui-btn-icon-left" href="#dashboard">Dashboard</a></li>
-					<li  class="lidec"><a class="ui-btn ui-icon-info ui-btn-icon-left" href="#inventory">Inventory</a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-gear ui-btn-icon-left" href="#records">Records</a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#sales">Sales</a></li>
-					
-					<li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" href="#supplier">Supplier</a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-home ui-btn-icon-left" href="#dashboard"><b>Dashboard</b></a></li>
+					<li  class="lidec"><a class="ui-btn ui-icon-info ui-btn-icon-left" href="#inventory"><b>Inventory</b><span class="ui-li-count ui-btn-corner-all">38</span></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-calendar ui-btn-icon-left" href="#records"><b>Records</b></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-shop ui-btn-icon-left" href="#sales"><b>Sales</b></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notfcns"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all">3</span></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" href="#suppliers"><b>Settings</b></a></li>
 			
 				</ul>	
 			
+		
+			
+				
 			</div>
 			<div>
 				<img style="margin: 3em 4em !important;" src="css/images/icon.png" />
 			</div>
 			
 	</div>
-		<div data-role="header" data-theme="b">
-				<a href="#menupanel-7" data-ajax="false" rel="external" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext" data-transition="none">Menu</a>
-				<h1>Settings</h1>
+		<div data-role="header" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  data-position="fixed">
+				<a href="#menupanel-3" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext" data-transition="none">Menu</a>
+					<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Supplier</h1>
 		</div><!-- /header -->
 		
 		<div data-role="content" style="background: #f1f1f1;">
 	
 				<div style="background-color: #43a2c4 !important; border-radius: 5px;">
 					<div style="padding: 1em 1em 0em 1em;">
+					
 						
-						<form method="post" action="" name="sign-up" id="sign-up-form">
+					<select name="supplier" id="supplier-select-box">
+						<option value="new">Add New Supplier</option>
+					</select>
+					
+					<form method="post" action="" name="suppliers" id="suppliers-form">
+						<input type="hidden" name="key" id="key-field" value="" data-validate="text" />
+						<input type="text" name="supplier" id="supplier-field" placeholder="Supplier Name" required data-validate="text" data-error-title="Invalid supplier" data-error-msg="Provide a valid Supplier Name" />
+						<input type="text" name="location" id="location-field" placeholder="Supplier Location" required data-validate="text" data-error-title="Invalid Supplier Location" data-error-msg="Provide a valid supplier location" />
+						
+						<div class="ui-grid-a">
+							<div class="ui-block-a" style="width: 55% !important; padding-top:3px;"><input type="tel" name="mobile" id="mobile-field" data-validate="tel" placeholder="Mobile" protocol="tel:"></div>
+							<div class="ui-block-b" style="width: 45% !important;"><a  href="#" id="mobile-field-link" data-role="button" data-theme="b" data-icon="phone" style="height: 1em; font-weight: normal !important; text-shadow: none; background-color: green; border: none;">Call</a></div>
+						</div>
+						<div class="ui-grid-a">
+							<div class="ui-block-a" style="width: 55% !important; padding-top:3px;"><input type="email" name="email" id="email-field" data-validate="email" placeholder="Email" protocol="mailto:"></div>
+							<div class="ui-block-b" style="width: 45% !important;"><a href="#" id="email-field-link" data-role="button" data-theme="b" data-icon="mail" style="height: 1em; font-weight: normal !important; text-shadow: none; background-color: green; border: none;">Email</a></div>
+						</div>
+						
+						<input type="submit" value="Save" />
+					</form>
+					
+						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						<br>			
+						
+						<style type="text/css">
+							#last-supply-activity-container td,
+							#suppliers-list-container td{
+								font-size: 1em; color: white; text-shadow: none;
+							}
+							#last-supply-activity-container tr,
+							#suppliers-list-container tr{
+								display:none;
+							}
+							#last-supply-activity-container tr:nth-child(1),
+							#last-supply-activity-container tr:nth-child(2),
+							#last-supply-activity-container tr:nth-child(3),
+							#last-supply-activity-container tr:nth-child(4),
+							#last-supply-activity-container tr:nth-child(5),
+							#suppliers-list-container tr:nth-child(1),
+							#suppliers-list-container tr:nth-child(2),
+							#suppliers-list-container tr:nth-child(3),
+							#suppliers-list-container tr:nth-child(4),
+							#suppliers-list-container tr:nth-child(5) {
+								display:table-row;
+							}
+							tbody#last-supply-activity-container tr td:nth-child(1){
+								width: 10px !important;  background-color: #fff !important; text-align: center;
+							}
+							tbody#last-supply-activity-container tr td{
+								vertical-align:middle;
+								display:table-cell;
+								text-shadow: none; color: black;
+								font-family: Roboto; font-size: 1em; font-weight: 400 !important;
+								text-align: center;
+							}
+							tbody#last-supply-activity-container tr td:nth-child(2){
+								text-align:left;
+							}
+							tbody#last-supply-activity-container tr:nth-child(odd){
+								background-color: #bde3ea; 
+							}
+							tbody#last-supply-activity-container tr:nth-child(even){
+								background-color: #fff;
+							}
+							tbody#last-supply-activity-container tr td img{
+								max-height:4em;
+							}
+						</style>
+						
+						<table data-role="table" class="inventory ui-responsive">
+						<thead>
+							<tr style="font-size:1em; font-weight: 100; background-color: #333; color: #fff;  line-height: 1.4em; text-shadow: none;">
+								<td>Suppliers</td>
+								<td>Modified On</td>
+							</tr>
+						</thead>
+						<tbody id="suppliers-list-container">
+							
+						</tbody>
+						</table>
+						
+						<br>
+						<h3 style="color: white; text-shadow: none !important; "><span id="last-supply-activity-supplier-name"></span> &rarr; Last supply activity &darr;</h3>
+						<br>
+						
+						<br>
+						<table data-role="table"  style="" class="inventory ui-responsive " >
+							
+							<thead style="opacity: 0.8; font-family: Roboto Thin; font-size:0.9em; font-weight: 100; background-color: #43a2c4; color: #fff;  line-height: 1.4em; text-shadow: none;">
+							   <tr style="padding: 0em !important;">
+								 <th></th>
+								 <th style="width:40%; padding-right: 0.5em;">Item</th>
+								 <th style="width:35%; padding-right: 0.5em;text-align: center !important;">Qty</th>
+								 <th style="width: 35%; padding-right: 0.5em; text-align: center !important;">Date</th>
+								
+							   </tr>
+							 </thead>
+							 <tbody id="last-supply-activity-container">
+							   
+							 </tbody>
+							</table>
+						
+						</table>
+						
+						<br>
+						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						<br>
+						<h3 style="color: white; text-shadow: none !important; text-align: right;">Oustanding balance owed : <span id="supplier-amount-owed">0.00</span></h3>
+						<br>
+						
+					</div>
+					
+					
+					
+				
+				
+			</div>
+			</div>
+		<div data-role="footer"  >
+			
+		</div><!-- /footer -->
+		
+		
+		</div>
+
+<div data-role="page" id="restock">
+		
+		<div data-role="header" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);" >
+			<a href="#inventory" id="manage-inventory-back-button" class="upload-queue ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
+			<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Manage Inventory</h1>
+		</div><!-- /header -->
+
+		<div data-role="content" style="background-color: #f1f1f1;">
+	
+				<div style="background-color: #43a2c4 !important; border-radius: 5px; ">
+					<div style="padding: 1em 1em 0em 1em;">
+			<form action="" method="post" name="stock" id="stock-form">
+				
+					<div style="padding: 1em 1em 0em 1em;">
+						<input type="hidden" name="key" id="key-field" value="" />
+						
+						<input type="hidden" name="supply" id="supply-field" value="" />
+						
+						<div class="ui-grid-a" >
+							<div class="ui-block-a">
+								<select id="filter-category-field" >
+									<option value="" style="text-shadow: none !important;">All Categories</option>
+								</select>
+							</div>
+							<div class="ui-block-b">
+								<select name="store_name" id="store_name-field" required data-validate="text" data-error-title="Invalid Item" data-error-msg="Please select a store">
+									<option value="" style="text-shadow: none !important;">Select Store</option>
+									<option value="store">The Store</option>
+								</select>
+							</div>
+						</div>
+						
+						<br />
+						<div class="ui-grid-a" >
+							<div class="ui-block-a">
+								<select name="item_barcode" id="item_barcode-field" required data-validate="text" data-error-title="Invalid Item" data-error-msg="Please select a valid item">
+									<option value="">Select Item</option>
+								</select>
+							</div>
+							<div class="ui-block-b">
+								<a href="#" class="button-scan" data-role="button" data-theme="a" data-icon="camera"  style="background-color:green; border: none; text-shadow: none; color: white !important; " >Scan Barcode</a>
+							</div>
+						</div>
+						
+						<br />
+						<select name="supplier" id="supplier-field" placeholder="Select Supplier" required data-validate="text" data-error-title="Invalid supplier" data-error-msg="Select a valid Supplier" >
+							<option value="" style="text-shadow: none !important;">Select Supplier</option>
+						</select>
+						<br />
+						
+						<div class="ui-grid-a">
+							<div class="ui-block-a" style="padding-right:0.5em;">
+								<label for="cost_price-field" style="color: white; text-shadow: none; ">Unit Cost Price:</label>
+								<input type="number" name="cost_price" id="cost_price-field" min="0" step="any" placeholder="Unit Cost Price" required data-validate="number" data-error-title="Invalid Cost Price" data-error-msg="Please provide a valid Cost Price" />
+							</div>
+							<div class="ui-block-b" style="padding-left:0.5em;">
+								<label for="selling_price-field" style="color: white; text-shadow: none; ">Unit Selling Price:</label>
+								<input type="number" name="selling_price" id="selling_price-field" min="0" step="any" placeholder="Unit Selling Price" required data-validate="number" data-error-title="Invalid Selling Price" data-error-msg="Please provide a valid Selling Price" />
+							</div>
+						</div>
+						<br />
+						<div class="ui-grid-a">
+							<div class="ui-block-a" style="padding-right:0.5em;">
+								<label for="item_qty-field" style="color: white; text-shadow: none; ">Item Quantity:</label>
+								<input type="number" name="item_qty" id="item_qty-field" min="0" step="1" placeholder="Item Quantity" required data-validate="number" data-error-title="Invalid Quantity" data-error-msg="Please provide a quantity" />
+							</div>
+							<div class="ui-block-b" style="padding-left:0.5em;">
+								<label for="expiry_date-field" style="color: white; text-shadow: none; ">Expiry Date:</label>
+								<input type="date" name="expiry_date" id="expiry_date-field" value="" data-validate="date" data-error-title="Invalid Expiry Date" data-error-msg="Please provide a valid expiry valid" />
+							</div>
+						</div>
+						
+						<p style="border-bottom: 1px dotted rgb(112,112,112);"></p>
+						<input type="submit" value="Stock" data-icon="arrow-r" />
+						<br>
+				</div>
+			</form>
+			
+			<form action="" method="post" name="supply" id="supply-form">
+				<div style="padding: 1em 1em 0em 1em;">
+						<label style="color: white; text-align:center; text-shadow: none; ">Supply Summary</label>
+						<br />
+						<input type="hidden" name="key" id="key-field" value="" required data-validate="text" data-error-title="No Items were Supplied!" data-error-msg="Please add items to stock first" />
+						
+						<input type="text" id="total_amount-dummy" placeholder="Total Cost of all Items Supplied : " data-placeholder="Total Cost of all Items Supplied : " disabled="true" />
+						
+						<input type="hidden" name="total_amount" id="total_amount-field" placeholder="Total Cost of all Items Supplied : " data-validate="number" min="0" step="any" required data-validate="number" data-error-title="No Items were Supplied!" data-error-msg="Please add items to stock first" />
+						
+						<input type="hidden" name="total_items" id="total_items-field" placeholder="Total Number of all Items Supplied : " data-validate="number" min="0" step="1" required data-validate="number" data-error-title="No Items were Supplied!" data-error-msg="Please add items to stock first" />
+						
+						<input type="number" name="total_amount_paid" id="total_amount_paid-field" min="0" step="any" value="" placeholder="Total Amount Paid to Supplier : " />
+						<!--<input type="number" name="amount_paid" id="amount_paid-field" min="0" step="any" placeholder="Total Amount Paid to Supplier : " required data-validate="number" data-error-title="Invalid Amount Paid" data-error-msg="Please provide a valid amount" />-->
+						
+						<input type="text" id="total_amount_owed-dummy" placeholder="Amount Owed Supplier : " data-placeholder="Amount Owed Supplier : " disabled="true" />
+						
+						<p style="border-bottom: 1px dotted rgb(112,112,112);"></p>
+						<input type="submit" value="Finish" data-icon="arrow-r" />
+						<br>
+					</div>
+				</form>
+			</div>
+			
+			</div>
+			
+		</div>
+		
+</div>
+
+<div data-role="page" id="inventory">
+	<div data-role="panel" id="menupanel-4" data-position="left" data-display="overlay" class="ui-panel ui-panel-position-left ui-panel-display-overlay ui-body-c ui-panel-animate ui-panel-closed" data-theme="b" style="background-color: #fff; ">
+
+			<div class="ui-panel-inner" >
+			<ul data-role="listview" data-theme="b">
+			
+					<li class="lidec"><a class="ui-btn ui-icon-home ui-btn-icon-left" href="#dashboard"><b>Dashboard</b></a></li>
+					<li  class="lidec"><a class="ui-btn ui-icon-check ui-btn-icon-left" href="#sales"><b>Sales</b></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-gear ui-btn-icon-left" href="#records"><b>Records</b></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all">6</span></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notfcns"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all">3</span></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" href="#settings"><b>Settings</b></a></li>
+			
+			</ul>	
+		
+			
+				
+			</div>
+		<div>
+				<img style="margin: 3em 4em !important;" src="css/images/icon.png" />
+			</div>
+			
+		</div>
+	
+	<div data-role="header" data-theme="b" data-tap-toggle="false"  data-position="fixed" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  >
+		
+		
+		<a href="#menupanel-4" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
+		<a href="#damages" class="ui-btn ui-shadow ui-corner-all ui-icon-minus ui-btn-icon-notext">damages</a>
+		
+		<h1  style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Inventory</h1>
+		
+	</div><!-- /header -->
+
+	<div role="main" class="ui-content" style="background-color: #f1f1f1;">
+					<div class="ui-grid-a" >
+						<div class="ui-block-a">
+							<div class="panl">
+								<h3>Total inventory value</h3>
+								<h6 class="total-value-of-inventory">0.00</h6>
+							</div>
+						</div>
+						
+						<div class="ui-block-b">
+							<div class="panl">
+								<h3>Total number of items</h3>
+								<h6 class="total-items-in-stock">0</h6>
+							</div>
+						</div>
+						
+					</div>
+					
+					<div class="ui-grid-a" style="margin: 0.2em;">
+						<div class="ui-block-a" >
+							<a href="#newInventory" data-role="button" data-theme="b" data-icon="plus" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin;"><b>New Inventory</b></a>
+						</div>
+						<div class="ui-block-b">
+							<a href="#restock" data-role="button" data-theme="b" data-icon="forward" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin;"><b>Manage Inventory</b></a>
+						</div>
+					</div><!-- /grid-a -->
+					
+					<div class="ui-grid-a" style="margin: 0.2em;">
+						<div class="ui-block-a" >
+							<a href="#stockLevels" data-role="button" data-theme="b" data-icon="eye" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin;"><b>View Stock Levels</b></a>
+						</div>
+						<div class="ui-block-b">
+							<a href="#setPricing" data-role="button" data-theme="b" data-icon="tag" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin;"><b>Set Pricing</b></a>
+						</div>
+					</div><!-- /grid-a -->
+					
+					<br>
+					
+					<div data-role="collapsible" data-theme="b" data-collapsed="false" data-collapsed-icon="carat-d" data-expanded-icon="carat-u">
+					
+						<h3 style="color: white; font-size: 1em !important; font-weight: 100 !important; text-shadow: none !important; text-align: center !important;">Current inventory listing <span class="ui-li-count ui-btn-corner-all"><strong class="total-unique-items">-</strong></span></h3>
+					
+						<br>
+						<div class="ui-grid-a" >
+							<div class="ui-block-a">
+								
+									<select id="filter-category-field">
+										<option value="" style="text-shadow: none !important;">All Categories</option>
+									</select>
+								
+							</div>
+						
+							<div class="ui-block-b">
+								
+								<select id="filter-item-field">
+									<option style="text-shadow: none !important;">Select Item</option>
+								</select>
+								
+							</div>
+						
+						</div>
+						
+						<table data-role="table"  style="" class="inventory ui-responsive" >
+							
+							<thead style="font-family: Roboto Thin; opacity: 0.6; font-size:0.9em; font-weight: 100; background-color: #43a2c4; color: white;  line-height: 1.4em; text-shadow: none;">
+							   <tr style="padding: 0em !important;">
+								 <th></th>
+								 <th style="padding-right: 0.5em;">Product</th>
+								 <th style="width:5%; padding-right: 0.5em;">Qty</th>
+								 
+								 <th style="width: 20%; padding-right: 0.5em;  text-align: center !important;">Selling Price (&#8358;)</th>
+								
+								
+								 <th style="padding-right: 0.5em; text-align: center !important;">Supplier</th>
+							   </tr>
+							 </thead>
+							 <style type="text/css">
+								tbody.stockLevels-container tr td:nth-child(1) img{
+									max-height:60px;
+								}
+								
+								tbody.stockLevels-container tr td{
+									vertical-align:middle;
+									display:table-cell;
+									text-shadow: none; color: black;
+									font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;
+								}
+								tbody.stockLevels-container tr:nth-child(odd) td{
+									background-color: #bde3ea; 
+								}
+								tbody.stockLevels-container tr:nth-child(even) td{
+									background-color: #fff;
+								}
+								
+								tbody.stockLevels-container tr td:nth-child(1){
+									width: 10px !important;  background-color: #fff; text-align: center;
+								}
+								tbody.stockLevels-container tr td:nth-child(5){
+									font-size: 1em;
+								}
+								tbody.stockLevels-container tr td:nth-child(4){
+									text-align: center !important;
+								}
+								tbody.stockLevels-container tr td a{
+									color: white !important; background-color: green !important; margin: 0.3em 0 0 0.5em !important; font-family: 'Roboto Thin' !important; font-weight: normal !important; text-shadow: none !important; border: none !important;
+								}
+							</style>
+							<tbody class="stockLevels-container">
+								
+							</tbody>
+							</table>
+							
+						
+						<br>
+					</div>
+					
+					<p>&nbsp;<p/>
+					
+					<div data-role="collapsible" data-theme="b"  data-collapsed-icon="carat-d" data-expanded-icon="carat-u">
+					
+						<h3 style="color: white; font-size: 1em !important; font-weight: 100 !important; text-shadow: none !important; text-align: center !important;">Low stock level<span class="ui-li-count ui-btn-corner-all">4</span></h3>
+					
+					
+						
+							<table data-role="table"  style="" class="inventory ui-responsive " >
+							
+							<thead style="font-family: Roboto Thin; opacity: 0.6; font-size:0.9em; font-weight: 100; background-color: #43a2c4; color: white;  line-height: 1.4em; text-shadow: none;">
+							   <tr style="padding: 0em !important;">
+								 <th></th>
+								 <th style="padding-right: 0.5em;">Product</th>
+								 <th style="width:5%; padding-right: 0.5em; text-align: center;  ">Qty</th>
+								 
+								 <th style="width: 20%; padding-right: 0.5em;  text-align: center !important;">Cost Price (N)</th>
+								
+								
+								 <th style="padding-right: 0.5em; text-align: center !important;">Supplier</th>
+							   </tr>
+							 </thead>
+							 <tbody>
+							   <tr>
+								 <td style="width: 10px !important;  background-color: #fff; text-align: center;"><img src="image bank/Dettol Soap - 70g.jpg" class="ui-li-thumb" style="height: 4em;"></td>
+								  <td style="padding-top: 2.2em !important; background-color: #bde3ea; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">Dettol Soap - 70g</span></td>
+								 <td style="text-align: center; padding-top: 2em !important; background-color: rgba(238,17,17,0.7); text-shadow: none; color: white;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">2</span></td>
+								
+								 <td style="text-align: center !important; padding-top: 2em !important; background-color: #bde3ea; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 300 !important;">80.00</span></td>
+							
+								<td style="padding-top: .5em !important; background-color: #bde3ea; text-shadow: none; color: black;">
+									<a  href="tel:+23408183140303" data-role="button" data-theme="a" data-icon="phone" style="color: white; background-color: green; margin: 0.3em 0 0 0.5em; font-family: 'Roboto Thin'; font-weight: normal !important; text-shadow: none; border: none;"><b>Mrs Ateke</b></a>
+								</td>
+								
+							   </tr>
+							   
+							   <tr>
+								 <td style="width: 10px !important;  background-color: #fff; text-align: center;"><img src="image bank/Febreze - 275g.jpg" class="ui-li-thumb" style="height: 4em;"></td>
+								 <td style="padding-top: 2.2em !important; background-color: #fff; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">Febreze - 275g</span></td>
+								  <td style="text-align: center; padding-top: 2em !important; background-color: rgba(238,17,17,0.7); text-shadow: none; color: white;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">3</span></td>
+								
+								 <td style="text-align: center !important; padding-top: 2.2em !important; background-color: #fff; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 300 !important;">100.00</span></td>
+								
+								
+								<td style="padding-top: .5em !important; background-color: #fff; text-shadow: none; color: black;">
+									<a  href="tel:+23408183140303" data-role="button" data-theme="a" data-icon="phone" style="color: white; background-color: green; margin: 0.3em 0 0 0.5em; font-family: 'Roboto Thin'; font-weight: normal !important; text-shadow: none; border: none;"><b>Mrs Ateke</b></a>
+								</td>
+							   </tr>
+							   
+								<tr>
+								  <td style="width: 10px !important;  background-color: #fff; text-align: center;"><img src="image bank/Ariel - 1kg.jpg" class="ui-li-thumb" style="height: 4em;"></td>
+								 <td style="padding-top: 2.2em !important; background-color: #bde3ea; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">Ariel - 1kg</span></td>
+								   <td style="text-align: center; padding-top: 2em !important; background-color: rgba(238,17,17,0.7); text-shadow: none; color: white;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">6</span></td>
+								 
+								  <td style="text-align: center !important; padding-top: 2.2em !important; background-color: #bde3ea; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 300 !important;">120.00</span></td>
+							
+								
+								<td style="padding-top: .5em !important; background-color: #bde3ea; text-shadow: none; color: black;">
+									<a  href="tel:+23408183140303" data-role="button" data-theme="a" data-icon="phone" style="color: white; background-color: green; margin: 0.3em 0 0 0.5em; font-family: 'Roboto Thin'; font-weight: normal !important; text-shadow: none; border: none;"><b>Mrs Utaka</b></a>
+								</td>
+							   </tr>
+							   
+								 <tr>
+								  <td style="width: 10px !important;  background-color: #fff; text-align: center;"><img src="image bank/Evian - 50cl.jpg" class="ui-li-thumb" style="height: 4em;"></td>
+								 <td style="padding-top: 2.2em !important; background-color: #fff; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">Evian - 50cl</span></td>
+								  <td style="text-align: center; padding-top: 2em !important; background-color: rgba(238,17,17,0.7); text-shadow: none; color: white;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">8</span></td>
+								 
+								  <td style="text-align: center !important; padding-top: 2.2em !important; background-color: #fff; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 300 !important;">50.00</span></td>
+								
+								 
+								<td style="padding-top: .5em !important; background-color: #fff; text-shadow: none; color: black;">
+									<a  href="tel:+23408183140303" data-role="button" data-theme="a" data-icon="phone" style="color: white; background-color: green; margin: 0.3em 0 0 0.5em; font-family: 'Roboto Thin'; font-weight: normal !important; text-shadow: none; border: none;"><b>Mrs Eze</b></a>
+								</td>
+							   </tr>
+							 
+							   
+							   
+								
+							 </tbody>
+							</table>
+							
+							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						
+						
+						<br>
+					</div>
+					
+					<p></p>
+	
+	</div><!-- /content -->
+
+	
+		<div data-role="footer">
+			
+		</div><!-- /footer -->
+		
+</div><!-- /page -->
+
+</div>
+
+<div data-role="page" id="ntfcns" >
+	<div data-role="panel" id="menupanel-5" data-position="left" data-display="overlay" class="ui-panel ui-panel-position-left ui-panel-display-overlay ui-body-c ui-panel-animate ui-panel-closed" data-theme="b" style="background-color: #fff;  ">
+
+			<div class="ui-panel-inner" >
+			
+				<ul data-role="listview" data-theme="b">
+				
+					<li class="lidec"><a class="ui-btn ui-icon-shop ui-btn-icon-left" href="#sales"><b>Sales</b></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-info ui-btn-icon-left" href="#inventory"><b>Inventory</b><span class="ui-li-count ui-btn-corner-all">164</span></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-calendar ui-btn-icon-left" href="#records"><b>Records</b></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all">6</span></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notfcns"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all">3</span></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" href="#settings"><b>Settings</b></a></li>
+			
+				</ul>	
+			
+		
+			
+				
+			</div>
+			<div>
+				<img style="margin: 3em 4em !important;" src="css/images/icon.png" />
+			</div>
+			
+	</div>
+	<div data-role="header" id="hd" data-position="fixed" data-tap-toggle="false" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);" >
+		
+		<a href="#menupanel-5" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
+		
+		
+		<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Notifications</h1>
+		
+		
+	</div><!-- /header -->
+
+	<div role="main" class="ui-content" style="background-color: #f1f1f1;">
+					<div data-role="collapsible" data-theme="b"  data-collapsed-icon="carat-d" data-expanded-icon="carat-u">
+					
+						<h3 style="color: white; font-size: 1em !important; font-weight: 100 !important; text-shadow: none !important; text-align: center !important;">Expiry dates<span class="ui-li-count ui-btn-corner-all">2</span></h3>
+					
+					
+						
+							<table data-role="table"  style="" class="inventory ui-responsive " >
+							
+							<thead style="font-family: Roboto Thin; opacity: 0.6; font-size:0.9em; font-weight: 100; background-color: #43a2c4; color: white;  line-height: 1.4em; text-shadow: none;">
+							   <tr style="padding: 0em !important;">
+								 <th></th>
+								 <th style="padding-right: 0.5em;">Product</th>
+								 <th style="width:20%; padding-right: 0.5em; text-align: center;  ">Expiry Date</th>
+								 
+								 
+								
+								
+								 <th style="padding-right: 0.5em; text-align: center !important;">Supplier</th>
+							   </tr>
+							 </thead>
+							 <tbody>
+							   <tr>
+								 <td style="width: 10px !important;  background-color: #fff; text-align: center;"><img src="image bank/Dettol Soap - 70g.jpg" class="ui-li-thumb" style="height: 4em;"></td>
+								  <td style="padding-top: 2.2em !important; background-color: #bde3ea; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">Dettol Soap - 70g</span></td>
+								 <td style="text-align: center; padding-top: 2em !important; background-color: rgba(238,17,17,0.7); text-shadow: none; color: white;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">19/11/2014</span></td>
+								<td style="padding-top: .5em !important; background-color: #bde3ea; text-shadow: none; color: black;">
+									<a  href="tel:+23408183140303" data-role="button" data-theme="a" data-icon="phone" style="color: white; background-color: green; margin: 0.3em 0 0 0.5em; font-family: 'Roboto Thin'; font-weight: normal !important; text-shadow: none; border: none;"><b>Mrs Ateke</b></a>
+								</td>
+								
+							   </tr>
+							   
+							   <tr>
+								<td style="width: 10px !important;  background-color: #fff; text-align: center;"><img src="image bank/Febreze - 275g.jpg" class="ui-li-thumb" style="height: 4em;"></td>
+								<td style="padding-top: 2.2em !important; background-color: #fff; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">Febreze - 275g</span></td>
+								<td style="text-align: center; padding-top: 2em !important; background-color: rgba(238,17,17,0.7); text-shadow: none; color: white;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">21/11/2014</span></td>
+								<td style="padding-top: .5em !important; background-color: #fff; text-shadow: none; color: black;">
+									<a  href="tel:+23408183140303" data-role="button" data-theme="a" data-icon="phone" style="color: white; background-color: green; margin: 0.3em 0 0 0.5em; font-family: 'Roboto Thin'; font-weight: normal !important; text-shadow: none; border: none;"><b>Mrs Ateke</b></a>
+								</td>
+							   </tr>
+							   
+								
+							 </tbody>
+							</table>
+							
+							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						
+						
+						<br>
+					</div>
+					<br>
+					<div data-role="collapsible" data-theme="b"  data-collapsed-icon="carat-d" data-expanded-icon="carat-u">
+					
+						<h3 style="color: white; font-size: 1em !important; font-weight: 100 !important; text-shadow: none !important; text-align: center !important;">Low stock level<span class="ui-li-count ui-btn-corner-all">4</span></h3>
+					
+					
+						
+							<table data-role="table"  style="" class="inventory ui-responsive " >
+							
+							<thead style="font-family: Roboto Thin; opacity: 0.6; font-size:0.9em; font-weight: 100; background-color: #43a2c4; color: white;  line-height: 1.4em; text-shadow: none;">
+							   <tr style="padding: 0em !important;">
+								 <th></th>
+								 <th style="padding-right: 0.5em;">Product</th>
+								 <th style="width:5%; padding-right: 0.5em; text-align: center;  ">Qty</th>
+								 
+								 <th style="width: 20%; padding-right: 0.5em;  text-align: center !important;">Selling Price (N)</th>
+								
+								
+								 <th style="padding-right: 0.5em; text-align: center !important;">Supplier</th>
+							   </tr>
+							 </thead>
+							 <tbody>
+							   <tr>
+								 <td style="width: 10px !important;  background-color: #fff; text-align: center;"><img src="image bank/Dettol Soap - 70g.jpg" class="ui-li-thumb" style="height: 4em;"></td>
+								  <td style="padding-top: 2.2em !important; background-color: #bde3ea; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">Dettol Soap - 70g</span></td>
+								 <td style="text-align: center; padding-top: 2em !important; background-color: rgba(238,17,17,0.7); text-shadow: none; color: white;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">2</span></td>
+								
+								 <td style="text-align: center !important; padding-top: 2em !important; background-color: #bde3ea; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 300 !important;">80.00</span></td>
+							
+								<td style="padding-top: .5em !important; background-color: #bde3ea; text-shadow: none; color: black;">
+									<a  href="tel:+23408183140303" data-role="button" data-theme="a" data-icon="phone" style="color: white; background-color: green; margin: 0.3em 0 0 0.5em; font-family: 'Roboto Thin'; font-weight: normal !important; text-shadow: none; border: none;"><b>Mrs Ateke</b></a>
+								</td>
+								
+							   </tr>
+							   
+							   <tr>
+								 <td style="width: 10px !important;  background-color: #fff; text-align: center;"><img src="image bank/Febreze - 275g.jpg" class="ui-li-thumb" style="height: 4em;"></td>
+								 <td style="padding-top: 2.2em !important; background-color: #fff; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">Febreze - 275g</span></td>
+								  <td style="text-align: center; padding-top: 2em !important; background-color: rgba(238,17,17,0.7); text-shadow: none; color: white;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">3</span></td>
+								
+								 <td style="text-align: center !important; padding-top: 2.2em !important; background-color: #fff; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 300 !important;">100.00</span></td>
+								
+								
+								<td style="padding-top: .5em !important; background-color: #fff; text-shadow: none; color: black;">
+									<a  href="tel:+23408183140303" data-role="button" data-theme="a" data-icon="phone" style="color: white; background-color: green; margin: 0.3em 0 0 0.5em; font-family: 'Roboto Thin'; font-weight: normal !important; text-shadow: none; border: none;"><b>Mrs Ateke</b></a>
+								</td>
+							   </tr>
+							   
+								<tr>
+								  <td style="width: 10px !important;  background-color: #fff; text-align: center;"><img src="image bank/Ariel - 1kg.jpg" class="ui-li-thumb" style="height: 4em;"></td>
+								 <td style="padding-top: 2.2em !important; background-color: #bde3ea; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">Ariel - 1kg</span></td>
+								   <td style="text-align: center; padding-top: 2em !important; background-color: rgba(238,17,17,0.7); text-shadow: none; color: white;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">6</span></td>
+								 
+								  <td style="text-align: center !important; padding-top: 2.2em !important; background-color: #bde3ea; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 300 !important;">120.00</span></td>
+							
+								
+								<td style="padding-top: .5em !important; background-color: #bde3ea; text-shadow: none; color: black;">
+									<a  href="tel:+23408183140303" data-role="button" data-theme="a" data-icon="phone" style="color: white; background-color: green; margin: 0.3em 0 0 0.5em; font-family: 'Roboto Thin'; font-weight: normal !important; text-shadow: none; border: none;"><b>Mrs Utaka</b></a>
+								</td>
+							   </tr>
+							   
+								 <tr>
+								  <td style="width: 10px !important;  background-color: #fff; text-align: center;"><img src="image bank/Evian - 50cl.jpg" class="ui-li-thumb" style="height: 4em;"></td>
+								 <td style="padding-top: 2.2em !important; background-color: #fff; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">Evian - 50cl</span></td>
+								  <td style="text-align: center; padding-top: 2em !important; background-color: rgba(238,17,17,0.7); text-shadow: none; color: white;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">8</span></td>
+								 
+								  <td style="text-align: center !important; padding-top: 2.2em !important; background-color: #fff; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 300 !important;">50.00</span></td>
+								
+								 
+								<td style="padding-top: .5em !important; background-color: #fff; text-shadow: none; color: black;">
+									<a  href="tel:+23408183140303" data-role="button" data-theme="a" data-icon="phone" style="color: white; background-color: green; margin: 0.3em 0 0 0.5em; font-family: 'Roboto Thin'; font-weight: normal !important; text-shadow: none; border: none;"><b>Mrs Eze</b></a>
+								</td>
+							   </tr>
+							 
+							   
+							   
+								
+							 </tbody>
+							</table>
+							
+							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						
+						
+						<br>
+					</div>
+					<br>
+					<div data-role="collapsible" data-theme="b"  data-collapsed-icon="carat-d" data-expanded-icon="carat-u">
+					
+						<h3 style="color: white; font-size: 1em !important; font-weight: 100 !important; text-shadow: none !important; text-align: center !important;">New stock delivery<span class="ui-li-count ui-btn-corner-all">19</span></h3>
+					
+					
+						
+							<table data-role="table"  style="" class="inventory ui-responsive " >
+							
+							<thead style="font-family: Roboto Thin; opacity: 0.6; font-size:0.9em; font-weight: 100; background-color: #43a2c4; color: white;  line-height: 1.4em; text-shadow: none;">
+							   <tr style="padding: 0em !important;">
+								 <th></th>
+								 <th style="padding-right: 0.5em;">Product</th>
+								 <th style="width:5%; padding-right: 0.5em; text-align: center;  ">Qty</th>
+								 
+								 <th style="width: 20%; padding-right: 0.5em;  text-align: center !important;">Cost Price (N)</th>
+								
+								
+								 <th style="padding-right: 0.5em; text-align: center !important;">Supplier</th>
+							   </tr>
+							 </thead>
+							 <tbody>
+							   <tr>
+								 <td style="width: 10px !important;  background-color: #fff; text-align: center;"><img src="image bank/Dettol Soap - 70g.jpg" class="ui-li-thumb" style="height: 4em;"></td>
+								  <td style="padding-top: 2.2em !important; background-color: #bde3ea; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">Dettol Soap - 70g</span></td>
+								 <td style="text-align: center; padding-top: 2em !important; background-color: #43a2c4; text-shadow: none; color: white;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">2</span></td>
+								
+								 <td style="text-align: center !important; padding-top: 2em !important; background-color: #bde3ea; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 300 !important;">80.00</span></td>
+							
+								<td style="padding-top: .5em !important; background-color: #bde3ea; text-shadow: none; color: black;">
+									<a  href="tel:+23408183140303" data-role="button" data-theme="a" data-icon="phone" style="color: white; background-color: green; margin: 0.3em 0 0 0.5em; font-family: 'Roboto Thin'; font-weight: normal !important; text-shadow: none; border: none;"><b>Mrs Ateke</b></a>
+								</td>
+								
+							   </tr>
+							   
+							   <tr>
+								 <td style="width: 10px !important;  background-color: #fff; text-align: center;"><img src="image bank/Febreze - 275g.jpg" class="ui-li-thumb" style="height: 4em;"></td>
+								 <td style="padding-top: 2.2em !important; background-color: #fff; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">Febreze - 275g</span></td>
+								  <td style="text-align: center; padding-top: 2em !important;background-color: #43a2c4; text-shadow: none; color: white;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">3</span></td>
+								
+								 <td style="text-align: center !important; padding-top: 2.2em !important; background-color: #fff; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 300 !important;">100.00</span></td>
+								
+								
+								<td style="padding-top: .5em !important; background-color: #fff; text-shadow: none; color: black;">
+									<a  href="tel:+23408183140303" data-role="button" data-theme="a" data-icon="phone" style="color: white; background-color: green; margin: 0.3em 0 0 0.5em; font-family: 'Roboto Thin'; font-weight: normal !important; text-shadow: none; border: none;"><b>Mrs Ateke</b></a>
+								</td>
+							   </tr>
+							   
+								<tr>
+								  <td style="width: 10px !important;  background-color: #fff; text-align: center;"><img src="image bank/Ariel - 1kg.jpg" class="ui-li-thumb" style="height: 4em;"></td>
+								 <td style="padding-top: 2.2em !important; background-color: #bde3ea; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">Ariel - 1kg</span></td>
+								   <td style="text-align: center; padding-top: 2em !important;  background-color: #43a2c4; text-shadow: none; color: white;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">6</span></td>
+								 
+								  <td style="text-align: center !important; padding-top: 2.2em !important; background-color: #bde3ea; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 300 !important;">120.00</span></td>
+							
+								
+								<td style="padding-top: .5em !important; background-color: #bde3ea; text-shadow: none; color: black;">
+									<a  href="tel:+23408183140303" data-role="button" data-theme="a" data-icon="phone" style="color: white; background-color: green; margin: 0.3em 0 0 0.5em; font-family: 'Roboto Thin'; font-weight: normal !important; text-shadow: none; border: none;"><b>Mrs Utaka</b></a>
+								</td>
+							   </tr>
+							   
+								 <tr>
+								  <td style="width: 10px !important;  background-color: #fff; text-align: center;"><img src="image bank/Evian - 50cl.jpg" class="ui-li-thumb" style="height: 4em;"></td>
+								 <td style="padding-top: 2.2em !important; background-color: #fff; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">Evian - 50cl</span></td>
+								  <td style="text-align: center; padding-top: 2em !important; background-color: #43a2c4; text-shadow: none; color: white;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">8</span></td>
+								 
+								  <td style="text-align: center !important; padding-top: 2.2em !important; background-color: #fff; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 300 !important;">50.00</span></td>
+								
+								 
+								<td style="padding-top: .5em !important; background-color: #fff; text-shadow: none; color: black;">
+									<a  href="tel:+23408183140303" data-role="button" data-theme="a" data-icon="phone" style="color: white; background-color: green; margin: 0.3em 0 0 0.5em; font-family: 'Roboto Thin'; font-weight: normal !important; text-shadow: none; border: none;"><b>Mrs Eze</b></a>
+								</td>
+							   </tr>
+							 
+							   
+							   
+								
+							 </tbody>
+							</table>
+							
+							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						
+						
+						<br>
+					</div>
+					<br>
+					<div data-role="collapsible" data-theme="b"  data-collapsed-icon="carat-d" data-expanded-icon="carat-u">
+					
+						<h3 style="color: white; font-size: 1em !important; font-weight: 100 !important; text-shadow: none !important; text-align: center !important;">Damages<span class="ui-li-count ui-btn-corner-all">5</span></h3>
+					
+					
+						
+							<table data-role="table"  style="" class="inventory ui-responsive " >
+							
+							<thead style="font-family: Roboto Thin; opacity: 0.6; font-size:0.9em; font-weight: 100; background-color: #43a2c4; color: white;  line-height: 1.4em; text-shadow: none;">
+							   <tr style="padding: 0em !important;">
+								 <th></th>
+								 <th style="padding-right: 0.5em;">Product</th>
+								 <th style="width:5%; padding-right: 0.5em; text-align: center;  ">Qty</th>
+								 
+								 <th style="width: 20%; padding-right: 0.5em;  text-align: center !important;">Selling Price (N)</th>
+								
+								
+								 <th style="padding-right: 0.5em; text-align: center !important;">Supplier</th>
+							   </tr>
+							 </thead>
+							 <tbody>
+							   <tr>
+								 <td style="width: 10px !important;  background-color: #fff; text-align: center;"><img src="image bank/Dettol Soap - 70g.jpg" class="ui-li-thumb" style="height: 4em;"></td>
+								  <td style="padding-top: 2.2em !important; background-color: #bde3ea; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">Dettol Soap - 70g</span></td>
+								 <td style="text-align: center; padding-top: 2em !important; background-color: rgba(238,17,17,0.7); text-shadow: none; color: white;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">2</span></td>
+								
+								 <td style="text-align: center !important; padding-top: 2em !important; background-color: #bde3ea; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 300 !important;">80.00</span></td>
+							
+								<td style="padding-top: .5em !important; background-color: #bde3ea; text-shadow: none; color: black;">
+									<a  href="tel:+23408183140303" data-role="button" data-theme="a" data-icon="phone" style="color: white; background-color: green; margin: 0.3em 0 0 0.5em; font-family: 'Roboto Thin'; font-weight: normal !important; text-shadow: none; border: none;"><b>Mrs Ateke</b></a>
+								</td>
+								
+							   </tr>
+							   
+							   <tr>
+								 <td style="width: 10px !important;  background-color: #fff; text-align: center;"><img src="image bank/Febreze - 275g.jpg" class="ui-li-thumb" style="height: 4em;"></td>
+								 <td style="padding-top: 2.2em !important; background-color: #fff; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">Febreze - 275g</span></td>
+								  <td style="text-align: center; padding-top: 2em !important; background-color: rgba(238,17,17,0.7); text-shadow: none; color: white;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">3</span></td>
+								
+								 <td style="text-align: center !important; padding-top: 2.2em !important; background-color: #fff; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 300 !important;">100.00</span></td>
+								
+								
+								<td style="padding-top: .5em !important; background-color: #fff; text-shadow: none; color: black;">
+									<a  href="tel:+23408183140303" data-role="button" data-theme="a" data-icon="phone" style="color: white; background-color: green; margin: 0.3em 0 0 0.5em; font-family: 'Roboto Thin'; font-weight: normal !important; text-shadow: none; border: none;"><b>Mrs Ateke</b></a>
+								</td>
+							   </tr>
+							   
+								
+							 
+							   
+							   
+								
+							 </tbody>
+							</table>
+							
+							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						
+						
+						<br>
+					</div>
+					<br>
+	</div><!-- /content -->
+
+	
+		<div data-role="footer" style="background: #fff; border: none;">
+			
+			
+		</div><!-- /footer -->
+		
+</div><!-- /page -->
+
+<div data-role="page" id="sales">
+		<div data-role="panel" id="menupanel-6" data-position="left" data-display="overlay" class="ui-panel ui-panel-position-left ui-panel-display-overlay ui-body-c ui-panel-animate ui-panel-closed" data-theme="b" style="background-color: #fff;  ">
+
+			<div class="ui-panel-inner" >
+			
+				<ul data-role="listview" data-theme="b">
+				
+				
+					<li class="lidec"><a class="ui-btn ui-icon-home ui-btn-icon-left" href="#dashboard"><b>Dashboard</b></a></li>
+					<li  class="lidec"><a class="ui-btn ui-icon-info ui-btn-icon-left" href="#inventory"><b>Inventory</b><span class="ui-li-count ui-btn-corner-all">38</span></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-gear ui-btn-icon-left" href="#records"><b>Records</b></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all">6</span></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#ntfcns"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all">3</span></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" href="#settings"><b>Settings</b></a></li>
+			
+				</ul>	
+			
+		
+			
+				
+			</div>
+			<div>
+				<img style="margin: 3em 4em !important;" src="css/images/icon.png" />
+			</div>
+			
+		</div>
+		
+
+		<div data-role="header" id="hd" data-tap-toggle="false" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  data-position="fixed" data-tap-toggle="false">
+				<a href="#menupanel-6" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
+				<a href=""  class="ui-btn ui-shadow ui-corner-all ui-icon-camera ui-btn-icon-notext">Scan</a>
+				
+				<h1  style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Sales</h1>
+		</div><!-- /header -->
+
+		<div data-role="content" style="background-color: #fff;">
+			
+				<style type="text/css">
+					#sales-inventory-list-container li p{
+						background-color: #43A2C4; font-family: Roboto Thin !important; font-size: 0.7em !important; font-weight: bold !important; text-decoration: none; text-align: center; box-shadow: none; padding-top: 0.4em; color: #fff; opacity: 0.9;
+					}
+					#sales-inventory-list-container li a{
+						background-color: #fff !important; border:1px solid #4bb2cf;
+					}
+				</style>
+				<div class="ui-grid-a respons">
+							<div class="ui-block-a" style="width: 50%; padding-right: 2.5em; ">
+								<div  id="sales-inventory-list-container" class="products">
+									<ul data-role="listview"  data-filter="true" data-filter-placeholder="Search" data-inset="true">
+									
+										<li>
+											<a class="ripple" href="#">
+											<img src="image bank/Evian - 50cl.jpg" class="ui-li-thumb" />
+											<p>Evian - 50cl</p>
+											</a>
+										</li>
+										
+										<li>
+											<a class="ripple" href="#">
+												<img src="image bank/Coca Cola - 50cl.jpg" class="ui-li-thumb" />
+												<p>Coca Cola - 50cl</p>
+											</a>
+										</li>
+										
+										
+									</ul>
+								</div>
+						   
+						
+							</div>
+						
+						<div class="ui-block-b" style="width: 50%; padding-left: 3px;">
+						
+								<div style="background-color: #43a2c4; margin-top: 0.5em ;padding: 10px; border-radius: 5px; text-shadow: none; color: white;">
+										<span style=" float: left; line-height: 2em;color: white; font-family: Roboto Thin; font-size: 1.7em !important; font-weight: 300;">Shopping Cart  (<span id="items-in-cart">0</span> items)</span>
+										</br>
+										</br>
+										</br>
+										<table data-role="table" id="table-column-toggle" data-mode="" class="ui-responsive table-stroke">
+											<thead>
+												<tr style=" font-family: Roboto Thin; font-size: 1em; font-weight: bold !important; color: #bde3ea; border-top: 1px solid rgba(0,0,0,.10);border-bottom: 1px solid rgba(0,0,0,.05); line-height: 1.4em;">
+													<td style="width: 40%;">Item</td>
+													<td style="width: 10%; text-align: center;">Qty</td>
+													<td style="width: 20%; text-align: right;">Value (N)</td>
+													
+													<td style="width: 30%;"></td>
+
+												</tr>
+											</thead>
+											<style type="text/css">
+												#sales-table-body td{
+													font-size: 1.2em; font-weight: bold ;
+													vertical-align:middle;
+												}
+												#sales-table-body td:nth-child(2){
+													text-align:center;
+												}
+												#sales-table-body td:nth-child(3){
+													text-align:right;
+													position:relative;
+												}
+												#sales-table-body td:nth-child(4){
+													text-align:right;
+													position:relative;
+												}
+												#sales-table-body td:nth-child(4) a{
+													border: #43a2c4;
+												}
+												#sales-table-body td input[type="number"]{
+													width:100%;
+													padding:0.2em;
+													border-radius:4px;
+													border: #43a2c4;
+												}
+												.ui-flipswitch{
+													padding-top: 1px; padding-bottom: 8px; padding-right: 8px;
+												}
+												.ui-flipswitch .ui-flipswitch-off {
+													padding-top: 6px !important;
+												}
+											</style>
+											<tbody id="sales-table-body" style="font-family: Roboto Thin;">
+												
+											</tbody>
+											
+											<tfoot>
+												
+												<tr style="border-bottom: none !important; ">
+													 <td style="padding-top: 1.2em; font-size: 1.2em; font-weight: 100;"><b>Sub-total</b></td>
+													 <td style="padding-top: 1.2em; font-size: 1.2em; font-weight: 100 ; text-align: right;"></td>
+													 <td style="padding-top: 1.2em; padding-bottom: 1em; font-size: 1.2em; font-weight: 100; text-align: right;"><b id="this-sale-subtotal-amount">0.00</b></td>
+													 
+													 <td style="">
+														
+													</td>
+													 
+												</tr>
+												
+											</tfoot>
+										</table>
+									
+								</div>
+								<br>
+								<form>
+								<div style="background-color: #43a2c4; padding: 10px; border-radius: 5px; text-shadow: none; color: white;">
+									<div class="ui-grid-a">
+											<div class="ui-block-a" style="width: 55% !important;">
+												<div style="padding-top: 0.1em; color: white; font-family: Roboto Thin; font-size: 1.5em; text-shadow: none;">V.A.T</div>
+												<input type="checkbox" data-inline="true" data-mini="true" data-role="flipswitch" name="vat-on-off-switch" id="vat-on-off-switch" checked="checked" />
+											</div>
+											<div class="ui-block-b" style="width: 45% !important; text-align:right; font-size: 1.5em;">
+												<span id="this-sale-total-amount-vat">0.00</span>
+											</div>
+										</div>
+								</div>
+								<br>
+								<div style="background-color: #43a2c4; padding: 10px; border-radius: 5px; text-shadow: none; color: white;">
+			
+										<div class="ui-grid-a">
+											<div class="ui-block-a" style="width: 55% !important;">
+												<span class="mk" for="flip-checkbox-4" style="padding-top: 0.1em; color: white; font-family: Roboto Thin; font-size: 1.5em; text-shadow: none;">Discount</span>
+												<input id="percentage-discount" type="number" min="0" step="any" max="99" value="" placeholder="% Discount" data-mini="true" data-inline="true" />
+											</div>
+											<div class="ui-block-b" style="width: 45% !important; text-align:right; font-size: 1.5em;">
+												<span id="this-sale-total-amount-discount">0.00</span>
+											</div>
+										</div>
+			
+								</div>
+								</form>	
+								<br>
+								<div style="background-color: rgb(112,112,112); padding: 10px; border-radius: 5px; text-shadow: none; color: white; font-family: Roboto Thin; font-size: 1.7em;">
+									Total: &nbsp; <b id="this-sale-total-amount" style="float:right;">0.00</b>
+								</div>
+								<br>
+								
+								<div class="ui-grid-a">
+									<div class="ui-block-a">
+										<a class="co" href="#" id="cancel-order-button" data-role="button" data-theme="b" data-icon="delete" data-transition="none" style="background-color: red; border: red; font-weight: normal !important; text-shadow: none; margin: 0em 0.5em 0em 0em;"><b>Cancel Order</b></a>
+									</div>
+									
+									<div class="ui-block-b">
+										<a class="cho" href="#checkout" id="confirm-this-sale-popup-display-button" data-role="button"  data-theme="b" data-icon="check" data-transition="none" style="font-weight: normal !important; text-shadow: none; background-color: green; border: none; margin: 0em 0em 0em 0.5em;"><b>Check Out</b></a>
+									</div>
+								
+								</div>
+								
+								<br>
+								<br>
+								
+						
+						</div>
+							
+							
+					</div>
+			
+				<!---->
+				
+		</div><!-- /content -->
+
+		
+		<div data-role="footer" >
+			
+		</div>
+		
+</div><!-- /page -->
+
+<div data-role="page" id="checkout">
+		
+		<div data-role="header" id="hd" data-tap-toggle="false" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  data-position="fixed" data-tap-toggle="false">
+				<a href="#sales" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">back</a>
+				
+				
+			<h1  style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Check Out</h1>
+		</div><!-- /header -->
+
+		<div data-role="content" style="background-color: #f1f1f1;">
+			
+			
+				<div class="ui-grid-a respons">
+							<div class="ui-block-a" style="width: 50%; padding-right: 2.5em; ">
+								<div style="background-color: #43a2c4;padding: 10px; border-radius: 5px; text-shadow: none; color: white;">
+										<style type="text/css">
+											#checkout-table-body td{
+												font-size: 1.2em; font-weight: bold ;
+												vertical-align:middle;
+											}
+											#checkout-table-body td:nth-child(2){
+												text-align:center;
+											}
+											#checkout-table-body td:nth-child(3){
+												text-align:right;
+												position:relative;
+											}
+											#checkout-table-body td:nth-child(4){
+												text-align:right;
+												position:relative;
+											}
+											#checkout-table-body td:nth-child(4) a{
+												border: #43a2c4;
+											}
+											#checkout-table-body td input[type="number"]{
+												width:100%;
+												padding:0.2em;
+												border-radius:4px;
+												border: #43a2c4;
+											}
+										</style>
+										<table data-role="table" id="table-column-toggle" data-mode="" class="ui-responsive table-stroke">
+											<thead>
+												<tr style=" font-family: Roboto Thin; font-size: 1em; font-weight: bold !important; color: #bde3ea; border-bottom: 1px solid rgba(0,0,0,.05); line-height: 1.4em;">
+													<td style="width: 40%;">Item</td>
+													<td style="width: 10%; text-align: center;">Qty</td>
+													<td style="width: 20%; text-align: right;">Unit Price (&#8358;)</td>
+													<td style="width: 20%; text-align: right;">Total Price (&#8358;)</td>
+												</tr>
+											</thead>
+											<tbody style="font-family: Roboto Thin;" id="checkout-table-body">
+												
+											</tbody>
+											<tfoot>
+												<tr style="border-bottom: none !important; ">
+													 <td style="padding-top: 1.2em; font-size: 1.2em; font-weight: 100;"><b>VAT (&#8358;)</b></td>
+													 <td></td>
+													 <td></td>
+													 <td style="padding-top: 1.2em; padding-bottom: 1em; font-size: 1.2em; font-weight: 100; text-align:right;"><b id="checkout-vat">0.00</b></td> 
+												</tr>
+												
+												<tr style="border-bottom: none !important; ">
+													 <td style="padding-top: 1.2em; font-size: 1.2em; font-weight: 100;"><b>Discount (&#8358;)</b></td>
+													 <td></td>
+													 <td></td>
+													 <td style="padding-top: 1.2em; padding-bottom: 1em; font-size: 1.2em; font-weight: 100; text-align: right;"><b id="checkout-discount">0.00</b></td>
+												</tr>
+											</tfoot>
+										</table>
+									
+								</div>
+								<br>
+							</div>
+						
+						<div class="ui-block-b" style="width: 50%; padding-left: 3px;">
+						
+								<div style="background-color: #43a2c4; padding: 10px; border-radius: 5px; text-shadow: none; color: white;">
+									<div class="ui-grid-a">
+										<div class="ui-block-a">
+											<label for="noner2" style="padding-top: 15px; border-radius: 5px; text-shadow: none; color: white; font-family: Roboto Thin; font-size: 1.7em;">Payment Method</label>
+										</div>
+									
+										<div class="ui-block-b" style="padding-top: 5px;">
+											<select id="checkout-payment-method" data-role="noner">
+												<option value="cash">Cash</option>
+												<option value="card">Card</option>
+											</select>
+										</div>
+								
+									</div>
+									
+								</div>
+								
+								<br>
+								<div style="background-color: rgb(112,112,112); padding: 10px; border-radius: 5px; text-shadow: none; color: white; font-family: Roboto Thin; font-size: 1.7em;">
+									Total: &nbsp; <b id="this-sale-checkout-total" style="float:right;">0.00</b>
+								</div>
+								<br>
+								<div style="background-color: #999; padding: 10px; border-radius: 5px; text-shadow: none; color: white; font-family: Roboto Thin; font-size: 1.7em;">
+									Change: &nbsp; <b id="this-sale-change" style="float:right;">0.00</b>
+								</div>
+								<br>
+								<div style="background-color: #43a2c4; padding: 10px; border-radius: 5px; text-shadow: none; color: white;">
+			
+									<div class="ui-grid-a">
+										<div class="ui-block-a" style="width: 30% !important; padding-top: 1em;">
+											<label class="mk" for="flip-checkbox-4" style="padding-top: 0.1em; color: white; font-family: Roboto Thin; font-size: 1.5em; text-shadow: none;">Amount Paid</label>
+										</div>
+										<div class="ui-block-b" style="float: right; width: 50% !important;">
+											<input type="number" min="0" step="any" name="amount_tendered" id="amount_tendered-field" value="" />
+										</div>
+									</div>
+									
+								</div>
+								<br>
+										
+									<a class="cho" id="confirm-this-sale-button" href="#" data-role="button" data-theme="b" data-icon="check" style="font-weight: normal !important; text-shadow: none; background-color: green; border: none; margin: 0em 0em 0em 0em;"><b>Finish</b></a>
+								
+								<br>
+								<br>
+								
+						
+						</div>
+							
+							
+					</div>
+			        
+		
+			 
+			
+			
+				<!---->
+				
+		</div><!-- /content -->
+
+		
+		<div data-role="footer" >
+			
+		</div>
+		
+</div><!-- /page -->
+
+<div data-role="page" id="settings">
+	<div data-role="panel" id="menupanel-7" data-position="left" data-display="overlay" class="ui-panel ui-panel-position-left ui-panel-display-overlay ui-body-c ui-panel-animate ui-panel-closed" data-theme="b" style="background-color: #fff; ">
+
+			<div class="ui-panel-inner" >
+			<ul data-role="listview" data-theme="b">
+			
+					<li class="lidec"><a class="ui-btn ui-icon-home ui-btn-icon-left" href="#dashboard"><b>Dashboard</b></a></li>
+					<li  class="lidec"><a class="ui-btn ui-icon-check ui-btn-icon-left" href="#sales"><b>Sales</b></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-gear ui-btn-icon-left" href="#records"><b>Records</b></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all">6</span></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notfcns"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all">3</span></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" href="#settings"><b>Settings</b></a></li>
+			
+			</ul>	
+		
+			
+				
+			</div>
+		<div>
+				<img style="margin: 3em 4em !important;" src="css/images/icon.png" />
+			</div>
+			
+		</div>
+	
+	<div data-role="header" data-theme="b" data-tap-toggle="false"  data-position="fixed" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  >
+		
+		
+		<a href="#menupanel-7" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
+		<a href="#damages" class="ui-btn ui-shadow ui-corner-all ui-icon-recycle ui-btn-icon-notext">refresh</a>
+		
+		<h1  style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Settings</h1>
+		
+	</div><!-- /header -->
+
+	<div role="main" class="ui-content" style="background-color: #f1f1f1;">
+					
+					
+					<div class="ui-grid-a" style="margin: 0.2em;">
+						<div class="ui-block-a" >
+							<a href="#" data-role="button" data-theme="b" data-icon="phone" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin;"><b>Customer Care</b></a>
+						</div>
+						<div class="ui-block-b">
+							<a href="#mngcategory" data-role="button" data-theme="b" data-icon="tag" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin;"><b>Manage Category</b></a>
+						</div>
+					</div><!-- /grid-a -->
+					
+					<div class="ui-grid-a" style="margin: 0.2em;">
+						<div class="ui-block-a" >
+							<a href="#mngusers" data-role="button" data-theme="b" data-icon="user" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin;"><b>Manage Users</b></a>
+						</div>
+						<div class="ui-block-b">
+							<a href="#gensettings" data-role="button" data-theme="b" data-icon="gear" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin;"><b>General Settings</b></a>
+						</div>
+					</div><!-- /grid-a -->
+					
+					<div class="ui-grid-a" style="margin: 0.2em;">
+						<div class="ui-block-a" >
+							<a href="#stores" data-role="button" data-theme="b" data-icon="home" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin;"><b>My Store(s)</b></a>
+						</div>
+						<div class="ui-block-b">
+							<a href="#gensettings" data-role="button" data-theme="b" data-icon="gear" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin;"><b>My Profile</b></a>
+						</div>
+					</div><!-- /grid-a -->
+					
+					<div class="ui-grid-a" style="margin: 0.2em;">
+						<div class="ui-block-a" >
+							<a href="#stores" data-role="button" data-theme="b" data-icon="home" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin;"><b>Help?</b></a>
+						</div>
+						<div class="ui-block-b">
+							<a href="#" id="sign-out" data-role="button" data-theme="b" data-icon="gear" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin;"><b>Sign Out</b></a>
+						</div>
+					</div><!-- /grid-a -->
+					
+					<br>
+					
+	</div><!-- /content -->
+
+	
+		<div data-role="footer">
+			
+		</div><!-- /footer -->
+		
+</div><!-- /page -->
+
+<div data-role="page" id="mngcategory">
+		
+		<div data-role="header" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  data-position="fixed">
+				<a href="#settings" class="upload-queue ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
+					<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Manage Category</h1>
+		</div><!-- /header -->
+		
+		<div data-role="content" style="background: #f1f1f1;">
+	
+				<div style="background-color: #43a2c4 !important; border-radius: 5px;">
+					<div style="padding: 1em 1em 0em 1em;">
+					
+					<select id="category-select-box" >
+						<option style="text-shadow: none !important;">New Category</option>
+					</select>
+					
+					<form method="post" action="" name="category" id="category-form">
+						<input type="hidden" name="key" id="key-field" value="" data-validate="text" />
+						<br>
+						<input type="text" name="category" id="category-field" placeholder="Name of Category" required data-validate="text" data-error-title="Invalid category" data-error-msg="Provide a valid Category Name" />
+						<br>
+						
+						<div class="ui-grid-a">
+							<div class="ui-block-a" style="width: 50% !important;">
+								<a href="#" class="delete-record" data-role="button" data-theme="a" data-icon="delete" style=" height: 1.2em; font-weight: normal !important; text-shadow: none;  background-color: red; border: none; color: white;"><b>Delete Category</b></a>
+							</div>
+							
+							<div class="ui-block-b" style="width: 50% !important;">
+								<input type="submit" value="Save" data-role="button" />
+							</div>
+						</div>
+					</form>
+						<br>
+						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						<br>			
+						
+						
+						<h3 style="color: white; text-shadow: none !important; ">Category list</h3>
+						<br>
+						
+						
+						<style type="text/css">
+							#category-list-container td{
+								font-size: 1em; color: white; text-shadow: none;
+							}
+							#category-list-container tr{
+								display:none;
+							}
+							#category-list-container tr:nth-child(1),
+							#category-list-container tr:nth-child(2),
+							#category-list-container tr:nth-child(3),
+							#category-list-container tr:nth-child(4),
+							#category-list-container tr:nth-child(5) {
+								display:table-row;
+							}
+						</style>
+						
+						<table data-role="table" class="inventory ui-responsive">
+						<thead>
+							<tr style="font-size:1em; font-weight: 100; background-color: #333; color: #fff;  line-height: 1.4em; text-shadow: none;">
+								<td>Category</td>
+								<td>Modified On</td>
+							</tr>
+						</thead>
+						<tbody id="category-list-container">
+							
+						</tbody>
+						</table>
+						
+						<br>
+						
+						
+					</div>
+					
+					
+					
+				
+				
+			</div>
+			</div>
+		<div data-role="footer" >
+			
+		</div><!-- /footer -->
+		
+		
+		</div>
+
+<div data-role="page" id="mngusers">
+		
+	
+		<div data-role="header" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  data-position="fixed">
+				<a href="#settings" class="upload-queue ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
+					<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Manage Users</h1>
+		</div><!-- /header -->
+		
+		<div data-role="content" style="background: #f1f1f1;">
+	
+				<div style="background-color: #43a2c4 !important; border-radius: 5px;">
+					<div style="padding: 1em 1em 0em 1em;">
+					
+					<select id="users-select-box" >
+						<option style="text-shadow: none !important;" value="new"> - New User - </option>
+					</select>
+
+						<form method="post" action="?action=app_users&todo=save_new_user_data" name="app_users" id="app_users-form" remote-storage=1 >
 							<input type="hidden" name="key" id="key-field" value="" />
+							<input type="hidden" name="id" id="id-field" value="" />
+							
+							<input type="hidden" name="app_uid" id="app_uid-field" value="" />
+							
 							<input type="text" name="name" id="name-field" placeholder="Your Full Name" required data-validate="text" data-error-title="Invalid Name" data-error-msg="Provide a valid name" />
+							
 							<input type="email" name="email" id="email-field" placeholder="Your Email Address" required data-validate="email" data-error-title="Invalid Email" data-error-msg="Provide a valid email" />
 							
-							<input type="hidden" name="password" id="password-field" placeholder="Password" data-validate="text" />
+							<input type="password" name="password" id="password-field" placeholder="Password" required data-validate="password" data-error-title="Invalid Password" data-error-msg="Passwords must be at least 6 characters" />
 							
-							<input type="hidden" name="cpassword" id="cpassword-field" placeholder="Confirm Password" data-validate="text" />
+							<input type="password" name="cpassword" id="cpassword-field" placeholder="Confirm Password" required data-validate="confirm-password" data-error-title="Non-matching Password" data-error-msg="Passwords must match" />
 							
-							<input type="number" name="low_stock_level" id="low_stock_level-field" placeholder="Low Stock level threshold" data-validate="number" step="1" min="10" max="1000" />
+							<label style="color: white; font-family: Roboto Thin; font-size: 1em; text-shadow: none; font-weight:bold;">User Role</label>
+							<select name="role" id="role-field" required data-validate="text" data-error-title="Invalid Role" data-error-msg="Select a valid user role" >
+								<option value="manager">Manager</option>
+								<option value="sales-rep">Sales Rep</option>
+								<option value="stock-keeper">Stock Keeper</option>
+								<option value="admin">Administrator</option>
+							</select>
 							
-							<input type="number" name="vat" id="vat-field" placeholder="Set VAT (%)" data-validate="number" step="any" min="0" />
+							<label style="color: white; font-family: Roboto Thin; font-size: 1em; text-shadow: none; font-weight:bold;">Accessible Stores</label>
 							
-							<input type="number" name="discount" id="discount-field" placeholder="Set Discount (%)" data-validate="number" step="any" min="0" />
+							<select name="stores" id="stores-field" required data-validate="text" data-error-title="Invalid Store" data-error-msg="Select a Store">
+								<option value=""> - Select A Store - </option>
+							</select>
 							
-							<p style="border-bottom: 1px dotted #ccc;"></p>
-							<input type="submit" value="Update" />
-							<br />
-						</form>
+							<br>
+							<p style="border-bottom: 8px solid #4fc1e9"></p>
+							
+							<div class="ui-grid-a">
+							<div class="ui-block-a" style="width: 50% !important;">
+								<a href="#" class="delete-record" key="" object="" data-role="button" data-theme="a" data-icon="delete" style=" height: 1.3em; font-weight: normal !important; text-shadow: none;  background-color: red; border: none; color: white;"><b>Delete User</b></a>
+							</div>
+							
+							<div class="ui-block-b" style="width: 50% !important;">
+							<input type="submit" value="Save" data-theme="a" />
+							</div>
+						</div>
+						<br>
+						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						
+						</form>				
+						
+						<br>			
+						
+						
+						<h3 style="color: white; text-shadow: none !important; ">User list</h3>
+						<br>
+						<style type="text/css">
+							#users-list-container td{
+								font-size: 1em; color: white; text-shadow: none;
+							}
+							#users-list-container tr{
+								display:none;
+							}
+							#users-list-container tr:nth-child(1),
+							#users-list-container tr:nth-child(2),
+							#users-list-container tr:nth-child(3),
+							#users-list-container tr:nth-child(4),
+							#users-list-container tr:nth-child(5) {
+								display:table-row;
+							}
+						</style>
+						
+						<table data-role="table" class="inventory ui-responsive">
+						<thead>
+							<tr style="font-size:1em; font-weight: 100; background-color: #333; color: #fff;  line-height: 1.4em; text-shadow: none;">
+								<td>User Name</td>
+								<td>Email</td>
+								<td>Modified On</td>
+							</tr>
+						</thead>
+						<tbody id="users-list-container">
+							
+						</tbody>
+						</table>
+						
+						<br>
+						
+						
+					</div>
+				
+			</div>
+			</div>
+		<div data-role="footer" >
+			
+		</div><!-- /footer -->
+		
+		
+		</div>
+
+<div data-role="page" id="stores">
+	
+		<div data-role="header" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  data-position="fixed">
+				<a href="#settings" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
+					<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Manage Stores</h1>
+		</div><!-- /header -->
+		
+		<div data-role="content" style="background: #f1f1f1;">
+	
+				<div style="background-color: #43a2c4 !important; border-radius: 5px;">
+					<div style="padding: 1em 1em 0em 1em;">
+					
+					<select id="stores-select-box" >
+						<option style="text-shadow: none !important;" value="new"> - New Store - </option>
+					</select>
+
+						<form method="post" action="" name="stores" id="stores-form" >
+							<input type="hidden" name="key" id="key-field" value="" />
+							
+							<input type="text" name="name" id="name-field" placeholder="Store Name" required data-validate="text" data-error-title="Invalid Name" data-error-msg="Provide a valid name" />
+							
+							<div class="ui-grid-a">
+								<div class="ui-block-a" style="width:49%; margin-right:1%;">
+									<input type="text" name="street" id="street-field" placeholder="Street Address" required data-validate="text" data-error-title="Invalid Street" data-error-msg="Provide a valid street" />
+								</div>
+								<div class="ui-block-b" style="width:49%; margin-left:1%;">
+									<input type="text" name="city" id="city-field" placeholder="City" required data-validate="text" data-error-title="Invalid City" data-error-msg="Provide a valid city" />
+								</div>
+							</div><!-- /grid-a -->							
+							<div class="ui-grid-a">
+								<div class="ui-block-a" style="width:49%; margin-right:1%;">
+									<input type="text" name="state" id="state-field" placeholder="State / Province" required data-validate="text" data-error-title="Invalid State / Province" data-error-msg="Provide a valid state / province" />
+								</div>
+								<div class="ui-block-b" style="width:49%; margin-left:1%;">
+									<input type="text" name="country" id="country-field" placeholder="Country" required data-validate="text" data-error-title="Invalid Country" data-error-msg="Provide a valid country" />
+								</div>
+							</div><!-- /grid-a -->
+					
+							<br>
+							<p style="border-bottom: 8px solid #4fc1e9"></p>
+							
+							<input type="submit" value="Save" data-theme="a" />
+							
+							
+						<br>
+						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						
+						</form>				
+						
+						<br>			
+						
+						
+						<h3 style="color: white; text-shadow: none !important; ">Stores list</h3>
+						<br>
+						<style type="text/css">
+							#stores-list-container td{
+								font-size: 1em; color: white; text-shadow: none;
+							}
+							#stores-list-container tr{
+								display:none;
+							}
+							#stores-list-container tr:nth-child(1),
+							#stores-list-container tr:nth-child(2),
+							#stores-list-container tr:nth-child(3),
+							#stores-list-container tr:nth-child(4),
+							#stores-list-container tr:nth-child(5) {
+								display:table-row;
+							}
+						</style>
+						
+						<table data-role="table" class="inventory ui-responsive">
+						<thead>
+							<tr style="font-size:1em; font-weight: 100; background-color: #333; color: #fff;  line-height: 1.4em; text-shadow: none;">
+								<td>Store</td>
+								<td>Users</td>
+								<td>Modified On</td>
+							</tr>
+						</thead>
+						<tbody id="stores-list-container">
+							
+						</tbody>
+						</table>
+						
+						<br>
+						
+						
+					</div>
+					
+					
+					
+				
+				
+			</div>
+			</div>
+		<div data-role="footer" >
+			
+		</div><!-- /footer -->
+		
+		
+		</div>
+
+<div data-role="page" id="gensettings">
+		
+		<div data-role="header" data-theme="b" style="height: 3.5em; border-bottom: 1px solid #fff;">
+				<a href="#settings" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
+				<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">General Settings</h1>
+		</div><!-- /header -->
+		
+		<div data-role="content" style="background: #f1f1f1;">
+	
+				<div style="background-color: #43a2c4 !important; border-radius: 5px;">
+					<div style="padding: 1em 1em 0em 1em;">
+							
+						<div class="ui-grid-a">
+							<div class="ui-block-a" style="width: 55% !important; padding-top: 1em;">
+								<label for="flip-checkbox-4" style="color: white; font-family: Roboto Thin; font-size: 2em; text-shadow: none;">Full Name</label>
+							</div>
+							<div class="ui-block-b" style="width: 45% !important;">
+								<input type="text" name="number" id="" value="" placeholder="Daniel Isa">
+							</div>
+						</div>
+						
+						<div class="ui-grid-a">
+							<div class="ui-block-a" style="width: 55% !important; padding-top: 1em;">
+								<label for="flip-checkbox-4" style="color: white; font-family: Roboto Thin; font-size: 2em; text-shadow: none;">Email Address</label>
+							</div>
+							<div class="ui-block-b" style="width: 45% !important;">
+								<input type="text" name="number" id="" placeholder="d.isa@blubird.com.ng">
+							</div>
+						</div>
+						
+						<div class="ui-grid-a">
+							<div class="ui-block-a" style="width: 55% !important;padding-top: 1em;color: white; text-shadow: none;">
+								<label for="number-pattern" style="color: white; font-family: Roboto Thin; font-size: 2em; text-shadow: none;">Low Stock Level Notification</label>
+							</div>
+							<div class="ui-block-b" style="width: 45% !important; ">
+								<input type="text" name="number" id="" placeholder="10">
+							</div>
+						</div>
+						
+						<div class="ui-grid-a">
+							<div class="ui-block-a" style="width: 55% !important;padding-top: 1em;color: white; text-shadow: none;">
+								<label for="number-pattern" style="color: white; font-family: Roboto Thin; font-size: 2em; text-shadow: none;">Set VAT(%)</label>
+							</div>
+							<div class="ui-block-b" style="width: 45% !important; ">
+								<input type="text" name="number" id="" placeholder="5">
+							</div>
+						</div>
+						
+					
+						<a href="#receipt" data-role="button" data-theme="a" data-icon="arrow-r" style="font-weight: normal !important; text-shadow: none; border: none;"><b>Update</b></a>					
+						
+						<br>
+						
 						
 					</div>
 					
@@ -1524,7 +3060,11 @@
 				</div>
 				
 			</div>
+			<div data-role="footer" style="background: #fff; border: none;">
+			</div>
 		
-		</div>
+</div>
+
+</body>
 
 </html>

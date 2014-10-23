@@ -9,7 +9,19 @@
 *
 */
 
+@font-face {
+	font-family: Roboto;
+	src: url('../Roboto-Regular.ttf')  format('truetype'); /* Safari, Android, iOS */
+	font-weight: 400;
+	font-style: normal; 
+}
 
+@font-face {
+	font-family: 'Roboto Thin';
+	src: url('../Roboto-Thin.ttf')  format('truetype'); /* Safari, Android, iOS */
+	font-weight: 400;
+	font-style: normal; 
+}
 /* SVG icons */
 .ui-icon-action:after {
 	background-image: url("data:image/svg+xml;charset=US-ASCII,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22iso-8859-1%22%3F%3E%3C!DOCTYPE%20svg%20PUBLIC%20%22-%2F%2FW3C%2F%2FDTD%20SVG%201.1%2F%2FEN%22%20%22http%3A%2F%2Fwww.w3.org%2FGraphics%2FSVG%2F1.1%2FDTD%2Fsvg11.dtd%22%3E%3Csvg%20version%3D%221.1%22%20id%3D%22Layer_1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20x%3D%220px%22%20y%3D%220px%22%20%20width%3D%2214px%22%20height%3D%2214px%22%20viewBox%3D%220%200%2014%2014%22%20style%3D%22enable-background%3Anew%200%200%2014%2014%3B%22%20xml%3Aspace%3D%22preserve%22%3E%3Cpath%20style%3D%22fill%3A%23FFFFFF%3B%22%20d%3D%22M9%2C5v3l5-4L9%2C0v3c0%2C0-5%2C0-5%2C7C6%2C5%2C9%2C5%2C9%2C5z%20M11%2C12H2V5h1l2-2H0v11h13V7l-2%2C2V12z%22%2F%3E%3C%2Fsvg%3E");
@@ -787,12 +799,15 @@ div.ui-controlgroup-label {
 -----------------------------------------------------------------------------------------------------------*/
 .ui-btn,
 label.ui-btn {
-	font-weight: bold;
+	font-weight: bold !important;
+	font-family: Roboto Thin;
+	font-size: 1.3em !important;
 	border-width: 1px;
 	border-style: solid;
 }
 .ui-btn {
 	text-decoration: none !important;
+	font-weight: bold;
 }
 .ui-btn-active {
 	cursor: pointer;
@@ -939,7 +954,7 @@ html .ui-bar-a .ui-bar-inherit,
 html .ui-body-a .ui-bar-inherit,
 html body .ui-group-theme-a .ui-bar-inherit {
 	background-color: 			#fff /*{a-bar-background-color}*/;
-	border: 2px solid #bee8f7 !important;
+	border: 2px solid #f1f1f1 !important;
 	color: 					#333 /*{a-bar-color}*/;
 	text-shadow: none;
 	font-weight: normal;
@@ -955,8 +970,8 @@ html body .ui-group-theme-a .ui-bar-inherit {
 .ui-overlay-a,
 .ui-page-theme-a,
 .ui-page-theme-a .ui-panel-wrapper {
-	background-color: 			#f9f9f9 /*{a-page-background-color}*/;
-	border-color:	 		#bbb /*{a-page-border}*/;
+	background-color: 			#f1f1f1/*{a-page-background-color}*/;
+	border-color:	 		#f1f1f1 /*{a-page-border}*/;
 	color: 					#333 /*{a-page-color}*/;
 	text-shadow: 0 /*{a-page-shadow-x}*/ 1px /*{a-page-shadow-y}*/ 0 /*{a-page-shadow-radius}*/ 	#f3f3f3 /*{a-page-shadow-color}*/;
 }
@@ -1176,9 +1191,10 @@ html .ui-body-b .ui-btn:visited,
 html body .ui-group-theme-b .ui-btn:visited,
 html head + body .ui-btn.ui-btn-b:visited {
 	background-color: 			#43a2c4 /*{b-bup-background-color}*/;
-	border:	 	1px solid #43a2c4/*{b-bup-border}*/;
+	border: 1px solid rgba(0,0,0,.05);
 	color: 					#fff /*{b-bup-color}*/;
-	text-shadow: 0 /*{b-bup-shadow-x}*/ 1px /*{b-bup-shadow-y}*/ 0 /*{b-bup-shadow-radius}*/ #111 /*{b-bup-shadow-color}*/;
+	text-shadow: none;
+	font-weight: none;
 }
 /* Button hover */
 .ui-page-theme-b .ui-btn:hover,
@@ -1189,7 +1205,7 @@ html head + body .ui-btn.ui-btn-b:hover {
 	background-color: 			#43a2c4 /*{b-bup-background-color}*/;
 	border:	 	1px solid #43a2c4/*{b-bup-border}*/;
 	color: 					#fff /*{b-bhover-color}*/;
-	text-shadow: 0 /*{b-bhover-shadow-x}*/ 1px /*{b-bhover-shadow-y}*/ 0 /*{b-bhover-shadow-radius}*/ #111 /*{b-bhover-shadow-color}*/;
+	text-shadow: none;
 }
 /* Button down */
 .ui-page-theme-b .ui-btn:active,
@@ -1200,7 +1216,7 @@ html head + body .ui-btn.ui-btn-b:active {
 	background-color: 			#2f728a /*{b-bup-background-color}*/;
 	border:	 	1px solid #2f728a/*{b-bup-border}*/;
 	color: 					#fff /*{b-bdown-color}*/;
-	text-shadow: 0 /*{b-bdown-shadow-x}*/ 1px /*{b-bdown-shadow-y}*/ 0 /*{b-bdown-shadow-radius}*/ #111 /*{b-bdown-shadow-color}*/;
+	text-shadow: none;
 }
 /* Active button */
 .ui-page-theme-b .ui-btn.ui-btn-active,
@@ -1229,7 +1245,7 @@ html body div.ui-slider-track.ui-body-b .ui-btn-active {
 	background-color: 			#43a2c4 /*{b-bup-background-color}*/;
 	border:	 	1px solid #43a2c4/*{b-bup-border}*/;
 	color: 					#fff /*{b-active-color}*/;
-	text-shadow: 0 /*{b-active-shadow-x}*/ 1px /*{b-active-shadow-y}*/ 0 /*{b-active-shadow-radius}*/ #0088bb /*{b-active-shadow-color}*/;
+	text-shadow: none;
 }
 /* Active radio button icon */
 .ui-page-theme-b .ui-radio-on:after,
@@ -1354,12 +1370,33 @@ div.ui-mobile-viewport {
 }
 @media screen and (orientation: portrait) {
 	.ui-mobile .ui-page {
-		min-height: 420px;
+		
+	}
+	.respons .ui-block-a,
+	.respons .ui-block-b {
+		float: left;
+		width: 100% !important;
+		display: block !important;
+		padding: 0em !important;
+		
+		
+	}
+	
+	.s6 ,.s7 ,.s8, .s9{
+		display: none !important;
+		height: 0em !important;
+		width: 0em !important;
+	
+	}
+	
+	.co, .cho{
+		margin: 0.4em 0em !important;
+	
 	}
 }
 @media screen and (orientation: landscape) {
 	.ui-mobile .ui-page {
-		min-height: 300px;
+		
 	}
 }
 /* Fouc */
@@ -2482,6 +2519,7 @@ button.ui-btn-icon-notext,
 	border-bottom-width: 0;
 }
 @media (min-width: 28em) {
+
 	.ui-field-contain,
 	.ui-mobile fieldset.ui-field-contain {
 		padding: 0;
@@ -2832,7 +2870,7 @@ li.ui-block-e {
 }
 .ui-collapsible-inset,
 .ui-collapsible-set {
-	margin: .5em 0;
+	margin: .5em .75em;
 }
 .ui-collapsible-heading {
 	display: block;
@@ -2871,6 +2909,7 @@ li.ui-block-e {
 	display: block;
 	margin: 0;	
 	padding: .5em 1em;
+	background-color: #43a2c4;
 }
 .ui-collapsible-themed-content .ui-collapsible-content {
 	border-left-width: 0;
@@ -2880,6 +2919,7 @@ li.ui-block-e {
 	border-style: solid;
 }
 .ui-collapsible-inset.ui-collapsible-themed-content .ui-collapsible-content {
+	background-color: #43a2c4;
 	border-left-width: 1px;
 	border-right-width: 1px;
 }
@@ -3448,6 +3488,7 @@ fieldset.ui-controlgroup {
 	height: 3em;
 	max-height: 100%;
 	outline: 0;
+	
 	-webkit-border-radius: inherit;
 	border-radius: inherit;	
 	-webkit-appearance: none;
@@ -3682,7 +3723,7 @@ fieldset.ui-controlgroup {
 .ui-listview > .ui-li-has-thumb > .ui-btn,
 .ui-listview > .ui-li-static.ui-li-has-thumb {
 	min-height: 3.625em;
-	padding-left: 6.25em;
+	padding-left: 0.25em;
 }
 /* ui-li-has-icon deprecated in 1.4. TODO: remove in 1.5 */
 .ui-listview > .ui-li-has-icon > .ui-btn,
@@ -3700,7 +3741,7 @@ fieldset.ui-controlgroup {
 	text-align: center;
 	border-radius: 15px;
 	
-	padding: 0 .48em;
+	padding: 0.15em .48em 0em .48em;
 	line-height: 1.6em;
 	min-height: 1.6em;
 	min-width: .64em;
@@ -4096,7 +4137,7 @@ div.ui-rangeslider label {
 	margin: .5em 0;
 	border-width: 1px;
 	border-style: solid;
-	color: #333;
+	color: #333 !important;
 }
 .ui-input-text input,
 .ui-input-search input,
@@ -4116,7 +4157,10 @@ textarea.ui-input-text {
 	min-height: 2.2em;
 	text-align: center; /* Opera aligns type="date" right by default */
 	border: 0;
-	
+	font-family: Roboto Thin;
+	font-size: 1.3em !important; 
+	font-weight: bold;
+	color: #000;
 	background: transparent none;
 	-webkit-appearance: none;
 	-webkit-border-radius: inherit;
@@ -4460,6 +4504,10 @@ html .ui-popup .ui-field-contain > label + .ui-flipswitch {
 		font-weight: normal;
 	}
 }
+
+
+
+
 /* Breakpoint to show as a standard table at 560px (35em x 16px) or wider */ 
 @media ( min-width: 35em ) {
 	/* Show the table header rows */ 
@@ -4478,59 +4526,13 @@ html .ui-popup .ui-field-contain > label + .ui-flipswitch {
 		display: none;
 	}
 }
+@media only screen and (min-device-width: 768px){}
+
 /* Hack to make IE9 and WP7.5 treat cells like block level elements, scoped to ui-responsive class */ 
 /* Applied in a max-width media query up to the table layout breakpoint so we don't need to negate this*/ 
-
-
-@media screen and (orientation:portrait) {
-	
-	
-	#chart3{
-	display: none;
-	}
-	
-	#chart4{
-	display: none;
-	}
-	
-	#chart5{
-	display: none;
-	}
-	
-	#analytics{
-	display: none;
-	}
-
-}
-/*
-@media screen and (orientation:landscape) {
-  	
-	#hd{
-	display: none !important;
-	}
-	
-	#tilt{
-	display: none !important;
-	}
-	
-	#footer{
-	display: none !important;
-	}
-	
-	#chart3{
-	display: inline;
-	}
-	
-	#chart4{
-	display: inline;
-	}
-	
-	#chart5{
-	display: inline;
-	}
-}
-*/
 @media ( max-width: 35em ) {
+
+	
 	.ui-table-reflow.ui-responsive td,
 	.ui-table-reflow.ui-responsive th {
 		width: 100%;
@@ -4612,8 +4614,36 @@ html .ui-popup .ui-field-contain > label + .ui-flipswitch {
 	-moz-transition: -moz-transform 300ms ease;
 	transition: transform 300ms ease;
 }
+
+
+
 /* Fix for Windows Phone issue #6349: unset the transition for transforms in case of fixed toolbars. */
-@media screen and ( max-device-width: 768px ) {
+@media( max-device-width: 768px ) and (orientation: portrait) {
+.respons .ui-block-a,
+	.respons .ui-block-b {
+		float: left;
+		width: 100% !important;
+		display: block !important;
+		padding: 0em !important;
+		
+		
+	}
+	.mk{
+		padding-top: 0.7em !important;
+	}
+	.s6 ,.s7 ,.s8, .s9{
+		display: none !important;
+		height: 0em !important;
+		width: 0em !important;
+	
+	}
+	
+	.co, .cho{
+		margin: 0.4em 0em !important;
+	
+	}
+	
+	
 	.ui-page-header-fixed .ui-panel-animate.ui-panel-wrapper,
 	.ui-page-footer-fixed .ui-panel-animate.ui-panel-wrapper,
 	.ui-panel-animate.ui-panel-fixed-toolbar {
@@ -4752,6 +4782,7 @@ html .ui-popup .ui-field-contain > label + .ui-flipswitch {
 }
 /* Responsive: wrap on wide viewports once open */
 @media (min-width:55em) {
+
 	.ui-responsive-panel .ui-panel-page-content-open.ui-panel-page-content-position-left {
 		margin-right: 17em;
 	}
@@ -4788,9 +4819,6 @@ html .ui-popup .ui-field-contain > label + .ui-flipswitch {
 }
 
 
-
-
-
 .notficns{
 	background-color: #43a2c4 !important;
 	
@@ -4806,6 +4834,16 @@ html .ui-popup .ui-field-contain > label + .ui-flipswitch {
 	border-radius: 5px;
 	background-color: #fff;
 	padding: 10px;
+	margin: 10px;
+	color: #333 !important;
+	text-shadow: none !important;
+ }
+ 
+ .panl2{
+	border-radius: 5px;
+	background-color: #43a2c4;
+	padding: 10px;
+	margin: 10px;
 	color: #333 !important;
 	text-shadow: none !important;
  }
@@ -4855,7 +4893,7 @@ html .ui-popup .ui-field-contain > label + .ui-flipswitch {
 	margin: 0em !important;
 	
 	font-family: Roboto Thin !important;
-	font-size: 1.3em !important;
+	font-size: 1.8em !important;
 	font-weight: bold !important;
 	text-shadow: none !important;
  }
@@ -4895,7 +4933,7 @@ html .ui-popup .ui-field-contain > label + .ui-flipswitch {
 
 .lidec{
 	
-	border-bottom: 1px solid #2f728a;
+	
 	
 }
 
@@ -4925,13 +4963,11 @@ html .ui-popup .ui-field-contain > label + .ui-flipswitch {
 	font-weight: bold;
 }
 
-.btn1{
-width: 80% !important;
+.ui-icon-sales-icon {
+	background-size: 4em 4em;
+	background-image: url("images/sales.png") ;
+	background-repeat: no-repeat;
+	background-position: center; 
 }
 
-.btn2{
-width: 78% !important;
-}
-.footer-nav-bar li{
-	border-right:1px solid #B0D8E6;
-}
+	
