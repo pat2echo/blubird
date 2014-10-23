@@ -1856,7 +1856,7 @@ $( document ).on( "pageshow", "#settings", function() {
 });
 	
 	function onInitFs(fs) {
-	  
+	  alert(15);
 	  alert('Opened file system: ' + fs.name);
 	  alert('root: ' + fs.root);
 	  fs.root.getDirectory('databank', {create: true}, function(dirEntry) {
