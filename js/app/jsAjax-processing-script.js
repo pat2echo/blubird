@@ -2006,10 +2006,9 @@ $( document ).on( "pagecreate", "#newInventory", function() {
 		}
 	});
 	
-	update_inventory_list_on_inventory_page();
-	
-	$('a#capture-image-button')
+	$('#capture-image-button')
 	.on('click', function(e){
+		alert('clicked');
 		e.preventDefault();
 		//Camera.DestinationType.FILE_URI
 		navigator.camera.getPicture(gotPicture, onFail,  { quality : 90, 
@@ -2020,6 +2019,9 @@ $( document ).on( "pagecreate", "#newInventory", function() {
 		  targetWidth: 150,
 		  targetHeight: 150 } );
 	 });
+	 
+	update_inventory_list_on_inventory_page();
+	
 	
 });
 
