@@ -2006,7 +2006,8 @@ $( document ).on( "pagecreate", "#newInventory", function() {
 		}
 	});
 	
-	$('#capture-image-button')
+	$('#newInventory')
+	.find('#capture-image-button')
 	.on('click', function(e){
 		alert('clicked');
 		e.preventDefault();
