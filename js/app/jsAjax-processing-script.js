@@ -3741,6 +3741,10 @@ function gotPicture( imageData ) {
 	
 };
 
+function onFail(message) {
+    alert('Failed because: ' + message);
+};
+
 function gotPictureFILE( imageURI ) {
     var image = document.getElementById('myImage');
     image.src = imageURI;
