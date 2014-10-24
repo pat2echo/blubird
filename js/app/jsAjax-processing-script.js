@@ -1032,9 +1032,6 @@ function get_stores_html( key , value ){
 var ffs = null;
 $( document ).on( "pagecreate", "#dashboard", function() {
 	test_for_active_user();
-	
-	window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
-	window.requestFileSystem( window.TEMPORARY , 1024 /*5MB*/, onInitFs, errorHandler);
 });
 
 $( document ).on( "pageshow", "#dashboard", function() {
@@ -1839,7 +1836,8 @@ $( document ).on( "pagecreate", "#settings", function() {
 $( document ).on( "pageshow", "#settings", function() {
 	//check for registered user details
 	//var userInfo = get_user_info();
-	
+	window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
+	window.requestFileSystem( window.TEMPORARY , 1024*1024 , onInitFs, errorHandler);
 	alert( 'ext'+cordova.file.externalRootDirectory );
 	alert( 'ext'+cordova.file.applicationStorageDirectory );
 	
@@ -2013,14 +2011,14 @@ $( document ).on( "pagecreate", "#newInventory", function() {
 	$('a#capture-image-button')
 	.on('click', function(e){
 		e.preventDefault();
-		
-		navigator.camera.getPicture(gotPicture, onFail,  { quality : 50, 
-		  destinationType : Camera.DestinationType.FILE_URI, 
+		//Camera.DestinationType.FILE_URI
+		navigator.camera.getPicture(gotPicture, onFail,  { quality : 90, 
+		  destinationType : Camera.DestinationType.DATA_URL, 
 		  sourceType : Camera.PictureSourceType.CAMERA, 
 		  allowEdit : true,
 		  encodingType: Camera.EncodingType.JPEG,
-		  targetWidth: 200,
-		  targetHeight: 200 } );
+		  targetWidth: 150,
+		  targetHeight: 150 } );
 	 });
 	
 });
@@ -2051,7 +2049,7 @@ function showPosition(position) {
 
 var uploadDataKey = 'upload';
 var downloadDataKey = 'download';
-var chunkSize = 1000;
+var chunkSize = 10000;
 
 function queueUpload( data ){
 	var upload = getData( uploadDataKey );
@@ -3730,7 +3728,17 @@ function piechart( data ){
 	}
 };
 
-function gotPicture( imageURI ) {
+function gotPicture( imageData ) {
+    var image = document.getElementById('myImage');
+    image.src = "data:image/jpeg;base64," + imageData;
+	
+	$('#newInventory')
+	.find('input[name="item_image"]')
+	.val( imageData );
+	
+};
+
+function gotPictureFILE( imageURI ) {
     var image = document.getElementById('myImage');
     image.src = imageURI;
 		
