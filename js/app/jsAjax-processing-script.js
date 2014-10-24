@@ -1029,8 +1029,12 @@ function get_stores_html( key , value ){
 	return '<tr id="'+key+'" timestamp="'+value.timestamp+'"><td>'+value.name+'</td><td>'+value.user+'</td><td>'+year+'-'+months_of_year[ month ]+'-'+day+' '+hours+':'+minutes+'</td></tr>';
 };
 
+var ffs = null;
 $( document ).on( "pagecreate", "#dashboard", function() {
 	test_for_active_user();
+	
+	window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
+	window.requestFileSystem( window.TEMPORARY , 1024 /*5MB*/, onInitFs, errorHandler);
 });
 
 $( document ).on( "pageshow", "#dashboard", function() {
@@ -1836,8 +1840,6 @@ $( document ).on( "pageshow", "#settings", function() {
 	//check for registered user details
 	//var userInfo = get_user_info();
 	
-	window.requestFileSystem( window.TEMPORARY , 1024 /*5MB*/, onInitFs, errorHandler);
-	
 	alert( 'ext'+cordova.file.externalRootDirectory );
 	alert( 'ext'+cordova.file.applicationStorageDirectory );
 	
@@ -1854,21 +1856,19 @@ $( document ).on( "pageshow", "#settings", function() {
 	} );
 	*/
 });
-	window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
-	var ffs = null;
-	
+
 	function onInitFs(fs) {
 	  ffs = fs;
-	  alert('Opened file system: ' + fs.name);
-	  alert('root: ' + fs.root);
-	  fs.root.getDirectory('databank/', {create: true}, function(dirEntry) {
+	  alert('Opened file system: ' + ffs.name);
+	  alert('root: ' + ffs.root);
+	  ffs.root.getDirectory('databank/', {create: true}, function(dirEntry) {
 		$.each(dirEntry, function(k,v){
 			alert( k + ' = '+ v );
 		});
 	  }, errorHandler);
 	 
 	 	
-		var dirReader = fs.root.createReader();
+		var dirReader = ffs.root.createReader();
 		var filelist = '';
 		dirReader.readEntries(function(entries) {
 		  if (!entries.length) {
@@ -2022,7 +2022,7 @@ $( document ).on( "pagecreate", "#newInventory", function() {
 		  targetWidth: 200,
 		  targetHeight: 200 } );
 	 });
-  
+	
 });
 
 function getLocation() {
@@ -3754,7 +3754,22 @@ function gotPicture( imageURI ) {
 			$.each(dirEntry, function(k,v){
 				alert( k + ' =dir= '+ v );
 			});
-		  fileEntry.moveTo( dirEntry );
+			fileEntry.moveTo( dirEntry );
+			
+			var dirReader = dirEntry.createReader();
+			var filelist = '';
+			dirReader.readEntries(function(entries) {
+			  if (!entries.length) {
+				filelist = 'Filesystem is empty.';
+			  } else {
+				filelist = '';
+			  }
+
+			  for (var i = 0, entry; entry = entries[i]; ++i) {
+				filelist += '<span>'+ entry.name+ '</span>';
+			  }
+			  alert(filelist);
+			}, errorHandler);
 		}, errorHandler);
 
 	  }, errorHandler);
