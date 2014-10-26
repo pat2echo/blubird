@@ -462,7 +462,7 @@
 					<li class="lidec"><a class="ui-btn ui-icon-info ui-btn-icon-left" href="#inventory"><b>Inventory</b><span class="ui-li-count ui-btn-corner-all">164</span></a></li>
 					<li class="lidec"><a class="ui-btn ui-icon-calendar ui-btn-icon-left" href="#records"><b>Records</b></a></li>
 					<li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all">6</span></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#ntfcns"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all">3</span></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notifications"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all notifications-count">0</span></a></li>
 					<li class="lidec"><a class="ui-btn ui-icon-gear ui-btn-icon-left" href="#settings"><b>Settings</b></a></li>
 			
 				</ul>	
@@ -478,47 +478,56 @@
 		<a href="#menupanel-1" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
 		<a href=""  class="ui-btn ui-shadow ui-corner-all ui-icon-recycle ui-btn-icon-notext">Refresh</a>
 		
-		<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Dashboard</h1>
-		
+		<h1 style="margin-top: 0.2em !important; margin-bottom: 0.4em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 1.8em !important;" class="header">
+			Dashboard
+		</h1>
+		<div data-role="navbar" style="font-size:0.6em;">
+			<ul>
+				<li><a href="#" style="padding:0.4em;">
+				<marquee class="rbto notifications-count-with-notifications" behavior="scroll" scrollamount="3" direction="left" >  
+				</marquee>
+				</a></li>
+			</ul>
+		</div><!-- /navbar -->
 		
 	</div><!-- /header -->
 
 	<div role="main" class="ui-content" style="background-color: #f1f1f1;">
-					<div class="ui-grid-a" >
-						<div class="ui-block-a">
-							<div class="panl">
-								<h3>Todays total sales <span style="font-size:0.7em;" class="today-total-sales-units">(0)</span></h3>
-								<h6 style="color: #43a2c4;" class="today-total-sales-amount">0.00</h6>
+						<div class="ui-grid-a" >
+							<div class="ui-block-a">
+								<div class="panl">
+									<h3>Todays total sales <span style="font-size:0.7em;" class="today-total-sales-units">(0)</span></h3>
+									<h6 style="color: #43a2c4;" class="today-total-sales-amount">0.00</h6>
+								</div>
 							</div>
-						</div>
-						
-						<div class="ui-block-b">
-							<div class="panl">
-								<h3>Todays gross earnings</h3>
-								<h6 style="color: #43a2c4;" class="today-gross-profit">0.00</h6>
+							
+							<div class="ui-block-b">
+								<div class="panl">
+									<h3>Todays gross earnings</h3>
+									<h6 style="color: #43a2c4;" class="today-gross-profit">0.00</h6>
+								</div>
 							</div>
+							
 						</div>
-						
-					</div>
-				
-					<div class="ui-grid-a" >
-						
-						<div class="ui-block-a">
-							<div class="panl">
-								<h3>Total inventory value</h3>
-								<h6 class="total-value-of-inventory">0.00</h6>
+					
+						<div class="ui-grid-a" >
+							
+							<div class="ui-block-a">
+								<div class="panl">
+									<h3>Total inventory value</h3>
+									<h6 class="total-value-of-inventory">0.00</h6>
+								</div>
 							</div>
-						</div>
-						
-						<div class="ui-block-b">
-							<div class="panl">
-								<h3>Total number of items <span style="font-size:0.7em;" class="total-unique-inventory-items">(0)</span></h3>
-								<h6 class="total-items-in-stock">0</h6>
+							
+							<div class="ui-block-b">
+								<div class="panl">
+									<h3>Total number of items <span style="font-size:0.7em;" class="total-unique-inventory-items">(0)</span></h3>
+									<h6 class="total-items-in-stock">0</h6>
+								</div>
 							</div>
+							
 						</div>
-						
-					</div>
-				
+					
 					
 				
 				<div class="panl">
@@ -980,7 +989,7 @@
 		
 		<div data-role="header" id="hd" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);" >
 				<a href="#inventory" class="upload-queue ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none" data-ajax="false">Menu</a>
-				<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Set Pricing</h1>
+				<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 1.8em !important;">Set Pricing</h1>
 		</div><!-- /header -->
 		<div data-role="content" style="background-color: #f1f1f1; ">
 	
@@ -1087,7 +1096,7 @@
 		
 		<div data-role="header" data-theme="b"  data-position="fixed" data-toggle="false" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);" >
 				<a href="#inventory" class="upload-queue ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
-				<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">New Inventory</h1>
+				<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 1.8em !important;">New Inventory</h1>
 		</div><!-- /header -->
 
 		<div data-role="content" style="background: #fff; ">
@@ -1236,7 +1245,7 @@
 		
 		<div data-role="header" data-theme="b"  data-position="fixed" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);" >
 				<a href="#inventory" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
-				<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Damages</h1>
+				<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 1.8em !important;">Damages</h1>
 		</div><!-- /header -->
 
 		<div data-role="content" style="background: #fff; ">
@@ -1327,7 +1336,7 @@
 		
 		<div data-role="header" id="hd" data-theme="b" style="height: 3.5em;">
 				<a href="#inventory" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
-				<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Item Stock Levels</h1>
+				<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 1.8em !important;">Item Stock Levels</h1>
 		</div><!-- /header -->
 		
 		<div data-role="content" style="background: #fff;">
@@ -1452,7 +1461,7 @@
 	</div>
 		<div data-role="header" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  data-position="fixed">
 				<a href="#menupanel-3" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext" data-transition="none">Menu</a>
-					<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Supplier</h1>
+					<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 1.8em !important;">Supplier</h1>
 		</div><!-- /header -->
 		
 		<div data-role="content" style="background: #f1f1f1;">
@@ -1590,7 +1599,7 @@
 		
 		<div data-role="header" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);" >
 			<a href="#inventory" id="manage-inventory-back-button" class="upload-queue ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
-			<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Manage Inventory</h1>
+			<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 1.8em !important;">Manage Inventory</h1>
 		</div><!-- /header -->
 
 		<div data-role="content" style="background-color: #f1f1f1;">
@@ -1724,7 +1733,7 @@
 		<a href="#menupanel-4" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
 		<a href="#damages" class="ui-btn ui-shadow ui-corner-all ui-icon-minus ui-btn-icon-notext">damages</a>
 		
-		<h1  style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Inventory</h1>
+		<h1  style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 1.8em !important;">Inventory</h1>
 		
 	</div><!-- /header -->
 
@@ -1944,7 +1953,7 @@
 
 </div>
 
-<div data-role="page" id="ntfcns" >
+<div data-role="page" id="notifications" >
 	<div data-role="panel" id="menupanel-5" data-position="left" data-display="overlay" class="ui-panel ui-panel-position-left ui-panel-display-overlay ui-body-c ui-panel-animate ui-panel-closed" data-theme="b" style="background-color: #fff;  ">
 
 			<div class="ui-panel-inner" >
@@ -1974,293 +1983,47 @@
 		<a href="#menupanel-5" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
 		
 		
-		<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Notifications</h1>
+		<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 1.8em !important;">Notifications</h1>
 		
 		
 	</div><!-- /header -->
 
 	<div role="main" class="ui-content" style="background-color: #f1f1f1;">
-					<div data-role="collapsible" data-theme="b"  data-collapsed-icon="carat-d" data-expanded-icon="carat-u">
-					
-						<h3 style="color: white; font-size: 1em !important; font-weight: 100 !important; text-shadow: none !important; text-align: center !important;">Expiry dates<span class="ui-li-count ui-btn-corner-all">2</span></h3>
-					
-					
-						
-							<table data-role="table"  style="" class="inventory ui-responsive " >
-							
-							<thead style="font-family: Roboto Thin; opacity: 0.6; font-size:0.9em; font-weight: 100; background-color: #43a2c4; color: white;  line-height: 1.4em; text-shadow: none;">
-							   <tr style="padding: 0em !important;">
-								 <th></th>
-								 <th style="padding-right: 0.5em;">Product</th>
-								 <th style="width:20%; padding-right: 0.5em; text-align: center;  ">Expiry Date</th>
-								 
-								 
-								
-								
-								 <th style="padding-right: 0.5em; text-align: center !important;">Supplier</th>
-							   </tr>
-							 </thead>
-							 <tbody>
-							   <tr>
-								 <td style="width: 10px !important;  background-color: #fff; text-align: center;"><img src="image bank/Dettol Soap - 70g.jpg" class="ui-li-thumb" style="height: 4em;"></td>
-								  <td style="padding-top: 2.2em !important; background-color: #bde3ea; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">Dettol Soap - 70g</span></td>
-								 <td style="text-align: center; padding-top: 2em !important; background-color: rgba(238,17,17,0.7); text-shadow: none; color: white;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">19/11/2014</span></td>
-								<td style="padding-top: .5em !important; background-color: #bde3ea; text-shadow: none; color: black;">
-									<a  href="tel:+23408183140303" data-role="button" data-theme="a" data-icon="phone" style="color: white; background-color: green; margin: 0.3em 0 0 0.5em; font-family: 'Roboto Thin'; font-weight: normal !important; text-shadow: none; border: none;"><b>Mrs Ateke</b></a>
-								</td>
-								
-							   </tr>
-							   
-							   <tr>
-								<td style="width: 10px !important;  background-color: #fff; text-align: center;"><img src="image bank/Febreze - 275g.jpg" class="ui-li-thumb" style="height: 4em;"></td>
-								<td style="padding-top: 2.2em !important; background-color: #fff; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">Febreze - 275g</span></td>
-								<td style="text-align: center; padding-top: 2em !important; background-color: rgba(238,17,17,0.7); text-shadow: none; color: white;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">21/11/2014</span></td>
-								<td style="padding-top: .5em !important; background-color: #fff; text-shadow: none; color: black;">
-									<a  href="tel:+23408183140303" data-role="button" data-theme="a" data-icon="phone" style="color: white; background-color: green; margin: 0.3em 0 0 0.5em; font-family: 'Roboto Thin'; font-weight: normal !important; text-shadow: none; border: none;"><b>Mrs Ateke</b></a>
-								</td>
-							   </tr>
-							   
-								
-							 </tbody>
-							</table>
-							
-							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
-						
-						
-						<br>
-					</div>
-					<br>
-					<div data-role="collapsible" data-theme="b"  data-collapsed-icon="carat-d" data-expanded-icon="carat-u">
-					
-						<h3 style="color: white; font-size: 1em !important; font-weight: 100 !important; text-shadow: none !important; text-align: center !important;">Low stock level<span class="ui-li-count ui-btn-corner-all">4</span></h3>
-					
-					
-						
-							<table data-role="table"  style="" class="inventory ui-responsive " >
-							
-							<thead style="font-family: Roboto Thin; opacity: 0.6; font-size:0.9em; font-weight: 100; background-color: #43a2c4; color: white;  line-height: 1.4em; text-shadow: none;">
-							   <tr style="padding: 0em !important;">
-								 <th></th>
-								 <th style="padding-right: 0.5em;">Product</th>
-								 <th style="width:5%; padding-right: 0.5em; text-align: center;  ">Qty</th>
-								 
-								 <th style="width: 20%; padding-right: 0.5em;  text-align: center !important;">Selling Price (N)</th>
-								
-								
-								 <th style="padding-right: 0.5em; text-align: center !important;">Supplier</th>
-							   </tr>
-							 </thead>
-							 <tbody>
-							   <tr>
-								 <td style="width: 10px !important;  background-color: #fff; text-align: center;"><img src="image bank/Dettol Soap - 70g.jpg" class="ui-li-thumb" style="height: 4em;"></td>
-								  <td style="padding-top: 2.2em !important; background-color: #bde3ea; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">Dettol Soap - 70g</span></td>
-								 <td style="text-align: center; padding-top: 2em !important; background-color: rgba(238,17,17,0.7); text-shadow: none; color: white;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">2</span></td>
-								
-								 <td style="text-align: center !important; padding-top: 2em !important; background-color: #bde3ea; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 300 !important;">80.00</span></td>
-							
-								<td style="padding-top: .5em !important; background-color: #bde3ea; text-shadow: none; color: black;">
-									<a  href="tel:+23408183140303" data-role="button" data-theme="a" data-icon="phone" style="color: white; background-color: green; margin: 0.3em 0 0 0.5em; font-family: 'Roboto Thin'; font-weight: normal !important; text-shadow: none; border: none;"><b>Mrs Ateke</b></a>
-								</td>
-								
-							   </tr>
-							   
-							   <tr>
-								 <td style="width: 10px !important;  background-color: #fff; text-align: center;"><img src="image bank/Febreze - 275g.jpg" class="ui-li-thumb" style="height: 4em;"></td>
-								 <td style="padding-top: 2.2em !important; background-color: #fff; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">Febreze - 275g</span></td>
-								  <td style="text-align: center; padding-top: 2em !important; background-color: rgba(238,17,17,0.7); text-shadow: none; color: white;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">3</span></td>
-								
-								 <td style="text-align: center !important; padding-top: 2.2em !important; background-color: #fff; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 300 !important;">100.00</span></td>
-								
-								
-								<td style="padding-top: .5em !important; background-color: #fff; text-shadow: none; color: black;">
-									<a  href="tel:+23408183140303" data-role="button" data-theme="a" data-icon="phone" style="color: white; background-color: green; margin: 0.3em 0 0 0.5em; font-family: 'Roboto Thin'; font-weight: normal !important; text-shadow: none; border: none;"><b>Mrs Ateke</b></a>
-								</td>
-							   </tr>
-							   
-								<tr>
-								  <td style="width: 10px !important;  background-color: #fff; text-align: center;"><img src="image bank/Ariel - 1kg.jpg" class="ui-li-thumb" style="height: 4em;"></td>
-								 <td style="padding-top: 2.2em !important; background-color: #bde3ea; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">Ariel - 1kg</span></td>
-								   <td style="text-align: center; padding-top: 2em !important; background-color: rgba(238,17,17,0.7); text-shadow: none; color: white;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">6</span></td>
-								 
-								  <td style="text-align: center !important; padding-top: 2.2em !important; background-color: #bde3ea; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 300 !important;">120.00</span></td>
-							
-								
-								<td style="padding-top: .5em !important; background-color: #bde3ea; text-shadow: none; color: black;">
-									<a  href="tel:+23408183140303" data-role="button" data-theme="a" data-icon="phone" style="color: white; background-color: green; margin: 0.3em 0 0 0.5em; font-family: 'Roboto Thin'; font-weight: normal !important; text-shadow: none; border: none;"><b>Mrs Utaka</b></a>
-								</td>
-							   </tr>
-							   
-								 <tr>
-								  <td style="width: 10px !important;  background-color: #fff; text-align: center;"><img src="image bank/Evian - 50cl.jpg" class="ui-li-thumb" style="height: 4em;"></td>
-								 <td style="padding-top: 2.2em !important; background-color: #fff; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">Evian - 50cl</span></td>
-								  <td style="text-align: center; padding-top: 2em !important; background-color: rgba(238,17,17,0.7); text-shadow: none; color: white;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">8</span></td>
-								 
-								  <td style="text-align: center !important; padding-top: 2.2em !important; background-color: #fff; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 300 !important;">50.00</span></td>
-								
-								 
-								<td style="padding-top: .5em !important; background-color: #fff; text-shadow: none; color: black;">
-									<a  href="tel:+23408183140303" data-role="button" data-theme="a" data-icon="phone" style="color: white; background-color: green; margin: 0.3em 0 0 0.5em; font-family: 'Roboto Thin'; font-weight: normal !important; text-shadow: none; border: none;"><b>Mrs Eze</b></a>
-								</td>
-							   </tr>
-							 
-							   
-							   
-								
-							 </tbody>
-							</table>
-							
-							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
-						
-						
-						<br>
-					</div>
-					<br>
-					<div data-role="collapsible" data-theme="b"  data-collapsed-icon="carat-d" data-expanded-icon="carat-u">
-					
-						<h3 style="color: white; font-size: 1em !important; font-weight: 100 !important; text-shadow: none !important; text-align: center !important;">New stock delivery<span class="ui-li-count ui-btn-corner-all">19</span></h3>
-					
-					
-						
-							<table data-role="table"  style="" class="inventory ui-responsive " >
-							
-							<thead style="font-family: Roboto Thin; opacity: 0.6; font-size:0.9em; font-weight: 100; background-color: #43a2c4; color: white;  line-height: 1.4em; text-shadow: none;">
-							   <tr style="padding: 0em !important;">
-								 <th></th>
-								 <th style="padding-right: 0.5em;">Product</th>
-								 <th style="width:5%; padding-right: 0.5em; text-align: center;  ">Qty</th>
-								 
-								 <th style="width: 20%; padding-right: 0.5em;  text-align: center !important;">Cost Price (N)</th>
-								
-								
-								 <th style="padding-right: 0.5em; text-align: center !important;">Supplier</th>
-							   </tr>
-							 </thead>
-							 <tbody>
-							   <tr>
-								 <td style="width: 10px !important;  background-color: #fff; text-align: center;"><img src="image bank/Dettol Soap - 70g.jpg" class="ui-li-thumb" style="height: 4em;"></td>
-								  <td style="padding-top: 2.2em !important; background-color: #bde3ea; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">Dettol Soap - 70g</span></td>
-								 <td style="text-align: center; padding-top: 2em !important; background-color: #43a2c4; text-shadow: none; color: white;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">2</span></td>
-								
-								 <td style="text-align: center !important; padding-top: 2em !important; background-color: #bde3ea; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 300 !important;">80.00</span></td>
-							
-								<td style="padding-top: .5em !important; background-color: #bde3ea; text-shadow: none; color: black;">
-									<a  href="tel:+23408183140303" data-role="button" data-theme="a" data-icon="phone" style="color: white; background-color: green; margin: 0.3em 0 0 0.5em; font-family: 'Roboto Thin'; font-weight: normal !important; text-shadow: none; border: none;"><b>Mrs Ateke</b></a>
-								</td>
-								
-							   </tr>
-							   
-							   <tr>
-								 <td style="width: 10px !important;  background-color: #fff; text-align: center;"><img src="image bank/Febreze - 275g.jpg" class="ui-li-thumb" style="height: 4em;"></td>
-								 <td style="padding-top: 2.2em !important; background-color: #fff; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">Febreze - 275g</span></td>
-								  <td style="text-align: center; padding-top: 2em !important;background-color: #43a2c4; text-shadow: none; color: white;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">3</span></td>
-								
-								 <td style="text-align: center !important; padding-top: 2.2em !important; background-color: #fff; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 300 !important;">100.00</span></td>
-								
-								
-								<td style="padding-top: .5em !important; background-color: #fff; text-shadow: none; color: black;">
-									<a  href="tel:+23408183140303" data-role="button" data-theme="a" data-icon="phone" style="color: white; background-color: green; margin: 0.3em 0 0 0.5em; font-family: 'Roboto Thin'; font-weight: normal !important; text-shadow: none; border: none;"><b>Mrs Ateke</b></a>
-								</td>
-							   </tr>
-							   
-								<tr>
-								  <td style="width: 10px !important;  background-color: #fff; text-align: center;"><img src="image bank/Ariel - 1kg.jpg" class="ui-li-thumb" style="height: 4em;"></td>
-								 <td style="padding-top: 2.2em !important; background-color: #bde3ea; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">Ariel - 1kg</span></td>
-								   <td style="text-align: center; padding-top: 2em !important;  background-color: #43a2c4; text-shadow: none; color: white;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">6</span></td>
-								 
-								  <td style="text-align: center !important; padding-top: 2.2em !important; background-color: #bde3ea; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 300 !important;">120.00</span></td>
-							
-								
-								<td style="padding-top: .5em !important; background-color: #bde3ea; text-shadow: none; color: black;">
-									<a  href="tel:+23408183140303" data-role="button" data-theme="a" data-icon="phone" style="color: white; background-color: green; margin: 0.3em 0 0 0.5em; font-family: 'Roboto Thin'; font-weight: normal !important; text-shadow: none; border: none;"><b>Mrs Utaka</b></a>
-								</td>
-							   </tr>
-							   
-								 <tr>
-								  <td style="width: 10px !important;  background-color: #fff; text-align: center;"><img src="image bank/Evian - 50cl.jpg" class="ui-li-thumb" style="height: 4em;"></td>
-								 <td style="padding-top: 2.2em !important; background-color: #fff; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">Evian - 50cl</span></td>
-								  <td style="text-align: center; padding-top: 2em !important; background-color: #43a2c4; text-shadow: none; color: white;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">8</span></td>
-								 
-								  <td style="text-align: center !important; padding-top: 2.2em !important; background-color: #fff; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 300 !important;">50.00</span></td>
-								
-								 
-								<td style="padding-top: .5em !important; background-color: #fff; text-shadow: none; color: black;">
-									<a  href="tel:+23408183140303" data-role="button" data-theme="a" data-icon="phone" style="color: white; background-color: green; margin: 0.3em 0 0 0.5em; font-family: 'Roboto Thin'; font-weight: normal !important; text-shadow: none; border: none;"><b>Mrs Eze</b></a>
-								</td>
-							   </tr>
-							 
-							   
-							   
-								
-							 </tbody>
-							</table>
-							
-							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
-						
-						
-						<br>
-					</div>
-					<br>
-					<div data-role="collapsible" data-theme="b"  data-collapsed-icon="carat-d" data-expanded-icon="carat-u">
-					
-						<h3 style="color: white; font-size: 1em !important; font-weight: 100 !important; text-shadow: none !important; text-align: center !important;">Damages<span class="ui-li-count ui-btn-corner-all">5</span></h3>
-					
-					
-						
-							<table data-role="table"  style="" class="inventory ui-responsive " >
-							
-							<thead style="font-family: Roboto Thin; opacity: 0.6; font-size:0.9em; font-weight: 100; background-color: #43a2c4; color: white;  line-height: 1.4em; text-shadow: none;">
-							   <tr style="padding: 0em !important;">
-								 <th></th>
-								 <th style="padding-right: 0.5em;">Product</th>
-								 <th style="width:5%; padding-right: 0.5em; text-align: center;  ">Qty</th>
-								 
-								 <th style="width: 20%; padding-right: 0.5em;  text-align: center !important;">Selling Price (N)</th>
-								
-								
-								 <th style="padding-right: 0.5em; text-align: center !important;">Supplier</th>
-							   </tr>
-							 </thead>
-							 <tbody>
-							   <tr>
-								 <td style="width: 10px !important;  background-color: #fff; text-align: center;"><img src="image bank/Dettol Soap - 70g.jpg" class="ui-li-thumb" style="height: 4em;"></td>
-								  <td style="padding-top: 2.2em !important; background-color: #bde3ea; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">Dettol Soap - 70g</span></td>
-								 <td style="text-align: center; padding-top: 2em !important; background-color: rgba(238,17,17,0.7); text-shadow: none; color: white;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">2</span></td>
-								
-								 <td style="text-align: center !important; padding-top: 2em !important; background-color: #bde3ea; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 300 !important;">80.00</span></td>
-							
-								<td style="padding-top: .5em !important; background-color: #bde3ea; text-shadow: none; color: black;">
-									<a  href="tel:+23408183140303" data-role="button" data-theme="a" data-icon="phone" style="color: white; background-color: green; margin: 0.3em 0 0 0.5em; font-family: 'Roboto Thin'; font-weight: normal !important; text-shadow: none; border: none;"><b>Mrs Ateke</b></a>
-								</td>
-								
-							   </tr>
-							   
-							   <tr>
-								 <td style="width: 10px !important;  background-color: #fff; text-align: center;"><img src="image bank/Febreze - 275g.jpg" class="ui-li-thumb" style="height: 4em;"></td>
-								 <td style="padding-top: 2.2em !important; background-color: #fff; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">Febreze - 275g</span></td>
-								  <td style="text-align: center; padding-top: 2em !important; background-color: rgba(238,17,17,0.7); text-shadow: none; color: white;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;">3</span></td>
-								
-								 <td style="text-align: center !important; padding-top: 2.2em !important; background-color: #fff; text-shadow: none; color: black;"><span style="font-family: Roboto; font-size: 1.4em; font-weight: 300 !important;">100.00</span></td>
-								
-								
-								<td style="padding-top: .5em !important; background-color: #fff; text-shadow: none; color: black;">
-									<a  href="tel:+23408183140303" data-role="button" data-theme="a" data-icon="phone" style="color: white; background-color: green; margin: 0.3em 0 0 0.5em; font-family: 'Roboto Thin'; font-weight: normal !important; text-shadow: none; border: none;"><b>Mrs Ateke</b></a>
-								</td>
-							   </tr>
-							   
-								
-							 
-							   
-							   
-								
-							 </tbody>
-							</table>
-							
-							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
-						
-						
-						<br>
-					</div>
-					<br>
+		<style type="text/css">
+			#notifications-container h4{
+				font-size:0.8em !important;
+			}
+			#notifications-container p{
+				font-size:0.7em !important;
+			}
+			#notifications-container p.ui-li-aside{
+				font-size:0.6em !important;
+			}
+		</style>
+		<div style="margin:5px 15px;">
+				<ul id="notifications-container" class="ui-listview ui-listview-inset ui-corner-all ui-shadow">
+					<li data-role="list-divider" role="heading" class="ui-li-divider ui-bar-inherit ui-li-has-count ui-first-child">Friday, October 8, 2010 <span class="ui-li-count ui-body-inherit">2</span></li>
+					<li><a href="index.html" class="ui-btn ui-btn-icon-right ui-icon-carat-r">
+					<h4>Stephen Weber</h4>
+					<p>Hey Stephen, if you're available at 10am tomorrow, we've got a meeting with the jQuery team.</p>
+						<p class="ui-li-aside"><strong>6:24</strong>PM</p>
+					</a></li>
+					<li><a href="index.html" class="ui-btn ui-btn-icon-right ui-icon-carat-r">
+					<h4>jQuery Team</h4>
+					<p><strong>Boston Conference Planning</strong></p>
+					<p>In preparation for the upcoming conference in Boston, we need to start gathering a list of sponsors and speakers.</p>
+						<p class="ui-li-aside"><strong>9:18</strong>AM</p>
+					</a></li>
+					<li data-role="list-divider" role="heading" class="ui-li-divider ui-bar-inherit ui-li-has-count">Thursday, October 7, 2010 <span class="ui-li-count ui-body-inherit">1</span></li>
+					<li class="ui-last-child"><a href="index.html" class="ui-btn ui-btn-icon-right ui-icon-carat-r">
+					<h4>Avery Walker</h4>
+					<p><strong>Re: Dinner Tonight</strong></p>
+					<p>Sure, let's plan on meeting at Highland Kitchen at 8:00 tonight. Can't wait!</p>
+						<p class="ui-li-aside"><strong>4:48</strong>PM</p>
+					</a></li>
+				</ul>
+		</div>
+		<br>
 	</div><!-- /content -->
 
 	
@@ -2278,19 +2041,15 @@
 			
 				<ul data-role="listview" data-theme="b">
 				
-				
 					<li class="lidec"><a class="ui-btn ui-icon-home ui-btn-icon-left" href="#dashboard"><b>Dashboard</b></a></li>
 					<li  class="lidec"><a class="ui-btn ui-icon-info ui-btn-icon-left" href="#inventory"><b>Inventory</b><span class="ui-li-count ui-btn-corner-all">38</span></a></li>
 					<li class="lidec"><a class="ui-btn ui-icon-gear ui-btn-icon-left" href="#records"><b>Records</b></a></li>
 					<li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all">6</span></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#ntfcns"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all">3</span></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notifications"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all">3</span></a></li>
 					<li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" href="#settings"><b>Settings</b></a></li>
 			
 				</ul>	
 			
-		
-			
-				
 			</div>
 			<div>
 				<img style="margin: 3em 4em !important;" src="css/images/icon.png" />
@@ -2303,7 +2062,7 @@
 				<a href="#menupanel-6" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
 				<a href=""  class="ui-btn ui-shadow ui-corner-all ui-icon-camera ui-btn-icon-notext">Scan</a>
 				
-				<h1  style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Sales</h1>
+				<h1  style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 1.8em !important;">Sales</h1>
 		</div><!-- /header -->
 
 		<div data-role="content" style="background-color: #fff;">
@@ -2484,7 +2243,7 @@
 				<a href="#sales" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">back</a>
 				
 				
-			<h1  style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Check Out</h1>
+			<h1  style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 1.8em !important;">Check Out</h1>
 		</div><!-- /header -->
 
 		<div data-role="content" style="background-color: #f1f1f1;">
@@ -2650,7 +2409,7 @@
 		<a href="#menupanel-7" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
 		<a href="#damages" class="ui-btn ui-shadow ui-corner-all ui-icon-recycle ui-btn-icon-notext">refresh</a>
 		
-		<h1  style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Settings</h1>
+		<h1  style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 1.8em !important;">Settings</h1>
 		
 	</div><!-- /header -->
 
@@ -2708,7 +2467,7 @@
 		
 		<div data-role="header" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  data-position="fixed">
 				<a href="#settings" class="upload-queue ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
-					<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Manage Category</h1>
+					<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 1.8em !important;">Manage Category</h1>
 		</div><!-- /header -->
 		
 		<div data-role="content" style="background: #f1f1f1;">
@@ -2796,7 +2555,7 @@
 	
 		<div data-role="header" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  data-position="fixed">
 				<a href="#settings" class="upload-queue ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
-					<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Manage Users</h1>
+					<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 1.8em !important;">Manage Users</h1>
 		</div><!-- /header -->
 		
 		<div data-role="content" style="background: #f1f1f1;">
@@ -2905,7 +2664,7 @@
 	
 		<div data-role="header" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  data-position="fixed">
 				<a href="#settings" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
-					<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Manage Stores</h1>
+					<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 1.8em !important;">Manage Stores</h1>
 		</div><!-- /header -->
 		
 		<div data-role="content" style="background: #f1f1f1;">
@@ -3006,7 +2765,7 @@
 		
 		<div data-role="header" data-theme="b" style="height: 3.5em; border-bottom: 1px solid #fff;">
 				<a href="#settings" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
-				<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">General Settings</h1>
+				<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 1.8em !important;">General Settings</h1>
 		</div><!-- /header -->
 		
 		<div data-role="content" style="background: #f1f1f1;">

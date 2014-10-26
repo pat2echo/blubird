@@ -68,9 +68,9 @@ var refreshBusinessListing = new Array();
 
 var requestRetryCount = 0;
 
-//var pagepointer = 'http://localhost/blubird/server/engine/';
+var pagepointer = 'http://localhost/blubird/server/engine/';
 //var pagepointer = 'http://192.168.1.7/blubird/server/engine/';
-var pagepointer = 'http://blubird.maybeachtech.com/engine/';
+//var pagepointer = 'http://blubird.maybeachtech.com/engine/';
 
 var form_method = 'get';
 var ajax_data_type = 'json';
@@ -98,6 +98,8 @@ var search_limit_start = 0;
 var search_limit_interval = 20;
 
 var storeObjects = {};
+
+var unreadNotificationsCount = 0;
 
 function test_for_active_user(){
 	if( customUUID ){
@@ -942,8 +944,9 @@ function get_inventory_html( key , value ){
 	var qty = 0;
 	if(  value.item_qty )qty = parseFloat( value.item_qty );
 	if(  value.item_sold )qty -= parseFloat( value.item_sold );
+	if( ! value.item_image )value.item_image = '';
 	
-	var html = '<tr id="'+key+'" class="'+value.category.replace(' ', '-')+'" timestamp="'+value.timestamp+'"><td><img src="image bank/Coca Cola - 50cl.jpg" class="ui-li-thumb"></td><td>'+value.item_desc+'</td><td>'+formatNum( qty )+'</td><td>'+formatNum( value.selling_price )+'</td><td >';
+	var html = '<tr id="'+key+'" class="'+value.category.replace(' ', '-')+'" timestamp="'+value.timestamp+'"><td><img src="'+"data:image/jpeg;base64," + value.item_image+'" class="ui-li-thumb"></td><td>'+value.item_desc+'</td><td>'+formatNum( qty )+'</td><td>'+formatNum( value.selling_price )+'</td><td >';
 	
 	if( value.supplier ){
 		html += '<a href="tel:+23408183140303" data-role="button" data-mini="true" data-theme="a" data-icon="phone" class="ui-link ui-btn ui-btn-a ui-icon-phone ui-btn-icon-left ui-shadow ui-corner-all ui-mini"><b>Mrs Ateke</b></a>';
@@ -955,6 +958,8 @@ function get_inventory_html( key , value ){
 };
 
 var months_of_year = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+var weekdays = [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ];
+
 function get_new_inventory_html( key , value ){
 	var date = new Date( value.timestamp );
 	
@@ -1035,6 +1040,11 @@ $( document ).on( "pagecreate", "#dashboard", function() {
 });
 
 $( document ).on( "pageshow", "#dashboard", function() {
+	unreadNotificationsCount = 4;
+	if( unreadNotificationsCount ){
+		$('.notifications-count')
+		.text( unreadNotificationsCount );
+	}
 	
 	var inventory = get_list_of_inventory();
 	
@@ -1302,10 +1312,6 @@ $( document ).on( "pageshow", "#records", function() {
 	var today_total_days = 0;
 	var today_total_months = 0;
 	var today_total_years = 0;
-	
-	var weekdays = new Array();
-	weekdays = [ 'sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat' ];
-	
 	
 	$.each( sales , function( key , value ){
 		var date = new Date( value.timestamp );
@@ -1799,6 +1805,17 @@ $( document ).on( "pageshow", "#stores", function() {
 	update_stores_list_on_stores_page();
 });
 
+$( document ).on( "pagecreate", "#notifications", function() {
+	test_for_active_user();
+});
+
+$( document ).on( "pageshow", "#notifications", function() {
+	//reset notifications counter
+	unreadNotificationsCount = 0;
+	$('.notifications-count-with-notifications')
+	.html('');
+});
+
 $( document ).on( "pagecreate", "#settings", function() {
 	test_for_active_user();
 	
@@ -1836,12 +1853,12 @@ $( document ).on( "pagecreate", "#settings", function() {
 $( document ).on( "pageshow", "#settings", function() {
 	//check for registered user details
 	//var userInfo = get_user_info();
-	window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
-	window.requestFileSystem( window.TEMPORARY , 1024*1024 , onInitFs, errorHandler);
-	alert( 'ext'+cordova.file.externalRootDirectory );
-	alert( 'ext'+cordova.file.applicationStorageDirectory );
+	//window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
+	//window.requestFileSystem( window.TEMPORARY , 1024*1024 , onInitFs, errorHandler);
+	//alert( 'ext'+cordova.file.externalRootDirectory );
+	//alert( 'ext'+cordova.file.applicationStorageDirectory );
 	
-	alert( 'ext'+cordova.file.externalApplicationStorageDirectory );
+	//alert( 'ext'+cordova.file.externalApplicationStorageDirectory );
 	/*
 	$.each( userInfo , function( k , v ){
 		switch( k ){
@@ -2869,7 +2886,7 @@ $( document ).on( "pageshow", "#sales", function() {
 		if(  value.item_sold )qty -= parseFloat( value.item_sold );
 		
 		if( qty ){
-			html += '<li><a href="#" key="'+key+'" max-qty="'+qty+'" selling-price="'+value.selling_price+'" cost-price="'+value.cost_price+'"><img src="image bank/Evian - 50cl.jpg" class="ui-li-thumb" /><p>'+value.item_desc+'</p></a></li>';
+			html += '<li><a href="#" id="item-link-'+key+'" key="'+key+'" max-qty="'+qty+'" selling-price="'+value.selling_price+'" cost-price="'+value.cost_price+'"><img src="image bank/Evian - 50cl.jpg" class="ui-li-thumb" /><p>'+value.item_desc+'</p></a></li>';
 		}
 	});
 	
@@ -2964,6 +2981,38 @@ $( document ).on( "pageshow", "#sales", function() {
 				calculate_total_sales();
 			}
 			
+		});
+		
+		$('#sales-inventory-list-container')
+		.find('form.ui-filterable')
+		.on('submit', function(e){
+			if( $(this).find('input').val().length > 5 ){
+				d = getData( $(this).find('input').val() );
+				if( d && d.key ){
+					//add item to cart
+					$('a#item-link-'+d.key)
+					.click();
+					
+					$(this).find('input').val('');
+				}
+			}
+			return false;
+		});
+		
+		$('#sales-inventory-list-container')
+		.find('input')
+		.on('change', function(){
+			//test for item
+			if( $(this).val().length > 5 ){
+				d = getData( $(this).val() );
+				if( d && d.key ){
+					//add item to cart
+					$('a#item-link-'+d.key)
+					.click();
+					
+					$(this).val('');
+				}
+			}
 		});
 	}
 	
@@ -3103,21 +3152,73 @@ $( document ).on( "pageshow", "#update-progress", function() {
 function update_and_re_trigger_data_download( tempData ){
 	if( tempData && Object.getOwnPropertyNames( tempData ).length ){
 		var i = '';
+		var notifications = {};
+		var notifications_short_html = '';
 		$.each( tempData , function( object , key ){
+			var count = 0;
 			var obj = getData( object );
 			if( ! obj )obj = {};
 			
-			$.each( key , function( k , v ){
-				putData( k , v );
-				obj[ k ] = k;
-			});
-			
-			putData( object , obj );
-			
-			$('#update-progress-area')
-			.prepend('<li>Download Complete - '+object.replace( '_' , ' ' )+'</li>');
-			
-			i = object;
+			if( key ){
+				$.each( key , function( k , v ){
+					if( k ){
+						putData( k , v );
+						obj[ k ] = k;
+						
+						//prepare notifications
+						if( object == 'notifications' ){
+							var date = new Date(v.creationtimestamp);
+							// hours part from the timestamp
+							var calendar_day = date.getDate();
+							var month = date.getMonth();
+							var year = date.getFullYear();
+							var day = year+'_'+months_of_year[ month ]+'_'+calendar_day;
+							var time = date.getHours() + ':' + date.getMinutes();
+							
+							if( ! notifications[ day ] ){
+								notifications[ day ] = {
+									html: '',
+									date: weekdays[ date.getDay() ]+', '+months_of_year[ month ]+' '+calendar_day+', '+year,
+									count: 0
+								};
+							}
+							v.time = time;
+							notifications[ day ].html += get_notifications_html( v );
+							notifications[ day ].count += 1;
+							
+							notifications_short_html += get_notifications_short_html( v );
+						}
+						++count;
+					}
+				});
+				
+				putData( object , obj );
+				
+				switch( object ){
+				case 'notifications':
+					unreadNotificationsCount += count;
+					var notifications_html = '';
+					if( notifications && notifications_short_html ){
+						$.each( notifications, function( k , v ){
+							notifications_html += '<li data-role="list-divider" role="heading" class="ui-li-divider ui-bar-inherit ui-li-has-count ui-first-child">'+v.date+' <span class="ui-li-count ui-body-inherit">'+v.count+'</span></li>' + v.html;
+						});
+						
+						if( notifications_html ){
+							$('#notifications-container')
+							.prepend( notifications_html );
+						}
+						
+						$('.notifications-count-with-notifications')
+						.html( 'You\'ve '+unreadNotificationsCount+' new notifications &nbsp;|&nbsp;&nbsp; '+notifications_short_html );
+					}
+				break;
+				}
+				
+				$('#update-progress-area')
+				.prepend('<li>Download Complete - '+object.replace( '_' , ' ' )+' <span>'+count+' entries</span></li>');
+				
+				i = object;
+			}
 		});
 		
 		if( i ){
@@ -3131,6 +3232,14 @@ function update_and_re_trigger_data_download( tempData ){
 			ajax_send();
 		}
 	}
+};
+
+function get_notifications_html( n ){
+	return '<li timestamp="'+n.creationtimestamp+'"><a href="#" class="ui-btn ui-btn-icon-right ui-icon-carat-r"><h4>'+n.title+'</h4><p>'+n.detailed_message+'</p><p class="ui-li-aside"><strong>'+n.time+'</strong></p></a></li>';
+};
+
+function get_notifications_short_html( n ){
+	return n.subtitle;
 };
 
 function activate_record_delete_button(){
