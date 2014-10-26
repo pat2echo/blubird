@@ -1213,8 +1213,8 @@ html .ui-bar-b .ui-btn:active,
 html .ui-body-b .ui-btn:active,
 html body .ui-group-theme-b .ui-btn:active,
 html head + body .ui-btn.ui-btn-b:active {
-	background-color: 			#2f728a /*{b-bup-background-color}*/;
-	border:	 	1px solid #2f728a/*{b-bup-border}*/;
+	background-color: 			#43a2c4 /*{b-bup-background-color}*/;
+	border:	 	1px solid #43a2c4/*{b-bup-border}*/;
 	color: 					#fff /*{b-bdown-color}*/;
 	text-shadow: none;
 }
@@ -1395,9 +1395,11 @@ div.ui-mobile-viewport {
 	}
 }
 @media screen and (orientation: landscape) {
-	.ui-mobile .ui-page {
-		
+	#footer {
+		display: none !important;
 	}
+	
+	
 }
 /* Fouc */
 .ui-mobile-rendering > * {
@@ -3734,20 +3736,20 @@ fieldset.ui-controlgroup {
 /* Used by both listview and custom multiple select button */
 .ui-li-count {
 	background-color: #2f728a !important;
-	border: 1px solid #2f728a !important;
+	border: 2px solid #43a2c4 !important;
 	position: absolute;
-	font-size: 12.5px;
+	font-size: 0.8em;
 	font-weight: normal !important;
 	text-align: center;
-	border-radius: 15px;
+	border-radius: 20px;
 	
-	padding: 0.15em .48em 0em .48em;
+	padding: 0.2em .5em 0em .5em;
 	line-height: 1.6em;
 	min-height: 1.6em;
 	min-width: .64em;
 	right: .8em;
 	top: 50%;
-	margin-top: -.88em;
+	margin-top: -1em;
 	text-shadow: none !important;
 	color: #fff !important;
 }
@@ -4932,7 +4934,7 @@ html .ui-popup .ui-field-contain > label + .ui-flipswitch {
 
 
 .lidec{
-	
+	border-bottom: none !important;	
 	
 	
 }
@@ -4970,4 +4972,196 @@ html .ui-popup .ui-field-contain > label + .ui-flipswitch {
 	background-position: center; 
 }
 
+@media only screen 
+and (min-device-width : 320px) 
+and (max-device-width : 480px) {
+/* Styles */
+
+.dash h3{
+	font-size: 1.2em !important;
+	margin-bottom: 0.5em;
+	}
+	
+.dash h6{
+	font-size: 2.2em !important;
+	margin-bottom: 0.5em;
+}
+	
+.dash .ui-block-a{
+	width: 100%;
+	display:block;
+	}
+
+.dash .ui-block-b{
+	width: 100%;
+	display:none;
+	}
+
+.dash2{
+	display: none;
+	}
+	
+.dash3 h3{
+	font-size: 1.2em !important;
+	
+}
+
+ .g,.s4, .s5, .s6 {
+ display: none !important;
+}
+
+.ft{
+	font-size: 0.9em !important;
+	
+}
+
+
+		.products .ui-listview li {
+			
+			position: relative;
+			display: inline-table;
+			float:left;
+			width: 5em !important; /* 33.3333% incl. 2 x 1.2% margin */
+			height: 7em; /* 232p */
+			margin: 0.5em;
+		}
+
+		.products .ui-listview p{
+			font-size: 0.5em !important;
+		}
+
+		
+		.lstp{
+			display: none !important;
+		
+		}
+		
+		.products .ui-listview li.ui-li-has-thumb .ui-li-thumb {
+			
+			margin: 0 !important;
+			max-width: 100% !important;
+			height: auto !important;
+			
+		}
+		
+		.sle{
+		font-size: 1.5em !important; 
+		
+		}
+		
+		.sle{
+		font-size: 1.5em !important; 
+		
+		}
+		
+		.trsle{
+		display: none !important; 
+	   
+		}	
+
+		.bdrsle{
+		border-top: 1px solid rgba(112,112,112,0.5) !important; 
+	   
+		}	
+
+		.fntsle{
+		font-size: 0.8em !important;
+		
+		}
+		
+		.lblchk{
+		font-size: 1em !important;
+		}
+		
+		.invt .ui-block-a{
+		width: 100%;
+		display:block;
+		padding: 0em !important;
+		}
+
+		.invt .ui-block-b{
+		width: 100%;
+		display:block;
+		padding: 0em !important;
+		margin-top: 0.5em;
+		}
+		
+		.invt .ui-block-c{
+		width: 100%;
+		display:block;
+		padding: 0em !important;
+		margin-top: 1em;
+		}
+		
+		.invt h3{
+		font-size: 1.2em !important;
+		margin-bottom: 0.5em;
+		}
+	
+		.invt h6{
+		font-size: 2.2em !important;
+		margin-bottom: 0.5em;
+		}
+		
+		.invt a{
+		font-size: 1em !important;
+		}
+		
+		.invtr {
+		display: none !important;
+		}
+		
+		.newinv .ui-block-a{
+		padding-right: 0em !important;
+		width: 100% !important;
+		display:block;
+		}
+
+		.newinv .ui-block-b{
+		padding-left: 0em !important;
+		width: 100% !important;
+		display:block;
+		}
+		
+		.newinv2{
+		display: none !important;
+		}
+		
+		.newinv3{
+		font-size: 1em !important;
+		}
+		
+		.newinvent{
+		}
+		
+		.ui-input-text input, .ui-input-search input{
+		font-size: 1em !important;
+		}
+		
+		.eml{ display: none !important;}
+		.mob{ display: none !important;}
+		
+		.df{font-size: 1.5em !important;}
+			   
+}
+
+
+		.sle{
+		float: left; 
+		line-height: 2em; 
+		color: white; 
+		font-family: Roboto Thin; 
+		font-size: 1.7em; 
+		font-weight: 300;
+		}
+		
+		.trsle{
+		font-family: Roboto Thin; 
+		font-size: 1em; 
+		font-weight: bold !important; 
+		color: #bde3ea; 
+		border-top: 1px solid rgba(0,0,0,.10);
+		border-bottom: 1px solid rgba(0,0,0,.05); 
+		line-height: 1.4em;
+		}
 	

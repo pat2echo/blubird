@@ -13,7 +13,7 @@
 	
 	
 	<!-- App 2nd Commit / demo data -->
-	<!--version 1.0.21-->
+	<!--version 1.0.1-->
 	<script src="js/app/amplify.min.js"></script>
 	<script src="js/app/md5.js"></script>
 	<script src="js/app/fastclick.js"></script>
@@ -462,7 +462,7 @@
 					<li class="lidec"><a class="ui-btn ui-icon-info ui-btn-icon-left" href="#inventory"><b>Inventory</b><span class="ui-li-count ui-btn-corner-all">164</span></a></li>
 					<li class="lidec"><a class="ui-btn ui-icon-calendar ui-btn-icon-left" href="#records"><b>Records</b></a></li>
 					<li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all">6</span></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notifications"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all notifications-count">0</span></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notifications"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all">3</span></a></li>
 					<li class="lidec"><a class="ui-btn ui-icon-gear ui-btn-icon-left" href="#settings"><b>Settings</b></a></li>
 			
 				</ul>	
@@ -478,9 +478,7 @@
 		<a href="#menupanel-1" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
 		<a href=""  class="ui-btn ui-shadow ui-corner-all ui-icon-recycle ui-btn-icon-notext">Refresh</a>
 		
-		<h1 style="margin-top: 0.2em !important; margin-bottom: 0.4em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 1.8em !important;" class="header">
-			Dashboard
-		</h1>
+		<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Dashboard</h1>
 		<div data-role="navbar" style="font-size:0.6em;">
 			<ul>
 				<li><a href="#" style="padding:0.4em;">
@@ -493,44 +491,44 @@
 	</div><!-- /header -->
 
 	<div role="main" class="ui-content" style="background-color: #f1f1f1;">
-						<div class="ui-grid-a" >
-							<div class="ui-block-a">
-								<div class="panl">
-									<h3>Todays total sales <span style="font-size:0.7em;" class="today-total-sales-units">(0)</span></h3>
-									<h6 style="color: #43a2c4;" class="today-total-sales-amount">0.00</h6>
-								</div>
+					<div class="ui-grid-a dash" >
+						<div class="ui-block-a">
+							<div class="panl">
+								<h3>Todays total sales <span style="font-size:0.7em;" class="today-total-sales-units">(0)</span></h3>
+								<h6 style="color: #43a2c4;" class="today-total-sales-amount">0.00</h6>
 							</div>
-							
-							<div class="ui-block-b">
-								<div class="panl">
-									<h3>Todays gross earnings</h3>
-									<h6 style="color: #43a2c4;" class="today-gross-profit">0.00</h6>
-								</div>
-							</div>
-							
 						</div>
-					
-						<div class="ui-grid-a" >
-							
-							<div class="ui-block-a">
-								<div class="panl">
-									<h3>Total inventory value</h3>
-									<h6 class="total-value-of-inventory">0.00</h6>
-								</div>
+						
+						<div class="ui-block-b">
+							<div class="panl">
+								<h3>Todays gross earnings</h3>
+								<h6 style="color: #43a2c4;" class="today-gross-profit">0.00</h6>
 							</div>
-							
-							<div class="ui-block-b">
-								<div class="panl">
-									<h3>Total number of items <span style="font-size:0.7em;" class="total-unique-inventory-items">(0)</span></h3>
-									<h6 class="total-items-in-stock">0</h6>
-								</div>
-							</div>
-							
 						</div>
-					
+						
+					</div>
+				
+					<div class="ui-grid-a dash" >
+						
+						<div class="ui-block-a">
+							<div class="panl">
+								<h3>Total inventory value</h3>
+								<h6 class="total-value-of-inventory">0.00</h6>
+							</div>
+						</div>
+						
+						<div class="ui-block-b">
+							<div class="panl">
+								<h3>Total number of items <span style="font-size:0.7em;" class="total-unique-inventory-items">(0)</span></h3>
+								<h6 class="total-items-in-stock">0</h6>
+							</div>
+						</div>
+						
+					</div>
+				
 					
 				
-				<div class="panl">
+				<div class="panl dash2">
 					<div >
 						<h3>This week's daily sales</h3>
 						<br>
@@ -541,7 +539,7 @@
 					
 					<br>
 				
-				<div class="panl">
+				<div class="panl dash3">
 					<div >
 						<h3>Todays top 5 selling products </h3>
 						<br>
@@ -558,10 +556,17 @@
 	</div><!-- /content -->
 
 	
-		<div data-role="footer" style="background: #fff; border: none;">
-			
-			
-		</div><!-- /footer -->
+		<div id="footer" data-role="footer"  data-theme="b" data-position="fixed"  data-toggle="false" style="-webkit-box-shadow: 0px -4px 5px 0px rgba(112,112,112,1); -moz-box-shadow: 0px -4px 5px 0px rgba(112,112,112,1); box-shadow: 0px -4px 5px 0px rgba(112,112,112,1);" >
+		<div data-role="navbar" data-grid="c" class="footer-nav-bar">
+			<ul>
+				<li><a style="margin: 0.2em 0em;" href="#sales"  data-icon="shop" data-iconpos="top" data-transition="none" class="ft"><b>Sales</b></a></li>
+				<li><a style="margin: 0.2em 0em; border-left: 1px solid rgba(0,0,0,0.2);" href="#inventory"  data-icon="grid" data-iconpos="top" data-transition="none" class=" ui-btn-active ft"><b>Inventory</b></a></li>
+				<li><a style="margin: 0.2em 0em; border-left: 1px solid rgba(0,0,0,0.2);" href="#records"  data-icon="edit" data-iconpos="top" data-transition="none" class="ft"><b>Records</b></a></li>
+				<li><a style="margin: 0.2em 0em; border-left: 1px solid rgba(0,0,0,0.2);" href="#supplier"  data-icon="info" data-iconpos="top" data-transition="none" class="ft"><b>Suppliers</b></a></li>
+			</ul>
+		</div><!-- /navbar -->
+		
+	</div><!-- /footer -->
 		
 </div><!-- /page -->
 
@@ -705,7 +710,7 @@
 					<li  class="lidec"><a class="ui-btn ui-icon-check ui-btn-icon-left" href="#sales"><b>Sales</b></a></li>
 					<li class="lidec"><a class="ui-btn ui-icon-gear ui-btn-icon-left" href="#inventory"><b>Inventory</b><span class="ui-li-count ui-btn-corner-all">38</span></a></li>
 					<li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all">6</span></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notfcns"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all">3</span></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notifications"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all">3</span></a></li>
 					<li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" href="#settings"><b>Settings</b></a></li>
 			
 				</ul>	
@@ -989,14 +994,14 @@
 		
 		<div data-role="header" id="hd" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);" >
 				<a href="#inventory" class="upload-queue ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none" data-ajax="false">Menu</a>
-				<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 1.8em !important;">Set Pricing</h1>
+				<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Set Pricing</h1>
 		</div><!-- /header -->
 		<div data-role="content" style="background-color: #f1f1f1; ">
 	
 				<div style="background-color: #43a2c4 !important; border-radius: 5px; ">
 					<div style="padding: 1em 1em 0em 1em;">
 					
-					<div class="ui-grid-b" >
+					<div class="ui-grid-b invt">
 							<div class="ui-block-a">
 								<select id="filter-category-field" >
 									<option value="" style="text-shadow: none !important;">All Categories</option>
@@ -1076,7 +1081,7 @@
 				
 				</div>
 				<br>
-				<div class="ui-grid-a" >
+				<div class="ui-grid-a invt" >
 					<div class="ui-block-a" >
 						<a href="#inventory" data-role="button" data-theme="a" data-icon="delete" style="margin: 0em 0.5em 0em 0em; background-color:red; border: red; text-shadow: none; color: white !important;" ><b>Discard Changes</b></a>
 					</div>
@@ -1096,7 +1101,7 @@
 		
 		<div data-role="header" data-theme="b"  data-position="fixed" data-toggle="false" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);" >
 				<a href="#inventory" class="upload-queue ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
-				<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 1.8em !important;">New Inventory</h1>
+				<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">New Product</h1>
 		</div><!-- /header -->
 
 		<div data-role="content" style="background: #fff; ">
@@ -1104,14 +1109,11 @@
 					<div style="padding: 0.5em 1.5em 0.5em 1.5em;">
 						
 						<br>
-						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
-						<br>
 						
 						<form id="inventory-form" name="inventory" method="post" action="">
 						<input type="hidden" name="key" id="key-field" value="" />
-						
-						
-						<div class="ui-grid-a" >
+												
+						<div class="ui-grid-a invt" >
 							<div class="ui-block-a">
 								
 									<select id="item-select-field" >
@@ -1129,26 +1131,27 @@
 							</div>
 						
 						</div>
-						
-						<p style="border-bottom: 1px dotted #ccc;"></p>
-						
-						<div class="ui-grid-a">
-							<div class="ui-block-a" style="width: 50%; padding-right: 3px;">
+						<br>
+						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						<br>
+						<div class="ui-grid-a invt">
+							<div class="ui-block-a">
 								<input type="text"  name="item_barcode" id="item_barcode-field" placeholder="Barcode Number" style="height: 2.65em;" required data-validate="barcode" data-error-title="Invalid Barcode" data-error-msg="Please provide a valid barcode, barcodes cannot begin with zero(0)" />
 							</div>
-							<div class="ui-block-b" style="width: 50%; padding-left: 3px;">
+							<div class="ui-block-b" >
 								<a href="#" class="button-scan" data-role="button" data-theme="a" data-icon="camera"  style="background-color:green; border: none; text-shadow: none; color: white !important; " >Scan Barcode</a>
 							</div>
 						</div>
-						
-						<div class="ui-grid-a">
-							<div class="ui-block-a" style="width: 50%; padding-right: 3px;">
+						<br>
+						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						<br>
+						<div class="ui-grid-a invt">
+							<div class="ui-block-a" >
 								
-							<img src="icon.png" id="myImage" style="float: right; width:120px;">
-							<!--<img src="icon.png" id="myImage-1" style="float: right; width:120px;">-->
+							<img src="icon.png" id="myImage" style="horizontal-align: middle; width:120px;">
 							</div>
 						
-							<div class="ui-block-b" style="width: 50%; padding-left: 3px;">
+							<div class="ui-block-b" >
 								<a href="#" id="capture-image-button" data-role="button" data-theme="a" data-icon="camera"  style="background-color:green; border: none; text-shadow: none; color: white !important; " >Take Picture</a>
 							</div>
 						</div>
@@ -1245,7 +1248,7 @@
 		
 		<div data-role="header" data-theme="b"  data-position="fixed" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);" >
 				<a href="#inventory" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
-				<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 1.8em !important;">Damages</h1>
+				<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Damages</h1>
 		</div><!-- /header -->
 
 		<div data-role="content" style="background: #fff; ">
@@ -1336,7 +1339,7 @@
 		
 		<div data-role="header" id="hd" data-theme="b" style="height: 3.5em;">
 				<a href="#inventory" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
-				<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 1.8em !important;">Item Stock Levels</h1>
+				<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Item Stock Levels</h1>
 		</div><!-- /header -->
 		
 		<div data-role="content" style="background: #fff;">
@@ -1344,7 +1347,7 @@
 				<div style="background-color: #43a2c4 !important; border-radius: 5px;">
 					<div style="padding: 1em 1em 0em 1em;">
 					
-						<div class="ui-grid-a" >
+						<div class="ui-grid-a invt" >
 							<div class="ui-block-a">
 								<select id="filter-category-field" >
 									<option value="" style="text-shadow: none !important;">All Categories</option>
@@ -1445,7 +1448,7 @@
 					<li  class="lidec"><a class="ui-btn ui-icon-info ui-btn-icon-left" href="#inventory"><b>Inventory</b><span class="ui-li-count ui-btn-corner-all">38</span></a></li>
 					<li class="lidec"><a class="ui-btn ui-icon-calendar ui-btn-icon-left" href="#records"><b>Records</b></a></li>
 					<li class="lidec"><a class="ui-btn ui-icon-shop ui-btn-icon-left" href="#sales"><b>Sales</b></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notfcns"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all">3</span></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notifications"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all">3</span></a></li>
 					<li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" href="#suppliers"><b>Settings</b></a></li>
 			
 				</ul>	
@@ -1461,7 +1464,7 @@
 	</div>
 		<div data-role="header" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  data-position="fixed">
 				<a href="#menupanel-3" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext" data-transition="none">Menu</a>
-					<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 1.8em !important;">Supplier</h1>
+					<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Supplier</h1>
 		</div><!-- /header -->
 		
 		<div data-role="content" style="background: #f1f1f1;">
@@ -1473,23 +1476,33 @@
 					<select name="supplier" id="supplier-select-box">
 						<option value="new">Add New Supplier</option>
 					</select>
-					
+					<br>
 					<form method="post" action="" name="suppliers" id="suppliers-form">
 						<input type="hidden" name="key" id="key-field" value="" data-validate="text" />
 						<input type="text" name="supplier" id="supplier-field" placeholder="Supplier Name" required data-validate="text" data-error-title="Invalid supplier" data-error-msg="Provide a valid Supplier Name" />
+						<br>
 						<input type="text" name="location" id="location-field" placeholder="Supplier Location" required data-validate="text" data-error-title="Invalid Supplier Location" data-error-msg="Provide a valid supplier location" />
-						
-						<div class="ui-grid-a">
-							<div class="ui-block-a" style="width: 55% !important; padding-top:3px;"><input type="tel" name="mobile" id="mobile-field" data-validate="tel" placeholder="Mobile" protocol="tel:"></div>
-							<div class="ui-block-b" style="width: 45% !important;"><a  href="#" id="mobile-field-link" data-role="button" data-theme="b" data-icon="phone" style="height: 1em; font-weight: normal !important; text-shadow: none; background-color: green; border: none;">Call</a></div>
+						<br>
+							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						<br>
+						<div class="ui-grid-a invt">
+							<div class="ui-block-a" ><input type="tel" name="mobile" id="mobile-field" data-validate="tel" placeholder="Mobile" protocol="tel:"></div>
+							
+							<div class="ui-block-b" ><a  href="#" id="mobile-field-link" data-role="button" data-theme="b" data-icon="phone" style=" font-weight: normal !important; text-shadow: none; background-color: green; border: none;">Call</a></div>
 						</div>
-						<div class="ui-grid-a">
-							<div class="ui-block-a" style="width: 55% !important; padding-top:3px;"><input type="email" name="email" id="email-field" data-validate="email" placeholder="Email" protocol="mailto:"></div>
-							<div class="ui-block-b" style="width: 45% !important;"><a href="#" id="email-field-link" data-role="button" data-theme="b" data-icon="mail" style="height: 1em; font-weight: normal !important; text-shadow: none; background-color: green; border: none;">Email</a></div>
+						<br>
+							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						<br>
+						<div class="ui-grid-a invt">
+							<div class="ui-block-a" ><input type="email" name="email" id="email-field" data-validate="email" placeholder="Email" protocol="mailto:"></div>
+							<div class="ui-block-b" "><a href="#" id="email-field-link" data-role="button" data-theme="b" data-icon="mail" style="height: 1em; font-weight: normal !important; text-shadow: none; background-color: green; border: none;">Email</a></div>
 						</div>
-						
+						<br>
+							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						<br>
 						<input type="submit" value="Save" />
 					</form>
+					<br>
 					
 						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
 						<br>			
@@ -1552,7 +1565,7 @@
 						</table>
 						
 						<br>
-						<h3 style="color: white; text-shadow: none !important; "><span id="last-supply-activity-supplier-name"></span> &rarr; Last supply activity &darr;</h3>
+						<span class="df" style="color: white; text-shadow: none !important; "><span  id="last-supply-activity-supplier-name"></span> &rarr; Last supply activity &darr;</span>
 						<br>
 						
 						<br>
@@ -1577,7 +1590,7 @@
 						<br>
 						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
 						<br>
-						<h3 style="color: white; text-shadow: none !important; text-align: right;">Oustanding balance owed : <span id="supplier-amount-owed">0.00</span></h3>
+						<span class="df" style="color: white; text-shadow: none !important; text-align: right;">Oustanding balance owed : <span id="supplier-amount-owed">0.00</span></span>
 						<br>
 						
 					</div>
@@ -1599,7 +1612,7 @@
 		
 		<div data-role="header" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);" >
 			<a href="#inventory" id="manage-inventory-back-button" class="upload-queue ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
-			<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 1.8em !important;">Manage Inventory</h1>
+			<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Manage Inventory</h1>
 		</div><!-- /header -->
 
 		<div data-role="content" style="background-color: #f1f1f1;">
@@ -1613,7 +1626,7 @@
 						
 						<input type="hidden" name="supply" id="supply-field" value="" />
 						
-						<div class="ui-grid-a" >
+						<div class="ui-grid-a invt" >
 							<div class="ui-block-a">
 								<select id="filter-category-field" >
 									<option value="" style="text-shadow: none !important;">All Categories</option>
@@ -1628,7 +1641,7 @@
 						</div>
 						
 						<br />
-						<div class="ui-grid-a" >
+						<div class="ui-grid-a invt" >
 							<div class="ui-block-a">
 								<select name="item_barcode" id="item_barcode-field" required data-validate="text" data-error-title="Invalid Item" data-error-msg="Please select a valid item">
 									<option value="">Select Item</option>
@@ -1645,29 +1658,30 @@
 						</select>
 						<br />
 						
-						<div class="ui-grid-a">
-							<div class="ui-block-a" style="padding-right:0.5em;">
-								<label for="cost_price-field" style="color: white; text-shadow: none; ">Unit Cost Price:</label>
+						<div class="ui-grid-a invt">
+							<div class="ui-block-a" class="df" style="padding-right:0.5em;">
+								<label for="cost_price-field" style="font-family: Roboto Thin; color: white; text-shadow: none; ">Unit Cost Price:</label>
 								<input type="number" name="cost_price" id="cost_price-field" min="0" step="any" placeholder="Unit Cost Price" required data-validate="number" data-error-title="Invalid Cost Price" data-error-msg="Please provide a valid Cost Price" />
 							</div>
-							<div class="ui-block-b" style="padding-left:0.5em;">
-								<label for="selling_price-field" style="color: white; text-shadow: none; ">Unit Selling Price:</label>
+							<div class="ui-block-b" class="df" style="padding-left:0.5em;">
+								<label for="selling_price-field" style="font-family: Roboto Thin; color: white; text-shadow: none; ">Unit Selling Price:</label>
 								<input type="number" name="selling_price" id="selling_price-field" min="0" step="any" placeholder="Unit Selling Price" required data-validate="number" data-error-title="Invalid Selling Price" data-error-msg="Please provide a valid Selling Price" />
 							</div>
 						</div>
 						<br />
-						<div class="ui-grid-a">
+						<div class="ui-grid-a invt">
 							<div class="ui-block-a" style="padding-right:0.5em;">
-								<label for="item_qty-field" style="color: white; text-shadow: none; ">Item Quantity:</label>
+								<label for="item_qty-field" style="font-family: Roboto Thin; color: white; text-shadow: none; ">Item Quantity:</label>
 								<input type="number" name="item_qty" id="item_qty-field" min="0" step="1" placeholder="Item Quantity" required data-validate="number" data-error-title="Invalid Quantity" data-error-msg="Please provide a quantity" />
 							</div>
 							<div class="ui-block-b" style="padding-left:0.5em;">
-								<label for="expiry_date-field" style="color: white; text-shadow: none; ">Expiry Date:</label>
+								<label for="expiry_date-field" style="font-family: Roboto Thin; color: white; text-shadow: none; ">Expiry Date:</label>
 								<input type="date" name="expiry_date" id="expiry_date-field" value="" data-validate="date" data-error-title="Invalid Expiry Date" data-error-msg="Please provide a valid expiry valid" />
 							</div>
 						</div>
-						
+						<br>
 						<p style="border-bottom: 1px dotted rgb(112,112,112);"></p>
+						<br>
 						<input type="submit" value="Stock" data-icon="arrow-r" />
 						<br>
 				</div>
@@ -1675,22 +1689,24 @@
 			
 			<form action="" method="post" name="supply" id="supply-form">
 				<div style="padding: 1em 1em 0em 1em;">
-						<label style="color: white; text-align:center; text-shadow: none; ">Supply Summary</label>
+						<label style="font-family: Roboto Thin; color: white; text-align:center; text-shadow: none; ">Supply Summary</label>
 						<br />
 						<input type="hidden" name="key" id="key-field" value="" required data-validate="text" data-error-title="No Items were Supplied!" data-error-msg="Please add items to stock first" />
 						
 						<input type="text" id="total_amount-dummy" placeholder="Total Cost of all Items Supplied : " data-placeholder="Total Cost of all Items Supplied : " disabled="true" />
+						<br>
 						
 						<input type="hidden" name="total_amount" id="total_amount-field" placeholder="Total Cost of all Items Supplied : " data-validate="number" min="0" step="any" required data-validate="number" data-error-title="No Items were Supplied!" data-error-msg="Please add items to stock first" />
-						
+					
 						<input type="hidden" name="total_items" id="total_items-field" placeholder="Total Number of all Items Supplied : " data-validate="number" min="0" step="1" required data-validate="number" data-error-title="No Items were Supplied!" data-error-msg="Please add items to stock first" />
 						
 						<input type="number" name="total_amount_paid" id="total_amount_paid-field" min="0" step="any" value="" placeholder="Total Amount Paid to Supplier : " />
 						<!--<input type="number" name="amount_paid" id="amount_paid-field" min="0" step="any" placeholder="Total Amount Paid to Supplier : " required data-validate="number" data-error-title="Invalid Amount Paid" data-error-msg="Please provide a valid amount" />-->
-						
+						<br>
 						<input type="text" id="total_amount_owed-dummy" placeholder="Amount Owed Supplier : " data-placeholder="Amount Owed Supplier : " disabled="true" />
-						
+						<br>
 						<p style="border-bottom: 1px dotted rgb(112,112,112);"></p>
+						<br>
 						<input type="submit" value="Finish" data-icon="arrow-r" />
 						<br>
 					</div>
@@ -1713,7 +1729,7 @@
 					<li  class="lidec"><a class="ui-btn ui-icon-check ui-btn-icon-left" href="#sales"><b>Sales</b></a></li>
 					<li class="lidec"><a class="ui-btn ui-icon-gear ui-btn-icon-left" href="#records"><b>Records</b></a></li>
 					<li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all">6</span></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notfcns"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all">3</span></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notifications"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all">3</span></a></li>
 					<li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" href="#settings"><b>Settings</b></a></li>
 			
 			</ul>	
@@ -1733,12 +1749,12 @@
 		<a href="#menupanel-4" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
 		<a href="#damages" class="ui-btn ui-shadow ui-corner-all ui-icon-minus ui-btn-icon-notext">damages</a>
 		
-		<h1  style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 1.8em !important;">Inventory</h1>
+		<h1  style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Inventory</h1>
 		
 	</div><!-- /header -->
 
 	<div role="main" class="ui-content" style="background-color: #f1f1f1;">
-					<div class="ui-grid-a" >
+					<div class="ui-grid-a invt" >
 						<div class="ui-block-a">
 							<div class="panl">
 								<h3>Total inventory value</h3>
@@ -1755,16 +1771,16 @@
 						
 					</div>
 					
-					<div class="ui-grid-a" style="margin: 0.2em;">
+					<div class="ui-grid-a invt" style="margin: 0.2em;">
 						<div class="ui-block-a" >
-							<a href="#newInventory" data-role="button" data-theme="b" data-icon="plus" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin;"><b>New Inventory</b></a>
+							<a href="#newInventory" data-role="button" data-theme="b" data-icon="plus" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin;"><b>New Product</b></a>
 						</div>
 						<div class="ui-block-b">
 							<a href="#restock" data-role="button" data-theme="b" data-icon="forward" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin;"><b>Manage Inventory</b></a>
 						</div>
 					</div><!-- /grid-a -->
 					
-					<div class="ui-grid-a" style="margin: 0.2em;">
+					<div class="ui-grid-a invt" style="margin: 0.2em;">
 						<div class="ui-block-a" >
 							<a href="#stockLevels" data-role="button" data-theme="b" data-icon="eye" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin;"><b>View Stock Levels</b></a>
 						</div>
@@ -1775,7 +1791,7 @@
 					
 					<br>
 					
-					<div data-role="collapsible" data-theme="b" data-collapsed="false" data-collapsed-icon="carat-d" data-expanded-icon="carat-u">
+					<div data-role="collapsible" data-theme="b" data-collapsed="false" data-collapsed-icon="carat-d" data-expanded-icon="carat-u" class="invtr">
 					
 						<h3 style="color: white; font-size: 1em !important; font-weight: 100 !important; text-shadow: none !important; text-align: center !important;">Current inventory listing <span class="ui-li-count ui-btn-corner-all"><strong class="total-unique-items">-</strong></span></h3>
 					
@@ -1855,7 +1871,7 @@
 					
 					<p>&nbsp;<p/>
 					
-					<div data-role="collapsible" data-theme="b"  data-collapsed-icon="carat-d" data-expanded-icon="carat-u">
+					<div data-role="collapsible" data-theme="b"  data-collapsed-icon="carat-d" data-expanded-icon="carat-u" class="invtr">
 					
 						<h3 style="color: white; font-size: 1em !important; font-weight: 100 !important; text-shadow: none !important; text-align: center !important;">Low stock level<span class="ui-li-count ui-btn-corner-all">4</span></h3>
 					
@@ -1945,94 +1961,21 @@
 	</div><!-- /content -->
 
 	
-		<div data-role="footer">
-			
+		<div id="footer" data-role="footer"  data-theme="b" data-position="fixed" style="-webkit-box-shadow: 0px -4px 5px 0px rgba(112,112,112,1); -moz-box-shadow: 0px -4px 5px 0px rgba(112,112,112,1); box-shadow: 0px -4px 5px 0px rgba(112,112,112,1);" >
+			<div data-role="navbar" data-grid="c" class="footer-nav-bar">
+				<ul>
+					
+					<li><a style="margin: 0.2em 0em; " href="#dashboard"  data-icon="home" data-iconpos="top" data-transition="none" class="ft">Home</a></li>
+					<li><a style="margin: 0.2em 0em; border-left: 1px solid rgba(0,0,0,0.2);" href="#inventory"  data-icon="shop" data-iconpos="top" data-transition="none" class=" ui-btn-active ft">Sales</a></li>
+					<li><a style="margin: 0.2em 0em; border-left: 1px solid rgba(0,0,0,0.2);" href="#records"  data-icon="edit" data-iconpos="top" data-transition="none" class="ft">Records</a></li>
+					<li><a style="margin: 0.2em 0em; border-left: 1px solid rgba(0,0,0,0.2);" href="#supplier"  data-icon="info" data-iconpos="top" data-transition="none" class="ft">Suppliers</a></li>
+				</ul>
+			</div><!-- /navbar -->
 		</div><!-- /footer -->
 		
 </div><!-- /page -->
 
 </div>
-
-<div data-role="page" id="notifications" >
-	<div data-role="panel" id="menupanel-5" data-position="left" data-display="overlay" class="ui-panel ui-panel-position-left ui-panel-display-overlay ui-body-c ui-panel-animate ui-panel-closed" data-theme="b" style="background-color: #fff;  ">
-
-			<div class="ui-panel-inner" >
-			
-				<ul data-role="listview" data-theme="b">
-				
-					<li class="lidec"><a class="ui-btn ui-icon-shop ui-btn-icon-left" href="#sales"><b>Sales</b></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-info ui-btn-icon-left" href="#inventory"><b>Inventory</b><span class="ui-li-count ui-btn-corner-all">164</span></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-calendar ui-btn-icon-left" href="#records"><b>Records</b></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all">6</span></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notfcns"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all">3</span></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" href="#settings"><b>Settings</b></a></li>
-			
-				</ul>	
-			
-		
-			
-				
-			</div>
-			<div>
-				<img style="margin: 3em 4em !important;" src="css/images/icon.png" />
-			</div>
-			
-	</div>
-	<div data-role="header" id="hd" data-position="fixed" data-tap-toggle="false" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);" >
-		
-		<a href="#menupanel-5" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
-		
-		
-		<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 1.8em !important;">Notifications</h1>
-		
-		
-	</div><!-- /header -->
-
-	<div role="main" class="ui-content" style="background-color: #f1f1f1;">
-		<style type="text/css">
-			#notifications-container h4{
-				font-size:0.8em !important;
-			}
-			#notifications-container p{
-				font-size:0.7em !important;
-			}
-			#notifications-container p.ui-li-aside{
-				font-size:0.6em !important;
-			}
-		</style>
-		<div style="margin:5px 15px;">
-				<ul id="notifications-container" class="ui-listview ui-listview-inset ui-corner-all ui-shadow">
-					<li data-role="list-divider" role="heading" class="ui-li-divider ui-bar-inherit ui-li-has-count ui-first-child">Friday, October 8, 2010 <span class="ui-li-count ui-body-inherit">2</span></li>
-					<li><a href="index.html" class="ui-btn ui-btn-icon-right ui-icon-carat-r">
-					<h4>Stephen Weber</h4>
-					<p>Hey Stephen, if you're available at 10am tomorrow, we've got a meeting with the jQuery team.</p>
-						<p class="ui-li-aside"><strong>6:24</strong>PM</p>
-					</a></li>
-					<li><a href="index.html" class="ui-btn ui-btn-icon-right ui-icon-carat-r">
-					<h4>jQuery Team</h4>
-					<p><strong>Boston Conference Planning</strong></p>
-					<p>In preparation for the upcoming conference in Boston, we need to start gathering a list of sponsors and speakers.</p>
-						<p class="ui-li-aside"><strong>9:18</strong>AM</p>
-					</a></li>
-					<li data-role="list-divider" role="heading" class="ui-li-divider ui-bar-inherit ui-li-has-count">Thursday, October 7, 2010 <span class="ui-li-count ui-body-inherit">1</span></li>
-					<li class="ui-last-child"><a href="index.html" class="ui-btn ui-btn-icon-right ui-icon-carat-r">
-					<h4>Avery Walker</h4>
-					<p><strong>Re: Dinner Tonight</strong></p>
-					<p>Sure, let's plan on meeting at Highland Kitchen at 8:00 tonight. Can't wait!</p>
-						<p class="ui-li-aside"><strong>4:48</strong>PM</p>
-					</a></li>
-				</ul>
-		</div>
-		<br>
-	</div><!-- /content -->
-
-	
-		<div data-role="footer" style="background: #fff; border: none;">
-			
-			
-		</div><!-- /footer -->
-		
-</div><!-- /page -->
 
 <div data-role="page" id="sales">
 		<div data-role="panel" id="menupanel-6" data-position="left" data-display="overlay" class="ui-panel ui-panel-position-left ui-panel-display-overlay ui-body-c ui-panel-animate ui-panel-closed" data-theme="b" style="background-color: #fff;  ">
@@ -2040,6 +1983,7 @@
 			<div class="ui-panel-inner" >
 			
 				<ul data-role="listview" data-theme="b">
+				
 				
 					<li class="lidec"><a class="ui-btn ui-icon-home ui-btn-icon-left" href="#dashboard"><b>Dashboard</b></a></li>
 					<li  class="lidec"><a class="ui-btn ui-icon-info ui-btn-icon-left" href="#inventory"><b>Inventory</b><span class="ui-li-count ui-btn-corner-all">38</span></a></li>
@@ -2050,6 +1994,9 @@
 			
 				</ul>	
 			
+		
+			
+				
 			</div>
 			<div>
 				<img style="margin: 3em 4em !important;" src="css/images/icon.png" />
@@ -2062,7 +2009,7 @@
 				<a href="#menupanel-6" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
 				<a href=""  class="ui-btn ui-shadow ui-corner-all ui-icon-camera ui-btn-icon-notext">Scan</a>
 				
-				<h1  style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 1.8em !important;">Sales</h1>
+				<h1  style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Sales</h1>
 		</div><!-- /header -->
 
 		<div data-role="content" style="background-color: #fff;">
@@ -2208,7 +2155,7 @@
 								
 								<div class="ui-grid-a">
 									<div class="ui-block-a">
-										<a class="co" href="#" id="cancel-order-button" data-role="button" data-theme="b" data-icon="delete" data-transition="none" style="background-color: red; border: red; font-weight: normal !important; text-shadow: none; margin: 0em 0.5em 0em 0em;"><b>Cancel Order</b></a>
+										<a class="co" href="#" id="cancel-order-button" data-role="button" data-theme="b" data-icon="delete" data-transition="none" style="background-color: #d11141; border: red; font-weight: normal !important; text-shadow: none; margin: 0em 0.5em 0em 0em;"><b>Cancel Order</b></a>
 									</div>
 									
 									<div class="ui-block-b">
@@ -2231,9 +2178,17 @@
 		</div><!-- /content -->
 
 		
-		<div data-role="footer" >
-			
-		</div>
+		<div id="footer" data-role="footer"  data-theme="b" data-position="fixed" style="-webkit-box-shadow: 0px -4px 5px 0px rgba(112,112,112,1); -moz-box-shadow: 0px -4px 5px 0px rgba(112,112,112,1); box-shadow: 0px -4px 5px 0px rgba(112,112,112,1);" >
+			<div data-role="navbar" data-grid="c" class="footer-nav-bar">
+				<ul>
+					
+					<li><a style="margin: 0.2em 0em; " href="#dashboard"  data-icon="home" data-iconpos="top" data-transition="none" class="ft">Home</a></li>
+					<li><a style="margin: 0.2em 0em; border-left: 1px solid rgba(0,0,0,0.2);" href="#inventory"  data-icon="grid" data-iconpos="top" data-transition="none" class=" ui-btn-active ft">Inventory</a></li>
+					<li><a style="margin: 0.2em 0em; border-left: 1px solid rgba(0,0,0,0.2);" href="#records"  data-icon="edit" data-iconpos="top" data-transition="none" class="ft">Records</a></li>
+					<li><a style="margin: 0.2em 0em; border-left: 1px solid rgba(0,0,0,0.2);" href="#supplier"  data-icon="info" data-iconpos="top" data-transition="none" class="ft">Suppliers</a></li>
+				</ul>
+			</div><!-- /navbar -->
+		</div><!-- /footer -->
 		
 </div><!-- /page -->
 
@@ -2243,7 +2198,7 @@
 				<a href="#sales" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">back</a>
 				
 				
-			<h1  style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 1.8em !important;">Check Out</h1>
+			<h1  style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Check Out</h1>
 		</div><!-- /header -->
 
 		<div data-role="content" style="background-color: #f1f1f1;">
@@ -2389,7 +2344,7 @@
 					<li  class="lidec"><a class="ui-btn ui-icon-check ui-btn-icon-left" href="#sales"><b>Sales</b></a></li>
 					<li class="lidec"><a class="ui-btn ui-icon-gear ui-btn-icon-left" href="#records"><b>Records</b></a></li>
 					<li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all">6</span></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notfcns"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all">3</span></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notifications"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all">3</span></a></li>
 					<li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" href="#settings"><b>Settings</b></a></li>
 			
 			</ul>	
@@ -2409,14 +2364,14 @@
 		<a href="#menupanel-7" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
 		<a href="#damages" class="ui-btn ui-shadow ui-corner-all ui-icon-recycle ui-btn-icon-notext">refresh</a>
 		
-		<h1  style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 1.8em !important;">Settings</h1>
+		<h1  style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Settings</h1>
 		
 	</div><!-- /header -->
 
 	<div role="main" class="ui-content" style="background-color: #f1f1f1;">
 					
 					
-					<div class="ui-grid-a" style="margin: 0.2em;">
+					<div class="ui-grid-a invt" style="margin: 0.2em;">
 						<div class="ui-block-a" >
 							<a href="#" data-role="button" data-theme="b" data-icon="phone" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin;"><b>Customer Care</b></a>
 						</div>
@@ -2425,7 +2380,7 @@
 						</div>
 					</div><!-- /grid-a -->
 					
-					<div class="ui-grid-a" style="margin: 0.2em;">
+					<div class="ui-grid-a invt" style="margin: 0.2em;">
 						<div class="ui-block-a" >
 							<a href="#mngusers" data-role="button" data-theme="b" data-icon="user" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin;"><b>Manage Users</b></a>
 						</div>
@@ -2434,7 +2389,7 @@
 						</div>
 					</div><!-- /grid-a -->
 					
-					<div class="ui-grid-a" style="margin: 0.2em;">
+					<div class="ui-grid-a invt" style="margin: 0.2em;">
 						<div class="ui-block-a" >
 							<a href="#stores" data-role="button" data-theme="b" data-icon="home" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin;"><b>My Store(s)</b></a>
 						</div>
@@ -2443,7 +2398,7 @@
 						</div>
 					</div><!-- /grid-a -->
 					
-					<div class="ui-grid-a" style="margin: 0.2em;">
+					<div class="ui-grid-a invt" style="margin: 0.2em;">
 						<div class="ui-block-a" >
 							<a href="#stores" data-role="button" data-theme="b" data-icon="home" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin;"><b>Help?</b></a>
 						</div>
@@ -2467,7 +2422,7 @@
 		
 		<div data-role="header" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  data-position="fixed">
 				<a href="#settings" class="upload-queue ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
-					<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 1.8em !important;">Manage Category</h1>
+					<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Manage Category</h1>
 		</div><!-- /header -->
 		
 		<div data-role="content" style="background: #f1f1f1;">
@@ -2485,12 +2440,14 @@
 						<input type="text" name="category" id="category-field" placeholder="Name of Category" required data-validate="text" data-error-title="Invalid category" data-error-msg="Provide a valid Category Name" />
 						<br>
 						
-						<div class="ui-grid-a">
-							<div class="ui-block-a" style="width: 50% !important;">
+						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						<br>	
+						<div class="ui-grid-a invt">
+							<div class="ui-block-a">
 								<a href="#" class="delete-record" data-role="button" data-theme="a" data-icon="delete" style=" height: 1.2em; font-weight: normal !important; text-shadow: none;  background-color: red; border: none; color: white;"><b>Delete Category</b></a>
 							</div>
 							
-							<div class="ui-block-b" style="width: 50% !important;">
+							<div class="ui-block-b">
 								<input type="submit" value="Save" data-role="button" />
 							</div>
 						</div>
@@ -2500,7 +2457,9 @@
 						<br>			
 						
 						
-						<h3 style="color: white; text-shadow: none !important; ">Category list</h3>
+						<span class="df" style="font-family: Roboto Thin; color: white; text-shadow: none !important; ">Category list</span>
+						
+						
 						<br>
 						
 						
@@ -2555,7 +2514,7 @@
 	
 		<div data-role="header" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  data-position="fixed">
 				<a href="#settings" class="upload-queue ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
-					<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 1.8em !important;">Manage Users</h1>
+					<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Manage Users</h1>
 		</div><!-- /header -->
 		
 		<div data-role="content" style="background: #f1f1f1;">
@@ -2566,7 +2525,7 @@
 					<select id="users-select-box" >
 						<option style="text-shadow: none !important;" value="new"> - New User - </option>
 					</select>
-
+					<br>
 						<form method="post" action="?action=app_users&todo=save_new_user_data" name="app_users" id="app_users-form" remote-storage=1 >
 							<input type="hidden" name="key" id="key-field" value="" />
 							<input type="hidden" name="id" id="id-field" value="" />
@@ -2574,13 +2533,13 @@
 							<input type="hidden" name="app_uid" id="app_uid-field" value="" />
 							
 							<input type="text" name="name" id="name-field" placeholder="Your Full Name" required data-validate="text" data-error-title="Invalid Name" data-error-msg="Provide a valid name" />
-							
+							<br>
 							<input type="email" name="email" id="email-field" placeholder="Your Email Address" required data-validate="email" data-error-title="Invalid Email" data-error-msg="Provide a valid email" />
-							
+							<br>
 							<input type="password" name="password" id="password-field" placeholder="Password" required data-validate="password" data-error-title="Invalid Password" data-error-msg="Passwords must be at least 6 characters" />
-							
+							<br>
 							<input type="password" name="cpassword" id="cpassword-field" placeholder="Confirm Password" required data-validate="confirm-password" data-error-title="Non-matching Password" data-error-msg="Passwords must match" />
-							
+							<br>
 							<label style="color: white; font-family: Roboto Thin; font-size: 1em; text-shadow: none; font-weight:bold;">User Role</label>
 							<select name="role" id="role-field" required data-validate="text" data-error-title="Invalid Role" data-error-msg="Select a valid user role" >
 								<option value="manager">Manager</option>
@@ -2588,7 +2547,7 @@
 								<option value="stock-keeper">Stock Keeper</option>
 								<option value="admin">Administrator</option>
 							</select>
-							
+							<br>
 							<label style="color: white; font-family: Roboto Thin; font-size: 1em; text-shadow: none; font-weight:bold;">Accessible Stores</label>
 							
 							<select name="stores" id="stores-field" required data-validate="text" data-error-title="Invalid Store" data-error-msg="Select a Store">
@@ -2596,14 +2555,15 @@
 							</select>
 							
 							<br>
-							<p style="border-bottom: 8px solid #4fc1e9"></p>
+								<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+							<br>
 							
-							<div class="ui-grid-a">
-							<div class="ui-block-a" style="width: 50% !important;">
-								<a href="#" class="delete-record" key="" object="" data-role="button" data-theme="a" data-icon="delete" style=" height: 1.3em; font-weight: normal !important; text-shadow: none;  background-color: red; border: none; color: white;"><b>Delete User</b></a>
+							<div class="ui-grid-a invt">
+							<div class="ui-block-a" >
+								<a href="#" class="delete-record" key="" object="" data-role="button" data-theme="a" data-icon="delete" style=" height: 1.3em; font-weight: normal !important; text-shadow: none;  background-color: #d11411; border: none; color: white;"><b>Delete User</b></a>
 							</div>
 							
-							<div class="ui-block-b" style="width: 50% !important;">
+							<div class="ui-block-b" >
 							<input type="submit" value="Save" data-theme="a" />
 							</div>
 						</div>
@@ -2664,7 +2624,7 @@
 	
 		<div data-role="header" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  data-position="fixed">
 				<a href="#settings" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
-					<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 1.8em !important;">Manage Stores</h1>
+					<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Manage Stores</h1>
 		</div><!-- /header -->
 		
 		<div data-role="content" style="background: #f1f1f1;">
@@ -2765,7 +2725,7 @@
 		
 		<div data-role="header" data-theme="b" style="height: 3.5em; border-bottom: 1px solid #fff;">
 				<a href="#settings" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
-				<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 1.8em !important;">General Settings</h1>
+				<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">General Settings</h1>
 		</div><!-- /header -->
 		
 		<div data-role="content" style="background: #f1f1f1;">
@@ -2773,43 +2733,47 @@
 				<div style="background-color: #43a2c4 !important; border-radius: 5px;">
 					<div style="padding: 1em 1em 0em 1em;">
 							
-						<div class="ui-grid-a">
-							<div class="ui-block-a" style="width: 55% !important; padding-top: 1em;">
-								<label for="flip-checkbox-4" style="color: white; font-family: Roboto Thin; font-size: 2em; text-shadow: none;">Full Name</label>
-							</div>
-							<div class="ui-block-b" style="width: 45% !important;">
+						<div class="ui-grid-a invt">
+							<div class="ui-block-a" >
+								<label style="text-align: center; padding-top: 1em; font-size: 1.5em; font-family: Roboto Thin; text-shadow: none; color: white; " for="flip-checkbox-4">Full Name</label>
+							</div><div class="ui-block-b" >
+							
 								<input type="text" name="number" id="" value="" placeholder="Daniel Isa">
 							</div>
 						</div>
-						
-						<div class="ui-grid-a">
-							<div class="ui-block-a" style="width: 55% !important; padding-top: 1em;">
-								<label for="flip-checkbox-4" style="color: white; font-family: Roboto Thin; font-size: 2em; text-shadow: none;">Email Address</label>
+						<br>
+						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						<div class="ui-grid-a invt">
+							<div class="ui-block-a" >
+								<label style="text-align: center; padding-top: 1em; font-size: 1.5em; font-family: Roboto Thin; text-shadow: none; color: white; " for="flip-checkbox-4">Email Address</label>
 							</div>
-							<div class="ui-block-b" style="width: 45% !important;">
+							<div class="ui-block-b" >
 								<input type="text" name="number" id="" placeholder="d.isa@blubird.com.ng">
 							</div>
 						</div>
-						
-						<div class="ui-grid-a">
-							<div class="ui-block-a" style="width: 55% !important;padding-top: 1em;color: white; text-shadow: none;">
-								<label for="number-pattern" style="color: white; font-family: Roboto Thin; font-size: 2em; text-shadow: none;">Low Stock Level Notification</label>
+						<br>
+						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						<div class="ui-grid-a invt">
+							<div class="ui-block-a" >
+								<label style="text-align: center; padding-top: 1em; font-size: 1.5em; font-family: Roboto Thin; text-shadow: none; color: white; " for="flip-checkbox-4">Low Stock Level Notification</label>
 							</div>
-							<div class="ui-block-b" style="width: 45% !important; ">
+							<div class="ui-block-b">
 								<input type="text" name="number" id="" placeholder="10">
 							</div>
 						</div>
-						
-						<div class="ui-grid-a">
-							<div class="ui-block-a" style="width: 55% !important;padding-top: 1em;color: white; text-shadow: none;">
-								<label for="number-pattern" style="color: white; font-family: Roboto Thin; font-size: 2em; text-shadow: none;">Set VAT(%)</label>
+						<br>
+						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						<div class="ui-grid-a invt">
+							<div class="ui-block-a" >
+								<label style="text-align: center; padding-top: 1em; font-size: 1.5em; font-family: Roboto Thin; text-shadow: none; color: white; " for="flip-checkbox-4">Set VAT(%)</label>
 							</div>
-							<div class="ui-block-b" style="width: 45% !important; ">
+							<div class="ui-block-b" >
 								<input type="text" name="number" id="" placeholder="5">
 							</div>
 						</div>
-						
-					
+						<br>
+						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						<br>
 						<a href="#receipt" data-role="button" data-theme="a" data-icon="arrow-r" style="font-weight: normal !important; text-shadow: none; border: none;"><b>Update</b></a>					
 						
 						<br>
@@ -2827,6 +2791,69 @@
 		
 </div>
 
+
+<div data-role="page" id="notifications" >
+	<div data-role="panel" id="menupanel-5" data-position="left" data-display="overlay" class="ui-panel ui-panel-position-left ui-panel-display-overlay ui-body-c ui-panel-animate ui-panel-closed" data-theme="b" style="background-color: #fff;  ">
+
+			<div class="ui-panel-inner" >
+			
+				<ul data-role="listview" data-theme="b">
+				
+					<li class="lidec"><a class="ui-btn ui-icon-shop ui-btn-icon-left" href="#sales"><b>Sales</b></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-info ui-btn-icon-left" href="#inventory"><b>Inventory</b><span class="ui-li-count ui-btn-corner-all">164</span></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-calendar ui-btn-icon-left" href="#records"><b>Records</b></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all">6</span></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notifications"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all">3</span></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" href="#settings"><b>Settings</b></a></li>
+			
+				</ul>	
+			
+		
+			
+				
+			</div>
+			<div>
+				<img style="margin: 3em 4em !important;" src="css/images/icon.png" />
+			</div>
+			
+	</div>
+	<div data-role="header" id="hd" data-position="fixed" data-tap-toggle="false" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);" >
+		
+		<a href="#menupanel-5" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
+		
+		
+		<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 1.8em !important;">Notifications</h1>
+		
+		
+	</div><!-- /header -->
+
+	<div role="main" class="ui-content" style="background-color: #f1f1f1;">
+		<style type="text/css">
+			#notifications-container h4{
+				font-size:0.8em !important;
+			}
+			#notifications-container p{
+				font-size:0.7em !important;
+			}
+			#notifications-container p.ui-li-aside{
+				font-size:0.6em !important;
+			}
+		</style>
+		<div style="margin:5px 15px;">
+				<ul id="notifications-container" class="ui-listview ui-listview-inset ui-corner-all ui-shadow">
+					
+				</ul>
+		</div>
+		<br>
+	</div><!-- /content -->
+
+	
+		<div data-role="footer" style="background: #fff; border: none;">
+			
+			
+		</div><!-- /footer -->
+		
+</div><!-- /page -->
 </body>
 
 </html>
