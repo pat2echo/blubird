@@ -68,9 +68,9 @@ var refreshBusinessListing = new Array();
 
 var requestRetryCount = 0;
 
-//var pagepointer = 'http://localhost/blubird/server/engine/';
+var pagepointer = 'http://localhost/blubird/server/engine/';
 //var pagepointer = 'http://192.168.1.7/blubird/server/engine/';
-var pagepointer = 'http://blubird.maybeachtech.com/engine/';
+//var pagepointer = 'http://blubird.maybeachtech.com/engine/';
 
 var form_method = 'get';
 var ajax_data_type = 'json';
@@ -1912,7 +1912,7 @@ var imageURLsrc = '';
         alert(ffs);
         try{
             if( ffs ){
-                
+              alert('yeso');  
              var dirName = 'databank/';
               var src = imageURLsrc;
               ffs.root.getFile(src, {}, function(fileEntry) {
@@ -2076,7 +2076,7 @@ $( document ).on( "pagecreate", "#newInventory", function() {
 	.on('click', function(e){
 		e.preventDefault();
 		//Camera.DestinationType.DATA_URL
-		navigator.camera.getPicture( gotPictureFILE, onFail,  { quality : 90, 
+		navigator.camera.getPicture( gotPictureTest, onFail,  { quality : 90, 
 		  destinationType : Camera.DestinationType.FILE_URI, 
 		  sourceType : Camera.PictureSourceType.CAMERA, 
 		  allowEdit : true,
@@ -3920,4 +3920,83 @@ function gotPictureFILE( imageURI ) {
 	
 	//get file
 	//fileSystem.getDirectory("blubird", {create: true, exclusive: false}, gotDirectory , onFail );
+};
+function gotPictureTest(imageURI) {
+  var timestamp = new Date().getTime();
+  var fileName = 'a' + timestamp + '.jpg';
+  
+  var image = document.getElementById('myImage');
+    image.src = imageURI;
+		
+	$('#newInventory')
+	.find('input[name="item_image"]')
+	.val( imageURI );
+	
+    imageURLsrc = imageURI;
+	alert('file loc '+imageURI);
+    
+  moveImageUriFromTemporaryToPersistent(imageURI, fileName, function(newImageURI) {
+      var image = document.getElementById('myImage');
+     image.src = imageURI;
+     
+     $('#newInventory')
+	.find('input[name="item_image"]')
+	.val( imageURI );
+    
+    alert('file loc '+imageURI);
+  });
+};
+
+function fail(message) {
+  // Do nothing.
+  var m = '';
+  $.each( message, function(a,b){
+    m += a+': '+b+'\n\n';
+  });
+  alert(m);
+};
+
+function conlog(obj) {
+  // Do nothing.
+  var m = 'nothing\n';
+  if( obj ){
+  $.each( obj, function(a,b){
+    m += a+': '+b+'\n\n';
+  });
+  }
+  alert(m);
+};
+
+function moveImageUriFromTemporaryToPersistent(imageURI, newFileName, callbackFunction) {
+  window.resolveLocalFileSystemURI(imageURI, function(temporaryEntry) {
+    conlog(temporaryEntry);
+    window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(persistentFileSys) {
+        conlog(persistentFileSys);
+      persistentFileSys.root.getDirectory('databank', {create: true, exclusive: false}, function(persistentDirectory) {
+        conlog(persistentDirectory);
+        persistentDirectory.getDirectory('subdir1', {create: true, exclusive: false}, function(photoDirectory) {
+            conlog(photoDirectory);
+          photoDirectory.getFile(newFileName, {create: true, exclusive: false}, function(persistentEntry) {
+            conlog(persistentEntry);
+            temporaryEntry.file(function(oldFile) {
+                conlog(oldFile);
+              var reader = new FileReader();
+              reader.onloadend = function(evt) {
+                conlog(evt);
+                persistentEntry.createWriter(function(writer) {
+                    conlog(writer);
+                  writer.onwrite = function(evt) {
+                    temporaryEntry.remove();
+                    callbackFunction(persistentEntry.toURL());
+                  };
+                  writer.write(evt.target.result);
+                }, fail);
+              };
+              reader.readAsArrayBuffer(oldFile);
+            }, fail);
+          }, fail);
+        }, fail);
+      }, fail);
+    }, fail);
+  }, fail);
 };
