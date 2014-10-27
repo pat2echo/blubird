@@ -1048,20 +1048,23 @@ function get_stores_html( key , value ){
 
 var ffs = null;
 $( document ).on( "pagecreate", "#dashboard", function() {
-	test_for_active_user();
+	alert('dashboard-create');
+    test_for_active_user();
 });
 
-function initFileSystem(persistentFileSys) {
+function initFileSystem( persistentFileSys ) {
   //conlog(persistentFileSys);
-  persistentFileSys.root.getDirectory( 'blubirdimagebank', {create: true, exclusive: false}, function(persistentDirectory) {
+  persistentFileSys.root.getDirectory( 'blubirdimagebank', {create: true, exclusive: false}, function( persistentDirectory ) {
     blubirdFileURL = persistentDirectory.nativeURL;
     alert(blubirdFileURL);
   }, fail);
 };
 $( document ).on( "pageshow", "#dashboard", function() {
-	if( ! blubirdFileURL ){
+	alert('dashboard-show');
+    if( ! blubirdFileURL ){
         window.requestFileSystem( LocalFileSystem.PERSISTENT, 0, initFileSystem, fail );
     }
+    
     unreadNotificationsCount = 4;
 	if( unreadNotificationsCount ){
 		$('.notifications-count')
