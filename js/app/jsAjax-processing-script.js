@@ -1993,7 +1993,7 @@ $( document ).on( "pagecreate", "#newInventory", function() {
 	.on('click', function(e){
 		e.preventDefault();
 		//Camera.DestinationType.DATA_URL
-		navigator.camera.getPicture( gotPictureTest, onFail,  { quality : 100, 
+		navigator.camera.getPicture( gotPictureTest, fail,  { quality : 100, 
 		  destinationType : Camera.DestinationType.FILE_URI, 
 		  sourceType : Camera.PictureSourceType.CAMERA, 
 		  allowEdit : true,
