@@ -113,7 +113,7 @@ function test_for_active_user(){
             if( ! blubirdFileURL ){
                 var settings = {
                     message_title:'Invalid File System',
-                    message_message: 'Blubird could not access the device file local system',
+                    message_message: 'Blubird could not access the device local file system',
                     auto_close: 'no'
                 };
                 display_popup_notice( settings );
@@ -1051,17 +1051,17 @@ $( document ).on( "pagecreate", "#dashboard", function() {
 	test_for_active_user();
 });
 
+function initFileSystem(persistentFileSys) {
+  //conlog(persistentFileSys);
+  persistentFileSys.root.getDirectory( 'blubirdimagebank', {create: true, exclusive: false}, function(persistentDirectory) {
+    blubirdFileURL = persistentDirectory.nativeURL;
+    alert(blubirdFileURL);
+  }, fail);
+};
 $( document ).on( "pageshow", "#dashboard", function() {
 	if( ! blubirdFileURL ){
-        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(persistentFileSys) {
-          conlog(persistentFileSys);
-          persistentFileSys.root.getDirectory( 'blubirdimagebank', {create: true, exclusive: false}, function(persistentDirectory) {
-            blubirdFileURL = persistentDirectory.nativeURL;
-            alert(blubirdFileURL);
-          }, fail);
-        }, fail);
+        window.requestFileSystem( LocalFileSystem.PERSISTENT, 0, initFileSystem, fail );
     }
-    
     unreadNotificationsCount = 4;
 	if( unreadNotificationsCount ){
 		$('.notifications-count')
@@ -1591,13 +1591,7 @@ $( document ).on( "pagecreate", "#signup", function() {
 
 $( document ).on( "pageshow", "#signup", function() {
     if( ! blubirdFileURL ){
-        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(persistentFileSys) {
-          conlog(persistentFileSys);
-          persistentFileSys.root.getDirectory( 'blubirdimagebank', {create: true, exclusive: false}, function(persistentDirectory) {
-            blubirdFileURL = persistentDirectory.nativeURL;
-            alert(blubirdFileURL);
-          }, fail);
-        }, fail);
+        window.requestFileSystem( LocalFileSystem.PERSISTENT, 0, initFileSystem, fail );
     }
 });
 
@@ -3914,7 +3908,7 @@ function moveImageUriFromTemporaryToPersistent(imageURI, newFileName, callbackFu
 //cordova.file.externalApplicationStorageDirectory
  window.resolveLocalFileSystemURI(imageURI, function(temporaryEntry) {
     //conlog(temporaryEntry);
-    window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(persistentFileSys) {
+    window.requestFileSystem( LocalFileSystem.PERSISTENT, 0, function(persistentFileSys) {
         //conlog(persistentFileSys);
       persistentFileSys.root.getDirectory( 'blubirdimagebank', {create: true, exclusive: false}, function(persistentDirectory) {
         
