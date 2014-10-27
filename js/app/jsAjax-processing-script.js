@@ -1853,12 +1853,11 @@ $( document ).on( "pagecreate", "#settings", function() {
 $( document ).on( "pageshow", "#settings", function() {
 	//check for registered user details
 	//var userInfo = get_user_info();
-	window.requestFileSystem( LocalFileSystem.PERSISTENT , 0 , onInitFs, errorHandler);
+	
 	//window.requestFileSystem( window.TEMPORARY , 1024*1024 , onInitFs, errorHandler);
 	//alert( 'ext'+cordova.file.externalRootDirectory );
 	//alert( 'ext'+cordova.file.applicationStorageDirectory );
 	
-	alert( 'ext'+cordova.file.externalApplicationStorageDirectory );
 	/*
 	$.each( userInfo , function( k , v ){
 		switch( k ){
@@ -1871,88 +1870,6 @@ $( document ).on( "pageshow", "#settings", function() {
 	} );
 	*/
 });
-var imageURLsrc = '';
-
-	function onInitFs(fs) {
-	  ffs = fs;
-      console.log( 'local-file-system', fs );
-	  alert('Opened file system: ' + ffs.name);
-      
-	  ffs.root.getDirectory( cordova.file.externalApplicationStorageDirectory+'databankInAppFolder/', {create: true}, function(dirEntry) {
-		console.log('externalDirEntry', dirEntry );
-	  }, errorHandler);
-	 
-      alert( 'ext'+cordova.file.externalApplicationStorageDirectory );
-      
-      
-	  ffs.root.getDirectory('databank/', {create: true}, function(dirEntry) {
-		console.log('dirEntry', dirEntry );
-	  }, errorHandler);
-	 
-	 	
-		var dirReader = ffs.root.createReader();
-		var filelist = '';
-		dirReader.readEntries(function(entries) {
-		  if (!entries.length) {
-			filelist = 'Filesystem is empty.';
-		  } else {
-			filelist = '';
-		  }
-
-		  var li = 'Root Entries';
-		  for (var i = 0, entry; entry = entries[i]; ++i) {
-			li += '<span>'+ entry.name+ '</span>';
-		  }
-		  filelist = li;
-		  
-		  alert(filelist);
-		}, errorHandler);
-        
-        alert('Image to copy'+imageURLsrc);
-        alert(ffs);
-        try{
-            if( ffs ){
-              alert('yeso');  
-             var dirName = 'databank/';
-              var src = imageURLsrc;
-              ffs.root.getFile(src, {}, function(fileEntry) {
-                alert('getFile on line 8870 success');
-                console.log('fileEntry', fileEntry);
-                ffs.root.getDirectory(dirName, {}, function(dirEntry) {
-                    alert('getDirectory on line 8873 success');
-                    console.log('DirEntry', dirEntry);
-                    
-                    fileEntry.moveTo( dirEntry , 'a.jpg', function(){ alert('file moved'); }, onFail );
-                    
-                    var dirReader = dirEntry.createReader();
-                    var filelist = '';
-                    dirReader.readEntries(function(entries) {
-                      if (!entries.length) {
-                        filelist = 'Filesystem is empty.';
-                      } else {
-                        filelist = '';
-                      }
-
-                      for (var i = 0, entry; entry = entries[i]; ++i) {
-                        filelist += '<span>'+ entry.name+ '</span>';
-                      }
-                      alert(filelist);
-                    }, errorHandler);
-                }, errorHandler);
-
-              }, errorHandler);
-            }else{
-                alert('no image url');
-            }
-        }catch(err){
-            console.log('e', err);
-            alert(err.message);
-        }
-	};
-
-	function errorHandler(e) {
-		console.log('err',e);
-  };
 
 function get_last_supply_activity_html( stock ){
 	var date = new Date(stock.creationtimestamp);
@@ -2076,13 +1993,13 @@ $( document ).on( "pagecreate", "#newInventory", function() {
 	.on('click', function(e){
 		e.preventDefault();
 		//Camera.DestinationType.DATA_URL
-		navigator.camera.getPicture( gotPictureTest, onFail,  { quality : 90, 
+		navigator.camera.getPicture( gotPictureTest, onFail,  { quality : 100, 
 		  destinationType : Camera.DestinationType.FILE_URI, 
 		  sourceType : Camera.PictureSourceType.CAMERA, 
 		  allowEdit : true,
 		  encodingType: Camera.EncodingType.JPEG,
-		  targetWidth: 150,
-		  targetHeight: 150 } );
+		  targetWidth: 250,
+		  targetHeight: 250 } );
 	 });
 	 
 	update_inventory_list_on_inventory_page();
@@ -3887,66 +3804,6 @@ function piechart( data ){
 	}
 };
 
-function gotPicture( imageData ) {
-    var image = document.getElementById('myImage');
-    image.src = "data:image/jpeg;base64," + imageData;
-	
-	$('#newInventory')
-	.find('input[name="item_image"]')
-	.val( imageData );
-	
-};
-
-function onFail(message) {
-    alert('Failed because: ' + message);
-    console.log('failed', message);
-};
-
-function gotPictureFILE( imageURI ) {
-    var image = document.getElementById('myImage');
-    image.src = imageURI;
-		
-	$('#newInventory')
-	.find('input[name="item_image"]')
-	.val( imageURI );
-	
-    imageURLsrc = imageURI;
-	alert('file loc '+imageURI);
-	window.requestFileSystem( LocalFileSystem.PERSISTENT , 0 , onInitFs, errorHandler);
-    
-    alert(ffs);
-    console.log('tryingtocopy-checkffs', ffs);
-	
-	
-	//get file
-	//fileSystem.getDirectory("blubird", {create: true, exclusive: false}, gotDirectory , onFail );
-};
-function gotPictureTest(imageURI) {
-  var timestamp = new Date().getTime();
-  var fileName = 'a' + timestamp + '.jpg';
-  
-  var image = document.getElementById('myImage');
-    image.src = imageURI;
-		
-	$('#newInventory')
-	.find('input[name="item_image"]')
-	.val( imageURI );
-	
-    imageURLsrc = imageURI;
-	alert('file loc '+imageURI);
-    
-  moveImageUriFromTemporaryToPersistent(imageURI, fileName, function(newImageURI) {
-      var image = document.getElementById('myImage');
-     image.src = imageURI;
-     
-     $('#newInventory')
-	.find('input[name="item_image"]')
-	.val( imageURI );
-    
-    alert('file loc '+imageURI);
-  });
-};
-
 function fail(message) {
   // Do nothing.
   var m = '';
@@ -3967,16 +3824,45 @@ function conlog(obj) {
   alert(m);
 };
 
+function gotPictureTest(imageURI) {
+  var timestamp = new Date().getTime();
+  
+    var barcode = $('#newInventory').find('input[name="item_barcode"]').val();
+  if( ! barcode )barcode = 'a'+timestamp;
+    var fileName = barcode+'.jpg';
+  
+  var image = document.getElementById('myImage');
+    image.src = imageURI;
+		
+	$('#newInventory')
+	.find('input[name="item_image"]')
+	.val( imageURI );
+	
+    imageURLsrc = imageURI;
+	alert('file loc '+imageURI);
+    
+  moveImageUriFromTemporaryToPersistent(imageURI, fileName, function(newImageURI) {
+      var image = document.getElementById('myImage');
+     image.src = newImageURI;
+     
+     $('#newInventory')
+	.find('input[name="item_image"]')
+	.val( newImageURI );
+    
+    alert('new file loc '+newImageURI);
+  });
+};
+
 function moveImageUriFromTemporaryToPersistent(imageURI, newFileName, callbackFunction) {
-  window.resolveLocalFileSystemURI(imageURI, function(temporaryEntry) {
+
+	
+ window.resolveLocalFileSystemURI(imageURI, function(temporaryEntry) {
     conlog(temporaryEntry);
     window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(persistentFileSys) {
         conlog(persistentFileSys);
-      persistentFileSys.root.getDirectory('databank', {create: true, exclusive: false}, function(persistentDirectory) {
+      persistentFileSys.root.getDirectory( cordova.file.externalApplicationStorageDirectory+'imagebank', {create: true, exclusive: false}, function(persistentDirectory) {
         conlog(persistentDirectory);
-        persistentDirectory.getDirectory('subdir1', {create: true, exclusive: false}, function(photoDirectory) {
-            conlog(photoDirectory);
-          photoDirectory.getFile(newFileName, {create: true, exclusive: false}, function(persistentEntry) {
+          persistentDirectory.getFile(newFileName, {create: true, exclusive: false}, function(persistentEntry) {
             conlog(persistentEntry);
             temporaryEntry.file(function(oldFile) {
                 conlog(oldFile);
@@ -3995,7 +3881,7 @@ function moveImageUriFromTemporaryToPersistent(imageURI, newFileName, callbackFu
               reader.readAsArrayBuffer(oldFile);
             }, fail);
           }, fail);
-        }, fail);
+        
       }, fail);
     }, fail);
   }, fail);
