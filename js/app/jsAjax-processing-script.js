@@ -1853,12 +1853,12 @@ $( document ).on( "pagecreate", "#settings", function() {
 $( document ).on( "pageshow", "#settings", function() {
 	//check for registered user details
 	//var userInfo = get_user_info();
-	//window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
+	window.requestFileSystem( LocalFileSystem.PERSISTENT , 0 , onInitFs, errorHandler);
 	//window.requestFileSystem( window.TEMPORARY , 1024*1024 , onInitFs, errorHandler);
 	//alert( 'ext'+cordova.file.externalRootDirectory );
 	//alert( 'ext'+cordova.file.applicationStorageDirectory );
 	
-	//alert( 'ext'+cordova.file.externalApplicationStorageDirectory );
+	alert( 'ext'+cordova.file.externalApplicationStorageDirectory );
 	/*
 	$.each( userInfo , function( k , v ){
 		switch( k ){
@@ -1874,12 +1874,18 @@ $( document ).on( "pageshow", "#settings", function() {
 
 	function onInitFs(fs) {
 	  ffs = fs;
+      console.log( 'local-file-system', fs );
 	  alert('Opened file system: ' + ffs.name);
-	  alert('root: ' + ffs.root);
+      
+	  ffs.root.getDirectory( cordova.file.externalApplicationStorageDirectory, {create: true}, function(dirEntry) {
+		console.log('externalDirEntry', dirEntry );
+	  }, errorHandler);
+	 
+      alert( 'ext'+cordova.file.externalApplicationStorageDirectory );
+      
+      
 	  ffs.root.getDirectory('databank/', {create: true}, function(dirEntry) {
-		$.each(dirEntry, function(k,v){
-			alert( k + ' = '+ v );
-		});
+		console.log('dirEntry', dirEntry );
 	  }, errorHandler);
 	 
 	 	
@@ -1892,7 +1898,7 @@ $( document ).on( "pageshow", "#settings", function() {
 			filelist = '';
 		  }
 
-		  var li = '';
+		  var li = 'Root Entries';
 		  for (var i = 0, entry; entry = entries[i]; ++i) {
 			li += '<span>'+ entry.name+ '</span>';
 		  }
@@ -2026,11 +2032,10 @@ $( document ).on( "pagecreate", "#newInventory", function() {
 	$('#newInventory')
 	.find('#capture-image-button')
 	.on('click', function(e){
-		alert('clicked');
 		e.preventDefault();
-		//Camera.DestinationType.FILE_URI
-		navigator.camera.getPicture(gotPicture, onFail,  { quality : 90, 
-		  destinationType : Camera.DestinationType.DATA_URL, 
+		//Camera.DestinationType.DATA_URL
+		navigator.camera.getPicture( gotPictureFILE, onFail,  { quality : 90, 
+		  destinationType : Camera.DestinationType.FILE_URI, 
 		  sourceType : Camera.PictureSourceType.CAMERA, 
 		  allowEdit : true,
 		  encodingType: Camera.EncodingType.JPEG,
@@ -3852,6 +3857,7 @@ function gotPicture( imageData ) {
 
 function onFail(message) {
     alert('Failed because: ' + message);
+    console.log('failed', message);
 };
 
 function gotPictureFILE( imageURI ) {
@@ -3864,21 +3870,18 @@ function gotPictureFILE( imageURI ) {
 	
 	alert('file loc '+imageURI);
 	
-	var image1 = document.getElementById('myImage-1');
-	image1.src = imageURI;
 	if( ffs ){
 		
 	 var dirName = 'databank/';
 	  var src = imageURI;
 	  ffs.root.getFile(src, {}, function(fileEntry) {
-		$.each(fileEntry, function(k,v){
-			alert( k + ' =file= '+ v );
-		});
+		alert('getFile on line 8870 success');
+        console.log('fileEntry', fileEntry);
 		ffs.root.getDirectory(dirName, {}, function(dirEntry) {
-			$.each(dirEntry, function(k,v){
-				alert( k + ' =dir= '+ v );
-			});
-			fileEntry.moveTo( dirEntry );
+			alert('getDirectory on line 8873 success');
+            console.log('DirEntry', dirEntry);
+            
+			fileEntry.moveTo( dirEntry , 'a.jpg', function(){ alert('file moved'); }, onFail );
 			
 			var dirReader = dirEntry.createReader();
 			var filelist = '';
