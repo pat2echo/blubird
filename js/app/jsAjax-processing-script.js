@@ -104,25 +104,23 @@ var storeObjects = {};
 var unreadNotificationsCount = 0;
 
 function test_for_active_user(){
-	if( customUUID ){
-		if( blubirdFileURL ){
-            //check for registered user details
-            var userInfo = get_user_info();
-            if( userInfo ){
-                //registered
-                //$('.app-user-name').text( 'Welcome ' + userInfo.name + '!' );
-                
-            }else{
-                //signup
-                $.mobile.navigate( "#signup", { transition : "none" });
+    if( customUUID ){
+        //check for registered user details
+        var userInfo = get_user_info();
+        if( userInfo ){
+            //registered
+            //$('.app-user-name').text( 'Welcome ' + userInfo.name + '!' );
+            if( ! blubirdFileURL ){
+                var settings = {
+                    message_title:'Invalid File System',
+                    message_message: 'Blubird could not access the device file local system',
+                    auto_close: 'no'
+                };
+                display_popup_notice( settings );
             }
-		}else{
-            var settings = {
-                message_title:'Invalid File System',
-                message_message: 'Blubird could not access the device file local system',
-                auto_close: 'no'
-            };
-            display_popup_notice( settings );
+        }else{
+            //signup
+            $.mobile.navigate( "#signup", { transition : "none" });
         }
 	}else{
 		cannot_initiate_app();
