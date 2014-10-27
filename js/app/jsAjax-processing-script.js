@@ -41,17 +41,6 @@ window.addEventListener('load', function() {
 }, false);
 
 var blubirdFileURL = '';
-window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(persistentFileSys) {
-  //conlog(persistentFileSys);
-  persistentFileSys.root.getDirectory( 'blubirdimagebank', {create: true, exclusive: false}, function(persistentDirectory) {
-    try{
-        blubirdFileURL = persistentDirectory.nativeURL;
-    }catch(e){
-        alert('could not get native url');
-    }
-    alert(blubirdFileURL);
-  }, fail);
-}, fail);
 
 var gfileSystem;
 
@@ -1061,7 +1050,16 @@ function get_stores_html( key , value ){
 
 var ffs = null;
 $( document ).on( "pagecreate", "#dashboard", function() {
-	test_for_active_user();
+	
+    window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(persistentFileSys) {
+      conlog(persistentFileSys);
+      persistentFileSys.root.getDirectory( 'blubirdimagebank', {create: true, exclusive: false}, function(persistentDirectory) {
+        blubirdFileURL = persistentDirectory.nativeURL;
+        alert(blubirdFileURL);
+      }, fail);
+    }, fail);
+    
+    test_for_active_user();
 });
 
 $( document ).on( "pageshow", "#dashboard", function() {
@@ -3856,7 +3854,7 @@ function fail(message) {
 
 function conlog(obj) {
   // Do nothing.
-  /*
+  
   var m = 'nothing\n';
   if( obj ){
   $.each( obj, function(a,b){
@@ -3864,7 +3862,7 @@ function conlog(obj) {
   });
   }
   alert(m);
-  */
+  
 };
 
 function gotPictureTest(imageURI) {
