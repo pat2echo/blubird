@@ -1871,13 +1871,14 @@ $( document ).on( "pageshow", "#settings", function() {
 	} );
 	*/
 });
+var imageURLsrc = '';
 
 	function onInitFs(fs) {
 	  ffs = fs;
       console.log( 'local-file-system', fs );
 	  alert('Opened file system: ' + ffs.name);
       
-	  ffs.root.getDirectory( cordova.file.externalApplicationStorageDirectory, {create: true}, function(dirEntry) {
+	  ffs.root.getDirectory( cordova.file.externalApplicationStorageDirectory+'databankInAppFolder/', {create: true}, function(dirEntry) {
 		console.log('externalDirEntry', dirEntry );
 	  }, errorHandler);
 	 
@@ -1906,6 +1907,40 @@ $( document ).on( "pageshow", "#settings", function() {
 		  
 		  alert(filelist);
 		}, errorHandler);
+        
+        if( ffs ){
+            
+         var dirName = 'databank/';
+          var src = imageURLsrc;
+          ffs.root.getFile(src, {}, function(fileEntry) {
+            alert('getFile on line 8870 success');
+            console.log('fileEntry', fileEntry);
+            ffs.root.getDirectory(dirName, {}, function(dirEntry) {
+                alert('getDirectory on line 8873 success');
+                console.log('DirEntry', dirEntry);
+                
+                fileEntry.moveTo( dirEntry , 'a.jpg', function(){ alert('file moved'); }, onFail );
+                
+                var dirReader = dirEntry.createReader();
+                var filelist = '';
+                dirReader.readEntries(function(entries) {
+                  if (!entries.length) {
+                    filelist = 'Filesystem is empty.';
+                  } else {
+                    filelist = '';
+                  }
+
+                  for (var i = 0, entry; entry = entries[i]; ++i) {
+                    filelist += '<span>'+ entry.name+ '</span>';
+                  }
+                  alert(filelist);
+                }, errorHandler);
+            }, errorHandler);
+
+          }, errorHandler);
+        }else{
+            alert('no image url');
+        }
 	};
 
 	function errorHandler(e) {
@@ -3868,41 +3903,13 @@ function gotPictureFILE( imageURI ) {
 	.find('input[name="item_image"]')
 	.val( imageURI );
 	
+    imageURLsrc = imageURI;
 	alert('file loc '+imageURI);
+	window.requestFileSystem( LocalFileSystem.PERSISTENT , 0 , onInitFs, errorHandler);
+    
+    alert(ffs);
+    console.log('tryingtocopy-checkffs', ffs);
 	
-	if( ffs ){
-		
-	 var dirName = 'databank/';
-	  var src = imageURI;
-	  ffs.root.getFile(src, {}, function(fileEntry) {
-		alert('getFile on line 8870 success');
-        console.log('fileEntry', fileEntry);
-		ffs.root.getDirectory(dirName, {}, function(dirEntry) {
-			alert('getDirectory on line 8873 success');
-            console.log('DirEntry', dirEntry);
-            
-			fileEntry.moveTo( dirEntry , 'a.jpg', function(){ alert('file moved'); }, onFail );
-			
-			var dirReader = dirEntry.createReader();
-			var filelist = '';
-			dirReader.readEntries(function(entries) {
-			  if (!entries.length) {
-				filelist = 'Filesystem is empty.';
-			  } else {
-				filelist = '';
-			  }
-
-			  for (var i = 0, entry; entry = entries[i]; ++i) {
-				filelist += '<span>'+ entry.name+ '</span>';
-			  }
-			  alert(filelist);
-			}, errorHandler);
-		}, errorHandler);
-
-	  }, errorHandler);
-	}else{
-		alert(90);
-	}
 	
 	//get file
 	//fileSystem.getDirectory("blubird", {create: true, exclusive: false}, gotDirectory , onFail );
