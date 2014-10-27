@@ -1908,38 +1908,45 @@ var imageURLsrc = '';
 		  alert(filelist);
 		}, errorHandler);
         
-        if( ffs ){
-            
-         var dirName = 'databank/';
-          var src = imageURLsrc;
-          ffs.root.getFile(src, {}, function(fileEntry) {
-            alert('getFile on line 8870 success');
-            console.log('fileEntry', fileEntry);
-            ffs.root.getDirectory(dirName, {}, function(dirEntry) {
-                alert('getDirectory on line 8873 success');
-                console.log('DirEntry', dirEntry);
+        alert('Image to copy'+imageURLsrc);
+        alert(ffs);
+        try{
+            if( ffs ){
                 
-                fileEntry.moveTo( dirEntry , 'a.jpg', function(){ alert('file moved'); }, onFail );
-                
-                var dirReader = dirEntry.createReader();
-                var filelist = '';
-                dirReader.readEntries(function(entries) {
-                  if (!entries.length) {
-                    filelist = 'Filesystem is empty.';
-                  } else {
-                    filelist = '';
-                  }
+             var dirName = 'databank/';
+              var src = imageURLsrc;
+              ffs.root.getFile(src, {}, function(fileEntry) {
+                alert('getFile on line 8870 success');
+                console.log('fileEntry', fileEntry);
+                ffs.root.getDirectory(dirName, {}, function(dirEntry) {
+                    alert('getDirectory on line 8873 success');
+                    console.log('DirEntry', dirEntry);
+                    
+                    fileEntry.moveTo( dirEntry , 'a.jpg', function(){ alert('file moved'); }, onFail );
+                    
+                    var dirReader = dirEntry.createReader();
+                    var filelist = '';
+                    dirReader.readEntries(function(entries) {
+                      if (!entries.length) {
+                        filelist = 'Filesystem is empty.';
+                      } else {
+                        filelist = '';
+                      }
 
-                  for (var i = 0, entry; entry = entries[i]; ++i) {
-                    filelist += '<span>'+ entry.name+ '</span>';
-                  }
-                  alert(filelist);
+                      for (var i = 0, entry; entry = entries[i]; ++i) {
+                        filelist += '<span>'+ entry.name+ '</span>';
+                      }
+                      alert(filelist);
+                    }, errorHandler);
                 }, errorHandler);
-            }, errorHandler);
 
-          }, errorHandler);
-        }else{
-            alert('no image url');
+              }, errorHandler);
+            }else{
+                alert('no image url');
+            }
+        }catch(err){
+            console.log('e', err);
+            alert(err.message);
         }
 	};
 
