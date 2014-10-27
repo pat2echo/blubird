@@ -3844,10 +3844,15 @@ function gotPictureTest(imageURI) {
   moveImageUriFromTemporaryToPersistent(imageURI, fileName, function(newImageURI) {
       var image = document.getElementById('myImage');
      image.src = newImageURI;
-     
+    
+    var barcode = $('#newInventory').find('input[name="item_barcode"]').val();
+    if( ! barcode )barcode = 'a'+timestamp;
+    var fileName = barcode+'.jpg';
+    
      $('#newInventory')
 	.find('input[name="item_image"]')
-	.val( newImageURI );
+	.val( fileName );
+    alert('file new name'+fileName);
     
     alert('new file loc '+newImageURI);
   });
@@ -3855,12 +3860,12 @@ function gotPictureTest(imageURI) {
 
 function moveImageUriFromTemporaryToPersistent(imageURI, newFileName, callbackFunction) {
 
-	
+	//cordova.file.externalApplicationStorageDirectory
  window.resolveLocalFileSystemURI(imageURI, function(temporaryEntry) {
     conlog(temporaryEntry);
     window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(persistentFileSys) {
         conlog(persistentFileSys);
-      persistentFileSys.root.getDirectory( cordova.file.externalApplicationStorageDirectory+'imagebank', {create: true, exclusive: false}, function(persistentDirectory) {
+      persistentFileSys.root.getDirectory( 'blubirdimagebank', {create: true, exclusive: false}, function(persistentDirectory) {
         conlog(persistentDirectory);
           persistentDirectory.getFile(newFileName, {create: true, exclusive: false}, function(persistentEntry) {
             conlog(persistentEntry);
