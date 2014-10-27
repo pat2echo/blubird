@@ -40,6 +40,19 @@ window.addEventListener('load', function() {
     FastClick.attach(document.body);
 }, false);
 
+var blubirdFileURL = '';
+window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(persistentFileSys) {
+  //conlog(persistentFileSys);
+  persistentFileSys.root.getDirectory( 'blubirdimagebank', {create: true, exclusive: false}, function(persistentDirectory) {
+    try{
+        blubirdFileURL = persistentDirectory.nativeURL;
+    }catch(e){
+        alert('could not get native url');
+    }
+    alert(blubirdFileURL);
+  }, fail);
+}, fail);
+
 var gfileSystem;
 
 var appCurrency = '&#8358;';
@@ -103,17 +116,25 @@ var unreadNotificationsCount = 0;
 
 function test_for_active_user(){
 	if( customUUID ){
-		//check for registered user details
-		var userInfo = get_user_info();
-		if( userInfo ){
-			//registered
-			//$('.app-user-name').text( 'Welcome ' + userInfo.name + '!' );
-			
+		if( blubirdFileURL ){
+            //check for registered user details
+            var userInfo = get_user_info();
+            if( userInfo ){
+                //registered
+                //$('.app-user-name').text( 'Welcome ' + userInfo.name + '!' );
+                
+            }else{
+                //signup
+                $.mobile.navigate( "#signup", { transition : "none" });
+            }
 		}else{
-			//signup
-			$.mobile.navigate( "#signup", { transition : "none" });
-		}
-		
+            var settings = {
+                message_title:'Invalid File System',
+                message_message: 'Blubird could not access the device file local system',
+                auto_close: 'no'
+            };
+            display_popup_notice( settings );
+        }
 	}else{
 		cannot_initiate_app();
 	}
@@ -968,8 +989,10 @@ function get_new_inventory_html( key , value ){
 	var year = date.getFullYear();
 	var hours = date.getHours();
 	var minutes = date.getMinutes();
-		
-	return '<tr id="'+key+'" class="'+value.category.replace(' ', '-')+'" timestamp="'+value.timestamp+'"><td><img src="image bank/Coca Cola - 50cl.jpg" class="ui-li-thumb"></td><td>'+value.item_desc+'</td><td>'+year+'-'+months_of_year[ month ]+'-'+day+' '+hours+':'+minutes+'</td></tr>';
+	
+    if( ! value.item_image )value.item_image = '';
+    
+	return '<tr id="'+key+'" class="'+value.category.replace(' ', '-')+'" timestamp="'+value.timestamp+'"><td><img src="'+blubirdFileURL+value.item_image+'" class="ui-li-thumb"></td><td>'+value.item_desc+'</td><td>'+year+'-'+months_of_year[ month ]+'-'+day+' '+hours+':'+minutes+'</td></tr>';
 };
 
 function get_inventory_set_pricing_html( key , value ){
@@ -979,8 +1002,10 @@ function get_inventory_set_pricing_html( key , value ){
 	var qty = 0;
 	if(  value.item_qty )qty = parseFloat( value.item_qty );
 	if(  value.item_sold )qty -= parseFloat( value.item_sold );
-	
-	return '<tr id="'+key+'" class="'+value.category.replace(' ', '-')+'" timestamp="'+value.timestamp+'"><td><img src="image bank/Coca Cola - 50cl.jpg" class="ui-li-thumb"></td><td>'+value.item_desc+'</td><td>'+formatNum( qty )+'</td><td>'+formatNum( cp.toFixed(2) )+'</td><td><div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset"><input type="number" min="0" step="any" value="'+value.selling_price+'" default-value="'+value.selling_price+'" item="'+value.item_desc+'" class="inventory-pricing-input" key="'+key+'" cost-price="'+value.cost_price+'" /></div></td></tr>';
+    
+	if( ! value.item_image )value.item_image = '';
+    
+	return '<tr id="'+key+'" class="'+value.category.replace(' ', '-')+'" timestamp="'+value.timestamp+'"><td><img src="'+blubirdFileURL+value.item_image+'" class="ui-li-thumb"></td><td>'+value.item_desc+'</td><td>'+formatNum( qty )+'</td><td>'+formatNum( cp.toFixed(2) )+'</td><td><div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset"><input type="number" min="0" step="any" value="'+value.selling_price+'" default-value="'+value.selling_price+'" item="'+value.item_desc+'" class="inventory-pricing-input" key="'+key+'" cost-price="'+value.cost_price+'" /></div></td></tr>';
 };
 
 function get_supplier_html( key , value ){
@@ -1879,7 +1904,9 @@ function get_last_supply_activity_html( stock ){
 	var year = date.getFullYear();
 	stock.date = year+'-'+months_of_year[ month ]+'-'+day;
 	
-	return '<tr timestamp="'+stock.creationtimestamp+'"><td><img src="image bank/Coca Cola - 50cl.jpg" class="ui-li-thumb"></td><td>'+stock.item_desc+'</td><td>'+stock.item_qty+'</td><td>'+stock.date+'</td></tr>';
+    if( ! stock.item_image )stock.item_image = '';
+    
+	return '<tr timestamp="'+stock.creationtimestamp+'"><td><img src="'+blubirdFileURL+stock.item_image+'" class="ui-li-thumb"></td><td>'+stock.item_desc+'</td><td>'+stock.item_qty+'</td><td>'+stock.date+'</td></tr>';
 	
 };
 
@@ -1992,14 +2019,26 @@ $( document ).on( "pagecreate", "#newInventory", function() {
 	.find('#capture-image-button')
 	.on('click', function(e){
 		e.preventDefault();
-		//Camera.DestinationType.DATA_URL
-		navigator.camera.getPicture( gotPictureTest, fail,  { quality : 100, 
-		  destinationType : Camera.DestinationType.FILE_URI, 
-		  sourceType : Camera.PictureSourceType.CAMERA, 
-		  allowEdit : true,
-		  encodingType: Camera.EncodingType.JPEG,
-		  targetWidth: 250,
-		  targetHeight: 250 } );
+        //check barcode
+        var barcode = $('#newInventory').find('input[name="item_barcode"]').val();
+        
+        if( barcode && barcode.length > 5 ){
+            //Camera.DestinationType.DATA_URL
+            navigator.camera.getPicture( gotPictureTest, fail,  { quality : 100, 
+              destinationType : Camera.DestinationType.FILE_URI, 
+              sourceType : Camera.PictureSourceType.CAMERA, 
+              allowEdit : true,
+              encodingType: Camera.EncodingType.JPEG,
+              targetWidth: 250,
+              targetHeight: 250 } );
+         }else{
+            var settings = {
+                message_title:'Invalid Barcode',
+                message_message: 'Please provide a Valid Barcode',
+                auto_close: 'yes'
+            };
+            display_popup_notice( settings );
+         }
 	 });
 	 
 	update_inventory_list_on_inventory_page();
@@ -2850,7 +2889,9 @@ $( document ).on( "pageshow", "#sales", function() {
 		if(  value.item_sold )qty -= parseFloat( value.item_sold );
 		
 		if( qty ){
-			html += '<li><a href="#" id="item-link-'+key+'" key="'+key+'" max-qty="'+qty+'" selling-price="'+value.selling_price+'" cost-price="'+value.cost_price+'"><img src="image bank/Evian - 50cl.jpg" class="ui-li-thumb" /><p>'+value.item_desc+'</p></a></li>';
+            if( ! value.item_image )value.item_image = '';
+            
+			html += '<li><a href="#" id="item-link-'+key+'" key="'+key+'" max-qty="'+qty+'" selling-price="'+value.selling_price+'" cost-price="'+value.cost_price+'"><img src="'+blubirdFileURL+value.item_image+'" class="ui-li-thumb" /><p>'+value.item_desc+'</p></a></li>';
 		}
 	});
 	
@@ -3815,6 +3856,7 @@ function fail(message) {
 
 function conlog(obj) {
   // Do nothing.
+  /*
   var m = 'nothing\n';
   if( obj ){
   $.each( obj, function(a,b){
@@ -3822,6 +3864,7 @@ function conlog(obj) {
   });
   }
   alert(m);
+  */
 };
 
 function gotPictureTest(imageURI) {
@@ -3839,7 +3882,7 @@ function gotPictureTest(imageURI) {
 	.val( imageURI );
 	
     imageURLsrc = imageURI;
-	alert('file loc '+imageURI);
+	//alert('file loc '+imageURI);
     
   moveImageUriFromTemporaryToPersistent(imageURI, fileName, function(newImageURI) {
       var image = document.getElementById('myImage');
@@ -3852,30 +3895,35 @@ function gotPictureTest(imageURI) {
      $('#newInventory')
 	.find('input[name="item_image"]')
 	.val( fileName );
-    alert('file new name'+fileName);
+    //alert('file new name'+fileName);
     
-    alert('new file loc '+newImageURI);
+    //alert('new file loc '+newImageURI);
   });
 };
 
 function moveImageUriFromTemporaryToPersistent(imageURI, newFileName, callbackFunction) {
 
-	//cordova.file.externalApplicationStorageDirectory
+//cordova.file.externalApplicationStorageDirectory
  window.resolveLocalFileSystemURI(imageURI, function(temporaryEntry) {
-    conlog(temporaryEntry);
+    //conlog(temporaryEntry);
     window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(persistentFileSys) {
-        conlog(persistentFileSys);
+        //conlog(persistentFileSys);
       persistentFileSys.root.getDirectory( 'blubirdimagebank', {create: true, exclusive: false}, function(persistentDirectory) {
-        conlog(persistentDirectory);
+        try{
+            persistentDirectory.nativeURL;
+        }catch(e){
+            alert('could not get native url');
+        }
+        //conlog(persistentDirectory);
           persistentDirectory.getFile(newFileName, {create: true, exclusive: false}, function(persistentEntry) {
-            conlog(persistentEntry);
+            //conlog(persistentEntry);
             temporaryEntry.file(function(oldFile) {
-                conlog(oldFile);
+                //conlog(oldFile);
               var reader = new FileReader();
               reader.onloadend = function(evt) {
-                conlog(evt);
+                //conlog(evt);
                 persistentEntry.createWriter(function(writer) {
-                    conlog(writer);
+                    //conlog(writer);
                   writer.onwrite = function(evt) {
                     temporaryEntry.remove();
                     callbackFunction(persistentEntry.toURL());
