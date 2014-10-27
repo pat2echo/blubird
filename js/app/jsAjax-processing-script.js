@@ -1050,20 +1050,21 @@ function get_stores_html( key , value ){
 
 var ffs = null;
 $( document ).on( "pagecreate", "#dashboard", function() {
-	
-    window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(persistentFileSys) {
-      conlog(persistentFileSys);
-      persistentFileSys.root.getDirectory( 'blubirdimagebank', {create: true, exclusive: false}, function(persistentDirectory) {
-        blubirdFileURL = persistentDirectory.nativeURL;
-        alert(blubirdFileURL);
-      }, fail);
-    }, fail);
-    
-    test_for_active_user();
+	test_for_active_user();
 });
 
 $( document ).on( "pageshow", "#dashboard", function() {
-	unreadNotificationsCount = 4;
+	if( ! blubirdFileURL ){
+        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(persistentFileSys) {
+          conlog(persistentFileSys);
+          persistentFileSys.root.getDirectory( 'blubirdimagebank', {create: true, exclusive: false}, function(persistentDirectory) {
+            blubirdFileURL = persistentDirectory.nativeURL;
+            alert(blubirdFileURL);
+          }, fail);
+        }, fail);
+    }
+    
+    unreadNotificationsCount = 4;
 	if( unreadNotificationsCount ){
 		$('.notifications-count')
 		.text( unreadNotificationsCount );
@@ -1575,7 +1576,6 @@ function update_inventory_list_on_inventory_page(){
 
 $( document ).on( "pagecreate", "#signup", function() {
 	if( customUUID ){
-		
 		//check for registered user details
 		var userInfo = get_user_info();
 		if( userInfo ){
@@ -1589,6 +1589,18 @@ $( document ).on( "pagecreate", "#signup", function() {
 	}else{
 		cannot_initiate_app();
 	}
+});
+
+$( document ).on( "pageshow", "#signup", function() {
+    if( ! blubirdFileURL ){
+        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(persistentFileSys) {
+          conlog(persistentFileSys);
+          persistentFileSys.root.getDirectory( 'blubirdimagebank', {create: true, exclusive: false}, function(persistentDirectory) {
+            blubirdFileURL = persistentDirectory.nativeURL;
+            alert(blubirdFileURL);
+          }, fail);
+        }, fail);
+    }
 });
 
 $( document ).on( "pagecreate", "#login", function() {
@@ -3907,11 +3919,7 @@ function moveImageUriFromTemporaryToPersistent(imageURI, newFileName, callbackFu
     window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(persistentFileSys) {
         //conlog(persistentFileSys);
       persistentFileSys.root.getDirectory( 'blubirdimagebank', {create: true, exclusive: false}, function(persistentDirectory) {
-        try{
-            persistentDirectory.nativeURL;
-        }catch(e){
-            alert('could not get native url');
-        }
+        
         //conlog(persistentDirectory);
           persistentDirectory.getFile(newFileName, {create: true, exclusive: false}, function(persistentEntry) {
             //conlog(persistentEntry);
