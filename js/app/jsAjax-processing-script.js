@@ -40,6 +40,14 @@ window.addEventListener('load', function() {
     FastClick.attach(document.body);
 }, false);
 
+document.addEventListener("deviceready", onDeviceReady, false);
+
+function onDeviceReady(){
+    alert('device ready');
+    window.requestFileSystem( LocalFileSystem.PERSISTENT, 0, initFileSystem, fail );
+    alert('device ready finish');
+};
+
 var blubirdFileURL = '';
 
 var gfileSystem;
@@ -954,7 +962,7 @@ function get_inventory_html( key , value ){
 	if(  value.item_sold )qty -= parseFloat( value.item_sold );
 	if( ! value.item_image )value.item_image = '';
 	
-	var html = '<tr id="'+key+'" class="'+value.category.replace(' ', '-')+'" timestamp="'+value.timestamp+'"><td><img src="'+"data:image/jpeg;base64," + value.item_image+'" class="ui-li-thumb"></td><td>'+value.item_desc+'</td><td>'+formatNum( qty )+'</td><td>'+formatNum( value.selling_price )+'</td><td >';
+	var html = '<tr id="'+key+'" class="'+value.category.replace(' ', '-')+'" timestamp="'+value.timestamp+'"><td><img src="' + blubirdFileURL + value.item_image+'" class="ui-li-thumb" /></td><td>'+value.item_desc+'</td><td>'+formatNum( qty )+'</td><td>'+formatNum( value.selling_price )+'</td><td >';
 	
 	if( value.supplier ){
 		html += '<a href="tel:+23408183140303" data-role="button" data-mini="true" data-theme="a" data-icon="phone" class="ui-link ui-btn ui-btn-a ui-icon-phone ui-btn-icon-left ui-shadow ui-corner-all ui-mini"><b>Mrs Ateke</b></a>';
@@ -1649,6 +1657,9 @@ $( document ).on( "pagecreate", "#supplier", function() {
 							if( stock ){
 								var item = getData( stock.item_barcode );
 								stock.item_desc = item.item_desc;
+								
+                                if( item.item_image )stock.item_image = item.item_image;
+                                
 								html += get_last_supply_activity_html( stock );
 								
 								if( ! supply[ stock.supply ] ){
