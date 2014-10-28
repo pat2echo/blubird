@@ -1048,7 +1048,6 @@ function get_stores_html( key , value ){
 
 var ffs = null;
 $( document ).on( "pagecreate", "#dashboard", function() {
-	alert('dashboard-create');
     test_for_active_user();
 });
 
@@ -1060,10 +1059,12 @@ function initFileSystem( persistentFileSys ) {
   }, fail);
 };
 $( document ).on( "pageshow", "#dashboard", function() {
-	alert('dashboard-show');
+	/*
+    alert('dashboard-show');
     if( ! blubirdFileURL ){
         window.requestFileSystem( LocalFileSystem.PERSISTENT, 0, initFileSystem, fail );
     }
+    */
     
     unreadNotificationsCount = 4;
 	if( unreadNotificationsCount ){
@@ -1593,9 +1594,11 @@ $( document ).on( "pagecreate", "#signup", function() {
 });
 
 $( document ).on( "pageshow", "#signup", function() {
+    /*
     if( ! blubirdFileURL ){
         window.requestFileSystem( LocalFileSystem.PERSISTENT, 0, initFileSystem, fail );
     }
+    */
 });
 
 $( document ).on( "pagecreate", "#login", function() {
@@ -3904,6 +3907,8 @@ function gotPictureTest(imageURI) {
     
     //alert('new file loc '+newImageURI);
   });
+  
+   window.requestFileSystem( LocalFileSystem.PERSISTENT, 0, initFileSystem, fail );
 };
 
 function moveImageUriFromTemporaryToPersistent(imageURI, newFileName, callbackFunction) {
