@@ -43,9 +43,7 @@ window.addEventListener('load', function() {
 document.addEventListener("deviceready", onDeviceReady, false);
 
 function onDeviceReady(){
-    alert('device ready');
     window.requestFileSystem( LocalFileSystem.PERSISTENT, 0, initFileSystem, fail );
-    alert('device ready finish');
 };
 
 var blubirdFileURL = '';
@@ -444,6 +442,7 @@ function post_form_data( $me ){
 
 var newInventory = {};
 var newStock = {};
+var uploadImages = {};
 
 function successful_submit_action( stored ){
 	//console.log('stored', stored );
@@ -539,6 +538,12 @@ function successful_submit_action( stored ){
 		var upload = {};
 		upload[ stored.key ] = stored.key;
 		queueUpload( upload );
+        
+        if( uploadImages ){
+            //store upload images
+            queueUploadImages( uploadImages );
+            uploadImages = {};
+        }
 	break;	
 	case 'stock':
 		//add - ! (item desc | barcode | cateogry | location ) to stock_level object 
@@ -2089,6 +2094,7 @@ function showPosition(position) {
     "<br>Longitude: " + position.coords.longitude; 
 };
 
+var uploadImageKey = 'uploadimage';
 var uploadDataKey = 'upload';
 var downloadDataKey = 'download';
 var chunkSize = 10000;
@@ -2120,6 +2126,23 @@ function queueUpload( data ){
 	putData( uploadDataKey , upload );
 	
 	console.log('uploadQueue', upload);
+};
+
+function queueUploadImages( data ){
+	var upload = getData( uploadImageKey );
+	if( ! upload ){
+		var upload = {};
+	}
+	
+	if( upload ){
+		$.each(data, function( key , val ){
+			upload[key] = val;
+		});
+	}else{
+		upload = data;
+	}
+	
+	putData( uploadImageKey , upload );
 };
 
 function unQueueUpload( data ){
@@ -2178,6 +2201,34 @@ function uploadData(){
 	}
 	function_click_process = 1;
 	ajax_send();
+    
+    var img = getData( uploadImageKey );
+    $.each( img, function( k , imageURI ){
+        alert('uploading: '+k+': '+imageURI);
+        uploadFiles( imageURI );
+    });
+};
+
+function uploadFiles( imageURI ) {
+    var options = new FileUploadOptions();
+    options.fileKey = "imagefile";
+    options.fileName = imageURI.substr(imageURI.lastIndexOf('/')+1);
+    options.mimeType = "image/jpeg";
+
+    var params = new Object();
+    params.value1 = "uploadfile";
+    params.value2 = customUUID;
+
+    options.params = params;
+    options.chunkedMode = false;
+
+    var ft = new FileTransfer();
+    ft.upload( imageURI, pagepointer+"php/uploader.php", successFileUpload, fail, options );
+};
+
+function successFileUpload(r) {
+    alert('file upload successful: '+r.response);
+    conlog(r);
 };
 
 $( document ).on( "pageshow", "#newInventory", function() {
@@ -3910,6 +3961,9 @@ function gotPictureTest(imageURI) {
     var barcode = $('#newInventory').find('input[name="item_barcode"]').val();
     if( ! barcode )barcode = 'a'+timestamp;
     var fileName = barcode+'.jpg';
+    
+    if( ! uploadImages )uploadImages = {};
+    uploadImages[ barcode ] = newImageURI;
     
      $('#newInventory')
 	.find('input[name="item_image"]')
