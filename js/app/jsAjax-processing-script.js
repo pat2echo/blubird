@@ -2202,33 +2202,57 @@ function uploadData(){
 	function_click_process = 1;
 	ajax_send();
     
-    var img = getData( uploadImageKey );
-    $.each( img, function( k , imageURI ){
-        alert('uploading: '+k+': '+imageURI);
-        uploadFiles( imageURI );
-    });
+    uploadFiles();
 };
 
-function uploadFiles( imageURI ) {
-    var options = new FileUploadOptions();
-    options.fileKey = "imagefile";
-    options.fileName = imageURI.substr(imageURI.lastIndexOf('/')+1);
-    options.mimeType = "image/jpeg";
+var uploadingImageInprogess = 0;
+var uploadingImageKey = '';
+function uploadFiles() {
+    
+    if( uploadingImageInprogess )return false;
+    
+    var img = getData( uploadImageKey );
+    var imageURI = '';
+    $.each( img, function( k , v ){
+        uploadingImageKey = k;
+       imageURI = v;
+        alert('uploading: '+k+': '+imageURI);
+        break;
+    });
+    
+    if( imageURI ){
+        uploadingImageInprogess = 1;
+        
+        var options = new FileUploadOptions();
+        options.fileKey = "imagefile";
+        options.fileName = imageURI.substr(imageURI.lastIndexOf('/')+1);
+        options.mimeType = "image/jpeg";
 
-    var params = new Object();
-    params.value1 = "uploadfile";
-    params.value2 = customUUID;
+        var params = new Object();
+        params.value1 = "uploadfile";
+        params.value2 = customUUID;
 
-    options.params = params;
-    options.chunkedMode = false;
+        options.params = params;
+        options.chunkedMode = false;
 
-    var ft = new FileTransfer();
-    ft.upload( imageURI, pagepointer+"php/uploader.php", successFileUpload, fail, options );
+        var ft = new FileTransfer();
+        ft.upload( imageURI, pagepointer+"php/uploader.php", successFileUpload, fail, options );
+    }else{
+        alert('no file to upload');
+    }
 };
 
 function successFileUpload(r) {
+    uploadingImageInprogess = 0;
+    
     alert('file upload successful: '+r.response);
     conlog(r);
+    var img = getData( uploadImageKey );
+    if( img && img[uploadingImageKey] ){
+        delete uploadingImageKey;
+        putData( uploadImageKey , img );
+    }
+    uploadFiles();
 };
 
 $( document ).on( "pageshow", "#newInventory", function() {
@@ -3917,6 +3941,8 @@ function piechart( data ){
 
 function fail(message) {
   // Do nothing.
+  uploadingImageInprogess = 0;
+  
   var m = '';
   $.each( message, function(a,b){
     m += a+': '+b+'\n\n';
