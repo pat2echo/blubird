@@ -2229,9 +2229,14 @@ function uploadFiles() {
         options.mimeType = "image/jpeg";
 
         var params = new Object();
-        params.value1 = "uploadfile";
-        params.value2 = customUUID;
-
+        params.app_uid = customUUID;
+        var user = get_user_info();
+		if( user && user.key ){
+			params.app_user_id = user.key;
+			params.store_id = get_current_store_id();
+			params.store_owner_id = customUUID;
+		}
+        
         options.params = params;
         options.chunkedMode = false;
 
