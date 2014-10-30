@@ -2094,6 +2094,8 @@ function showPosition(position) {
     "<br>Longitude: " + position.coords.longitude; 
 };
 
+var downloadImageKey = 'downloadimage';
+
 var uploadImageKey = 'uploadimage';
 var uploadDataKey = 'upload';
 var downloadDataKey = 'download';
@@ -2243,7 +2245,12 @@ function uploadFiles() {
         var ft = new FileTransfer();
         ft.upload( imageURI, pagepointer+"php/uploader.php", successFileUpload, fail, options );
     }else{
-        alert('no file to upload');
+        var settings = {
+			message_titles:'No File to Upload',
+			message_message: '',
+			auto_close: 'yes'
+		};
+		display_popup_notice( settings );
     }
 };
 
@@ -2258,6 +2265,87 @@ function successFileUpload(r) {
         putData( uploadImageKey , img );
     }
     uploadFiles();
+};
+
+function downloadFiles(){
+    if( ! blubirdFileURL ){
+        window.requestFileSystem( LocalFileSystem.PERSISTENT, 0, initFileSystem, fail );
+    }
+    
+    if( blubirdFileURL ){
+        var pendingImages = getData( downloadImageKey );
+        var file = {};
+        
+        if( pendingImages ){
+            $.each( pendingImages , function( k , v ){
+                if( v && v.length > 4 ){
+                    file.name = v;
+                    file.id = k;
+                    break;
+                }
+            });
+        }
+        
+        if( file && file.name ){
+            alert('b4 winresolve customUUID:'+customUUID );
+            window.resolveLocalFileSystemURL( blubirdFileURL + file.name , function(){
+                //file exists - //clear file key from download list
+                clearFileKeyFromDownloadList();
+                downloadFiles();
+                
+            } , function(){
+                var fileTransfer = new FileTransfer();
+                fileTransfer.download(
+                    pagepointer + "files/" + customUUID + "/" + file.name,
+                    blubirdFileURL + file.name,
+                    function( theFile ) {
+                        alert("download complete: " + theFile.toURI());
+                        conlog( theFile );
+                        
+                        //clear file key from download list
+                        clearFileKeyFromDownloadList();
+                        
+                        //call download / recurse
+                        downloadFiles();
+                    },
+                    function(error) {
+                        conlog( error );
+                        clearFileKeyFromDownloadList();
+                        downloadFiles();
+                    }
+                );
+            } );
+            alert('after winresolve');
+        }else{
+            document.location = document.location;
+            $.mobile.navigate( "#dashboard", { transition : "none" });
+        }
+    }else{
+        var settings = {
+			message_titles:'Invalid File System Path',
+			message_message: 'File Download Not Initiated',
+			auto_close: 'yes'
+		};
+		display_popup_notice( settings );
+        
+        document.location = document.location;
+        $.mobile.navigate( "#dashboard", { transition : "none" });
+    }
+    
+};
+
+function clearFileKeyFromDownloadList(){
+    var pendingImages = getData( downloadImageKey );
+    var filekey = '';
+    $.each( pendingImages , function( k , v ){
+        filekey = k;
+        break;
+    });
+    
+    if( pendingImages[ filekey ] )
+        delete pendingImages[ filekey ];
+    
+    putData( downloadImageKey , pendingImages );
 };
 
 $( document ).on( "pageshow", "#newInventory", function() {
@@ -3258,6 +3346,9 @@ function update_and_re_trigger_data_download( tempData ){
 		var i = '';
 		var notifications = {};
 		var notifications_short_html = '';
+        
+        var itemsToGetImages = {};
+        
 		$.each( tempData , function( object , key ){
 			var count = 0;
 			var obj = getData( object );
@@ -3269,6 +3360,13 @@ function update_and_re_trigger_data_download( tempData ){
 						putData( k , v );
 						obj[ k ] = k;
 						
+						//prepare inventory to download images
+						if( object == 'inventory' ){
+                            if( v && v.item_image ){
+                                itemsToGetImages[ k ] = v.item_image;
+                            }
+                        }
+                        
 						//prepare notifications
 						if( object == 'notifications' ){
 							var date = new Date(v.creationtimestamp);
@@ -3316,6 +3414,15 @@ function update_and_re_trigger_data_download( tempData ){
 						.html( 'You\'ve '+unreadNotificationsCount+' new notifications &nbsp;|&nbsp;&nbsp; '+notifications_short_html );
 					}
 				break;
+                case 'inventory':
+                    //queue images for download
+                    var pendingImages = getData( downloadImageKey );
+                    if( ! pendingImages )pendingImages = {};
+                    $.each( itemsToGetImages , function( k , v ){
+                        pendingImages[k] = v;
+                    });
+                    putData( downloadImageKey , pendingImages );
+                break;
 				}
 				
 				$('#update-progress-area')
@@ -3630,10 +3737,11 @@ function ajaxSuccess( data , store ){
 			ajax_data = {};
 			ajax_get_url = '';
 			
+            //start downloading images that don't exists
+            downloadFiles();
+            
 			//store data
 			ga( 'send' , 'pageview' , {'page': '/data-download-complete' , 'title': 'Data Download Complete '+customUUID } );
-			document.location = document.location;
-			$.mobile.navigate( "#dashboard", { transition : "none" });
 		break;
 		case 'uploaded-data':
 			if( data.keys ){
