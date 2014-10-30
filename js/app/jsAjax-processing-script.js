@@ -76,9 +76,9 @@ var refreshBusinessListing = new Array();
 
 var requestRetryCount = 0;
 
-//var pagepointer = 'http://localhost/blubird/server/engine/';
+var pagepointer = 'http://localhost/blubird/server/engine/';
 //var pagepointer = 'http://192.168.1.7/blubird/server/engine/';
-var pagepointer = 'http://blubird.maybeachtech.com/engine/';
+//var pagepointer = 'http://blubird.maybeachtech.com/engine/';
 
 var form_method = 'get';
 var ajax_data_type = 'json';
@@ -2271,7 +2271,7 @@ function downloadFiles(){
     if( ! blubirdFileURL ){
         window.requestFileSystem( LocalFileSystem.PERSISTENT, 0, initFileSystem, fail );
     }
-    
+    alert( 'download files' );
     if( blubirdFileURL ){
         var pendingImages = getData( downloadImageKey );
         var file = {};
@@ -2281,10 +2281,14 @@ function downloadFiles(){
                 if( v && v.length > 4 ){
                     file.name = v;
                     file.id = k;
-                    break;
+                }
+                
+                if( file.name ){
+                    return;
                 }
             });
         }
+        conlog(file);
         
         if( file && file.name ){
             alert('b4 winresolve customUUID:'+customUUID );
@@ -2339,7 +2343,7 @@ function clearFileKeyFromDownloadList(){
     var filekey = '';
     $.each( pendingImages , function( k , v ){
         filekey = k;
-        break;
+        return;
     });
     
     if( pendingImages[ filekey ] )
@@ -3736,7 +3740,8 @@ function ajaxSuccess( data , store ){
 		case 'data-download-complete':
 			ajax_data = {};
 			ajax_get_url = '';
-			
+            
+			alert( 'a download files' );
             //start downloading images that don't exists
             downloadFiles();
             
