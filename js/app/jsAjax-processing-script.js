@@ -76,9 +76,9 @@ var refreshBusinessListing = new Array();
 
 var requestRetryCount = 0;
 
-var pagepointer = 'http://localhost/blubird/server/engine/';
+//var pagepointer = 'http://localhost/blubird/server/engine/';
 //var pagepointer = 'http://192.168.1.7/blubird/server/engine/';
-//var pagepointer = 'http://blubird.maybeachtech.com/engine/';
+var pagepointer = 'http://blubird.maybeachtech.com/engine/';
 
 var form_method = 'get';
 var ajax_data_type = 'json';
@@ -2284,7 +2284,7 @@ function downloadFiles(){
                 }
                 
                 if( file.name ){
-                    return;
+                    return false;
                 }
             });
         }
@@ -2345,7 +2345,7 @@ function clearFileKeyFromDownloadList(){
     var filekey = '';
     $.each( pendingImages , function( k , v ){
         filekey = k;
-        return;
+        return false;
     });
     
     if( pendingImages[ filekey ] )
