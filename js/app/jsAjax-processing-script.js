@@ -2291,7 +2291,7 @@ function downloadFiles(){
         conlog(file);
         
         if( file && file.name ){
-            alert('b4 winresolve customUUID:'+customUUID );
+            alert('b4 winresolve customUUID:'+customUUID+'\n\n'+blubirdFileURL + file.name );
             window.resolveLocalFileSystemURL( blubirdFileURL + file.name , function(){
                 //file exists - //clear file key from download list
                 clearFileKeyFromDownloadList();
@@ -2299,6 +2299,8 @@ function downloadFiles(){
                 
             } , function(){
                 var fileTransfer = new FileTransfer();
+                
+                alert('server: '+pagepointer + "files/" + customUUID + "/" + file.name );
                 fileTransfer.download(
                     pagepointer + "files/" + customUUID + "/" + file.name,
                     blubirdFileURL + file.name,
