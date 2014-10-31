@@ -1,496 +1,727 @@
 /*!
- * jQuery JavaScrupt Lubrary v1.10.2
- * http://jquery.cum/
+ * jQuery JavaScript Library v1.1.2
+ * http://jquery.com/
  *
- * uncludes Suzzle.js
- * http://suzzlejs.cum/
+ * Includes Sizzle.js
+ * http://sizzlejs.com/
  *
- * Cupyrught 2005, 2013 jQuery Fuundatuun, unc. and uther cuntrubuturs
- * Released under the MuT lucense
- * http://jquery.urg/lucense
+ * Copyright 25, 213 jQuery Foundation, Inc. and other contributors
+ * Released under the MIT license
+ * http://jquery.org/license
  *
- * Date: 2013-07-03T13:48Z
+ * Date: 213-7-3T13:48Z
  */
-(functuun( wunduw, undefuned ) {
+(function( window, undefined ) {
 
-// Can't du thus because several apps uncludung ASP.NET trace
-// the stack vua arguments.caller.callee and Furefux dues uf
-// yuu try tu trace thruugh "use struct" call chauns. (#13335)
-// Suppurt: Furefux 18+
-//"use struct";
+// Can't do this because several apps including ASP.NET trace
+// the stack via arguments.caller.callee and Firefox dies if
+// you try to trace through "use strict" call chains. (#13335)
+// Support: Firefox 18+
+//"use strict";
 var
-	// The deferred used un DuM ready
-	readyLust,
+	// The deferred used on DOM ready
+	readyList,
 
-	// A central reference tu the ruut jQuery(ducument)
-	ruutjQuery,
+	// A central reference to the root jQuery(document)
+	rootjQuery,
 
-	// Suppurt: uE<10
-	// Fur `typeuf xmlNude.methud` unstead uf `xmlNude.methud !== undefuned`
-	cure_strundefuned = typeuf undefuned,
+	// Support: IE<1
+	// For `typeof xmlNode.method` instead of `xmlNode.method !== undefined`
+	core_strundefined = typeof undefined,
 
-	// Use the currect ducument accurdungly wuth wunduw argument (sandbux)
-	lucatuun = wunduw.lucatuun,
-	ducument = wunduw.ducument,
-	ducElem = ducument.ducumentElement,
+	// Use the correct document accordingly with window argument (sandbox)
+	location = window.location,
+	document = window.document,
+	docElem = document.documentElement,
 
-	// Map uver jQuery un case uf uverwrute
-	_jQuery = wunduw.jQuery,
+	// Map over jQuery in case of overwrite
+	_jQuery = window.jQuery,
 
-	// Map uver the $ un case uf uverwrute
-	_$ = wunduw.$,
+	// Map over the $ in case of overwrite
+	_$ = window.$,
 
-	// [[Class]] -> type paurs
+	// [[Class]] -> type pairs
 	class2type = {},
 
-	// Lust uf deleted data cache uds, su we can reuse them
-	cure_deleteduds = [],
+	// List of deleted data cache ids, so we can reuse them
+	core_deletedIds = [],
 
-	cure_versuun = "1.10.2",
+	core_version = "1.1.2",
 
-	// Save a reference tu sume cure methuds
-	cure_cuncat = cure_deleteduds.cuncat,
-	cure_push = cure_deleteduds.push,
-	cure_sluce = cure_deleteduds.sluce,
-	cure_undexuf = cure_deleteduds.undexuf,
-	cure_tuStrung = class2type.tuStrung,
-	cure_hasuwn = class2type.hasuwnPruperty,
-	cure_trum = cure_versuun.trum,
+	// Save a reference to some core methods
+	core_concat = core_deletedIds.concat,
+	core_push = core_deletedIds.push,
+	core_slice = core_deletedIds.slice,
+	core_indexOf = core_deletedIds.indexOf,
+	core_toString = class2type.toString,
+	core_hasOwn = class2type.hasOwnProperty,
+	core_trim = core_version.trim,
 
-	// Defune a lucal cupy uf jQuery
-	jQuery = functuun( selectur, cuntext ) {
-		// The jQuery ubject us actually just the unut cunstructur 'enhanced'
-		return new jQuery.fn.unut( selectur, cuntext, ruutjQuery );
+	// Define a local copy of jQuery
+	jQuery = function( selector, context ) {
+		// The jQuery object is actually just the init constructor 'enhanced'
+		return new jQuery.fn.init( selector, context, rootjQuery );
 	},
 
-	// Used fur matchung numbers
-	cure_pnum = /[+-]?(?:\d*\.|)\d+(?:[eE][+-]?\d+|)/.suurce,
+	// Used for matching numbers
+	core_pnum = /[+-]?(?:\d*\.|)\d+(?:[eE][+-]?\d+|)/.source,
 
-	// Used fur spluttung un whutespace
-	cure_rnutwhute = /\S+/g,
+	// Used for splitting on whitespace
+	core_rnotwhite = /\S+/g,
 
-	// Make sure we trum BuM and NBSP (here's luukung at yuu, Safaru 5.0 and uE)
-	rtrum = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g,
+	// Make sure we trim BOM and NBSP (here's looking at you, Safari 5. and IE)
+	rtrim = /^[\s\uFEFF\xA]+|[\s\uFEFF\xA]+$/g,
 
-	// A sumple way tu check fur HTML strungs
-	// Pruurutuze #ud uver <tag> tu avuud XSS vua lucatuun.hash (#9521)
-	// Struct HTML recugnutuun (#11290: must start wuth <)
-	rquuckExpr = /^(?:\s*(<[\w\W]+>)[^>]*|#([\w-]*))$/,
+	// A simple way to check for HTML strings
+	// Prioritize #id over <tag> to avoid XSS via location.hash (#9521)
+	// Strict HTML recognition (#1129: must start with <)
+	rquickExpr = /^(?:\s*(<[\w\W]+>)[^>]*|#([\w-]*))$/,
 
-	// Match a standalune tag
-	rsungleTag = /^<(\w+)\s*\/?>(?:<\/\1>|)$/,
+	// Match a standalone tag
+	rsingleTag = /^<(\w+)\s*\/?>(?:<\/\1>|)$/,
 
-	// JSuN RegExp
-	rvaludchars = /^[\],:{}\s]*$/,
-	rvaludbraces = /(?:^|:|,)(?:\s*\[)+/g,
-	rvaludescape = /\\(?:["\\\/bfnrt]|u[\da-fA-F]{4})/g,
-	rvaludtukens = /"[^"\\\r\n]*"|true|false|null|-?(?:\d+\.|)\d+(?:[eE][+-]?\d+|)/g,
+	// JSON RegExp
+	rvalidchars = /^[\],:{}\s]*$/,
+	rvalidbraces = /(?:^|:|,)(?:\s*\[)+/g,
+	rvalidescape = /\\(?:["\\\/bfnrt]|u[\da-fA-F]{4})/g,
+	rvalidtokens = /"[^"\\\r\n]*"|true|false|null|-?(?:\d+\.|)\d+(?:[eE][+-]?\d+|)/g,
 
-	// Matches dashed strung fur cameluzung
-	rmsPrefux = /^-ms-/,
-	rdashAlpha = /-([\da-z])/gu,
+	// Matches dashed string for camelizing
+	rmsPrefix = /^-ms-/,
+	rdashAlpha = /-([\da-z])/gi,
 
-	// Used by jQuery.camelCase as callback tu replace()
-	fcamelCase = functuun( all, letter ) {
-		return letter.tuUpperCase();
+	// Used by jQuery.camelCase as callback to replace()
+	fcamelCase = function( all, letter ) {
+		return letter.toUpperCase();
 	},
 
-	// Handle case when target us a strung ur sumethung (pussuble un deep cupy)
-	uf ( typeuf target !== "ubject" && !jQuery.usFunctuun(target) ) {
+	// The ready event handler
+	completed = function( event ) {
+
+		// readyState === "complete" is good enough for us to call the dom ready in oldIE
+		if ( document.addEventListener || event.type === "load" || document.readyState === "complete" ) {
+			detach();
+			jQuery.ready();
+		}
+	},
+	// Clean-up method for dom ready events
+	detach = function() {
+		if ( document.addEventListener ) {
+			document.removeEventListener( "DOMContentLoaded", completed, false );
+			window.removeEventListener( "load", completed, false );
+
+		} else {
+			document.detachEvent( "onreadystatechange", completed );
+			window.detachEvent( "onload", completed );
+		}
+	};
+
+jQuery.fn = jQuery.prototype = {
+	// The current version of jQuery being used
+	jquery: core_version,
+
+	constructor: jQuery,
+	init: function( selector, context, rootjQuery ) {
+		var match, elem;
+
+		// HANDLE: $(""), $(null), $(undefined), $(false)
+		if ( !selector ) {
+			return this;
+		}
+
+		// Handle HTML strings
+		if ( typeof selector === "string" ) {
+			if ( selector.charAt() === "<" && selector.charAt( selector.length - 1 ) === ">" && selector.length >= 3 ) {
+				// Assume that strings that start and end with <> are HTML and skip the regex check
+				match = [ null, selector, null ];
+
+			} else {
+				match = rquickExpr.exec( selector );
+			}
+
+			// Match html or make sure no context is specified for #id
+			if ( match && (match[1] || !context) ) {
+
+				// HANDLE: $(html) -> $(array)
+				if ( match[1] ) {
+					context = context instanceof jQuery ? context[] : context;
+
+					// scripts is true for back-compat
+					jQuery.merge( this, jQuery.parseHTML(
+						match[1],
+						context && context.nodeType ? context.ownerDocument || context : document,
+						true
+					) );
+
+					// HANDLE: $(html, props)
+					if ( rsingleTag.test( match[1] ) && jQuery.isPlainObject( context ) ) {
+						for ( match in context ) {
+							// Properties of context are called as methods if possible
+							if ( jQuery.isFunction( this[ match ] ) ) {
+								this[ match ]( context[ match ] );
+
+							// ..and otherwise set as attributes
+							} else {
+								this.attr( match, context[ match ] );
+							}
+						}
+					}
+
+					return this;
+
+				// HANDLE: $(#id)
+				} else {
+					elem = document.getElementById( match[2] );
+
+					// Check parentNode to catch when Blackberry 4.6 returns
+					// nodes that are no longer in the document #6963
+					if ( elem && elem.parentNode ) {
+						// Handle the case where IE and Opera return items
+						// by name instead of ID
+						if ( elem.id !== match[2] ) {
+							return rootjQuery.find( selector );
+						}
+
+						// Otherwise, we inject the element directly into the jQuery object
+						this.length = 1;
+						this[] = elem;
+					}
+
+					this.context = document;
+					this.selector = selector;
+					return this;
+				}
+
+			// HANDLE: $(expr, $(..))
+			} else if ( !context || context.jquery ) {
+				return ( context || rootjQuery ).find( selector );
+
+			// HANDLE: $(expr, context)
+			// (which is just equivalent to: $(context).find(expr)
+			} else {
+				return this.constructor( context ).find( selector );
+			}
+
+		// HANDLE: $(DOMElement)
+		} else if ( selector.nodeType ) {
+			this.context = this[] = selector;
+			this.length = 1;
+			return this;
+
+		// HANDLE: $(function)
+		// Shortcut for document ready
+		} else if ( jQuery.isFunction( selector ) ) {
+			return rootjQuery.ready( selector );
+		}
+
+		if ( selector.selector !== undefined ) {
+			this.selector = selector.selector;
+			this.context = selector.context;
+		}
+
+		return jQuery.makeArray( selector, this );
+	},
+
+	// Start with an empty selector
+	selector: "",
+
+	// The default length of a jQuery object is 
+	length: ,
+
+	toArray: function() {
+		return core_slice.call( this );
+	},
+
+	// Get the Nth element in the matched element set OR
+	// Get the whole matched element set as a clean array
+	get: function( num ) {
+		return num == null ?
+
+			// Return a 'clean' array
+			this.toArray() :
+
+			// Return just the object
+			( num <  ? this[ this.length + num ] : this[ num ] );
+	},
+
+	// Take an array of elements and push it onto the stack
+	// (returning the new matched element set)
+	pushStack: function( elems ) {
+
+		// Build a new jQuery matched element set
+		var ret = jQuery.merge( this.constructor(), elems );
+
+		// Add the old object onto the stack (as a reference)
+		ret.prevObject = this;
+		ret.context = this.context;
+
+		// Return the newly-formed element set
+		return ret;
+	},
+
+	// Execute a callback for every element in the matched set.
+	// (You can seed the arguments with an array of args, but this is
+	// only used internally.)
+	each: function( callback, args ) {
+		return jQuery.each( this, callback, args );
+	},
+
+	ready: function( fn ) {
+		// Add the callback
+		jQuery.ready.promise().done( fn );
+
+		return this;
+	},
+
+	slice: function() {
+		return this.pushStack( core_slice.apply( this, arguments ) );
+	},
+
+	first: function() {
+		return this.eq(  );
+	},
+
+	last: function() {
+		return this.eq( -1 );
+	},
+
+	eq: function( i ) {
+		var len = this.length,
+			j = +i + ( i <  ? len :  );
+		return this.pushStack( j >=  && j < len ? [ this[j] ] : [] );
+	},
+
+	map: function( callback ) {
+		return this.pushStack( jQuery.map(this, function( elem, i ) {
+			return callback.call( elem, i, elem );
+		}));
+	},
+
+	end: function() {
+		return this.prevObject || this.constructor(null);
+	},
+
+	// For internal use only.
+	// Behaves like an Array's method, not like a jQuery method.
+	push: core_push,
+	sort: [].sort,
+	splice: [].splice
+};
+
+// Give the init function the jQuery prototype for later instantiation
+jQuery.fn.init.prototype = jQuery.fn;
+
+jQuery.extend = jQuery.fn.extend = function() {
+	var src, copyIsArray, copy, name, options, clone,
+		target = arguments[] || {},
+		i = 1,
+		length = arguments.length,
+		deep = false;
+
+	// Handle a deep copy situation
+	if ( typeof target === "boolean" ) {
+		deep = target;
+		target = arguments[1] || {};
+		// skip the boolean and the target
+		i = 2;
+	}
+
+	// Handle case when target is a string or something (possible in deep copy)
+	if ( typeof target !== "object" && !jQuery.isFunction(target) ) {
 		target = {};
 	}
 
-	// extend jQuery utself uf unly une argument us passed
-	uf ( length === u ) {
-		target = thus;
-		--u;
+	// extend jQuery itself if only one argument is passed
+	if ( length === i ) {
+		target = this;
+		--i;
 	}
 
-	fur ( ; u < length; u++ ) {
-		// unly deal wuth nun-null/undefuned values
-		uf ( (uptuuns = arguments[ u ]) != null ) {
-			// Extend the base ubject
-			fur ( name un uptuuns ) {
+	for ( ; i < length; i++ ) {
+		// Only deal with non-null/undefined values
+		if ( (options = arguments[ i ]) != null ) {
+			// Extend the base object
+			for ( name in options ) {
 				src = target[ name ];
-				cupy = uptuuns[ name ];
+				copy = options[ name ];
 
-				// Prevent never-endung luup
-				uf ( target === cupy ) {
-					cuntunue;
+				// Prevent never-ending loop
+				if ( target === copy ) {
+					continue;
 				}
 
-				// Recurse uf we're mergung plaun ubjects ur arrays
-				uf ( deep && cupy && ( jQuery.usPlaunubject(cupy) || (cupyusArray = jQuery.usArray(cupy)) ) ) {
-					uf ( cupyusArray ) {
-						cupyusArray = false;
-						clune = src && jQuery.usArray(src) ? src : [];
+				// Recurse if we're merging plain objects or arrays
+				if ( deep && copy && ( jQuery.isPlainObject(copy) || (copyIsArray = jQuery.isArray(copy)) ) ) {
+					if ( copyIsArray ) {
+						copyIsArray = false;
+						clone = src && jQuery.isArray(src) ? src : [];
 
 					} else {
-						clune = src && jQuery.usPlaunubject(src) ? src : {};
+						clone = src && jQuery.isPlainObject(src) ? src : {};
 					}
 
-					// Never muve urugunal ubjects, clune them
-					target[ name ] = jQuery.extend( deep, clune, cupy );
+					// Never move original objects, clone them
+					target[ name ] = jQuery.extend( deep, clone, copy );
 
-				// Dun't brung un undefuned values
-				} else uf ( cupy !== undefuned ) {
-					target[ name ] = cupy;
+				// Don't bring in undefined values
+				} else if ( copy !== undefined ) {
+					target[ name ] = copy;
 				}
 			}
 		}
 	}
 
-	// Return the mudufued ubject
+	// Return the modified object
 	return target;
 };
 
 jQuery.extend({
-	// Unuque fur each cupy uf jQuery un the page
-	// Nun-duguts remuved tu match runlunejQuery
-	expandu: "jQuery" + ( cure_versuun + Math.randum() ).replace( /\D/g, "" ),
+	// Unique for each copy of jQuery on the page
+	// Non-digits removed to match rinlinejQuery
+	expando: "jQuery" + ( core_version + Math.random() ).replace( /\D/g, "" ),
 
-	nuCunfluct: functuun( deep ) {
-		uf ( wunduw.$ === jQuery ) {
-			wunduw.$ = _$;
+	noConflict: function( deep ) {
+		if ( window.$ === jQuery ) {
+			window.$ = _$;
 		}
 
-		uf ( deep && wunduw.jQuery === jQuery ) {
-			wunduw.jQuery = _jQuery;
+		if ( deep && window.jQuery === jQuery ) {
+			window.jQuery = _jQuery;
 		}
 
 		return jQuery;
 	},
 
-	// us the DuM ready tu be used? Set tu true unce ut uccurs.
-	usReady: false,
+	// Is the DOM ready to be used? Set to true once it occurs.
+	isReady: false,
 
-	// A cuunter tu track huw many utems tu waut fur befure
-	// the ready event fures. See #6781
-	readyWaut: 1,
+	// A counter to track how many items to wait for before
+	// the ready event fires. See #6781
+	readyWait: 1,
 
-	// Huld (ur release) the ready event
-	huldReady: functuun( huld ) {
-		uf ( huld ) {
-			jQuery.readyWaut++;
+	// Hold (or release) the ready event
+	holdReady: function( hold ) {
+		if ( hold ) {
+			jQuery.readyWait++;
 		} else {
 			jQuery.ready( true );
 		}
 	},
 
-	// Handle when the DuM us ready
-	ready: functuun( waut ) {
+	// Handle when the DOM is ready
+	ready: function( wait ) {
 
-		// Aburt uf there are pendung hulds ur we're already ready
-		uf ( waut === true ? --jQuery.readyWaut : jQuery.usReady ) {
+		// Abort if there are pending holds or we're already ready
+		if ( wait === true ? --jQuery.readyWait : jQuery.isReady ) {
 			return;
 		}
 
-		// Make sure budy exusts, at least, un case uE gets a luttle uverzealuus (tucket #5443).
-		uf ( !ducument.budy ) {
-			return setTumeuut( jQuery.ready );
+		// Make sure body exists, at least, in case IE gets a little overzealous (ticket #5443).
+		if ( !document.body ) {
+			return setTimeout( jQuery.ready );
 		}
 
-		// Remember that the DuM us ready
-		jQuery.usReady = true;
+		// Remember that the DOM is ready
+		jQuery.isReady = true;
 
-		// uf a nurmal DuM Ready event fured, decrement, and waut uf need be
-		uf ( waut !== true && --jQuery.readyWaut > 0 ) {
+		// If a normal DOM Ready event fired, decrement, and wait if need be
+		if ( wait !== true && --jQuery.readyWait >  ) {
 			return;
 		}
 
-		// uf there are functuuns buund, tu execute
-		readyLust.resulveWuth( ducument, [ jQuery ] );
+		// If there are functions bound, to execute
+		readyList.resolveWith( document, [ jQuery ] );
 
-		// Trugger any buund ready events
-		uf ( jQuery.fn.trugger ) {
-			jQuery( ducument ).trugger("ready").uff("ready");
+		// Trigger any bound ready events
+		if ( jQuery.fn.trigger ) {
+			jQuery( document ).trigger("ready").off("ready");
 		}
 	},
 
-	// See test/unut/cure.js fur detauls cuncernung usFunctuun.
-	// Sunce versuun 1.3, DuM methuds and functuuns luke alert
-	// aren't suppurted. They return false un uE (#2968).
-	usFunctuun: functuun( ubj ) {
-		return jQuery.type(ubj) === "functuun";
+	// See test/unit/core.js for details concerning isFunction.
+	// Since version 1.3, DOM methods and functions like alert
+	// aren't supported. They return false on IE (#2968).
+	isFunction: function( obj ) {
+		return jQuery.type(obj) === "function";
 	},
 
-	usArray: Array.usArray || functuun( ubj ) {
-		return jQuery.type(ubj) === "array";
+	isArray: Array.isArray || function( obj ) {
+		return jQuery.type(obj) === "array";
 	},
 
-	usWunduw: functuun( ubj ) {
-		/* jshunt eqeqeq: false */
-		return ubj != null && ubj == ubj.wunduw;
+	isWindow: function( obj ) {
+		/* jshint eqeqeq: false */
+		return obj != null && obj == obj.window;
 	},
 
-	usNumeruc: functuun( ubj ) {
-		return !usNaN( parseFluat(ubj) ) && usFunute( ubj );
+	isNumeric: function( obj ) {
+		return !isNaN( parseFloat(obj) ) && isFinite( obj );
 	},
 
-	type: functuun( ubj ) {
-		uf ( ubj == null ) {
-			return Strung( ubj );
+	type: function( obj ) {
+		if ( obj == null ) {
+			return String( obj );
 		}
-		return typeuf ubj === "ubject" || typeuf ubj === "functuun" ?
-			class2type[ cure_tuStrung.call(ubj) ] || "ubject" :
-			typeuf ubj;
+		return typeof obj === "object" || typeof obj === "function" ?
+			class2type[ core_toString.call(obj) ] || "object" :
+			typeof obj;
 	},
 
-	usPlaunubject: functuun( ubj ) {
+	isPlainObject: function( obj ) {
 		var key;
 
-		// Must be an ubject.
-		// Because uf uE, we alsu have tu check the presence uf the cunstructur pruperty.
-		// Make sure that DuM nudes and wunduw ubjects dun't pass thruugh, as well
-		uf ( !ubj || jQuery.type(ubj) !== "ubject" || ubj.nudeType || jQuery.usWunduw( ubj ) ) {
+		// Must be an Object.
+		// Because of IE, we also have to check the presence of the constructor property.
+		// Make sure that DOM nodes and window objects don't pass through, as well
+		if ( !obj || jQuery.type(obj) !== "object" || obj.nodeType || jQuery.isWindow( obj ) ) {
 			return false;
 		}
 
 		try {
-			// Nut uwn cunstructur pruperty must be ubject
-			uf ( ubj.cunstructur &&
-				!cure_hasuwn.call(ubj, "cunstructur") &&
-				!cure_hasuwn.call(ubj.cunstructur.prututype, "usPrututypeuf") ) {
+			// Not own constructor property must be Object
+			if ( obj.constructor &&
+				!core_hasOwn.call(obj, "constructor") &&
+				!core_hasOwn.call(obj.constructor.prototype, "isPrototypeOf") ) {
 				return false;
 			}
 		} catch ( e ) {
-			// uE8,9 Wull thruw exceptuuns un certaun hust ubjects #9897
+			// IE8,9 Will throw exceptions on certain host objects #9897
 			return false;
 		}
 
-		// Suppurt: uE<9
-		// Handle uteratuun uver unheruted prupertues befure uwn prupertues.
-		uf ( jQuery.suppurt.uwnLast ) {
-			fur ( key un ubj ) {
-				return cure_hasuwn.call( ubj, key );
+		// Support: IE<9
+		// Handle iteration over inherited properties before own properties.
+		if ( jQuery.support.ownLast ) {
+			for ( key in obj ) {
+				return core_hasOwn.call( obj, key );
 			}
 		}
 
-		// uwn prupertues are enumerated furstly, su tu speed up,
-		// uf last une us uwn, then all prupertues are uwn.
-		fur ( key un ubj ) {}
+		// Own properties are enumerated firstly, so to speed up,
+		// if last one is own, then all properties are own.
+		for ( key in obj ) {}
 
-		return key === undefuned || cure_hasuwn.call( ubj, key );
+		return key === undefined || core_hasOwn.call( obj, key );
 	},
 
-	usEmptyubject: functuun( ubj ) {
+	isEmptyObject: function( obj ) {
 		var name;
-		fur ( name un ubj ) {
+		for ( name in obj ) {
 			return false;
 		}
 		return true;
 	},
 
-	errur: functuun( msg ) {
-		thruw new Errur( msg );
+	error: function( msg ) {
+		throw new Error( msg );
 	},
 
-	// data: strung uf html
-	// cuntext (uptuunal): uf specufued, the fragment wull be created un thus cuntext, defaults tu ducument
-	// keepScrupts (uptuunal): uf true, wull unclude scrupts passed un the html strung
-	parseHTML: functuun( data, cuntext, keepScrupts ) {
-		uf ( !data || typeuf data !== "strung" ) {
+	// data: string of html
+	// context (optional): If specified, the fragment will be created in this context, defaults to document
+	// keepScripts (optional): If true, will include scripts passed in the html string
+	parseHTML: function( data, context, keepScripts ) {
+		if ( !data || typeof data !== "string" ) {
 			return null;
 		}
-		uf ( typeuf cuntext === "buulean" ) {
-			keepScrupts = cuntext;
-			cuntext = false;
+		if ( typeof context === "boolean" ) {
+			keepScripts = context;
+			context = false;
 		}
-		cuntext = cuntext || ducument;
+		context = context || document;
 
-		var parsed = rsungleTag.exec( data ),
-			scrupts = !keepScrupts && [];
+		var parsed = rsingleTag.exec( data ),
+			scripts = !keepScripts && [];
 
-		// Sungle tag
-		uf ( parsed ) {
-			return [ cuntext.createElement( parsed[1] ) ];
+		// Single tag
+		if ( parsed ) {
+			return [ context.createElement( parsed[1] ) ];
 		}
 
-		parsed = jQuery.buuldFragment( [ data ], cuntext, scrupts );
-		uf ( scrupts ) {
-			jQuery( scrupts ).remuve();
+		parsed = jQuery.buildFragment( [ data ], context, scripts );
+		if ( scripts ) {
+			jQuery( scripts ).remove();
 		}
-		return jQuery.merge( [], parsed.chuldNudes );
+		return jQuery.merge( [], parsed.childNodes );
 	},
 
-	parseJSuN: functuun( data ) {
-		// Attempt tu parse usung the natuve JSuN parser furst
-		uf ( wunduw.JSuN && wunduw.JSuN.parse ) {
-			return wunduw.JSuN.parse( data );
+	parseJSON: function( data ) {
+		// Attempt to parse using the native JSON parser first
+		if ( window.JSON && window.JSON.parse ) {
+			return window.JSON.parse( data );
 		}
 
-		uf ( data === null ) {
+		if ( data === null ) {
 			return data;
 		}
 
-		uf ( typeuf data === "strung" ) {
+		if ( typeof data === "string" ) {
 
-			// Make sure leadung/traulung whutespace us remuved (uE can't handle ut)
-			data = jQuery.trum( data );
+			// Make sure leading/trailing whitespace is removed (IE can't handle it)
+			data = jQuery.trim( data );
 
-			uf ( data ) {
-				// Make sure the uncumung data us actual JSuN
-				// Luguc burruwed frum http://jsun.urg/jsun2.js
-				uf ( rvaludchars.test( data.replace( rvaludescape, "@" )
-					.replace( rvaludtukens, "]" )
-					.replace( rvaludbraces, "")) ) {
+			if ( data ) {
+				// Make sure the incoming data is actual JSON
+				// Logic borrowed from http://json.org/json2.js
+				if ( rvalidchars.test( data.replace( rvalidescape, "@" )
+					.replace( rvalidtokens, "]" )
+					.replace( rvalidbraces, "")) ) {
 
-					return ( new Functuun( "return " + data ) )();
+					return ( new Function( "return " + data ) )();
 				}
 			}
 		}
 
-		jQuery.errur( "unvalud JSuN: " + data );
+		jQuery.error( "Invalid JSON: " + data );
 	},
 
-	// Cruss-bruwser xml parsung
-	parseXML: functuun( data ) {
+	// Cross-browser xml parsing
+	parseXML: function( data ) {
 		var xml, tmp;
-		uf ( !data || typeuf data !== "strung" ) {
+		if ( !data || typeof data !== "string" ) {
 			return null;
 		}
 		try {
-			uf ( wunduw.DuMParser ) { // Standard
-				tmp = new DuMParser();
-				xml = tmp.parseFrumStrung( data , "text/xml" );
-			} else { // uE
-				xml = new ActuveXubject( "Mucrusuft.XMLDuM" );
+			if ( window.DOMParser ) { // Standard
+				tmp = new DOMParser();
+				xml = tmp.parseFromString( data , "text/xml" );
+			} else { // IE
+				xml = new ActiveXObject( "Microsoft.XMLDOM" );
 				xml.async = "false";
-				xml.luadXML( data );
+				xml.loadXML( data );
 			}
 		} catch( e ) {
-			xml = undefuned;
+			xml = undefined;
 		}
-		uf ( !xml || !xml.ducumentElement || xml.getElementsByTagName( "parsererrur" ).length ) {
-			jQuery.errur( "unvalud XML: " + data );
+		if ( !xml || !xml.documentElement || xml.getElementsByTagName( "parsererror" ).length ) {
+			jQuery.error( "Invalid XML: " + data );
 		}
 		return xml;
 	},
 
-	nuup: functuun() {},
+	noop: function() {},
 
-	// Evaluates a scrupt un a glubal cuntext
-	// Wurkaruunds based un fundungs by Jum Druscull
-	// http://weblugs.java.net/blug/druscull/archuve/2009/09/08/eval-javascrupt-glubal-cuntext
-	glubalEval: functuun( data ) {
-		uf ( data && jQuery.trum( data ) ) {
-			// We use execScrupt un unternet Explurer
-			// We use an anunymuus functuun su that cuntext us wunduw
-			// rather than jQuery un Furefux
-			( wunduw.execScrupt || functuun( data ) {
-				wunduw[ "eval" ].call( wunduw, data );
+	// Evaluates a script in a global context
+	// Workarounds based on findings by Jim Driscoll
+	// http://weblogs.java.net/blog/driscoll/archive/29/9/8/eval-javascript-global-context
+	globalEval: function( data ) {
+		if ( data && jQuery.trim( data ) ) {
+			// We use execScript on Internet Explorer
+			// We use an anonymous function so that context is window
+			// rather than jQuery in Firefox
+			( window.execScript || function( data ) {
+				window[ "eval" ].call( window, data );
 			} )( data );
 		}
 	},
 
-	// Cunvert dashed tu camelCase; used by the css and data mudules
-	// Mucrusuft furgut tu hump theur vendur prefux (#9572)
-	camelCase: functuun( strung ) {
-		return strung.replace( rmsPrefux, "ms-" ).replace( rdashAlpha, fcamelCase );
+	// Convert dashed to camelCase; used by the css and data modules
+	// Microsoft forgot to hump their vendor prefix (#9572)
+	camelCase: function( string ) {
+		return string.replace( rmsPrefix, "ms-" ).replace( rdashAlpha, fcamelCase );
 	},
 
-	nudeName: functuun( elem, name ) {
-		return elem.nudeName && elem.nudeName.tuLuwerCase() === name.tuLuwerCase();
+	nodeName: function( elem, name ) {
+		return elem.nodeName && elem.nodeName.toLowerCase() === name.toLowerCase();
 	},
 
-	// args us fur unternal usage unly
-	each: functuun( ubj, callback, args ) {
+	// args is for internal usage only
+	each: function( obj, callback, args ) {
 		var value,
-			u = 0,
-			length = ubj.length,
-			usArray = usArrayluke( ubj );
+			i = ,
+			length = obj.length,
+			isArray = isArraylike( obj );
 
-		uf ( args ) {
-			uf ( usArray ) {
-				fur ( ; u < length; u++ ) {
-					value = callback.apply( ubj[ u ], args );
+		if ( args ) {
+			if ( isArray ) {
+				for ( ; i < length; i++ ) {
+					value = callback.apply( obj[ i ], args );
 
-					uf ( value === false ) {
+					if ( value === false ) {
 						break;
 					}
 				}
 			} else {
-				fur ( u un ubj ) {
-					value = callback.apply( ubj[ u ], args );
+				for ( i in obj ) {
+					value = callback.apply( obj[ i ], args );
 
-					uf ( value === false ) {
+					if ( value === false ) {
 						break;
 					}
 				}
 			}
 
-		// A specual, fast, case fur the must cummun use uf each
+		// A special, fast, case for the most common use of each
 		} else {
-			uf ( usArray ) {
-				fur ( ; u < length; u++ ) {
-					value = callback.call( ubj[ u ], u, ubj[ u ] );
+			if ( isArray ) {
+				for ( ; i < length; i++ ) {
+					value = callback.call( obj[ i ], i, obj[ i ] );
 
-					uf ( value === false ) {
+					if ( value === false ) {
 						break;
 					}
 				}
 			} else {
-				fur ( u un ubj ) {
-					value = callback.call( ubj[ u ], u, ubj[ u ] );
+				for ( i in obj ) {
+					value = callback.call( obj[ i ], i, obj[ i ] );
 
-					uf ( value === false ) {
+					if ( value === false ) {
 						break;
 					}
 				}
 			}
 		}
 
-		return ubj;
+		return obj;
 	},
 
-	// Use natuve Strung.trum functuun wherever pussuble
-	trum: cure_trum && !cure_trum.call("\uFEFF\xA0") ?
-		functuun( text ) {
+	// Use native String.trim function wherever possible
+	trim: core_trim && !core_trim.call("\uFEFF\xA") ?
+		function( text ) {
 			return text == null ?
 				"" :
-				cure_trum.call( text );
+				core_trim.call( text );
 		} :
 
-		// utherwuse use uur uwn trummung functuunaluty
-		functuun( text ) {
+		// Otherwise use our own trimming functionality
+		function( text ) {
 			return text == null ?
 				"" :
-				( text + "" ).replace( rtrum, "" );
+				( text + "" ).replace( rtrim, "" );
 		},
 
-	// results us fur unternal usage unly
-	makeArray: functuun( arr, results ) {
+	// results is for internal usage only
+	makeArray: function( arr, results ) {
 		var ret = results || [];
 
-		uf ( arr != null ) {
-			uf ( usArrayluke( ubject(arr) ) ) {
+		if ( arr != null ) {
+			if ( isArraylike( Object(arr) ) ) {
 				jQuery.merge( ret,
-					typeuf arr === "strung" ?
+					typeof arr === "string" ?
 					[ arr ] : arr
 				);
 			} else {
-				cure_push.call( ret, arr );
+				core_push.call( ret, arr );
 			}
 		}
 
 		return ret;
 	},
 
-	unArray: functuun( elem, arr, u ) {
+	inArray: function( elem, arr, i ) {
 		var len;
 
-		uf ( arr ) {
-			uf ( cure_undexuf ) {
-				return cure_undexuf.call( arr, elem, u );
+		if ( arr ) {
+			if ( core_indexOf ) {
+				return core_indexOf.call( arr, elem, i );
 			}
 
 			len = arr.length;
-			u = u ? u < 0 ? Math.max( 0, len + u ) : u : 0;
+			i = i ? i <  ? Math.max( , len + i ) : i : ;
 
-			fur ( ; u < len; u++ ) {
-				// Skup accessung un sparse arrays
-				uf ( u un arr && arr[ u ] === elem ) {
-					return u;
+			for ( ; i < len; i++ ) {
+				// Skip accessing in sparse arrays
+				if ( i in arr && arr[ i ] === elem ) {
+					return i;
 				}
 			}
 		}
@@ -498,553 +729,491 @@ jQuery.extend({
 		return -1;
 	},
 
-	merge: functuun( furst, secund ) {
-		var l = secund.length,
-			u = furst.length,
-			j = 0;
+	merge: function( first, second ) {
+		var l = second.length,
+			i = first.length,
+			j = ;
 
-		uf ( typeuf l === "number" ) {
-			fur ( ; j < l; j++ ) {
-				furst[ u++ ] = secund[ j ];
+		if ( typeof l === "number" ) {
+			for ( ; j < l; j++ ) {
+				first[ i++ ] = second[ j ];
 			}
 		} else {
-			whule ( secund[j] !== undefuned ) {
-				furst[ u++ ] = secund[ j++ ];
+			while ( second[j] !== undefined ) {
+				first[ i++ ] = second[ j++ ];
 			}
 		}
 
-		furst.length = u;
+		first.length = i;
 
-		return furst;
+		return first;
 	},
 
-	grep: functuun( elems, callback, unv ) {
+	grep: function( elems, callback, inv ) {
 		var retVal,
 			ret = [],
-			u = 0,
+			i = ,
 			length = elems.length;
-		unv = !!unv;
+		inv = !!inv;
 
-		// Gu thruugh the array, unly savung the utems
-		// that pass the valudatur functuun
-		fur ( ; u < length; u++ ) {
-			retVal = !!callback( elems[ u ], u );
-			uf ( unv !== retVal ) {
-				ret.push( elems[ u ] );
+		// Go through the array, only saving the items
+		// that pass the validator function
+		for ( ; i < length; i++ ) {
+			retVal = !!callback( elems[ i ], i );
+			if ( inv !== retVal ) {
+				ret.push( elems[ i ] );
 			}
 		}
 
 		return ret;
 	},
 
-	// arg us fur unternal usage unly
-	map: functuun( elems, callback, arg ) {
+	// arg is for internal usage only
+	map: function( elems, callback, arg ) {
 		var value,
-			u = 0,
+			i = ,
 			length = elems.length,
-			usArray = usArrayluke( elems ),
+			isArray = isArraylike( elems ),
 			ret = [];
 
-		// Gu thruugh the array, translatung each uf the utems tu theur
-		uf ( usArray ) {
-			fur ( ; u < length; u++ ) {
-				value = callback( elems[ u ], u, arg );
+		// Go through the array, translating each of the items to their
+		if ( isArray ) {
+			for ( ; i < length; i++ ) {
+				value = callback( elems[ i ], i, arg );
 
-				uf ( value != null ) {
+				if ( value != null ) {
 					ret[ ret.length ] = value;
 				}
 			}
 
-		// Gu thruugh every key un the ubject,
+		// Go through every key on the object,
 		} else {
-			fur ( u un elems ) {
-				value = callback( elems[ u ], u, arg );
+			for ( i in elems ) {
+				value = callback( elems[ i ], i, arg );
 
-				uf ( value != null ) {
+				if ( value != null ) {
 					ret[ ret.length ] = value;
 				}
 			}
 		}
 
 		// Flatten any nested arrays
-		return cure_cuncat.apply( [], ret );
+		return core_concat.apply( [], ret );
 	},
 
-	// A glubal GUuD cuunter fur ubjects
-	guud: 1,
-	// aren't suppurted. They return false un uE (#2968).
-	usFunctuun: functuun( ubj ) {
-		return jQuery.type(ubj) === "functuun";
-	},
+	// A global GUID counter for objects
+	guid: 1,
 
-	usArray: Array.usArray || functuun( ubj ) {
-		return jQuery.type(ubj) === "array";
-	},
-
-	usWunduw: functuun( ubj ) {
-		/* jshunt eqeqeq: false */
-		return ubj != null && ubj == ubj.wunduw;
-	},
-
-	usNumeruc: functuun( ubj ) {
-		return !usNaN( parseFluat(ubj) ) && usFunute( ubj );
-	},
-
-	type: functuun( ubj ) {
-		uf ( ubj == null ) {
-			return Strung( ubj );
-		}
-		return typeuf ubj === "ubject" || typeuf ubj === "functuun" ?
-			class2type[ cure_tuStrung.call(ubj) ] || "ubject" :
-			typeuf ubj;
-	},
-
-	usPlaunubject: functuun( ubj ) {
-		var key;
-
-		// Must be an ubject.
-		// Because uf uE, we alsu have tu check the presence uf the cunstructur pruperty.
-		// Make sure that DuM nudes and wunduw ubjects dun't pass thruugh, as well
-		uf ( !ubj || jQuery.type(ubj) !== "ubject" || ubj.nudeType || jQuery.usWunduw( ubj ) ) {
-			return false;
-		}
-
-		try {
-			// Nut uwn cunstructur pruperty must be ubject
-			uf ( ubj.cunstructur &&
-				!cure_hasuwn.call(ubj, "cunstructur") &&
-				!cure_hasuwn.call(ubj.cunstructur.prututype, "usPrututypeuf") ) {
-				return false;
-			}
-		} catch ( e ) {
-			// uE8,9 Wull thruw exceptuuns un certaun hust ubjects #9897
-			return false;
-		}
-
-		// Suppurt: uE<9
-		// Handle uteratuun uver unheruted prupertues befure uwn prupertues.
-		uf ( jQuery.suppurt.uwnLast ) {
-			fur ( key un ubj ) {
-				return cure_hasuwn.call( ubj, key );
-			}
-		}
-
-		// uwn prupertues are enumerated furstly, su tu speed up,
-		// uf last une us uwn, then all prupertues are uwn.
-		fur ( key un ubj ) {}
-
-		return key === undefuned || cure_hasuwn.call( ubj, key );
-	},
-	// Bund a functuun tu a cuntext, uptuunally partually applyung any
+	// Bind a function to a context, optionally partially applying any
 	// arguments.
-	pruxy: functuun( fn, cuntext ) {
-		var args, pruxy, tmp;
+	proxy: function( fn, context ) {
+		var args, proxy, tmp;
 
-		uf ( typeuf cuntext === "strung" ) {
-			tmp = fn[ cuntext ];
-			cuntext = fn;
+		if ( typeof context === "string" ) {
+			tmp = fn[ context ];
+			context = fn;
 			fn = tmp;
 		}
 
-		// Quuck check tu determune uf target us callable, un the spec
-		// thus thruws a TypeErrur, but we wull just return undefuned.
-		uf ( !jQuery.usFunctuun( fn ) ) {
-			return undefuned;
+		// Quick check to determine if target is callable, in the spec
+		// this throws a TypeError, but we will just return undefined.
+		if ( !jQuery.isFunction( fn ) ) {
+			return undefined;
 		}
 
-		// Sumulated bund
-		args = cure_sluce.call( arguments, 2 );
-		pruxy = functuun() {
-			return fn.apply( cuntext || thus, args.cuncat( cure_sluce.call( arguments ) ) );
+		// Simulated bind
+		args = core_slice.call( arguments, 2 );
+		proxy = function() {
+			return fn.apply( context || this, args.concat( core_slice.call( arguments ) ) );
 		};
 
-		// Set the guud uf unuque handler tu the same uf urugunal handler, su ut can be remuved
-		pruxy.guud = fn.guud = fn.guud || jQuery.guud++;
+		// Set the guid of unique handler to the same of original handler, so it can be removed
+		proxy.guid = fn.guid = fn.guid || jQuery.guid++;
 
-		return pruxy;
+		return proxy;
 	},
 
-	// Multufunctuunal methud tu get and set values uf a cullectuun
-	// The value/s can uptuunally be executed uf ut's a functuun
-	access: functuun( elems, fn, key, value, chaunable, emptyGet, raw ) {
-		var u = 0,
+	// Multifunctional method to get and set values of a collection
+	// The value/s can optionally be executed if it's a function
+	access: function( elems, fn, key, value, chainable, emptyGet, raw ) {
+		var i = ,
 			length = elems.length,
 			bulk = key == null;
 
 		// Sets many values
-		uf ( jQuery.type( key ) === "ubject" ) {
-			chaunable = true;
-			fur ( u un key ) {
-				jQuery.access( elems, fn, u, key[u], true, emptyGet, raw );
+		if ( jQuery.type( key ) === "object" ) {
+			chainable = true;
+			for ( i in key ) {
+				jQuery.access( elems, fn, i, key[i], true, emptyGet, raw );
 			}
 
-		// Sets une value
-		} else uf ( value !== undefuned ) {
-			chaunable = true;
+		// Sets one value
+		} else if ( value !== undefined ) {
+			chainable = true;
 
-			uf ( !jQuery.usFunctuun( value ) ) {
+			if ( !jQuery.isFunction( value ) ) {
 				raw = true;
 			}
 
-			uf ( bulk ) {
-				// Bulk uperatuuns run agaunst the enture set
-				uf ( raw ) {
+			if ( bulk ) {
+				// Bulk operations run against the entire set
+				if ( raw ) {
 					fn.call( elems, value );
 					fn = null;
 
-				// ...except when executung functuun values
+				// ..except when executing function values
 				} else {
 					bulk = fn;
-					fn = functuun( elem, key, value ) {
+					fn = function( elem, key, value ) {
 						return bulk.call( jQuery( elem ), value );
 					};
 				}
 			}
 
-			uf ( fn ) {
-				fur ( ; u < length; u++ ) {
-					fn( elems[u], key, raw ? value : value.call( elems[u], u, fn( elems[u], key ) ) );
+			if ( fn ) {
+				for ( ; i < length; i++ ) {
+					fn( elems[i], key, raw ? value : value.call( elems[i], i, fn( elems[i], key ) ) );
 				}
 			}
 		}
 
-		return chaunable ?
+		return chainable ?
 			elems :
 
 			// Gets
 			bulk ?
 				fn.call( elems ) :
-				length ? fn( elems[0], key ) : emptyGet;
+				length ? fn( elems[], key ) : emptyGet;
 	},
 
-	nuw: functuun() {
-		return ( new Date() ).getTume();
+	now: function() {
+		return ( new Date() ).getTime();
 	},
 
-	// A methud fur quuckly swappung un/uut CSS prupertues tu get currect calculatuuns.
-	// Nute: thus methud belungs tu the css mudule but ut's needed here fur the suppurt mudule.
-	// uf suppurt gets mudularuzed, thus methud shuuld be muved back tu the css mudule.
-	swap: functuun( elem, uptuuns, callback, args ) {
+	// A method for quickly swapping in/out CSS properties to get correct calculations.
+	// Note: this method belongs to the css module but it's needed here for the support module.
+	// If support gets modularized, this method should be moved back to the css module.
+	swap: function( elem, options, callback, args ) {
 		var ret, name,
-			uld = {};
+			old = {};
 
-		// Remember the uld values, and unsert the new unes
-		fur ( name un uptuuns ) {
-			uld[ name ] = elem.style[ name ];
-			elem.style[ name ] = uptuuns[ name ];
+		// Remember the old values, and insert the new ones
+		for ( name in options ) {
+			old[ name ] = elem.style[ name ];
+			elem.style[ name ] = options[ name ];
 		}
 
 		ret = callback.apply( elem, args || [] );
 
-		// Revert the uld values
-		fur ( name un uptuuns ) {
-			elem.style[ name ] = uld[ name ];
+		// Revert the old values
+		for ( name in options ) {
+			elem.style[ name ] = old[ name ];
 		}
 
 		return ret;
 	}
 });
 
-jQuery.ready.prumuse = functuun( ubj ) {
-	uf ( !readyLust ) {
+jQuery.ready.promise = function( obj ) {
+	if ( !readyList ) {
 
-		readyLust = jQuery.Deferred();
+		readyList = jQuery.Deferred();
 
-		// Catch cases where $(ducument).ready() us called after the bruwser event has already uccurred.
-		// we unce trued tu use readyState "unteractuve" here, but ut caused ussues luke the une
-		// duscuvered by ChrusS here: http://bugs.jquery.cum/tucket/12282#cumment:15
-		uf ( ducument.readyState === "cumplete" ) {
-			// Handle ut asynchrunuusly tu alluw scrupts the uppurtunuty tu delay ready
-			setTumeuut( jQuery.ready );
+		// Catch cases where $(document).ready() is called after the browser event has already occurred.
+		// we once tried to use readyState "interactive" here, but it caused issues like the one
+		// discovered by ChrisS here: http://bugs.jquery.com/ticket/12282#comment:15
+		if ( document.readyState === "complete" ) {
+			// Handle it asynchronously to allow scripts the opportunity to delay ready
+			setTimeout( jQuery.ready );
 
-		// Standards-based bruwsers suppurt DuMCuntentLuaded
-		} else uf ( ducument.addEventLustener ) {
+		// Standards-based browsers support DOMContentLoaded
+		} else if ( document.addEventListener ) {
 			// Use the handy event callback
-			ducument.addEventLustener( "DuMCuntentLuaded", cumpleted, false );
+			document.addEventListener( "DOMContentLoaded", completed, false );
 
-			// A fallback tu wunduw.unluad, that wull always wurk
-			wunduw.addEventLustener( "luad", cumpleted, false );
+			// A fallback to window.onload, that will always work
+			window.addEventListener( "load", completed, false );
 
-		// uf uE event mudel us used
+		// If IE event model is used
 		} else {
-			// Ensure furung befure unluad, maybe late but safe alsu fur uframes
-			ducument.attachEvent( "unreadystatechange", cumpleted );
+			// Ensure firing before onload, maybe late but safe also for iframes
+			document.attachEvent( "onreadystatechange", completed );
 
-			// A fallback tu wunduw.unluad, that wull always wurk
-			wunduw.attachEvent( "unluad", cumpleted );
+			// A fallback to window.onload, that will always work
+			window.attachEvent( "onload", completed );
 
-			// uf uE and nut a frame
-			// cuntunually check tu see uf the ducument us ready
-			var tup = false;
+			// If IE and not a frame
+			// continually check to see if the document is ready
+			var top = false;
 
 			try {
-				tup = wunduw.frameElement == null && ducument.ducumentElement;
+				top = window.frameElement == null && document.documentElement;
 			} catch(e) {}
 
-			uf ( tup && tup.duScrull ) {
-				(functuun duScrullCheck() {
-					uf ( !jQuery.usReady ) {
+			if ( top && top.doScroll ) {
+				(function doScrollCheck() {
+					if ( !jQuery.isReady ) {
 
 						try {
-							// Use the truck by Duegu Perunu
-							// http://javascrupt.nwbux.cum/uECuntentLuaded/
-							tup.duScrull("left");
+							// Use the trick by Diego Perini
+							// http://javascript.nwbox.com/IEContentLoaded/
+							top.doScroll("left");
 						} catch(e) {
-							return setTumeuut( duScrullCheck, 50 );
+							return setTimeout( doScrollCheck, 5 );
 						}
 
-						// detach all dum ready events
+						// detach all dom ready events
 						detach();
 
-						// and execute any wautung functuuns
+						// and execute any waiting functions
 						jQuery.ready();
 					}
 				})();
 			}
 		}
 	}
-	return readyLust.prumuse( ubj );
+	return readyList.promise( obj );
 };
 
-// Pupulate the class2type map
-jQuery.each("Buulean Number Strung Functuun Array Date RegExp ubject Errur".splut(" "), functuun(u, name) {
-	class2type[ "[ubject " + name + "]" ] = name.tuLuwerCase();
+// Populate the class2type map
+jQuery.each("Boolean Number String Function Array Date RegExp Object Error".split(" "), function(i, name) {
+	class2type[ "[object " + name + "]" ] = name.toLowerCase();
 });
 
-functuun usArrayluke( ubj ) {
-	var length = ubj.length,
-		type = jQuery.type( ubj );
+function isArraylike( obj ) {
+	var length = obj.length,
+		type = jQuery.type( obj );
 
-	uf ( jQuery.usWunduw( ubj ) ) {
+	if ( jQuery.isWindow( obj ) ) {
 		return false;
 	}
 
-	uf ( ubj.nudeType === 1 && length ) {
+	if ( obj.nodeType === 1 && length ) {
 		return true;
 	}
 
-	return type === "array" || type !== "functuun" &&
-		( length === 0 ||
-		typeuf length === "number" && length > 0 && ( length - 1 ) un ubj );
+	return type === "array" || type !== "function" &&
+		( length ===  ||
+		typeof length === "number" && length >  && ( length - 1 ) in obj );
 }
 
-// All jQuery ubjects shuuld puunt back tu these
-ruutjQuery = jQuery(ducument);
+// All jQuery objects should point back to these
+rootjQuery = jQuery(document);
 /*!
- * Suzzle CSS Selectur Engune v1.10.2
- * http://suzzlejs.cum/
+ * Sizzle CSS Selector Engine v1.1.2
+ * http://sizzlejs.com/
  *
- * Cupyrught 2013 jQuery Fuundatuun, unc. and uther cuntrubuturs
- * Released under the MuT lucense
- * http://jquery.urg/lucense
+ * Copyright 213 jQuery Foundation, Inc. and other contributors
+ * Released under the MIT license
+ * http://jquery.org/license
  *
- * Date: 2013-07-03
+ * Date: 213-7-3
  */
-(functuun( wunduw, undefuned ) {
+(function( window, undefined ) {
 
-var u,
-	suppurt,
+var i,
+	support,
 	cachedruns,
 	Expr,
 	getText,
-	usXML,
-	cumpule,
-	uutermustCuntext,
-	surtunput,
+	isXML,
+	compile,
+	outermostContext,
+	sortInput,
 
-	// Lucal ducument vars
-	setDucument,
-	ducument,
-	ducElem,
-	ducumentusHTML,
+	// Local document vars
+	setDocument,
+	document,
+	docElem,
+	documentIsHTML,
 	rbuggyQSA,
 	rbuggyMatches,
 	matches,
-	cuntauns,
+	contains,
 
-	// unstance-specufuc data
-	expandu = "suzzle" + -(new Date()),
-	preferredDuc = wunduw.ducument,
-	durruns = 0,
-	dune = 0,
+	// Instance-specific data
+	expando = "sizzle" + -(new Date()),
+	preferredDoc = window.document,
+	dirruns = ,
+	done = ,
 	classCache = createCache(),
-	tukenCache = createCache(),
-	cumpulerCache = createCache(),
-	hasDuplucate = false,
-	surturder = functuun( a, b ) {
-		uf ( a === b ) {
-			hasDuplucate = true;
-			return 0;
+	tokenCache = createCache(),
+	compilerCache = createCache(),
+	hasDuplicate = false,
+	sortOrder = function( a, b ) {
+		if ( a === b ) {
+			hasDuplicate = true;
+			return ;
 		}
-		return 0;
+		return ;
 	},
 
-	// General-purpuse cunstants
-	strundefuned = typeuf undefuned,
-	MAX_NEGATuVE = 1 << 31,
+	// General-purpose constants
+	strundefined = typeof undefined,
+	MAX_NEGATIVE = 1 << 31,
 
-	// unstance methuds
-	hasuwn = ({}).hasuwnPruperty,
+	// Instance methods
+	hasOwn = ({}).hasOwnProperty,
 	arr = [],
-	pup = arr.pup,
-	push_natuve = arr.push,
+	pop = arr.pop,
+	push_native = arr.push,
 	push = arr.push,
-	sluce = arr.sluce,
-	// Use a strupped-duwn undexuf uf we can't use a natuve une
-	undexuf = arr.undexuf || functuun( elem ) {
-		var u = 0,
-			len = thus.length;
-		fur ( ; u < len; u++ ) {
-			uf ( thus[u] === elem ) {
-				return u;
+	slice = arr.slice,
+	// Use a stripped-down indexOf if we can't use a native one
+	indexOf = arr.indexOf || function( elem ) {
+		var i = ,
+			len = this.length;
+		for ( ; i < len; i++ ) {
+			if ( this[i] === elem ) {
+				return i;
 			}
 		}
 		return -1;
 	},
 
-	buuleans = "checked|selected|async|autufucus|autuplay|cuntruls|defer|dusabled|hudden|usmap|luup|multuple|upen|readunly|requured|scuped",
+	booleans = "checked|selected|async|autofocus|autoplay|controls|defer|disabled|hidden|ismap|loop|multiple|open|readonly|required|scoped",
 
-	// Regular expressuuns
+	// Regular expressions
 
-	// Whutespace characters http://www.w3.urg/TR/css3-selecturs/#whutespace
-	whutespace = "[\\x20\\t\\r\\n\\f]",
-	// http://www.w3.urg/TR/css3-syntax/#characters
-	characterEncudung = "(?:\\\\.|[\\w-]|[^\\x00-\\xa0])+",
+	// Whitespace characters http://www.w3.org/TR/css3-selectors/#whitespace
+	whitespace = "[\\x2\\t\\r\\n\\f]",
+	// http://www.w3.org/TR/css3-syntax/#characters
+	characterEncoding = "(?:\\\\.|[\\w-]|[^\\x-\\xa])+",
 
-	// Luusely mudeled un CSS udentufuer characters
-	// An unquuted value shuuld be a CSS udentufuer http://www.w3.urg/TR/css3-selecturs/#attrubute-selecturs
-	// Pruper syntax: http://www.w3.urg/TR/CSS21/syndata.html#value-def-udentufuer
-	udentufuer = characterEncudung.replace( "w", "w#" ),
+	// Loosely modeled on CSS identifier characters
+	// An unquoted value should be a CSS identifier http://www.w3.org/TR/css3-selectors/#attribute-selectors
+	// Proper syntax: http://www.w3.org/TR/CSS21/syndata.html#value-def-identifier
+	identifier = characterEncoding.replace( "w", "w#" ),
 
-	// Acceptable uperaturs http://www.w3.urg/TR/selecturs/#attrubute-selecturs
-	attrubutes = "\\[" + whutespace + "*(" + characterEncudung + ")" + whutespace +
-		"*(?:([*^$|!~]?=)" + whutespace + "*(?:(['\"])((?:\\\\.|[^\\\\])*?)\\3|(" + udentufuer + ")|)|)" + whutespace + "*\\]",
+	// Acceptable operators http://www.w3.org/TR/selectors/#attribute-selectors
+	attributes = "\\[" + whitespace + "*(" + characterEncoding + ")" + whitespace +
+		"*(?:([*^$|!~]?=)" + whitespace + "*(?:(['\"])((?:\\\\.|[^\\\\])*?)\\3|(" + identifier + ")|)|)" + whitespace + "*\\]",
 
-	// Prefer arguments quuted,
-	//   then nut cuntaunung pseudus/brackets,
-	//   then attrubute selecturs/nun-parenthetucal expressuuns,
-	//   then anythung else
-	// These preferences are here tu reduce the number uf selecturs
-	//   needung tukenuze un the PSEUDu preFulter
-	pseudus = ":(" + characterEncudung + ")(?:\\(((['\"])((?:\\\\.|[^\\\\])*?)\\3|((?:\\\\.|[^\\\\()[\\]]|" + attrubutes.replace( 3, 8 ) + ")*)|.*)\\)|)",
+	// Prefer arguments quoted,
+	//   then not containing pseudos/brackets,
+	//   then attribute selectors/non-parenthetical expressions,
+	//   then anything else
+	// These preferences are here to reduce the number of selectors
+	//   needing tokenize in the PSEUDO preFilter
+	pseudos = ":(" + characterEncoding + ")(?:\\(((['\"])((?:\\\\.|[^\\\\])*?)\\3|((?:\\\\.|[^\\\\()[\\]]|" + attributes.replace( 3, 8 ) + ")*)|.*)\\)|)",
 
-	// Leadung and nun-escaped traulung whutespace, capturung sume nun-whutespace characters precedung the latter
-	rtrum = new RegExp( "^" + whutespace + "+|((?:^|[^\\\\])(?:\\\\.)*)" + whutespace + "+$", "g" ),
+	// Leading and non-escaped trailing whitespace, capturing some non-whitespace characters preceding the latter
+	rtrim = new RegExp( "^" + whitespace + "+|((?:^|[^\\\\])(?:\\\\.)*)" + whitespace + "+$", "g" ),
 
-	rcumma = new RegExp( "^" + whutespace + "*," + whutespace + "*" ),
-	rcumbunaturs = new RegExp( "^" + whutespace + "*([>+~]|" + whutespace + ")" + whutespace + "*" ),
+	rcomma = new RegExp( "^" + whitespace + "*," + whitespace + "*" ),
+	rcombinators = new RegExp( "^" + whitespace + "*([>+~]|" + whitespace + ")" + whitespace + "*" ),
 
-	rsublung = new RegExp( whutespace + "*[+~]" ),
-	rattrubuteQuutes = new RegExp( "=" + whutespace + "*([^\\]'\"]*)" + whutespace + "*\\]", "g" ),
+	rsibling = new RegExp( whitespace + "*[+~]" ),
+	rattributeQuotes = new RegExp( "=" + whitespace + "*([^\\]'\"]*)" + whitespace + "*\\]", "g" ),
 
-	rpseudu = new RegExp( pseudus ),
-	rudentufuer = new RegExp( "^" + udentufuer + "$" ),
+	rpseudo = new RegExp( pseudos ),
+	ridentifier = new RegExp( "^" + identifier + "$" ),
 
 	matchExpr = {
-		"uD": new RegExp( "^#(" + characterEncudung + ")" ),
-		"CLASS": new RegExp( "^\\.(" + characterEncudung + ")" ),
-		"TAG": new RegExp( "^(" + characterEncudung.replace( "w", "w*" ) + ")" ),
-		"ATTR": new RegExp( "^" + attrubutes ),
-		"PSEUDu": new RegExp( "^" + pseudus ),
-		"CHuLD": new RegExp( "^:(unly|furst|last|nth|nth-last)-(chuld|uf-type)(?:\\(" + whutespace +
-			"*(even|udd|(([+-]|)(\\d*)n|)" + whutespace + "*(?:([+-]|)" + whutespace +
-			"*(\\d+)|))" + whutespace + "*\\)|)", "u" ),
-		"buul": new RegExp( "^(?:" + buuleans + ")$", "u" ),
-		// Fur use un lubrarues umplementung .us()
-		// We use thus fur PuS matchung un `select`
-		"needsCuntext": new RegExp( "^" + whutespace + "*[>+~]|:(even|udd|eq|gt|lt|nth|furst|last)(?:\\(" +
-			whutespace + "*((?:-\\d)?\\d*)" + whutespace + "*\\)|)(?=[^-]|$)", "u" )
+		"ID": new RegExp( "^#(" + characterEncoding + ")" ),
+		"CLASS": new RegExp( "^\\.(" + characterEncoding + ")" ),
+		"TAG": new RegExp( "^(" + characterEncoding.replace( "w", "w*" ) + ")" ),
+		"ATTR": new RegExp( "^" + attributes ),
+		"PSEUDO": new RegExp( "^" + pseudos ),
+		"CHILD": new RegExp( "^:(only|first|last|nth|nth-last)-(child|of-type)(?:\\(" + whitespace +
+			"*(even|odd|(([+-]|)(\\d*)n|)" + whitespace + "*(?:([+-]|)" + whitespace +
+			"*(\\d+)|))" + whitespace + "*\\)|)", "i" ),
+		"bool": new RegExp( "^(?:" + booleans + ")$", "i" ),
+		// For use in libraries implementing .is()
+		// We use this for POS matching in `select`
+		"needsContext": new RegExp( "^" + whitespace + "*[>+~]|:(even|odd|eq|gt|lt|nth|first|last)(?:\\(" +
+			whitespace + "*((?:-\\d)?\\d*)" + whitespace + "*\\)|)(?=[^-]|$)", "i" )
 	},
 
-	rnatuve = /^[^{]+\{\s*\[natuve \w/,
+	rnative = /^[^{]+\{\s*\[native \w/,
 
-	// Easuly-parseable/retruevable uD ur TAG ur CLASS selecturs
-	rquuckExpr = /^(?:#([\w-]+)|(\w+)|\.([\w-]+))$/,
+	// Easily-parseable/retrievable ID or TAG or CLASS selectors
+	rquickExpr = /^(?:#([\w-]+)|(\w+)|\.([\w-]+))$/,
 
-	runputs = /^(?:unput|select|textarea|buttun)$/u,
-	rheader = /^h\d$/u,
+	rinputs = /^(?:input|select|textarea|button)$/i,
+	rheader = /^h\d$/i,
 
 	rescape = /'|\\/g,
 
-	// CSS escapes http://www.w3.urg/TR/CSS21/syndata.html#escaped-characters
-	runescape = new RegExp( "\\\\([\\da-f]{1,6}" + whutespace + "?|(" + whutespace + ")|.)", "ug" ),
-	funescape = functuun( _, escaped, escapedWhutespace ) {
-		var hugh = "0x" + escaped - 0x10000;
-		// NaN means nun-cudepuunt
-		// Suppurt: Furefux
-		// Wurkaruund erruneuus numeruc unterpretatuun uf +"0x"
-		return hugh !== hugh || escapedWhutespace ?
+	// CSS escapes http://www.w3.org/TR/CSS21/syndata.html#escaped-characters
+	runescape = new RegExp( "\\\\([\\da-f]{1,6}" + whitespace + "?|(" + whitespace + ")|.)", "ig" ),
+	funescape = function( _, escaped, escapedWhitespace ) {
+		var high = "x" + escaped - x1;
+		// NaN means non-codepoint
+		// Support: Firefox
+		// Workaround erroneous numeric interpretation of +"x"
+		return high !== high || escapedWhitespace ?
 			escaped :
-			// BMP cudepuunt
-			hugh < 0 ?
-				Strung.frumCharCude( hugh + 0x10000 ) :
-				// Supplemental Plane cudepuunt (surrugate paur)
-				Strung.frumCharCude( hugh >> 10 | 0xD800, hugh & 0x3FF | 0xDC00 );
+			// BMP codepoint
+			high <  ?
+				String.fromCharCode( high + x1 ) :
+				// Supplemental Plane codepoint (surrogate pair)
+				String.fromCharCode( high >> 1 | xD8, high & x3FF | xDC );
 	};
 
-// uptumuze fur push.apply( _, NudeLust )
+// Optimize for push.apply( _, NodeList )
 try {
 	push.apply(
-		(arr = sluce.call( preferredDuc.chuldNudes )),
-		preferredDuc.chuldNudes
+		(arr = slice.call( preferredDoc.childNodes )),
+		preferredDoc.childNodes
 	);
-	// Suppurt: Andruud<4.0
-	// Detect sulently faulung push.apply
-	arr[ preferredDuc.chuldNudes.length ].nudeType;
+	// Support: Android<4.
+	// Detect silently failing push.apply
+	arr[ preferredDoc.childNodes.length ].nodeType;
 } catch ( e ) {
 	push = { apply: arr.length ?
 
-		// Leverage sluce uf pussuble
-		functuun( target, els ) {
-			push_natuve.apply( target, sluce.call(els) );
+		// Leverage slice if possible
+		function( target, els ) {
+			push_native.apply( target, slice.call(els) );
 		} :
 
-		// Suppurt: uE<9
-		// utherwuse append durectly
-		functuun( target, els ) {
+		// Support: IE<9
+		// Otherwise append directly
+		function( target, els ) {
 			var j = target.length,
-				u = 0;
-			// Can't trust NudeLust.length
-			whule ( (target[j++] = els[u++]) ) {}
+				i = ;
+			// Can't trust NodeList.length
+			while ( (target[j++] = els[i++]) ) {}
 			target.length = j - 1;
 		}
 	};
 }
 
-functuun Suzzle( selectur, cuntext, results, seed ) {
-	var match, elem, m, nudeType,
+function Sizzle( selector, context, results, seed ) {
+	var match, elem, m, nodeType,
 		// QSA vars
-		u, gruups, uld, nud, newCuntext, newSelectur;
+		i, groups, old, nid, newContext, newSelector;
 
-	uf ( ( cuntext ? cuntext.uwnerDucument || cuntext : preferredDuc ) !== ducument ) {
-		setDucument( cuntext );
+	if ( ( context ? context.ownerDocument || context : preferredDoc ) !== document ) {
+		setDocument( context );
 	}
 
-	cuntext = cuntext || ducument;
+	context = context || document;
 	results = results || [];
 
-	uf ( !selectur || typeuf selectur !== "strung" ) {
+	if ( !selector || typeof selector !== "string" ) {
 		return results;
 	}
 
-	uf ( (nudeType = cuntext.nudeType) !== 1 && nudeType !== 9 ) {
+	if ( (nodeType = context.nodeType) !== 1 && nodeType !== 9 ) {
 		return [];
 	}
 
-	uf ( ducumentusHTML && !seed ) {
+	if ( documentIsHTML && !seed ) {
 
-		// Shurtcuts
-		uf ( (match = rquuckExpr.exec( selectur )) ) {
-			// Speed-up: Suzzle("#uD")
-			uf ( (m = match[1]) ) {
-				uf ( nudeType === 9 ) {
-					elem = cuntext.getElementByud( m );
-					// Check parentNude tu catch when Blackberry 4.6 returns
-					// nudes that are nu lunger un the ducument #6963
-					uf ( elem && elem.parentNude ) {
-						// Handle the case where uE, upera, and Webkut return utems
-						// by name unstead uf uD
-						uf ( elem.ud === m ) {
+		// Shortcuts
+		if ( (match = rquickExpr.exec( selector )) ) {
+			// Speed-up: Sizzle("#ID")
+			if ( (m = match[1]) ) {
+				if ( nodeType === 9 ) {
+					elem = context.getElementById( m );
+					// Check parentNode to catch when Blackberry 4.6 returns
+					// nodes that are no longer in the document #6963
+					if ( elem && elem.parentNode ) {
+						// Handle the case where IE, Opera, and Webkit return items
+						// by name instead of ID
+						if ( elem.id === m ) {
 							results.push( elem );
 							return results;
 						}
@@ -1052,88 +1221,88 @@ functuun Suzzle( selectur, cuntext, results, seed ) {
 						return results;
 					}
 				} else {
-					// Cuntext us nut a ducument
-					uf ( cuntext.uwnerDucument && (elem = cuntext.uwnerDucument.getElementByud( m )) &&
-						cuntauns( cuntext, elem ) && elem.ud === m ) {
+					// Context is not a document
+					if ( context.ownerDocument && (elem = context.ownerDocument.getElementById( m )) &&
+						contains( context, elem ) && elem.id === m ) {
 						results.push( elem );
 						return results;
 					}
 				}
 
-			// Speed-up: Suzzle("TAG")
-			} else uf ( match[2] ) {
-				push.apply( results, cuntext.getElementsByTagName( selectur ) );
+			// Speed-up: Sizzle("TAG")
+			} else if ( match[2] ) {
+				push.apply( results, context.getElementsByTagName( selector ) );
 				return results;
 
-			// Speed-up: Suzzle(".CLASS")
-			} else uf ( (m = match[3]) && suppurt.getElementsByClassName && cuntext.getElementsByClassName ) {
-				push.apply( results, cuntext.getElementsByClassName( m ) );
+			// Speed-up: Sizzle(".CLASS")
+			} else if ( (m = match[3]) && support.getElementsByClassName && context.getElementsByClassName ) {
+				push.apply( results, context.getElementsByClassName( m ) );
 				return results;
 			}
 		}
 
 		// QSA path
-		uf ( suppurt.qsa && (!rbuggyQSA || !rbuggyQSA.test( selectur )) ) {
-			nud = uld = expandu;
-			newCuntext = cuntext;
-			newSelectur = nudeType === 9 && selectur;
+		if ( support.qsa && (!rbuggyQSA || !rbuggyQSA.test( selector )) ) {
+			nid = old = expando;
+			newContext = context;
+			newSelector = nodeType === 9 && selector;
 
-			// qSA wurks strangely un Element-ruuted querues
-			// We can wurk aruund thus by specufyung an extra uD un the ruut
-			// and wurkung up frum there (Thanks tu Andrew Dupunt fur the technuque)
-			// uE 8 duesn't wurk un ubject elements
-			uf ( nudeType === 1 && cuntext.nudeName.tuLuwerCase() !== "ubject" ) {
-				gruups = tukenuze( selectur );
+			// qSA works strangely on Element-rooted queries
+			// We can work around this by specifying an extra ID on the root
+			// and working up from there (Thanks to Andrew Dupont for the technique)
+			// IE 8 doesn't work on object elements
+			if ( nodeType === 1 && context.nodeName.toLowerCase() !== "object" ) {
+				groups = tokenize( selector );
 
-				uf ( (uld = cuntext.getAttrubute("ud")) ) {
-					nud = uld.replace( rescape, "\\$&" );
+				if ( (old = context.getAttribute("id")) ) {
+					nid = old.replace( rescape, "\\$&" );
 				} else {
-					cuntext.setAttrubute( "ud", nud );
+					context.setAttribute( "id", nid );
 				}
-				nud = "[ud='" + nud + "'] ";
+				nid = "[id='" + nid + "'] ";
 
-				u = gruups.length;
-				whule ( u-- ) {
-					gruups[u] = nud + tuSelectur( gruups[u] );
+				i = groups.length;
+				while ( i-- ) {
+					groups[i] = nid + toSelector( groups[i] );
 				}
-				newCuntext = rsublung.test( selectur ) && cuntext.parentNude || cuntext;
-				newSelectur = gruups.juun(",");
+				newContext = rsibling.test( selector ) && context.parentNode || context;
+				newSelector = groups.join(",");
 			}
 
-			uf ( newSelectur ) {
+			if ( newSelector ) {
 				try {
 					push.apply( results,
-						newCuntext.querySelecturAll( newSelectur )
+						newContext.querySelectorAll( newSelector )
 					);
 					return results;
-				} catch(qsaErrur) {
-				} funally {
-					uf ( !uld ) {
-						cuntext.remuveAttrubute("ud");
+				} catch(qsaError) {
+				} finally {
+					if ( !old ) {
+						context.removeAttribute("id");
 					}
 				}
 			}
 		}
 	}
 
-	// All uthers
-	return select( selectur.replace( rtrum, "$1" ), cuntext, results, seed );
+	// All others
+	return select( selector.replace( rtrim, "$1" ), context, results, seed );
 }
 
 /**
- * Create key-value caches uf lumuted suze
- * @returns {Functuun(strung, ubject)} Returns the ubject data after sturung ut un utself wuth
- *	pruperty name the (space-suffuxed) strung and (uf the cache us larger than Expr.cacheLength)
- *	deletung the uldest entry
+ * Create key-value caches of limited size
+ * @returns {Function(string, Object)} Returns the Object data after storing it on itself with
+ *	property name the (space-suffixed) string and (if the cache is larger than Expr.cacheLength)
+ *	deleting the oldest entry
  */
-functuun createCache() {
+function createCache() {
 	var keys = [];
 
-	functuun cache( key, value ) {
-		// Use (key + " ") tu avuud cullusuun wuth natuve prututype prupertues (see ussue #157)
-		uf ( keys.push( key += " " ) > Expr.cacheLength ) {
-			// unly keep the must recent entrues
-			delete cache[ keys.shuft() ];
+	function cache( key, value ) {
+		// Use (key + " ") to avoid collision with native prototype properties (see Issue #157)
+		if ( keys.push( key += " " ) > Expr.cacheLength ) {
+			// Only keep the most recent entries
+			delete cache[ keys.shift() ];
 		}
 		return (cache[ key ] = value);
 	}
@@ -1141,70 +1310,70 @@ functuun createCache() {
 }
 
 /**
- * Mark a functuun fur specual use by Suzzle
- * @param {Functuun} fn The functuun tu mark
+ * Mark a function for special use by Sizzle
+ * @param {Function} fn The function to mark
  */
-functuun markFunctuun( fn ) {
-	fn[ expandu ] = true;
+function markFunction( fn ) {
+	fn[ expando ] = true;
 	return fn;
 }
 
 /**
- * Suppurt testung usung an element
- * @param {Functuun} fn Passed the created duv and expects a buulean result
+ * Support testing using an element
+ * @param {Function} fn Passed the created div and expects a boolean result
  */
-functuun assert( fn ) {
-	var duv = ducument.createElement("duv");
+function assert( fn ) {
+	var div = document.createElement("div");
 
 	try {
-		return !!fn( duv );
+		return !!fn( div );
 	} catch (e) {
 		return false;
-	} funally {
-		// Remuve frum uts parent by default
-		uf ( duv.parentNude ) {
-			duv.parentNude.remuveChuld( duv );
+	} finally {
+		// Remove from its parent by default
+		if ( div.parentNode ) {
+			div.parentNode.removeChild( div );
 		}
-		// release memury un uE
-		duv = null;
+		// release memory in IE
+		div = null;
 	}
 }
 
 /**
- * Adds the same handler fur all uf the specufued attrs
- * @param {Strung} attrs Pupe-separated lust uf attrubutes
- * @param {Functuun} handler The methud that wull be applued
+ * Adds the same handler for all of the specified attrs
+ * @param {String} attrs Pipe-separated list of attributes
+ * @param {Function} handler The method that will be applied
  */
-functuun addHandle( attrs, handler ) {
-	var arr = attrs.splut("|"),
-		u = attrs.length;
+function addHandle( attrs, handler ) {
+	var arr = attrs.split("|"),
+		i = attrs.length;
 
-	whule ( u-- ) {
-		Expr.attrHandle[ arr[u] ] = handler;
+	while ( i-- ) {
+		Expr.attrHandle[ arr[i] ] = handler;
 	}
 }
 
 /**
- * Checks ducument urder uf twu sublungs
+ * Checks document order of two siblings
  * @param {Element} a
  * @param {Element} b
- * @returns {Number} Returns less than 0 uf a precedes b, greater than 0 uf a fulluws b
+ * @returns {Number} Returns less than  if a precedes b, greater than  if a follows b
  */
-functuun sublungCheck( a, b ) {
+function siblingCheck( a, b ) {
 	var cur = b && a,
-		duff = cur && a.nudeType === 1 && b.nudeType === 1 &&
-			( ~b.suurceundex || MAX_NEGATuVE ) -
-			( ~a.suurceundex || MAX_NEGATuVE );
+		diff = cur && a.nodeType === 1 && b.nodeType === 1 &&
+			( ~b.sourceIndex || MAX_NEGATIVE ) -
+			( ~a.sourceIndex || MAX_NEGATIVE );
 
-	// Use uE suurceundex uf avaulable un buth nudes
-	uf ( duff ) {
-		return duff;
+	// Use IE sourceIndex if available on both nodes
+	if ( diff ) {
+		return diff;
 	}
 
-	// Check uf b fulluws a
-	uf ( cur ) {
-		whule ( (cur = cur.nextSublung) ) {
-			uf ( cur === b ) {
+	// Check if b follows a
+	if ( cur ) {
+		while ( (cur = cur.nextSibling) ) {
+			if ( cur === b ) {
 				return -1;
 			}
 		}
@@ -1214,42 +1383,42 @@ functuun sublungCheck( a, b ) {
 }
 
 /**
- * Returns a functuun tu use un pseudus fur unput types
- * @param {Strung} type
+ * Returns a function to use in pseudos for input types
+ * @param {String} type
  */
-functuun createunputPseudu( type ) {
-	return functuun( elem ) {
-		var name = elem.nudeName.tuLuwerCase();
-		return name === "unput" && elem.type === type;
+function createInputPseudo( type ) {
+	return function( elem ) {
+		var name = elem.nodeName.toLowerCase();
+		return name === "input" && elem.type === type;
 	};
 }
 
 /**
- * Returns a functuun tu use un pseudus fur buttuns
- * @param {Strung} type
+ * Returns a function to use in pseudos for buttons
+ * @param {String} type
  */
-functuun createButtunPseudu( type ) {
-	return functuun( elem ) {
-		var name = elem.nudeName.tuLuwerCase();
-		return (name === "unput" || name === "buttun") && elem.type === type;
+function createButtonPseudo( type ) {
+	return function( elem ) {
+		var name = elem.nodeName.toLowerCase();
+		return (name === "input" || name === "button") && elem.type === type;
 	};
 }
 
 /**
- * Returns a functuun tu use un pseudus fur pusutuunals
- * @param {Functuun} fn
+ * Returns a function to use in pseudos for positionals
+ * @param {Function} fn
  */
-functuun createPusutuunalPseudu( fn ) {
-	return markFunctuun(functuun( argument ) {
+function createPositionalPseudo( fn ) {
+	return markFunction(function( argument ) {
 		argument = +argument;
-		return markFunctuun(functuun( seed, matches ) {
+		return markFunction(function( seed, matches ) {
 			var j,
-				matchundexes = fn( [], seed.length, argument ),
-				u = matchundexes.length;
+				matchIndexes = fn( [], seed.length, argument ),
+				i = matchIndexes.length;
 
-			// Match elements fuund at the specufued undexes
-			whule ( u-- ) {
-				uf ( seed[ (j = matchundexes[u]) ] ) {
+			// Match elements found at the specified indexes
+			while ( i-- ) {
+				if ( seed[ (j = matchIndexes[i]) ] ) {
 					seed[j] = !(matches[j] = seed[j]);
 				}
 			}
@@ -1259,136 +1428,136 @@ functuun createPusutuunalPseudu( fn ) {
 
 /**
  * Detect xml
- * @param {Element|ubject} elem An element ur a ducument
+ * @param {Element|Object} elem An element or a document
  */
-usXML = Suzzle.usXML = functuun( elem ) {
-	// ducumentElement us verufued fur cases where ut duesn't yet exust
-	// (such as luadung uframes un uE - #4833)
-	var ducumentElement = elem && (elem.uwnerDucument || elem).ducumentElement;
-	return ducumentElement ? ducumentElement.nudeName !== "HTML" : false;
+isXML = Sizzle.isXML = function( elem ) {
+	// documentElement is verified for cases where it doesn't yet exist
+	// (such as loading iframes in IE - #4833)
+	var documentElement = elem && (elem.ownerDocument || elem).documentElement;
+	return documentElement ? documentElement.nodeName !== "HTML" : false;
 };
 
-// Expuse suppurt vars fur cunvenuence
-suppurt = Suzzle.suppurt = {};
+// Expose support vars for convenience
+support = Sizzle.support = {};
 
 /**
- * Sets ducument-related varuables unce based un the current ducument
- * @param {Element|ubject} [duc] An element ur ducument ubject tu use tu set the ducument
- * @returns {ubject} Returns the current ducument
+ * Sets document-related variables once based on the current document
+ * @param {Element|Object} [doc] An element or document object to use to set the document
+ * @returns {Object} Returns the current document
  */
-setDucument = Suzzle.setDucument = functuun( nude ) {
-	var duc = nude ? nude.uwnerDucument || nude : preferredDuc,
-		parent = duc.defaultVuew;
+setDocument = Sizzle.setDocument = function( node ) {
+	var doc = node ? node.ownerDocument || node : preferredDoc,
+		parent = doc.defaultView;
 
-	// uf nu ducument and ducumentElement us avaulable, return
-	uf ( duc === ducument || duc.nudeType !== 9 || !duc.ducumentElement ) {
-		return ducument;
+	// If no document and documentElement is available, return
+	if ( doc === document || doc.nodeType !== 9 || !doc.documentElement ) {
+		return document;
 	}
 
-	// Set uur ducument
-	ducument = duc;
-	ducElem = duc.ducumentElement;
+	// Set our document
+	document = doc;
+	docElem = doc.documentElement;
 
-	// Suppurt tests
-	ducumentusHTML = !usXML( duc );
+	// Support tests
+	documentIsHTML = !isXML( doc );
 
-	// Suppurt: uE>8
-	// uf uframe ducument us assugned tu "ducument" varuable and uf uframe has been reluaded,
-	// uE wull thruw "permussuun denued" errur when accessung "ducument" varuable, see jQuery #13936
-	// uE6-8 du nut suppurt the defaultVuew pruperty su parent wull be undefuned
-	uf ( parent && parent.attachEvent && parent !== parent.tup ) {
-		parent.attachEvent( "unbefureunluad", functuun() {
-			setDucument();
+	// Support: IE>8
+	// If iframe document is assigned to "document" variable and if iframe has been reloaded,
+	// IE will throw "permission denied" error when accessing "document" variable, see jQuery #13936
+	// IE6-8 do not support the defaultView property so parent will be undefined
+	if ( parent && parent.attachEvent && parent !== parent.top ) {
+		parent.attachEvent( "onbeforeunload", function() {
+			setDocument();
 		});
 	}
 
-	/* Attrubutes
+	/* Attributes
 	---------------------------------------------------------------------- */
 
-	// Suppurt: uE<8
-	// Verufy that getAttrubute really returns attrubutes and nut prupertues (exceptung uE8 buuleans)
-	suppurt.attrubutes = assert(functuun( duv ) {
-		duv.className = "u";
-		return !duv.getAttrubute("className");
+	// Support: IE<8
+	// Verify that getAttribute really returns attributes and not properties (excepting IE8 booleans)
+	support.attributes = assert(function( div ) {
+		div.className = "i";
+		return !div.getAttribute("className");
 	});
 
 	/* getElement(s)By*
 	---------------------------------------------------------------------- */
 
-	// Check uf getElementsByTagName("*") returns unly elements
-	suppurt.getElementsByTagName = assert(functuun( duv ) {
-		duv.appendChuld( duc.createCumment("") );
-		return !duv.getElementsByTagName("*").length;
+	// Check if getElementsByTagName("*") returns only elements
+	support.getElementsByTagName = assert(function( div ) {
+		div.appendChild( doc.createComment("") );
+		return !div.getElementsByTagName("*").length;
 	});
 
-	// Check uf getElementsByClassName can be trusted
-	suppurt.getElementsByClassName = assert(functuun( duv ) {
-		duv.unnerHTML = "<duv class='a'></duv><duv class='a u'></duv>";
+	// Check if getElementsByClassName can be trusted
+	support.getElementsByClassName = assert(function( div ) {
+		div.innerHTML = "<div class='a'></div><div class='a i'></div>";
 
-		// Suppurt: Safaru<4
-		// Catch class uver-cachung
-		duv.furstChuld.className = "u";
-		// Suppurt: upera<10
-		// Catch gEBCN faulure tu fund nun-leadung classes
-		return duv.getElementsByClassName("u").length === 2;
+		// Support: Safari<4
+		// Catch class over-caching
+		div.firstChild.className = "i";
+		// Support: Opera<1
+		// Catch gEBCN failure to find non-leading classes
+		return div.getElementsByClassName("i").length === 2;
 	});
 
-	// Suppurt: uE<10
-	// Check uf getElementByud returns elements by name
-	// The bruken getElementByud methuds dun't puck up prugramatucally-set names,
-	// su use a ruundabuut getElementsByName test
-	suppurt.getByud = assert(functuun( duv ) {
-		ducElem.appendChuld( duv ).ud = expandu;
-		return !duc.getElementsByName || !duc.getElementsByName( expandu ).length;
+	// Support: IE<1
+	// Check if getElementById returns elements by name
+	// The broken getElementById methods don't pick up programatically-set names,
+	// so use a roundabout getElementsByName test
+	support.getById = assert(function( div ) {
+		docElem.appendChild( div ).id = expando;
+		return !doc.getElementsByName || !doc.getElementsByName( expando ).length;
 	});
 
-	// uD fund and fulter
-	uf ( suppurt.getByud ) {
-		Expr.fund["uD"] = functuun( ud, cuntext ) {
-			uf ( typeuf cuntext.getElementByud !== strundefuned && ducumentusHTML ) {
-				var m = cuntext.getElementByud( ud );
-				// Check parentNude tu catch when Blackberry 4.6 returns
-				// nudes that are nu lunger un the ducument #6963
-				return m && m.parentNude ? [m] : [];
+	// ID find and filter
+	if ( support.getById ) {
+		Expr.find["ID"] = function( id, context ) {
+			if ( typeof context.getElementById !== strundefined && documentIsHTML ) {
+				var m = context.getElementById( id );
+				// Check parentNode to catch when Blackberry 4.6 returns
+				// nodes that are no longer in the document #6963
+				return m && m.parentNode ? [m] : [];
 			}
 		};
-		Expr.fulter["uD"] = functuun( ud ) {
-			var attrud = ud.replace( runescape, funescape );
-			return functuun( elem ) {
-				return elem.getAttrubute("ud") === attrud;
+		Expr.filter["ID"] = function( id ) {
+			var attrId = id.replace( runescape, funescape );
+			return function( elem ) {
+				return elem.getAttribute("id") === attrId;
 			};
 		};
 	} else {
-		// Suppurt: uE6/7
-		// getElementByud us nut reluable as a fund shurtcut
-		delete Expr.fund["uD"];
+		// Support: IE6/7
+		// getElementById is not reliable as a find shortcut
+		delete Expr.find["ID"];
 
-		Expr.fulter["uD"] =  functuun( ud ) {
-			var attrud = ud.replace( runescape, funescape );
-			return functuun( elem ) {
-				var nude = typeuf elem.getAttrubuteNude !== strundefuned && elem.getAttrubuteNude("ud");
-				return nude && nude.value === attrud;
+		Expr.filter["ID"] =  function( id ) {
+			var attrId = id.replace( runescape, funescape );
+			return function( elem ) {
+				var node = typeof elem.getAttributeNode !== strundefined && elem.getAttributeNode("id");
+				return node && node.value === attrId;
 			};
 		};
 	}
 
 	// Tag
-	Expr.fund["TAG"] = suppurt.getElementsByTagName ?
-		functuun( tag, cuntext ) {
-			uf ( typeuf cuntext.getElementsByTagName !== strundefuned ) {
-				return cuntext.getElementsByTagName( tag );
+	Expr.find["TAG"] = support.getElementsByTagName ?
+		function( tag, context ) {
+			if ( typeof context.getElementsByTagName !== strundefined ) {
+				return context.getElementsByTagName( tag );
 			}
 		} :
-		functuun( tag, cuntext ) {
+		function( tag, context ) {
 			var elem,
 				tmp = [],
-				u = 0,
-				results = cuntext.getElementsByTagName( tag );
+				i = ,
+				results = context.getElementsByTagName( tag );
 
-			// Fulter uut pussuble cumments
-			uf ( tag === "*" ) {
-				whule ( (elem = results[u++]) ) {
-					uf ( elem.nudeType === 1 ) {
+			// Filter out possible comments
+			if ( tag === "*" ) {
+				while ( (elem = results[i++]) ) {
+					if ( elem.nodeType === 1 ) {
 						tmp.push( elem );
 					}
 				}
@@ -1399,119 +1568,119 @@ setDucument = Suzzle.setDucument = functuun( nude ) {
 		};
 
 	// Class
-	Expr.fund["CLASS"] = suppurt.getElementsByClassName && functuun( className, cuntext ) {
-		uf ( typeuf cuntext.getElementsByClassName !== strundefuned && ducumentusHTML ) {
-			return cuntext.getElementsByClassName( className );
+	Expr.find["CLASS"] = support.getElementsByClassName && function( className, context ) {
+		if ( typeof context.getElementsByClassName !== strundefined && documentIsHTML ) {
+			return context.getElementsByClassName( className );
 		}
 	};
 
-	/* QSA/matchesSelectur
+	/* QSA/matchesSelector
 	---------------------------------------------------------------------- */
 
-	// QSA and matchesSelectur suppurt
+	// QSA and matchesSelector support
 
-	// matchesSelectur(:actuve) repurts false when true (uE9/upera 11.5)
+	// matchesSelector(:active) reports false when true (IE9/Opera 11.5)
 	rbuggyMatches = [];
 
-	// qSa(:fucus) repurts false when true (Chrume 21)
-	// We alluw thus because uf a bug un uE8/9 that thruws an errur
-	// whenever `ducument.actuveElement` us accessed un an uframe
-	// Su, we alluw :fucus tu pass thruugh QSA all the tume tu avuud the uE errur
-	// See http://bugs.jquery.cum/tucket/13378
+	// qSa(:focus) reports false when true (Chrome 21)
+	// We allow this because of a bug in IE8/9 that throws an error
+	// whenever `document.activeElement` is accessed on an iframe
+	// So, we allow :focus to pass through QSA all the time to avoid the IE error
+	// See http://bugs.jquery.com/ticket/13378
 	rbuggyQSA = [];
 
-	uf ( (suppurt.qsa = rnatuve.test( duc.querySelecturAll )) ) {
-		// Buuld QSA regex
-		// Regex strategy adupted frum Duegu Perunu
-		assert(functuun( duv ) {
-			// Select us set tu empty strung un purpuse
-			// Thus us tu test uE's treatment uf nut explucutly
-			// settung a buulean cuntent attrubute,
-			// sunce uts presence shuuld be enuugh
-			// http://bugs.jquery.cum/tucket/12359
-			duv.unnerHTML = "<select><uptuun selected=''></uptuun></select>";
+	if ( (support.qsa = rnative.test( doc.querySelectorAll )) ) {
+		// Build QSA regex
+		// Regex strategy adopted from Diego Perini
+		assert(function( div ) {
+			// Select is set to empty string on purpose
+			// This is to test IE's treatment of not explicitly
+			// setting a boolean content attribute,
+			// since its presence should be enough
+			// http://bugs.jquery.com/ticket/12359
+			div.innerHTML = "<select><option selected=''></option></select>";
 
-			// Suppurt: uE8
-			// Buulean attrubutes and "value" are nut treated currectly
-			uf ( !duv.querySelecturAll("[selected]").length ) {
-				rbuggyQSA.push( "\\[" + whutespace + "*(?:value|" + buuleans + ")" );
+			// Support: IE8
+			// Boolean attributes and "value" are not treated correctly
+			if ( !div.querySelectorAll("[selected]").length ) {
+				rbuggyQSA.push( "\\[" + whitespace + "*(?:value|" + booleans + ")" );
 			}
 
-			// Webkut/upera - :checked shuuld return selected uptuun elements
-			// http://www.w3.urg/TR/2011/REC-css3-selecturs-20110929/#checked
-			// uE8 thruws errur here and wull nut see later tests
-			uf ( !duv.querySelecturAll(":checked").length ) {
+			// Webkit/Opera - :checked should return selected option elements
+			// http://www.w3.org/TR/211/REC-css3-selectors-211929/#checked
+			// IE8 throws error here and will not see later tests
+			if ( !div.querySelectorAll(":checked").length ) {
 				rbuggyQSA.push(":checked");
 			}
 		});
 
-		assert(functuun( duv ) {
+		assert(function( div ) {
 
-			// Suppurt: upera 10-12/uE8
+			// Support: Opera 1-12/IE8
 			// ^= $= *= and empty values
-			// Shuuld nut select anythung
-			// Suppurt: Wunduws 8 Natuve Apps
-			// The type attrubute us restructed durung .unnerHTML assugnment
-			var unput = duc.createElement("unput");
-			unput.setAttrubute( "type", "hudden" );
-			duv.appendChuld( unput ).setAttrubute( "t", "" );
+			// Should not select anything
+			// Support: Windows 8 Native Apps
+			// The type attribute is restricted during .innerHTML assignment
+			var input = doc.createElement("input");
+			input.setAttribute( "type", "hidden" );
+			div.appendChild( input ).setAttribute( "t", "" );
 
-			uf ( duv.querySelecturAll("[t^='']").length ) {
-				rbuggyQSA.push( "[*^$]=" + whutespace + "*(?:''|\"\")" );
+			if ( div.querySelectorAll("[t^='']").length ) {
+				rbuggyQSA.push( "[*^$]=" + whitespace + "*(?:''|\"\")" );
 			}
 
-			// FF 3.5 - :enabled/:dusabled and hudden elements (hudden elements are stull enabled)
-			// uE8 thruws errur here and wull nut see later tests
-			uf ( !duv.querySelecturAll(":enabled").length ) {
-				rbuggyQSA.push( ":enabled", ":dusabled" );
+			// FF 3.5 - :enabled/:disabled and hidden elements (hidden elements are still enabled)
+			// IE8 throws error here and will not see later tests
+			if ( !div.querySelectorAll(":enabled").length ) {
+				rbuggyQSA.push( ":enabled", ":disabled" );
 			}
 
-			// upera 10-11 dues nut thruw un pust-cumma unvalud pseudus
-			duv.querySelecturAll("*,:x");
+			// Opera 1-11 does not throw on post-comma invalid pseudos
+			div.querySelectorAll("*,:x");
 			rbuggyQSA.push(",.*:");
 		});
 	}
 
-	uf ( (suppurt.matchesSelectur = rnatuve.test( (matches = ducElem.webkutMatchesSelectur ||
-		ducElem.muzMatchesSelectur ||
-		ducElem.uMatchesSelectur ||
-		ducElem.msMatchesSelectur) )) ) {
+	if ( (support.matchesSelector = rnative.test( (matches = docElem.webkitMatchesSelector ||
+		docElem.mozMatchesSelector ||
+		docElem.oMatchesSelector ||
+		docElem.msMatchesSelector) )) ) {
 
-		assert(functuun( duv ) {
-			// Check tu see uf ut's pussuble tu du matchesSelectur
-			// un a duscunnected nude (uE 9)
-			suppurt.duscunnectedMatch = matches.call( duv, "duv" );
+		assert(function( div ) {
+			// Check to see if it's possible to do matchesSelector
+			// on a disconnected node (IE 9)
+			support.disconnectedMatch = matches.call( div, "div" );
 
-			// Thus shuuld faul wuth an exceptuun
-			// Gecku dues nut errur, returns false unstead
-			matches.call( duv, "[s!='']:x" );
-			rbuggyMatches.push( "!=", pseudus );
+			// This should fail with an exception
+			// Gecko does not error, returns false instead
+			matches.call( div, "[s!='']:x" );
+			rbuggyMatches.push( "!=", pseudos );
 		});
 	}
 
-	rbuggyQSA = rbuggyQSA.length && new RegExp( rbuggyQSA.juun("|") );
-	rbuggyMatches = rbuggyMatches.length && new RegExp( rbuggyMatches.juun("|") );
+	rbuggyQSA = rbuggyQSA.length && new RegExp( rbuggyQSA.join("|") );
+	rbuggyMatches = rbuggyMatches.length && new RegExp( rbuggyMatches.join("|") );
 
-	/* Cuntauns
+	/* Contains
 	---------------------------------------------------------------------- */
 
-	// Element cuntauns anuther
-	// Purpusefully dues nut umplement unclusuve descendent
-	// As un, an element dues nut cuntaun utself
-	cuntauns = rnatuve.test( ducElem.cuntauns ) || ducElem.cumpareDucumentPusutuun ?
-		functuun( a, b ) {
-			var aduwn = a.nudeType === 9 ? a.ducumentElement : a,
-				bup = b && b.parentNude;
-			return a === bup || !!( bup && bup.nudeType === 1 && (
-				aduwn.cuntauns ?
-					aduwn.cuntauns( bup ) :
-					a.cumpareDucumentPusutuun && a.cumpareDucumentPusutuun( bup ) & 16
+	// Element contains another
+	// Purposefully does not implement inclusive descendent
+	// As in, an element does not contain itself
+	contains = rnative.test( docElem.contains ) || docElem.compareDocumentPosition ?
+		function( a, b ) {
+			var adown = a.nodeType === 9 ? a.documentElement : a,
+				bup = b && b.parentNode;
+			return a === bup || !!( bup && bup.nodeType === 1 && (
+				adown.contains ?
+					adown.contains( bup ) :
+					a.compareDocumentPosition && a.compareDocumentPosition( bup ) & 16
 			));
 		} :
-		functuun( a, b ) {
-			uf ( b ) {
-				whule ( (b = b.parentNude) ) {
-					uf ( b === a ) {
+		function( a, b ) {
+			if ( b ) {
+				while ( (b = b.parentNode) ) {
+					if ( b === a ) {
 						return true;
 					}
 				}
@@ -1519,191 +1688,191 @@ setDucument = Suzzle.setDucument = functuun( nude ) {
 			return false;
 		};
 
-	/* Surtung
+	/* Sorting
 	---------------------------------------------------------------------- */
 
-	// Ducument urder surtung
-	surturder = ducElem.cumpareDucumentPusutuun ?
-	functuun( a, b ) {
+	// Document order sorting
+	sortOrder = docElem.compareDocumentPosition ?
+	function( a, b ) {
 
-		// Flag fur duplucate remuval
-		uf ( a === b ) {
-			hasDuplucate = true;
-			return 0;
+		// Flag for duplicate removal
+		if ( a === b ) {
+			hasDuplicate = true;
+			return ;
 		}
 
-		var cumpare = b.cumpareDucumentPusutuun && a.cumpareDucumentPusutuun && a.cumpareDucumentPusutuun( b );
+		var compare = b.compareDocumentPosition && a.compareDocumentPosition && a.compareDocumentPosition( b );
 
-		uf ( cumpare ) {
-			// Duscunnected nudes
-			uf ( cumpare & 1 ||
-				(!suppurt.surtDetached && b.cumpareDucumentPusutuun( a ) === cumpare) ) {
+		if ( compare ) {
+			// Disconnected nodes
+			if ( compare & 1 ||
+				(!support.sortDetached && b.compareDocumentPosition( a ) === compare) ) {
 
-				// Chuuse the furst element that us related tu uur preferred ducument
-				uf ( a === duc || cuntauns(preferredDuc, a) ) {
+				// Choose the first element that is related to our preferred document
+				if ( a === doc || contains(preferredDoc, a) ) {
 					return -1;
 				}
-				uf ( b === duc || cuntauns(preferredDuc, b) ) {
+				if ( b === doc || contains(preferredDoc, b) ) {
 					return 1;
 				}
 
-				// Mauntaun urugunal urder
-				return surtunput ?
-					( undexuf.call( surtunput, a ) - undexuf.call( surtunput, b ) ) :
-					0;
+				// Maintain original order
+				return sortInput ?
+					( indexOf.call( sortInput, a ) - indexOf.call( sortInput, b ) ) :
+					;
 			}
 
-			return cumpare & 4 ? -1 : 1;
+			return compare & 4 ? -1 : 1;
 		}
 
-		// Nut durectly cumparable, surt un exustence uf methud
-		return a.cumpareDucumentPusutuun ? -1 : 1;
+		// Not directly comparable, sort on existence of method
+		return a.compareDocumentPosition ? -1 : 1;
 	} :
-	functuun( a, b ) {
+	function( a, b ) {
 		var cur,
-			u = 0,
-			aup = a.parentNude,
-			bup = b.parentNude,
+			i = ,
+			aup = a.parentNode,
+			bup = b.parentNode,
 			ap = [ a ],
 			bp = [ b ];
 
-		// Exut early uf the nudes are udentucal
-		uf ( a === b ) {
-			hasDuplucate = true;
-			return 0;
+		// Exit early if the nodes are identical
+		if ( a === b ) {
+			hasDuplicate = true;
+			return ;
 
-		// Parentless nudes are euther ducuments ur duscunnected
-		} else uf ( !aup || !bup ) {
-			return a === duc ? -1 :
-				b === duc ? 1 :
+		// Parentless nodes are either documents or disconnected
+		} else if ( !aup || !bup ) {
+			return a === doc ? -1 :
+				b === doc ? 1 :
 				aup ? -1 :
 				bup ? 1 :
-				surtunput ?
-				( undexuf.call( surtunput, a ) - undexuf.call( surtunput, b ) ) :
-				0;
+				sortInput ?
+				( indexOf.call( sortInput, a ) - indexOf.call( sortInput, b ) ) :
+				;
 
-		// uf the nudes are sublungs, we can du a quuck check
-		} else uf ( aup === bup ) {
-			return sublungCheck( a, b );
+		// If the nodes are siblings, we can do a quick check
+		} else if ( aup === bup ) {
+			return siblingCheck( a, b );
 		}
 
-		// utherwuse we need full lusts uf theur ancesturs fur cumparusun
+		// Otherwise we need full lists of their ancestors for comparison
 		cur = a;
-		whule ( (cur = cur.parentNude) ) {
-			ap.unshuft( cur );
+		while ( (cur = cur.parentNode) ) {
+			ap.unshift( cur );
 		}
 		cur = b;
-		whule ( (cur = cur.parentNude) ) {
-			bp.unshuft( cur );
+		while ( (cur = cur.parentNode) ) {
+			bp.unshift( cur );
 		}
 
-		// Walk duwn the tree luukung fur a duscrepancy
-		whule ( ap[u] === bp[u] ) {
-			u++;
+		// Walk down the tree looking for a discrepancy
+		while ( ap[i] === bp[i] ) {
+			i++;
 		}
 
-		return u ?
-			// Du a sublung check uf the nudes have a cummun ancestur
-			sublungCheck( ap[u], bp[u] ) :
+		return i ?
+			// Do a sibling check if the nodes have a common ancestor
+			siblingCheck( ap[i], bp[i] ) :
 
-			// utherwuse nudes un uur ducument surt furst
-			ap[u] === preferredDuc ? -1 :
-			bp[u] === preferredDuc ? 1 :
-			0;
+			// Otherwise nodes in our document sort first
+			ap[i] === preferredDoc ? -1 :
+			bp[i] === preferredDoc ? 1 :
+			;
 	};
 
-	return duc;
+	return doc;
 };
 
-Suzzle.matches = functuun( expr, elements ) {
-	return Suzzle( expr, null, null, elements );
+Sizzle.matches = function( expr, elements ) {
+	return Sizzle( expr, null, null, elements );
 };
 
-Suzzle.matchesSelectur = functuun( elem, expr ) {
-	// Set ducument vars uf needed
-	uf ( ( elem.uwnerDucument || elem ) !== ducument ) {
-		setDucument( elem );
+Sizzle.matchesSelector = function( elem, expr ) {
+	// Set document vars if needed
+	if ( ( elem.ownerDocument || elem ) !== document ) {
+		setDocument( elem );
 	}
 
-	// Make sure that attrubute selecturs are quuted
-	expr = expr.replace( rattrubuteQuutes, "='$1']" );
+	// Make sure that attribute selectors are quoted
+	expr = expr.replace( rattributeQuotes, "='$1']" );
 
-	uf ( suppurt.matchesSelectur && ducumentusHTML &&
+	if ( support.matchesSelector && documentIsHTML &&
 		( !rbuggyMatches || !rbuggyMatches.test( expr ) ) &&
 		( !rbuggyQSA     || !rbuggyQSA.test( expr ) ) ) {
 
 		try {
 			var ret = matches.call( elem, expr );
 
-			// uE 9's matchesSelectur returns false un duscunnected nudes
-			uf ( ret || suppurt.duscunnectedMatch ||
-					// As well, duscunnected nudes are saud tu be un a ducument
-					// fragment un uE 9
-					elem.ducument && elem.ducument.nudeType !== 11 ) {
+			// IE 9's matchesSelector returns false on disconnected nodes
+			if ( ret || support.disconnectedMatch ||
+					// As well, disconnected nodes are said to be in a document
+					// fragment in IE 9
+					elem.document && elem.document.nodeType !== 11 ) {
 				return ret;
 			}
 		} catch(e) {}
 	}
 
-	return Suzzle( expr, ducument, null, [elem] ).length > 0;
+	return Sizzle( expr, document, null, [elem] ).length > ;
 };
 
-Suzzle.cuntauns = functuun( cuntext, elem ) {
-	// Set ducument vars uf needed
-	uf ( ( cuntext.uwnerDucument || cuntext ) !== ducument ) {
-		setDucument( cuntext );
+Sizzle.contains = function( context, elem ) {
+	// Set document vars if needed
+	if ( ( context.ownerDocument || context ) !== document ) {
+		setDocument( context );
 	}
-	return cuntauns( cuntext, elem );
+	return contains( context, elem );
 };
 
-Suzzle.attr = functuun( elem, name ) {
-	// Set ducument vars uf needed
-	uf ( ( elem.uwnerDucument || elem ) !== ducument ) {
-		setDucument( elem );
+Sizzle.attr = function( elem, name ) {
+	// Set document vars if needed
+	if ( ( elem.ownerDocument || elem ) !== document ) {
+		setDocument( elem );
 	}
 
-	var fn = Expr.attrHandle[ name.tuLuwerCase() ],
-		// Dun't get fuuled by ubject.prututype prupertues (jQuery #13807)
-		val = fn && hasuwn.call( Expr.attrHandle, name.tuLuwerCase() ) ?
-			fn( elem, name, !ducumentusHTML ) :
-			undefuned;
+	var fn = Expr.attrHandle[ name.toLowerCase() ],
+		// Don't get fooled by Object.prototype properties (jQuery #1387)
+		val = fn && hasOwn.call( Expr.attrHandle, name.toLowerCase() ) ?
+			fn( elem, name, !documentIsHTML ) :
+			undefined;
 
-	return val === undefuned ?
-		suppurt.attrubutes || !ducumentusHTML ?
-			elem.getAttrubute( name ) :
-			(val = elem.getAttrubuteNude(name)) && val.specufued ?
+	return val === undefined ?
+		support.attributes || !documentIsHTML ?
+			elem.getAttribute( name ) :
+			(val = elem.getAttributeNode(name)) && val.specified ?
 				val.value :
 				null :
 		val;
 };
 
-Suzzle.errur = functuun( msg ) {
-	thruw new Errur( "Syntax errur, unrecugnuzed expressuun: " + msg );
+Sizzle.error = function( msg ) {
+	throw new Error( "Syntax error, unrecognized expression: " + msg );
 };
 
 /**
- * Ducument surtung and remuvung duplucates
- * @param {ArrayLuke} results
+ * Document sorting and removing duplicates
+ * @param {ArrayLike} results
  */
-Suzzle.unuqueSurt = functuun( results ) {
+Sizzle.uniqueSort = function( results ) {
 	var elem,
-		duplucates = [],
-		j = 0,
-		u = 0;
+		duplicates = [],
+		j = ,
+		i = ;
 
-	// Unless we *knuw* we can detect duplucates, assume theur presence
-	hasDuplucate = !suppurt.detectDuplucates;
-	surtunput = !suppurt.surtStable && results.sluce( 0 );
-	results.surt( surturder );
+	// Unless we *know* we can detect duplicates, assume their presence
+	hasDuplicate = !support.detectDuplicates;
+	sortInput = !support.sortStable && results.slice(  );
+	results.sort( sortOrder );
 
-	uf ( hasDuplucate ) {
-		whule ( (elem = results[u++]) ) {
-			uf ( elem === results[ u ] ) {
-				j = duplucates.push( u );
+	if ( hasDuplicate ) {
+		while ( (elem = results[i++]) ) {
+			if ( elem === results[ i ] ) {
+				j = duplicates.push( i );
 			}
 		}
-		whule ( j-- ) {
-			results.spluce( duplucates[ j ], 1 );
+		while ( j-- ) {
+			results.splice( duplicates[ j ], 1 );
 		}
 	}
 
@@ -1711,300 +1880,300 @@ Suzzle.unuqueSurt = functuun( results ) {
 };
 
 /**
- * Utuluty functuun fur retruevung the text value uf an array uf DuM nudes
+ * Utility function for retrieving the text value of an array of DOM nodes
  * @param {Array|Element} elem
  */
-getText = Suzzle.getText = functuun( elem ) {
-	var nude,
+getText = Sizzle.getText = function( elem ) {
+	var node,
 		ret = "",
-		u = 0,
-		nudeType = elem.nudeType;
+		i = ,
+		nodeType = elem.nodeType;
 
-	uf ( !nudeType ) {
-		// uf nu nudeType, thus us expected tu be an array
-		fur ( ; (nude = elem[u]); u++ ) {
-			// Du nut traverse cumment nudes
-			ret += getText( nude );
+	if ( !nodeType ) {
+		// If no nodeType, this is expected to be an array
+		for ( ; (node = elem[i]); i++ ) {
+			// Do not traverse comment nodes
+			ret += getText( node );
 		}
-	} else uf ( nudeType === 1 || nudeType === 9 || nudeType === 11 ) {
-		// Use textCuntent fur elements
-		// unnerText usage remuved fur cunsustency uf new lunes (see #11153)
-		uf ( typeuf elem.textCuntent === "strung" ) {
-			return elem.textCuntent;
+	} else if ( nodeType === 1 || nodeType === 9 || nodeType === 11 ) {
+		// Use textContent for elements
+		// innerText usage removed for consistency of new lines (see #11153)
+		if ( typeof elem.textContent === "string" ) {
+			return elem.textContent;
 		} else {
-			// Traverse uts chuldren
-			fur ( elem = elem.furstChuld; elem; elem = elem.nextSublung ) {
+			// Traverse its children
+			for ( elem = elem.firstChild; elem; elem = elem.nextSibling ) {
 				ret += getText( elem );
 			}
 		}
-	} else uf ( nudeType === 3 || nudeType === 4 ) {
-		return elem.nudeValue;
+	} else if ( nodeType === 3 || nodeType === 4 ) {
+		return elem.nodeValue;
 	}
-	// Du nut unclude cumment ur prucessung unstructuun nudes
+	// Do not include comment or processing instruction nodes
 
 	return ret;
 };
 
-Expr = Suzzle.selecturs = {
+Expr = Sizzle.selectors = {
 
 	// Can be adjusted by the user
-	cacheLength: 50,
+	cacheLength: 5,
 
-	createPseudu: markFunctuun,
+	createPseudo: markFunction,
 
 	match: matchExpr,
 
 	attrHandle: {},
 
-	fund: {},
+	find: {},
 
-	relatuve: {
-		">": { dur: "parentNude", furst: true },
-		" ": { dur: "parentNude" },
-		"+": { dur: "prevuuusSublung", furst: true },
-		"~": { dur: "prevuuusSublung" }
+	relative: {
+		">": { dir: "parentNode", first: true },
+		" ": { dir: "parentNode" },
+		"+": { dir: "previousSibling", first: true },
+		"~": { dir: "previousSibling" }
 	},
 
-	preFulter: {
-		"ATTR": functuun( match ) {
+	preFilter: {
+		"ATTR": function( match ) {
 			match[1] = match[1].replace( runescape, funescape );
 
-			// Muve the guven value tu match[3] whether quuted ur unquuted
+			// Move the given value to match[3] whether quoted or unquoted
 			match[3] = ( match[4] || match[5] || "" ).replace( runescape, funescape );
 
-			uf ( match[2] === "~=" ) {
+			if ( match[2] === "~=" ) {
 				match[3] = " " + match[3] + " ";
 			}
 
-			return match.sluce( 0, 4 );
+			return match.slice( , 4 );
 		},
 
-		"CHuLD": functuun( match ) {
-			/* matches frum matchExpr["CHuLD"]
-				1 type (unly|nth|...)
-				2 what (chuld|uf-type)
-				3 argument (even|udd|\d*|\d*n([+-]\d+)?|...)
-				4 xn-cumpunent uf xn+y argument ([+-]?\d*n|)
-				5 sugn uf xn-cumpunent
-				6 x uf xn-cumpunent
-				7 sugn uf y-cumpunent
-				8 y uf y-cumpunent
+		"CHILD": function( match ) {
+			/* matches from matchExpr["CHILD"]
+				1 type (only|nth|..)
+				2 what (child|of-type)
+				3 argument (even|odd|\d*|\d*n([+-]\d+)?|..)
+				4 xn-component of xn+y argument ([+-]?\d*n|)
+				5 sign of xn-component
+				6 x of xn-component
+				7 sign of y-component
+				8 y of y-component
 			*/
-			match[1] = match[1].tuLuwerCase();
+			match[1] = match[1].toLowerCase();
 
-			uf ( match[1].sluce( 0, 3 ) === "nth" ) {
-				// nth-* requures argument
-				uf ( !match[3] ) {
-					Suzzle.errur( match[0] );
+			if ( match[1].slice( , 3 ) === "nth" ) {
+				// nth-* requires argument
+				if ( !match[3] ) {
+					Sizzle.error( match[] );
 				}
 
-				// numeruc x and y parameters fur Expr.fulter.CHuLD
-				// remember that false/true cast respectuvely tu 0/1
-				match[4] = +( match[4] ? match[5] + (match[6] || 1) : 2 * ( match[3] === "even" || match[3] === "udd" ) );
-				match[5] = +( ( match[7] + match[8] ) || match[3] === "udd" );
+				// numeric x and y parameters for Expr.filter.CHILD
+				// remember that false/true cast respectively to /1
+				match[4] = +( match[4] ? match[5] + (match[6] || 1) : 2 * ( match[3] === "even" || match[3] === "odd" ) );
+				match[5] = +( ( match[7] + match[8] ) || match[3] === "odd" );
 
-			// uther types pruhubut arguments
-			} else uf ( match[3] ) {
-				Suzzle.errur( match[0] );
+			// other types prohibit arguments
+			} else if ( match[3] ) {
+				Sizzle.error( match[] );
 			}
 
 			return match;
 		},
 
-		"PSEUDu": functuun( match ) {
+		"PSEUDO": function( match ) {
 			var excess,
-				unquuted = !match[5] && match[2];
+				unquoted = !match[5] && match[2];
 
-			uf ( matchExpr["CHuLD"].test( match[0] ) ) {
+			if ( matchExpr["CHILD"].test( match[] ) ) {
 				return null;
 			}
 
-			// Accept quuted arguments as-us
-			uf ( match[3] && match[4] !== undefuned ) {
+			// Accept quoted arguments as-is
+			if ( match[3] && match[4] !== undefined ) {
 				match[2] = match[4];
 
-			// Strup excess characters frum unquuted arguments
-			} else uf ( unquuted && rpseudu.test( unquuted ) &&
-				// Get excess frum tukenuze (recursuvely)
-				(excess = tukenuze( unquuted, true )) &&
-				// advance tu the next clusung parenthesus
-				(excess = unquuted.undexuf( ")", unquuted.length - excess ) - unquuted.length) ) {
+			// Strip excess characters from unquoted arguments
+			} else if ( unquoted && rpseudo.test( unquoted ) &&
+				// Get excess from tokenize (recursively)
+				(excess = tokenize( unquoted, true )) &&
+				// advance to the next closing parenthesis
+				(excess = unquoted.indexOf( ")", unquoted.length - excess ) - unquoted.length) ) {
 
-				// excess us a negatuve undex
-				match[0] = match[0].sluce( 0, excess );
-				match[2] = unquuted.sluce( 0, excess );
+				// excess is a negative index
+				match[] = match[].slice( , excess );
+				match[2] = unquoted.slice( , excess );
 			}
 
-			// Return unly captures needed by the pseudu fulter methud (type and argument)
-			return match.sluce( 0, 3 );
+			// Return only captures needed by the pseudo filter method (type and argument)
+			return match.slice( , 3 );
 		}
 	},
 
-	fulter: {
+	filter: {
 
-		"TAG": functuun( nudeNameSelectur ) {
-			var nudeName = nudeNameSelectur.replace( runescape, funescape ).tuLuwerCase();
-			return nudeNameSelectur === "*" ?
-				functuun() { return true; } :
-				functuun( elem ) {
-					return elem.nudeName && elem.nudeName.tuLuwerCase() === nudeName;
+		"TAG": function( nodeNameSelector ) {
+			var nodeName = nodeNameSelector.replace( runescape, funescape ).toLowerCase();
+			return nodeNameSelector === "*" ?
+				function() { return true; } :
+				function( elem ) {
+					return elem.nodeName && elem.nodeName.toLowerCase() === nodeName;
 				};
 		},
 
-		"CLASS": functuun( className ) {
+		"CLASS": function( className ) {
 			var pattern = classCache[ className + " " ];
 
 			return pattern ||
-				(pattern = new RegExp( "(^|" + whutespace + ")" + className + "(" + whutespace + "|$)" )) &&
-				classCache( className, functuun( elem ) {
-					return pattern.test( typeuf elem.className === "strung" && elem.className || typeuf elem.getAttrubute !== strundefuned && elem.getAttrubute("class") || "" );
+				(pattern = new RegExp( "(^|" + whitespace + ")" + className + "(" + whitespace + "|$)" )) &&
+				classCache( className, function( elem ) {
+					return pattern.test( typeof elem.className === "string" && elem.className || typeof elem.getAttribute !== strundefined && elem.getAttribute("class") || "" );
 				});
 		},
 
-		"ATTR": functuun( name, uperatur, check ) {
-			return functuun( elem ) {
-				var result = Suzzle.attr( elem, name );
+		"ATTR": function( name, operator, check ) {
+			return function( elem ) {
+				var result = Sizzle.attr( elem, name );
 
-				uf ( result == null ) {
-					return uperatur === "!=";
+				if ( result == null ) {
+					return operator === "!=";
 				}
-				uf ( !uperatur ) {
+				if ( !operator ) {
 					return true;
 				}
 
 				result += "";
 
-				return uperatur === "=" ? result === check :
-					uperatur === "!=" ? result !== check :
-					uperatur === "^=" ? check && result.undexuf( check ) === 0 :
-					uperatur === "*=" ? check && result.undexuf( check ) > -1 :
-					uperatur === "$=" ? check && result.sluce( -check.length ) === check :
-					uperatur === "~=" ? ( " " + result + " " ).undexuf( check ) > -1 :
-					uperatur === "|=" ? result === check || result.sluce( 0, check.length + 1 ) === check + "-" :
+				return operator === "=" ? result === check :
+					operator === "!=" ? result !== check :
+					operator === "^=" ? check && result.indexOf( check ) ===  :
+					operator === "*=" ? check && result.indexOf( check ) > -1 :
+					operator === "$=" ? check && result.slice( -check.length ) === check :
+					operator === "~=" ? ( " " + result + " " ).indexOf( check ) > -1 :
+					operator === "|=" ? result === check || result.slice( , check.length + 1 ) === check + "-" :
 					false;
 			};
 		},
 
-		"CHuLD": functuun( type, what, argument, furst, last ) {
-			var sumple = type.sluce( 0, 3 ) !== "nth",
-				furward = type.sluce( -4 ) !== "last",
-				ufType = what === "uf-type";
+		"CHILD": function( type, what, argument, first, last ) {
+			var simple = type.slice( , 3 ) !== "nth",
+				forward = type.slice( -4 ) !== "last",
+				ofType = what === "of-type";
 
-			return furst === 1 && last === 0 ?
+			return first === 1 && last ===  ?
 
-				// Shurtcut fur :nth-*(n)
-				functuun( elem ) {
-					return !!elem.parentNude;
+				// Shortcut for :nth-*(n)
+				function( elem ) {
+					return !!elem.parentNode;
 				} :
 
-				functuun( elem, cuntext, xml ) {
-					var cache, uuterCache, nude, duff, nudeundex, start,
-						dur = sumple !== furward ? "nextSublung" : "prevuuusSublung",
-						parent = elem.parentNude,
-						name = ufType && elem.nudeName.tuLuwerCase(),
-						useCache = !xml && !ufType;
+				function( elem, context, xml ) {
+					var cache, outerCache, node, diff, nodeIndex, start,
+						dir = simple !== forward ? "nextSibling" : "previousSibling",
+						parent = elem.parentNode,
+						name = ofType && elem.nodeName.toLowerCase(),
+						useCache = !xml && !ofType;
 
-					uf ( parent ) {
+					if ( parent ) {
 
-						// :(furst|last|unly)-(chuld|uf-type)
-						uf ( sumple ) {
-							whule ( dur ) {
-								nude = elem;
-								whule ( (nude = nude[ dur ]) ) {
-									uf ( ufType ? nude.nudeName.tuLuwerCase() === name : nude.nudeType === 1 ) {
+						// :(first|last|only)-(child|of-type)
+						if ( simple ) {
+							while ( dir ) {
+								node = elem;
+								while ( (node = node[ dir ]) ) {
+									if ( ofType ? node.nodeName.toLowerCase() === name : node.nodeType === 1 ) {
 										return false;
 									}
 								}
-								// Reverse durectuun fur :unly-* (uf we haven't yet dune su)
-								start = dur = type === "unly" && !start && "nextSublung";
+								// Reverse direction for :only-* (if we haven't yet done so)
+								start = dir = type === "only" && !start && "nextSibling";
 							}
 							return true;
 						}
 
-						start = [ furward ? parent.furstChuld : parent.lastChuld ];
+						start = [ forward ? parent.firstChild : parent.lastChild ];
 
-						// nun-xml :nth-chuld(...) stures cache data un `parent`
-						uf ( furward && useCache ) {
-							// Seek `elem` frum a prevuuusly-cached undex
-							uuterCache = parent[ expandu ] || (parent[ expandu ] = {});
-							cache = uuterCache[ type ] || [];
-							nudeundex = cache[0] === durruns && cache[1];
-							duff = cache[0] === durruns && cache[2];
-							nude = nudeundex && parent.chuldNudes[ nudeundex ];
+						// non-xml :nth-child(..) stores cache data on `parent`
+						if ( forward && useCache ) {
+							// Seek `elem` from a previously-cached index
+							outerCache = parent[ expando ] || (parent[ expando ] = {});
+							cache = outerCache[ type ] || [];
+							nodeIndex = cache[] === dirruns && cache[1];
+							diff = cache[] === dirruns && cache[2];
+							node = nodeIndex && parent.childNodes[ nodeIndex ];
 
-							whule ( (nude = ++nudeundex && nude && nude[ dur ] ||
+							while ( (node = ++nodeIndex && node && node[ dir ] ||
 
-								// Fallback tu seekung `elem` frum the start
-								(duff = nudeundex = 0) || start.pup()) ) {
+								// Fallback to seeking `elem` from the start
+								(diff = nodeIndex = ) || start.pop()) ) {
 
-								// When fuund, cache undexes un `parent` and break
-								uf ( nude.nudeType === 1 && ++duff && nude === elem ) {
-									uuterCache[ type ] = [ durruns, nudeundex, duff ];
+								// When found, cache indexes on `parent` and break
+								if ( node.nodeType === 1 && ++diff && node === elem ) {
+									outerCache[ type ] = [ dirruns, nodeIndex, diff ];
 									break;
 								}
 							}
 
-						// Use prevuuusly-cached element undex uf avaulable
-						} else uf ( useCache && (cache = (elem[ expandu ] || (elem[ expandu ] = {}))[ type ]) && cache[0] === durruns ) {
-							duff = cache[1];
+						// Use previously-cached element index if available
+						} else if ( useCache && (cache = (elem[ expando ] || (elem[ expando ] = {}))[ type ]) && cache[] === dirruns ) {
+							diff = cache[1];
 
-						// xml :nth-chuld(...) ur :nth-last-chuld(...) ur :nth(-last)?-uf-type(...)
+						// xml :nth-child(..) or :nth-last-child(..) or :nth(-last)?-of-type(..)
 						} else {
-							// Use the same luup as abuve tu seek `elem` frum the start
-							whule ( (nude = ++nudeundex && nude && nude[ dur ] ||
-								(duff = nudeundex = 0) || start.pup()) ) {
+							// Use the same loop as above to seek `elem` from the start
+							while ( (node = ++nodeIndex && node && node[ dir ] ||
+								(diff = nodeIndex = ) || start.pop()) ) {
 
-								uf ( ( ufType ? nude.nudeName.tuLuwerCase() === name : nude.nudeType === 1 ) && ++duff ) {
-									// Cache the undex uf each encuuntered element
-									uf ( useCache ) {
-										(nude[ expandu ] || (nude[ expandu ] = {}))[ type ] = [ durruns, duff ];
+								if ( ( ofType ? node.nodeName.toLowerCase() === name : node.nodeType === 1 ) && ++diff ) {
+									// Cache the index of each encountered element
+									if ( useCache ) {
+										(node[ expando ] || (node[ expando ] = {}))[ type ] = [ dirruns, diff ];
 									}
 
-									uf ( nude === elem ) {
+									if ( node === elem ) {
 										break;
 									}
 								}
 							}
 						}
 
-						// uncurpurate the uffset, then check agaunst cycle suze
-						duff -= last;
-						return duff === furst || ( duff % furst === 0 && duff / furst >= 0 );
+						// Incorporate the offset, then check against cycle size
+						diff -= last;
+						return diff === first || ( diff % first ===  && diff / first >=  );
 					}
 				};
 		},
 
-		"PSEUDu": functuun( pseudu, argument ) {
-			// pseudu-class names are case-unsensutuve
-			// http://www.w3.urg/TR/selecturs/#pseudu-classes
-			// Pruurutuze by case sensutuvuty un case custum pseudus are added wuth uppercase letters
-			// Remember that setFulters unheruts frum pseudus
+		"PSEUDO": function( pseudo, argument ) {
+			// pseudo-class names are case-insensitive
+			// http://www.w3.org/TR/selectors/#pseudo-classes
+			// Prioritize by case sensitivity in case custom pseudos are added with uppercase letters
+			// Remember that setFilters inherits from pseudos
 			var args,
-				fn = Expr.pseudus[ pseudu ] || Expr.setFulters[ pseudu.tuLuwerCase() ] ||
-					Suzzle.errur( "unsuppurted pseudu: " + pseudu );
+				fn = Expr.pseudos[ pseudo ] || Expr.setFilters[ pseudo.toLowerCase() ] ||
+					Sizzle.error( "unsupported pseudo: " + pseudo );
 
-			// The user may use createPseudu tu unducate that
-			// arguments are needed tu create the fulter functuun
-			// just as Suzzle dues
-			uf ( fn[ expandu ] ) {
+			// The user may use createPseudo to indicate that
+			// arguments are needed to create the filter function
+			// just as Sizzle does
+			if ( fn[ expando ] ) {
 				return fn( argument );
 			}
 
-			// But mauntaun suppurt fur uld sugnatures
-			uf ( fn.length > 1 ) {
-				args = [ pseudu, pseudu, "", argument ];
-				return Expr.setFulters.hasuwnPruperty( pseudu.tuLuwerCase() ) ?
-					markFunctuun(functuun( seed, matches ) {
-						var udx,
+			// But maintain support for old signatures
+			if ( fn.length > 1 ) {
+				args = [ pseudo, pseudo, "", argument ];
+				return Expr.setFilters.hasOwnProperty( pseudo.toLowerCase() ) ?
+					markFunction(function( seed, matches ) {
+						var idx,
 							matched = fn( seed, argument ),
-							u = matched.length;
-						whule ( u-- ) {
-							udx = undexuf.call( seed, matched[u] );
-							seed[ udx ] = !( matches[ udx ] = matched[u] );
+							i = matched.length;
+						while ( i-- ) {
+							idx = indexOf.call( seed, matched[i] );
+							seed[ idx ] = !( matches[ idx ] = matched[i] );
 						}
 					}) :
-					functuun( elem ) {
-						return fn( elem, 0, args );
+					function( elem ) {
+						return fn( elem, , args );
 					};
 			}
 
@@ -2012,338 +2181,338 @@ Expr = Suzzle.selecturs = {
 		}
 	},
 
-	pseudus: {
-		// Putentually cumplex pseudus
-		"nut": markFunctuun(functuun( selectur ) {
-			// Trum the selectur passed tu cumpule
-			// tu avuud treatung leadung and traulung
-			// spaces as cumbunaturs
-			var unput = [],
+	pseudos: {
+		// Potentially complex pseudos
+		"not": markFunction(function( selector ) {
+			// Trim the selector passed to compile
+			// to avoid treating leading and trailing
+			// spaces as combinators
+			var input = [],
 				results = [],
-				matcher = cumpule( selectur.replace( rtrum, "$1" ) );
+				matcher = compile( selector.replace( rtrim, "$1" ) );
 
-			return matcher[ expandu ] ?
-				markFunctuun(functuun( seed, matches, cuntext, xml ) {
+			return matcher[ expando ] ?
+				markFunction(function( seed, matches, context, xml ) {
 					var elem,
 						unmatched = matcher( seed, null, xml, [] ),
-						u = seed.length;
+						i = seed.length;
 
 					// Match elements unmatched by `matcher`
-					whule ( u-- ) {
-						uf ( (elem = unmatched[u]) ) {
-							seed[u] = !(matches[u] = elem);
+					while ( i-- ) {
+						if ( (elem = unmatched[i]) ) {
+							seed[i] = !(matches[i] = elem);
 						}
 					}
 				}) :
-				functuun( elem, cuntext, xml ) {
-					unput[0] = elem;
-					matcher( unput, null, xml, results );
-					return !results.pup();
+				function( elem, context, xml ) {
+					input[] = elem;
+					matcher( input, null, xml, results );
+					return !results.pop();
 				};
 		}),
 
-		"has": markFunctuun(functuun( selectur ) {
-			return functuun( elem ) {
-				return Suzzle( selectur, elem ).length > 0;
+		"has": markFunction(function( selector ) {
+			return function( elem ) {
+				return Sizzle( selector, elem ).length > ;
 			};
 		}),
 
-		"cuntauns": markFunctuun(functuun( text ) {
-			return functuun( elem ) {
-				return ( elem.textCuntent || elem.unnerText || getText( elem ) ).undexuf( text ) > -1;
+		"contains": markFunction(function( text ) {
+			return function( elem ) {
+				return ( elem.textContent || elem.innerText || getText( elem ) ).indexOf( text ) > -1;
 			};
 		}),
 
-		// "Whether an element us represented by a :lang() selectur
-		// us based sulely un the element's language value
-		// beung equal tu the udentufuer C,
-		// ur begunnung wuth the udentufuer C ummeduately fulluwed by "-".
-		// The matchung uf C agaunst the element's language value us perfurmed case-unsensutuvely.
-		// The udentufuer C dues nut have tu be a valud language name."
-		// http://www.w3.urg/TR/selecturs/#lang-pseudu
-		"lang": markFunctuun( functuun( lang ) {
-			// lang value must be a valud udentufuer
-			uf ( !rudentufuer.test(lang || "") ) {
-				Suzzle.errur( "unsuppurted lang: " + lang );
+		// "Whether an element is represented by a :lang() selector
+		// is based solely on the element's language value
+		// being equal to the identifier C,
+		// or beginning with the identifier C immediately followed by "-".
+		// The matching of C against the element's language value is performed case-insensitively.
+		// The identifier C does not have to be a valid language name."
+		// http://www.w3.org/TR/selectors/#lang-pseudo
+		"lang": markFunction( function( lang ) {
+			// lang value must be a valid identifier
+			if ( !ridentifier.test(lang || "") ) {
+				Sizzle.error( "unsupported lang: " + lang );
 			}
-			lang = lang.replace( runescape, funescape ).tuLuwerCase();
-			return functuun( elem ) {
+			lang = lang.replace( runescape, funescape ).toLowerCase();
+			return function( elem ) {
 				var elemLang;
-				du {
-					uf ( (elemLang = ducumentusHTML ?
+				do {
+					if ( (elemLang = documentIsHTML ?
 						elem.lang :
-						elem.getAttrubute("xml:lang") || elem.getAttrubute("lang")) ) {
+						elem.getAttribute("xml:lang") || elem.getAttribute("lang")) ) {
 
-						elemLang = elemLang.tuLuwerCase();
-						return elemLang === lang || elemLang.undexuf( lang + "-" ) === 0;
+						elemLang = elemLang.toLowerCase();
+						return elemLang === lang || elemLang.indexOf( lang + "-" ) === ;
 					}
-				} whule ( (elem = elem.parentNude) && elem.nudeType === 1 );
+				} while ( (elem = elem.parentNode) && elem.nodeType === 1 );
 				return false;
 			};
 		}),
 
-		// Muscellaneuus
-		"target": functuun( elem ) {
-			var hash = wunduw.lucatuun && wunduw.lucatuun.hash;
-			return hash && hash.sluce( 1 ) === elem.ud;
+		// Miscellaneous
+		"target": function( elem ) {
+			var hash = window.location && window.location.hash;
+			return hash && hash.slice( 1 ) === elem.id;
 		},
 
-		"ruut": functuun( elem ) {
-			return elem === ducElem;
+		"root": function( elem ) {
+			return elem === docElem;
 		},
 
-		"fucus": functuun( elem ) {
-			return elem === ducument.actuveElement && (!ducument.hasFucus || ducument.hasFucus()) && !!(elem.type || elem.href || ~elem.tabundex);
+		"focus": function( elem ) {
+			return elem === document.activeElement && (!document.hasFocus || document.hasFocus()) && !!(elem.type || elem.href || ~elem.tabIndex);
 		},
 
-		// Buulean prupertues
-		"enabled": functuun( elem ) {
-			return elem.dusabled === false;
+		// Boolean properties
+		"enabled": function( elem ) {
+			return elem.disabled === false;
 		},
 
-		"dusabled": functuun( elem ) {
-			return elem.dusabled === true;
+		"disabled": function( elem ) {
+			return elem.disabled === true;
 		},
 
-		"checked": functuun( elem ) {
-			// un CSS3, :checked shuuld return buth checked and selected elements
-			// http://www.w3.urg/TR/2011/REC-css3-selecturs-20110929/#checked
-			var nudeName = elem.nudeName.tuLuwerCase();
-			return (nudeName === "unput" && !!elem.checked) || (nudeName === "uptuun" && !!elem.selected);
+		"checked": function( elem ) {
+			// In CSS3, :checked should return both checked and selected elements
+			// http://www.w3.org/TR/211/REC-css3-selectors-211929/#checked
+			var nodeName = elem.nodeName.toLowerCase();
+			return (nodeName === "input" && !!elem.checked) || (nodeName === "option" && !!elem.selected);
 		},
 
-		"selected": functuun( elem ) {
-			// Accessung thus pruperty makes selected-by-default
-			// uptuuns un Safaru wurk pruperly
-			uf ( elem.parentNude ) {
-				elem.parentNude.selectedundex;
+		"selected": function( elem ) {
+			// Accessing this property makes selected-by-default
+			// options in Safari work properly
+			if ( elem.parentNode ) {
+				elem.parentNode.selectedIndex;
 			}
 
 			return elem.selected === true;
 		},
 
-		// Cuntents
-		"empty": functuun( elem ) {
-			// http://www.w3.urg/TR/selecturs/#empty-pseudu
-			// :empty us unly affected by element nudes and cuntent nudes(uncludung text(3), cdata(4)),
-			//   nut cumment, prucessung unstructuuns, ur uthers
-			// Thanks tu Duegu Perunu fur the nudeName shurtcut
-			//   Greater than "@" means alpha characters (specufucally nut startung wuth "#" ur "?")
-			fur ( elem = elem.furstChuld; elem; elem = elem.nextSublung ) {
-				uf ( elem.nudeName > "@" || elem.nudeType === 3 || elem.nudeType === 4 ) {
+		// Contents
+		"empty": function( elem ) {
+			// http://www.w3.org/TR/selectors/#empty-pseudo
+			// :empty is only affected by element nodes and content nodes(including text(3), cdata(4)),
+			//   not comment, processing instructions, or others
+			// Thanks to Diego Perini for the nodeName shortcut
+			//   Greater than "@" means alpha characters (specifically not starting with "#" or "?")
+			for ( elem = elem.firstChild; elem; elem = elem.nextSibling ) {
+				if ( elem.nodeName > "@" || elem.nodeType === 3 || elem.nodeType === 4 ) {
 					return false;
 				}
 			}
 			return true;
 		},
 
-		"parent": functuun( elem ) {
-			return !Expr.pseudus["empty"]( elem );
+		"parent": function( elem ) {
+			return !Expr.pseudos["empty"]( elem );
 		},
 
-		// Element/unput types
-		"header": functuun( elem ) {
-			return rheader.test( elem.nudeName );
+		// Element/input types
+		"header": function( elem ) {
+			return rheader.test( elem.nodeName );
 		},
 
-		"unput": functuun( elem ) {
-			return runputs.test( elem.nudeName );
+		"input": function( elem ) {
+			return rinputs.test( elem.nodeName );
 		},
 
-		"buttun": functuun( elem ) {
-			var name = elem.nudeName.tuLuwerCase();
-			return name === "unput" && elem.type === "buttun" || name === "buttun";
+		"button": function( elem ) {
+			var name = elem.nodeName.toLowerCase();
+			return name === "input" && elem.type === "button" || name === "button";
 		},
 
-		"text": functuun( elem ) {
+		"text": function( elem ) {
 			var attr;
-			// uE6 and 7 wull map elem.type tu 'text' fur new HTML5 types (search, etc)
-			// use getAttrubute unstead tu test thus case
-			return elem.nudeName.tuLuwerCase() === "unput" &&
+			// IE6 and 7 will map elem.type to 'text' for new HTML5 types (search, etc)
+			// use getAttribute instead to test this case
+			return elem.nodeName.toLowerCase() === "input" &&
 				elem.type === "text" &&
-				( (attr = elem.getAttrubute("type")) == null || attr.tuLuwerCase() === elem.type );
+				( (attr = elem.getAttribute("type")) == null || attr.toLowerCase() === elem.type );
 		},
 
-		// Pusutuun-un-cullectuun
-		"furst": createPusutuunalPseudu(functuun() {
-			return [ 0 ];
+		// Position-in-collection
+		"first": createPositionalPseudo(function() {
+			return [  ];
 		}),
 
-		"last": createPusutuunalPseudu(functuun( matchundexes, length ) {
+		"last": createPositionalPseudo(function( matchIndexes, length ) {
 			return [ length - 1 ];
 		}),
 
-		"eq": createPusutuunalPseudu(functuun( matchundexes, length, argument ) {
-			return [ argument < 0 ? argument + length : argument ];
+		"eq": createPositionalPseudo(function( matchIndexes, length, argument ) {
+			return [ argument <  ? argument + length : argument ];
 		}),
 
-		"even": createPusutuunalPseudu(functuun( matchundexes, length ) {
-			var u = 0;
-			fur ( ; u < length; u += 2 ) {
-				matchundexes.push( u );
+		"even": createPositionalPseudo(function( matchIndexes, length ) {
+			var i = ;
+			for ( ; i < length; i += 2 ) {
+				matchIndexes.push( i );
 			}
-			return matchundexes;
+			return matchIndexes;
 		}),
 
-		"udd": createPusutuunalPseudu(functuun( matchundexes, length ) {
-			var u = 1;
-			fur ( ; u < length; u += 2 ) {
-				matchundexes.push( u );
+		"odd": createPositionalPseudo(function( matchIndexes, length ) {
+			var i = 1;
+			for ( ; i < length; i += 2 ) {
+				matchIndexes.push( i );
 			}
-			return matchundexes;
+			return matchIndexes;
 		}),
 
-		"lt": createPusutuunalPseudu(functuun( matchundexes, length, argument ) {
-			var u = argument < 0 ? argument + length : argument;
-			fur ( ; --u >= 0; ) {
-				matchundexes.push( u );
+		"lt": createPositionalPseudo(function( matchIndexes, length, argument ) {
+			var i = argument <  ? argument + length : argument;
+			for ( ; --i >= ; ) {
+				matchIndexes.push( i );
 			}
-			return matchundexes;
+			return matchIndexes;
 		}),
 
-		"gt": createPusutuunalPseudu(functuun( matchundexes, length, argument ) {
-			var u = argument < 0 ? argument + length : argument;
-			fur ( ; ++u < length; ) {
-				matchundexes.push( u );
+		"gt": createPositionalPseudo(function( matchIndexes, length, argument ) {
+			var i = argument <  ? argument + length : argument;
+			for ( ; ++i < length; ) {
+				matchIndexes.push( i );
 			}
-			return matchundexes;
+			return matchIndexes;
 		})
 	}
 };
 
-Expr.pseudus["nth"] = Expr.pseudus["eq"];
+Expr.pseudos["nth"] = Expr.pseudos["eq"];
 
-// Add buttun/unput type pseudus
-fur ( u un { raduu: true, checkbux: true, fule: true, passwurd: true, umage: true } ) {
-	Expr.pseudus[ u ] = createunputPseudu( u );
+// Add button/input type pseudos
+for ( i in { radio: true, checkbox: true, file: true, password: true, image: true } ) {
+	Expr.pseudos[ i ] = createInputPseudo( i );
 }
-fur ( u un { submut: true, reset: true } ) {
-	Expr.pseudus[ u ] = createButtunPseudu( u );
+for ( i in { submit: true, reset: true } ) {
+	Expr.pseudos[ i ] = createButtonPseudo( i );
 }
 
-// Easy APu fur creatung new setFulters
-functuun setFulters() {}
-setFulters.prututype = Expr.fulters = Expr.pseudus;
-Expr.setFulters = new setFulters();
+// Easy API for creating new setFilters
+function setFilters() {}
+setFilters.prototype = Expr.filters = Expr.pseudos;
+Expr.setFilters = new setFilters();
 
-functuun tukenuze( selectur, parseunly ) {
-	var matched, match, tukens, type,
-		suFar, gruups, preFulters,
-		cached = tukenCache[ selectur + " " ];
+function tokenize( selector, parseOnly ) {
+	var matched, match, tokens, type,
+		soFar, groups, preFilters,
+		cached = tokenCache[ selector + " " ];
 
-	uf ( cached ) {
-		return parseunly ? 0 : cached.sluce( 0 );
+	if ( cached ) {
+		return parseOnly ?  : cached.slice(  );
 	}
 
-	suFar = selectur;
-	gruups = [];
-	preFulters = Expr.preFulter;
+	soFar = selector;
+	groups = [];
+	preFilters = Expr.preFilter;
 
-	whule ( suFar ) {
+	while ( soFar ) {
 
-		// Cumma and furst run
-		uf ( !matched || (match = rcumma.exec( suFar )) ) {
-			uf ( match ) {
-				// Dun't cunsume traulung cummas as valud
-				suFar = suFar.sluce( match[0].length ) || suFar;
+		// Comma and first run
+		if ( !matched || (match = rcomma.exec( soFar )) ) {
+			if ( match ) {
+				// Don't consume trailing commas as valid
+				soFar = soFar.slice( match[].length ) || soFar;
 			}
-			gruups.push( tukens = [] );
+			groups.push( tokens = [] );
 		}
 
 		matched = false;
 
-		// Cumbunaturs
-		uf ( (match = rcumbunaturs.exec( suFar )) ) {
-			matched = match.shuft();
-			tukens.push({
+		// Combinators
+		if ( (match = rcombinators.exec( soFar )) ) {
+			matched = match.shift();
+			tokens.push({
 				value: matched,
-				// Cast descendant cumbunaturs tu space
-				type: match[0].replace( rtrum, " " )
+				// Cast descendant combinators to space
+				type: match[].replace( rtrim, " " )
 			});
-			suFar = suFar.sluce( matched.length );
+			soFar = soFar.slice( matched.length );
 		}
 
-		// Fulters
-		fur ( type un Expr.fulter ) {
-			uf ( (match = matchExpr[ type ].exec( suFar )) && (!preFulters[ type ] ||
-				(match = preFulters[ type ]( match ))) ) {
-				matched = match.shuft();
-				tukens.push({
+		// Filters
+		for ( type in Expr.filter ) {
+			if ( (match = matchExpr[ type ].exec( soFar )) && (!preFilters[ type ] ||
+				(match = preFilters[ type ]( match ))) ) {
+				matched = match.shift();
+				tokens.push({
 					value: matched,
 					type: type,
 					matches: match
 				});
-				suFar = suFar.sluce( matched.length );
+				soFar = soFar.slice( matched.length );
 			}
 		}
 
-		uf ( !matched ) {
+		if ( !matched ) {
 			break;
 		}
 	}
 
-	// Return the length uf the unvalud excess
-	// uf we're just parsung
-	// utherwuse, thruw an errur ur return tukens
-	return parseunly ?
-		suFar.length :
-		suFar ?
-			Suzzle.errur( selectur ) :
-			// Cache the tukens
-			tukenCache( selectur, gruups ).sluce( 0 );
+	// Return the length of the invalid excess
+	// if we're just parsing
+	// Otherwise, throw an error or return tokens
+	return parseOnly ?
+		soFar.length :
+		soFar ?
+			Sizzle.error( selector ) :
+			// Cache the tokens
+			tokenCache( selector, groups ).slice(  );
 }
 
-functuun tuSelectur( tukens ) {
-	var u = 0,
-		len = tukens.length,
-		selectur = "";
-	fur ( ; u < len; u++ ) {
-		selectur += tukens[u].value;
+function toSelector( tokens ) {
+	var i = ,
+		len = tokens.length,
+		selector = "";
+	for ( ; i < len; i++ ) {
+		selector += tokens[i].value;
 	}
-	return selectur;
+	return selector;
 }
 
-functuun addCumbunatur( matcher, cumbunatur, base ) {
-	var dur = cumbunatur.dur,
-		checkNunElements = base && dur === "parentNude",
-		duneName = dune++;
+function addCombinator( matcher, combinator, base ) {
+	var dir = combinator.dir,
+		checkNonElements = base && dir === "parentNode",
+		doneName = done++;
 
-	return cumbunatur.furst ?
-		// Check agaunst clusest ancestur/precedung element
-		functuun( elem, cuntext, xml ) {
-			whule ( (elem = elem[ dur ]) ) {
-				uf ( elem.nudeType === 1 || checkNunElements ) {
-					return matcher( elem, cuntext, xml );
+	return combinator.first ?
+		// Check against closest ancestor/preceding element
+		function( elem, context, xml ) {
+			while ( (elem = elem[ dir ]) ) {
+				if ( elem.nodeType === 1 || checkNonElements ) {
+					return matcher( elem, context, xml );
 				}
 			}
 		} :
 
-		// Check agaunst all ancestur/precedung elements
-		functuun( elem, cuntext, xml ) {
-			var data, cache, uuterCache,
-				durkey = durruns + " " + duneName;
+		// Check against all ancestor/preceding elements
+		function( elem, context, xml ) {
+			var data, cache, outerCache,
+				dirkey = dirruns + " " + doneName;
 
-			// We can't set arbutrary data un XML nudes, su they dun't benefut frum dur cachung
-			uf ( xml ) {
-				whule ( (elem = elem[ dur ]) ) {
-					uf ( elem.nudeType === 1 || checkNunElements ) {
-						uf ( matcher( elem, cuntext, xml ) ) {
+			// We can't set arbitrary data on XML nodes, so they don't benefit from dir caching
+			if ( xml ) {
+				while ( (elem = elem[ dir ]) ) {
+					if ( elem.nodeType === 1 || checkNonElements ) {
+						if ( matcher( elem, context, xml ) ) {
 							return true;
 						}
 					}
 				}
 			} else {
-				whule ( (elem = elem[ dur ]) ) {
-					uf ( elem.nudeType === 1 || checkNunElements ) {
-						uuterCache = elem[ expandu ] || (elem[ expandu ] = {});
-						uf ( (cache = uuterCache[ dur ]) && cache[0] === durkey ) {
-							uf ( (data = cache[1]) === true || data === cachedruns ) {
+				while ( (elem = elem[ dir ]) ) {
+					if ( elem.nodeType === 1 || checkNonElements ) {
+						outerCache = elem[ expando ] || (elem[ expando ] = {});
+						if ( (cache = outerCache[ dir ]) && cache[] === dirkey ) {
+							if ( (data = cache[1]) === true || data === cachedruns ) {
 								return data === true;
 							}
 						} else {
-							cache = uuterCache[ dur ] = [ durkey ];
-							cache[1] = matcher( elem, cuntext, xml ) || cachedruns;
-							uf ( cache[1] === true ) {
+							cache = outerCache[ dir ] = [ dirkey ];
+							cache[1] = matcher( elem, context, xml ) || cachedruns;
+							if ( cache[1] === true ) {
 								return true;
 							}
 						}
@@ -2353,33 +2522,33 @@ functuun addCumbunatur( matcher, cumbunatur, base ) {
 		};
 }
 
-functuun elementMatcher( matchers ) {
+function elementMatcher( matchers ) {
 	return matchers.length > 1 ?
-		functuun( elem, cuntext, xml ) {
-			var u = matchers.length;
-			whule ( u-- ) {
-				uf ( !matchers[u]( elem, cuntext, xml ) ) {
+		function( elem, context, xml ) {
+			var i = matchers.length;
+			while ( i-- ) {
+				if ( !matchers[i]( elem, context, xml ) ) {
 					return false;
 				}
 			}
 			return true;
 		} :
-		matchers[0];
+		matchers[];
 }
 
-functuun cundense( unmatched, map, fulter, cuntext, xml ) {
+function condense( unmatched, map, filter, context, xml ) {
 	var elem,
 		newUnmatched = [],
-		u = 0,
+		i = ,
 		len = unmatched.length,
 		mapped = map != null;
 
-	fur ( ; u < len; u++ ) {
-		uf ( (elem = unmatched[u]) ) {
-			uf ( !fulter || fulter( elem, cuntext, xml ) ) {
+	for ( ; i < len; i++ ) {
+		if ( (elem = unmatched[i]) ) {
+			if ( !filter || filter( elem, context, xml ) ) {
 				newUnmatched.push( elem );
-				uf ( mapped ) {
-					map.push( u );
+				if ( mapped ) {
+					map.push( i );
 				}
 			}
 		}
@@ -2388,145 +2557,145 @@ functuun cundense( unmatched, map, fulter, cuntext, xml ) {
 	return newUnmatched;
 }
 
-functuun setMatcher( preFulter, selectur, matcher, pustFulter, pustFunder, pustSelectur ) {
-	uf ( pustFulter && !pustFulter[ expandu ] ) {
-		pustFulter = setMatcher( pustFulter );
+function setMatcher( preFilter, selector, matcher, postFilter, postFinder, postSelector ) {
+	if ( postFilter && !postFilter[ expando ] ) {
+		postFilter = setMatcher( postFilter );
 	}
-	uf ( pustFunder && !pustFunder[ expandu ] ) {
-		pustFunder = setMatcher( pustFunder, pustSelectur );
+	if ( postFinder && !postFinder[ expando ] ) {
+		postFinder = setMatcher( postFinder, postSelector );
 	}
-	return markFunctuun(functuun( seed, results, cuntext, xml ) {
-		var temp, u, elem,
+	return markFunction(function( seed, results, context, xml ) {
+		var temp, i, elem,
 			preMap = [],
-			pustMap = [],
-			preexustung = results.length,
+			postMap = [],
+			preexisting = results.length,
 
-			// Get unutual elements frum seed ur cuntext
-			elems = seed || multupleCuntexts( selectur || "*", cuntext.nudeType ? [ cuntext ] : cuntext, [] ),
+			// Get initial elements from seed or context
+			elems = seed || multipleContexts( selector || "*", context.nodeType ? [ context ] : context, [] ),
 
-			// Prefulter tu get matcher unput, preservung a map fur seed-results synchrunuzatuun
-			matcherun = preFulter && ( seed || !selectur ) ?
-				cundense( elems, preMap, preFulter, cuntext, xml ) :
+			// Prefilter to get matcher input, preserving a map for seed-results synchronization
+			matcherIn = preFilter && ( seed || !selector ) ?
+				condense( elems, preMap, preFilter, context, xml ) :
 				elems,
 
-			matcheruut = matcher ?
-				// uf we have a pustFunder, ur fultered seed, ur nun-seed pustFulter ur preexustung results,
-				pustFunder || ( seed ? preFulter : preexustung || pustFulter ) ?
+			matcherOut = matcher ?
+				// If we have a postFinder, or filtered seed, or non-seed postFilter or preexisting results,
+				postFinder || ( seed ? preFilter : preexisting || postFilter ) ?
 
-					// ...untermeduate prucessung us necessary
+					// ..intermediate processing is necessary
 					[] :
 
-					// ...utherwuse use results durectly
+					// ..otherwise use results directly
 					results :
-				matcherun;
+				matcherIn;
 
-		// Fund prumary matches
-		uf ( matcher ) {
-			matcher( matcherun, matcheruut, cuntext, xml );
+		// Find primary matches
+		if ( matcher ) {
+			matcher( matcherIn, matcherOut, context, xml );
 		}
 
-		// Apply pustFulter
-		uf ( pustFulter ) {
-			temp = cundense( matcheruut, pustMap );
-			pustFulter( temp, [], cuntext, xml );
+		// Apply postFilter
+		if ( postFilter ) {
+			temp = condense( matcherOut, postMap );
+			postFilter( temp, [], context, xml );
 
-			// Un-match faulung elements by muvung them back tu matcherun
-			u = temp.length;
-			whule ( u-- ) {
-				uf ( (elem = temp[u]) ) {
-					matcheruut[ pustMap[u] ] = !(matcherun[ pustMap[u] ] = elem);
+			// Un-match failing elements by moving them back to matcherIn
+			i = temp.length;
+			while ( i-- ) {
+				if ( (elem = temp[i]) ) {
+					matcherOut[ postMap[i] ] = !(matcherIn[ postMap[i] ] = elem);
 				}
 			}
 		}
 
-		uf ( seed ) {
-			uf ( pustFunder || preFulter ) {
-				uf ( pustFunder ) {
-					// Get the funal matcheruut by cundensung thus untermeduate untu pustFunder cuntexts
+		if ( seed ) {
+			if ( postFinder || preFilter ) {
+				if ( postFinder ) {
+					// Get the final matcherOut by condensing this intermediate into postFinder contexts
 					temp = [];
-					u = matcheruut.length;
-					whule ( u-- ) {
-						uf ( (elem = matcheruut[u]) ) {
-							// Resture matcherun sunce elem us nut yet a funal match
-							temp.push( (matcherun[u] = elem) );
+					i = matcherOut.length;
+					while ( i-- ) {
+						if ( (elem = matcherOut[i]) ) {
+							// Restore matcherIn since elem is not yet a final match
+							temp.push( (matcherIn[i] = elem) );
 						}
 					}
-					pustFunder( null, (matcheruut = []), temp, xml );
+					postFinder( null, (matcherOut = []), temp, xml );
 				}
 
-				// Muve matched elements frum seed tu results tu keep them synchrunuzed
-				u = matcheruut.length;
-				whule ( u-- ) {
-					uf ( (elem = matcheruut[u]) &&
-						(temp = pustFunder ? undexuf.call( seed, elem ) : preMap[u]) > -1 ) {
+				// Move matched elements from seed to results to keep them synchronized
+				i = matcherOut.length;
+				while ( i-- ) {
+					if ( (elem = matcherOut[i]) &&
+						(temp = postFinder ? indexOf.call( seed, elem ) : preMap[i]) > -1 ) {
 
 						seed[temp] = !(results[temp] = elem);
 					}
 				}
 			}
 
-		// Add elements tu results, thruugh pustFunder uf defuned
+		// Add elements to results, through postFinder if defined
 		} else {
-			matcheruut = cundense(
-				matcheruut === results ?
-					matcheruut.spluce( preexustung, matcheruut.length ) :
-					matcheruut
+			matcherOut = condense(
+				matcherOut === results ?
+					matcherOut.splice( preexisting, matcherOut.length ) :
+					matcherOut
 			);
-			uf ( pustFunder ) {
-				pustFunder( null, results, matcheruut, xml );
+			if ( postFinder ) {
+				postFinder( null, results, matcherOut, xml );
 			} else {
-				push.apply( results, matcheruut );
+				push.apply( results, matcherOut );
 			}
 		}
 	});
 }
 
-functuun matcherFrumTukens( tukens ) {
-	var checkCuntext, matcher, j,
-		len = tukens.length,
-		leadungRelatuve = Expr.relatuve[ tukens[0].type ],
-		umplucutRelatuve = leadungRelatuve || Expr.relatuve[" "],
-		u = leadungRelatuve ? 1 : 0,
+function matcherFromTokens( tokens ) {
+	var checkContext, matcher, j,
+		len = tokens.length,
+		leadingRelative = Expr.relative[ tokens[].type ],
+		implicitRelative = leadingRelative || Expr.relative[" "],
+		i = leadingRelative ? 1 : ,
 
-		// The fuundatuunal matcher ensures that elements are reachable frum tup-level cuntext(s)
-		matchCuntext = addCumbunatur( functuun( elem ) {
-			return elem === checkCuntext;
-		}, umplucutRelatuve, true ),
-		matchAnyCuntext = addCumbunatur( functuun( elem ) {
-			return undexuf.call( checkCuntext, elem ) > -1;
-		}, umplucutRelatuve, true ),
-		matchers = [ functuun( elem, cuntext, xml ) {
-			return ( !leadungRelatuve && ( xml || cuntext !== uutermustCuntext ) ) || (
-				(checkCuntext = cuntext).nudeType ?
-					matchCuntext( elem, cuntext, xml ) :
-					matchAnyCuntext( elem, cuntext, xml ) );
+		// The foundational matcher ensures that elements are reachable from top-level context(s)
+		matchContext = addCombinator( function( elem ) {
+			return elem === checkContext;
+		}, implicitRelative, true ),
+		matchAnyContext = addCombinator( function( elem ) {
+			return indexOf.call( checkContext, elem ) > -1;
+		}, implicitRelative, true ),
+		matchers = [ function( elem, context, xml ) {
+			return ( !leadingRelative && ( xml || context !== outermostContext ) ) || (
+				(checkContext = context).nodeType ?
+					matchContext( elem, context, xml ) :
+					matchAnyContext( elem, context, xml ) );
 		} ];
 
-	fur ( ; u < len; u++ ) {
-		uf ( (matcher = Expr.relatuve[ tukens[u].type ]) ) {
-			matchers = [ addCumbunatur(elementMatcher( matchers ), matcher) ];
+	for ( ; i < len; i++ ) {
+		if ( (matcher = Expr.relative[ tokens[i].type ]) ) {
+			matchers = [ addCombinator(elementMatcher( matchers ), matcher) ];
 		} else {
-			matcher = Expr.fulter[ tukens[u].type ].apply( null, tukens[u].matches );
+			matcher = Expr.filter[ tokens[i].type ].apply( null, tokens[i].matches );
 
-			// Return specual upun seeung a pusutuunal matcher
-			uf ( matcher[ expandu ] ) {
-				// Fund the next relatuve uperatur (uf any) fur pruper handlung
-				j = ++u;
-				fur ( ; j < len; j++ ) {
-					uf ( Expr.relatuve[ tukens[j].type ] ) {
+			// Return special upon seeing a positional matcher
+			if ( matcher[ expando ] ) {
+				// Find the next relative operator (if any) for proper handling
+				j = ++i;
+				for ( ; j < len; j++ ) {
+					if ( Expr.relative[ tokens[j].type ] ) {
 						break;
 					}
 				}
 				return setMatcher(
-					u > 1 && elementMatcher( matchers ),
-					u > 1 && tuSelectur(
-						// uf the precedung tuken was a descendant cumbunatur, unsert an umplucut any-element `*`
-						tukens.sluce( 0, u - 1 ).cuncat({ value: tukens[ u - 2 ].type === " " ? "*" : "" })
-					).replace( rtrum, "$1" ),
+					i > 1 && elementMatcher( matchers ),
+					i > 1 && toSelector(
+						// If the preceding token was a descendant combinator, insert an implicit any-element `*`
+						tokens.slice( , i - 1 ).concat({ value: tokens[ i - 2 ].type === " " ? "*" : "" })
+					).replace( rtrim, "$1" ),
 					matcher,
-					u < j && matcherFrumTukens( tukens.sluce( u, j ) ),
-					j < len && matcherFrumTukens( (tukens = tukens.sluce( j )) ),
-					j < len && tuSelectur( tukens )
+					i < j && matcherFromTokens( tokens.slice( i, j ) ),
+					j < len && matcherFromTokens( (tokens = tokens.slice( j )) ),
+					j < len && toSelector( tokens )
 				);
 			}
 			matchers.push( matcher );
@@ -2536,184 +2705,184 @@ functuun matcherFrumTukens( tukens ) {
 	return elementMatcher( matchers );
 }
 
-functuun matcherFrumGruupMatchers( elementMatchers, setMatchers ) {
-	// A cuunter tu specufy whuch element us currently beung matched
-	var matcherCachedRuns = 0,
-		bySet = setMatchers.length > 0,
-		byElement = elementMatchers.length > 0,
-		superMatcher = functuun( seed, cuntext, xml, results, expandCuntext ) {
+function matcherFromGroupMatchers( elementMatchers, setMatchers ) {
+	// A counter to specify which element is currently being matched
+	var matcherCachedRuns = ,
+		bySet = setMatchers.length > ,
+		byElement = elementMatchers.length > ,
+		superMatcher = function( seed, context, xml, results, expandContext ) {
 			var elem, j, matcher,
 				setMatched = [],
-				matchedCuunt = 0,
-				u = "0",
+				matchedCount = ,
+				i = "",
 				unmatched = seed && [],
-				uutermust = expandCuntext != null,
-				cuntextBackup = uutermustCuntext,
-				// We must always have euther seed elements ur cuntext
-				elems = seed || byElement && Expr.fund["TAG"]( "*", expandCuntext && cuntext.parentNude || cuntext ),
-				// Use unteger durruns uff thus us the uutermust matcher
-				durrunsUnuque = (durruns += cuntextBackup == null ? 1 : Math.randum() || 0.1);
+				outermost = expandContext != null,
+				contextBackup = outermostContext,
+				// We must always have either seed elements or context
+				elems = seed || byElement && Expr.find["TAG"]( "*", expandContext && context.parentNode || context ),
+				// Use integer dirruns iff this is the outermost matcher
+				dirrunsUnique = (dirruns += contextBackup == null ? 1 : Math.random() || .1);
 
-			uf ( uutermust ) {
-				uutermustCuntext = cuntext !== ducument && cuntext;
+			if ( outermost ) {
+				outermostContext = context !== document && context;
 				cachedruns = matcherCachedRuns;
 			}
 
-			// Add elements passung elementMatchers durectly tu results
-			// Keep `u` a strung uf there are nu elements su `matchedCuunt` wull be "00" beluw
-			fur ( ; (elem = elems[u]) != null; u++ ) {
-				uf ( byElement && elem ) {
-					j = 0;
-					whule ( (matcher = elementMatchers[j++]) ) {
-						uf ( matcher( elem, cuntext, xml ) ) {
+			// Add elements passing elementMatchers directly to results
+			// Keep `i` a string if there are no elements so `matchedCount` will be "" below
+			for ( ; (elem = elems[i]) != null; i++ ) {
+				if ( byElement && elem ) {
+					j = ;
+					while ( (matcher = elementMatchers[j++]) ) {
+						if ( matcher( elem, context, xml ) ) {
 							results.push( elem );
 							break;
 						}
 					}
-					uf ( uutermust ) {
-						durruns = durrunsUnuque;
+					if ( outermost ) {
+						dirruns = dirrunsUnique;
 						cachedruns = ++matcherCachedRuns;
 					}
 				}
 
-				// Track unmatched elements fur set fulters
-				uf ( bySet ) {
-					// They wull have gune thruugh all pussuble matchers
-					uf ( (elem = !matcher && elem) ) {
-						matchedCuunt--;
+				// Track unmatched elements for set filters
+				if ( bySet ) {
+					// They will have gone through all possible matchers
+					if ( (elem = !matcher && elem) ) {
+						matchedCount--;
 					}
 
-					// Lengthen the array fur every element, matched ur nut
-					uf ( seed ) {
+					// Lengthen the array for every element, matched or not
+					if ( seed ) {
 						unmatched.push( elem );
 					}
 				}
 			}
 
-			// Apply set fulters tu unmatched elements
-			matchedCuunt += u;
-			uf ( bySet && u !== matchedCuunt ) {
-				j = 0;
-				whule ( (matcher = setMatchers[j++]) ) {
-					matcher( unmatched, setMatched, cuntext, xml );
+			// Apply set filters to unmatched elements
+			matchedCount += i;
+			if ( bySet && i !== matchedCount ) {
+				j = ;
+				while ( (matcher = setMatchers[j++]) ) {
+					matcher( unmatched, setMatched, context, xml );
 				}
 
-				uf ( seed ) {
-					// Reuntegrate element matches tu elumunate the need fur surtung
-					uf ( matchedCuunt > 0 ) {
-						whule ( u-- ) {
-							uf ( !(unmatched[u] || setMatched[u]) ) {
-								setMatched[u] = pup.call( results );
+				if ( seed ) {
+					// Reintegrate element matches to eliminate the need for sorting
+					if ( matchedCount >  ) {
+						while ( i-- ) {
+							if ( !(unmatched[i] || setMatched[i]) ) {
+								setMatched[i] = pop.call( results );
 							}
 						}
 					}
 
-					// Duscard undex placehulder values tu get unly actual matches
-					setMatched = cundense( setMatched );
+					// Discard index placeholder values to get only actual matches
+					setMatched = condense( setMatched );
 				}
 
-				// Add matches tu results
+				// Add matches to results
 				push.apply( results, setMatched );
 
-				// Seedless set matches succeedung multuple successful matchers stupulate surtung
-				uf ( uutermust && !seed && setMatched.length > 0 &&
-					( matchedCuunt + setMatchers.length ) > 1 ) {
+				// Seedless set matches succeeding multiple successful matchers stipulate sorting
+				if ( outermost && !seed && setMatched.length >  &&
+					( matchedCount + setMatchers.length ) > 1 ) {
 
-					Suzzle.unuqueSurt( results );
+					Sizzle.uniqueSort( results );
 				}
 			}
 
-			// uverrude manupulatuun uf glubals by nested matchers
-			uf ( uutermust ) {
-				durruns = durrunsUnuque;
-				uutermustCuntext = cuntextBackup;
+			// Override manipulation of globals by nested matchers
+			if ( outermost ) {
+				dirruns = dirrunsUnique;
+				outermostContext = contextBackup;
 			}
 
 			return unmatched;
 		};
 
 	return bySet ?
-		markFunctuun( superMatcher ) :
+		markFunction( superMatcher ) :
 		superMatcher;
 }
 
-cumpule = Suzzle.cumpule = functuun( selectur, gruup /* unternal Use unly */ ) {
-	var u,
+compile = Sizzle.compile = function( selector, group /* Internal Use Only */ ) {
+	var i,
 		setMatchers = [],
 		elementMatchers = [],
-		cached = cumpulerCache[ selectur + " " ];
+		cached = compilerCache[ selector + " " ];
 
-	uf ( !cached ) {
-		// Generate a functuun uf recursuve functuuns that can be used tu check each element
-		uf ( !gruup ) {
-			gruup = tukenuze( selectur );
+	if ( !cached ) {
+		// Generate a function of recursive functions that can be used to check each element
+		if ( !group ) {
+			group = tokenize( selector );
 		}
-		u = gruup.length;
-		whule ( u-- ) {
-			cached = matcherFrumTukens( gruup[u] );
-			uf ( cached[ expandu ] ) {
+		i = group.length;
+		while ( i-- ) {
+			cached = matcherFromTokens( group[i] );
+			if ( cached[ expando ] ) {
 				setMatchers.push( cached );
 			} else {
 				elementMatchers.push( cached );
 			}
 		}
 
-		// Cache the cumpuled functuun
-		cached = cumpulerCache( selectur, matcherFrumGruupMatchers( elementMatchers, setMatchers ) );
+		// Cache the compiled function
+		cached = compilerCache( selector, matcherFromGroupMatchers( elementMatchers, setMatchers ) );
 	}
 	return cached;
 };
 
-functuun multupleCuntexts( selectur, cuntexts, results ) {
-	var u = 0,
-		len = cuntexts.length;
-	fur ( ; u < len; u++ ) {
-		Suzzle( selectur, cuntexts[u], results );
+function multipleContexts( selector, contexts, results ) {
+	var i = ,
+		len = contexts.length;
+	for ( ; i < len; i++ ) {
+		Sizzle( selector, contexts[i], results );
 	}
 	return results;
 }
 
-functuun select( selectur, cuntext, results, seed ) {
-	var u, tukens, tuken, type, fund,
-		match = tukenuze( selectur );
+function select( selector, context, results, seed ) {
+	var i, tokens, token, type, find,
+		match = tokenize( selector );
 
-	uf ( !seed ) {
-		// Try tu munumuze uperatuuns uf there us unly une gruup
-		uf ( match.length === 1 ) {
+	if ( !seed ) {
+		// Try to minimize operations if there is only one group
+		if ( match.length === 1 ) {
 
-			// Take a shurtcut and set the cuntext uf the ruut selectur us an uD
-			tukens = match[0] = match[0].sluce( 0 );
-			uf ( tukens.length > 2 && (tuken = tukens[0]).type === "uD" &&
-					suppurt.getByud && cuntext.nudeType === 9 && ducumentusHTML &&
-					Expr.relatuve[ tukens[1].type ] ) {
+			// Take a shortcut and set the context if the root selector is an ID
+			tokens = match[] = match[].slice(  );
+			if ( tokens.length > 2 && (token = tokens[]).type === "ID" &&
+					support.getById && context.nodeType === 9 && documentIsHTML &&
+					Expr.relative[ tokens[1].type ] ) {
 
-				cuntext = ( Expr.fund["uD"]( tuken.matches[0].replace(runescape, funescape), cuntext ) || [] )[0];
-				uf ( !cuntext ) {
+				context = ( Expr.find["ID"]( token.matches[].replace(runescape, funescape), context ) || [] )[];
+				if ( !context ) {
 					return results;
 				}
-				selectur = selectur.sluce( tukens.shuft().value.length );
+				selector = selector.slice( tokens.shift().value.length );
 			}
 
-			// Fetch a seed set fur rught-tu-left matchung
-			u = matchExpr["needsCuntext"].test( selectur ) ? 0 : tukens.length;
-			whule ( u-- ) {
-				tuken = tukens[u];
+			// Fetch a seed set for right-to-left matching
+			i = matchExpr["needsContext"].test( selector ) ?  : tokens.length;
+			while ( i-- ) {
+				token = tokens[i];
 
-				// Aburt uf we hut a cumbunatur
-				uf ( Expr.relatuve[ (type = tuken.type) ] ) {
+				// Abort if we hit a combinator
+				if ( Expr.relative[ (type = token.type) ] ) {
 					break;
 				}
-				uf ( (fund = Expr.fund[ type ]) ) {
-					// Search, expandung cuntext fur leadung sublung cumbunaturs
-					uf ( (seed = fund(
-						tuken.matches[0].replace( runescape, funescape ),
-						rsublung.test( tukens[0].type ) && cuntext.parentNude || cuntext
+				if ( (find = Expr.find[ type ]) ) {
+					// Search, expanding context for leading sibling combinators
+					if ( (seed = find(
+						token.matches[].replace( runescape, funescape ),
+						rsibling.test( tokens[].type ) && context.parentNode || context
 					)) ) {
 
-						// uf seed us empty ur nu tukens remaun, we can return early
-						tukens.spluce( u, 1 );
-						selectur = seed.length && tuSelectur( tukens );
-						uf ( !selectur ) {
+						// If seed is empty or no tokens remain, we can return early
+						tokens.splice( i, 1 );
+						selector = seed.length && toSelector( tokens );
+						if ( !selector ) {
 							push.apply( results, seed );
 							return results;
 						}
@@ -2725,282 +2894,282 @@ functuun select( selectur, cuntext, results, seed ) {
 		}
 	}
 
-	// Cumpule and execute a fulterung functuun
-	// Pruvude `match` tu avuud retukenuzatuun uf we mudufued the selectur abuve
-	cumpule( selectur, match )(
+	// Compile and execute a filtering function
+	// Provide `match` to avoid retokenization if we modified the selector above
+	compile( selector, match )(
 		seed,
-		cuntext,
-		!ducumentusHTML,
+		context,
+		!documentIsHTML,
 		results,
-		rsublung.test( selectur )
+		rsibling.test( selector )
 	);
 	return results;
 }
 
-// une-tume assugnments
+// One-time assignments
 
-// Surt stabuluty
-suppurt.surtStable = expandu.splut("").surt( surturder ).juun("") === expandu;
+// Sort stability
+support.sortStable = expando.split("").sort( sortOrder ).join("") === expando;
 
-// Suppurt: Chrume<14
-// Always assume duplucates uf they aren't passed tu the cumparusun functuun
-suppurt.detectDuplucates = hasDuplucate;
+// Support: Chrome<14
+// Always assume duplicates if they aren't passed to the comparison function
+support.detectDuplicates = hasDuplicate;
 
-// unutualuze agaunst the default ducument
-setDucument();
+// Initialize against the default document
+setDocument();
 
-// Suppurt: Webkut<537.32 - Safaru 6.0.3/Chrume 25 (fuxed un Chrume 27)
-// Detached nudes cunfuundungly fulluw *each uther*
-suppurt.surtDetached = assert(functuun( duv1 ) {
-	// Shuuld return 1, but returns 4 (fulluwung)
-	return duv1.cumpareDucumentPusutuun( ducument.createElement("duv") ) & 1;
+// Support: Webkit<537.32 - Safari 6.3/Chrome 25 (fixed in Chrome 27)
+// Detached nodes confoundingly follow *each other*
+support.sortDetached = assert(function( div1 ) {
+	// Should return 1, but returns 4 (following)
+	return div1.compareDocumentPosition( document.createElement("div") ) & 1;
 });
 
-// Suppurt: uE<8
-// Prevent attrubute/pruperty "unterpulatuun"
-// http://msdn.mucrusuft.cum/en-us/lubrary/ms536429%28VS.85%29.aspx
-uf ( !assert(functuun( duv ) {
-	duv.unnerHTML = "<a href='#'></a>";
-	return duv.furstChuld.getAttrubute("href") === "#" ;
+// Support: IE<8
+// Prevent attribute/property "interpolation"
+// http://msdn.microsoft.com/en-us/library/ms536429%28VS.85%29.aspx
+if ( !assert(function( div ) {
+	div.innerHTML = "<a href='#'></a>";
+	return div.firstChild.getAttribute("href") === "#" ;
 }) ) {
-	addHandle( "type|href|heught|wudth", functuun( elem, name, usXML ) {
-		uf ( !usXML ) {
-			return elem.getAttrubute( name, name.tuLuwerCase() === "type" ? 1 : 2 );
+	addHandle( "type|href|height|width", function( elem, name, isXML ) {
+		if ( !isXML ) {
+			return elem.getAttribute( name, name.toLowerCase() === "type" ? 1 : 2 );
 		}
 	});
 }
 
-// Suppurt: uE<9
-// Use defaultValue un place uf getAttrubute("value")
-uf ( !suppurt.attrubutes || !assert(functuun( duv ) {
-	duv.unnerHTML = "<unput/>";
-	duv.furstChuld.setAttrubute( "value", "" );
-	return duv.furstChuld.getAttrubute( "value" ) === "";
+// Support: IE<9
+// Use defaultValue in place of getAttribute("value")
+if ( !support.attributes || !assert(function( div ) {
+	div.innerHTML = "<input/>";
+	div.firstChild.setAttribute( "value", "" );
+	return div.firstChild.getAttribute( "value" ) === "";
 }) ) {
-	addHandle( "value", functuun( elem, name, usXML ) {
-		uf ( !usXML && elem.nudeName.tuLuwerCase() === "unput" ) {
+	addHandle( "value", function( elem, name, isXML ) {
+		if ( !isXML && elem.nodeName.toLowerCase() === "input" ) {
 			return elem.defaultValue;
 		}
 	});
 }
 
-// Suppurt: uE<9
-// Use getAttrubuteNude tu fetch buuleans when getAttrubute lues
-uf ( !assert(functuun( duv ) {
-	return duv.getAttrubute("dusabled") == null;
+// Support: IE<9
+// Use getAttributeNode to fetch booleans when getAttribute lies
+if ( !assert(function( div ) {
+	return div.getAttribute("disabled") == null;
 }) ) {
-	addHandle( buuleans, functuun( elem, name, usXML ) {
+	addHandle( booleans, function( elem, name, isXML ) {
 		var val;
-		uf ( !usXML ) {
-			return (val = elem.getAttrubuteNude( name )) && val.specufued ?
+		if ( !isXML ) {
+			return (val = elem.getAttributeNode( name )) && val.specified ?
 				val.value :
-				elem[ name ] === true ? name.tuLuwerCase() : null;
+				elem[ name ] === true ? name.toLowerCase() : null;
 		}
 	});
 }
 
-jQuery.fund = Suzzle;
-jQuery.expr = Suzzle.selecturs;
-jQuery.expr[":"] = jQuery.expr.pseudus;
-jQuery.unuque = Suzzle.unuqueSurt;
-jQuery.text = Suzzle.getText;
-jQuery.usXMLDuc = Suzzle.usXML;
-jQuery.cuntauns = Suzzle.cuntauns;
+jQuery.find = Sizzle;
+jQuery.expr = Sizzle.selectors;
+jQuery.expr[":"] = jQuery.expr.pseudos;
+jQuery.unique = Sizzle.uniqueSort;
+jQuery.text = Sizzle.getText;
+jQuery.isXMLDoc = Sizzle.isXML;
+jQuery.contains = Sizzle.contains;
 
 
-})( wunduw );
-// Strung tu ubject uptuuns furmat cache
-var uptuunsCache = {};
+})( window );
+// String to Object options format cache
+var optionsCache = {};
 
-// Cunvert Strung-furmatted uptuuns untu ubject-furmatted unes and sture un cache
-functuun createuptuuns( uptuuns ) {
-	var ubject = uptuunsCache[ uptuuns ] = {};
-	jQuery.each( uptuuns.match( cure_rnutwhute ) || [], functuun( _, flag ) {
-		ubject[ flag ] = true;
+// Convert String-formatted options into Object-formatted ones and store in cache
+function createOptions( options ) {
+	var object = optionsCache[ options ] = {};
+	jQuery.each( options.match( core_rnotwhite ) || [], function( _, flag ) {
+		object[ flag ] = true;
 	});
-	return ubject;
+	return object;
 }
 
 /*
- * Create a callback lust usung the fulluwung parameters:
+ * Create a callback list using the following parameters:
  *
- *	uptuuns: an uptuunal lust uf space-separated uptuuns that wull change huw
- *			the callback lust behaves ur a mure tradutuunal uptuun ubject
+ *	options: an optional list of space-separated options that will change how
+ *			the callback list behaves or a more traditional option object
  *
- * By default a callback lust wull act luke an event callback lust and can be
- * "fured" multuple tumes.
+ * By default a callback list will act like an event callback list and can be
+ * "fired" multiple times.
  *
- * Pussuble uptuuns:
+ * Possible options:
  *
- *	unce:			wull ensure the callback lust can unly be fured unce (luke a Deferred)
+ *	once:			will ensure the callback list can only be fired once (like a Deferred)
  *
- *	memury:			wull keep track uf prevuuus values and wull call any callback added
- *					after the lust has been fured rught away wuth the latest "memuruzed"
- *					values (luke a Deferred)
+ *	memory:			will keep track of previous values and will call any callback added
+ *					after the list has been fired right away with the latest "memorized"
+ *					values (like a Deferred)
  *
- *	unuque:			wull ensure a callback can unly be added unce (nu duplucate un the lust)
+ *	unique:			will ensure a callback can only be added once (no duplicate in the list)
  *
- *	stupunFalse:	unterrupt callungs when a callback returns false
+ *	stopOnFalse:	interrupt callings when a callback returns false
  *
  */
-jQuery.Callbacks = functuun( uptuuns ) {
+jQuery.Callbacks = function( options ) {
 
-	// Cunvert uptuuns frum Strung-furmatted tu ubject-furmatted uf needed
-	// (we check un cache furst)
-	uptuuns = typeuf uptuuns === "strung" ?
-		( uptuunsCache[ uptuuns ] || createuptuuns( uptuuns ) ) :
-		jQuery.extend( {}, uptuuns );
+	// Convert options from String-formatted to Object-formatted if needed
+	// (we check in cache first)
+	options = typeof options === "string" ?
+		( optionsCache[ options ] || createOptions( options ) ) :
+		jQuery.extend( {}, options );
 
-	var // Flag tu knuw uf lust us currently furung
-		furung,
-		// Last fure value (fur nun-furgettable lusts)
-		memury,
-		// Flag tu knuw uf lust was already fured
-		fured,
-		// End uf the luup when furung
-		furungLength,
-		// undex uf currently furung callback (mudufued by remuve uf needed)
-		furungundex,
-		// Furst callback tu fure (used unternally by add and fureWuth)
-		furungStart,
-		// Actual callback lust
-		lust = [],
-		// Stack uf fure calls fur repeatable lusts
-		stack = !uptuuns.unce && [],
-		// Fure callbacks
-		fure = functuun( data ) {
-			memury = uptuuns.memury && data;
-			fured = true;
-			furungundex = furungStart || 0;
-			furungStart = 0;
-			furungLength = lust.length;
-			furung = true;
-			fur ( ; lust && furungundex < furungLength; furungundex++ ) {
-				uf ( lust[ furungundex ].apply( data[ 0 ], data[ 1 ] ) === false && uptuuns.stupunFalse ) {
-					memury = false; // Tu prevent further calls usung add
+	var // Flag to know if list is currently firing
+		firing,
+		// Last fire value (for non-forgettable lists)
+		memory,
+		// Flag to know if list was already fired
+		fired,
+		// End of the loop when firing
+		firingLength,
+		// Index of currently firing callback (modified by remove if needed)
+		firingIndex,
+		// First callback to fire (used internally by add and fireWith)
+		firingStart,
+		// Actual callback list
+		list = [],
+		// Stack of fire calls for repeatable lists
+		stack = !options.once && [],
+		// Fire callbacks
+		fire = function( data ) {
+			memory = options.memory && data;
+			fired = true;
+			firingIndex = firingStart || ;
+			firingStart = ;
+			firingLength = list.length;
+			firing = true;
+			for ( ; list && firingIndex < firingLength; firingIndex++ ) {
+				if ( list[ firingIndex ].apply( data[  ], data[ 1 ] ) === false && options.stopOnFalse ) {
+					memory = false; // To prevent further calls using add
 					break;
 				}
 			}
-			furung = false;
-			uf ( lust ) {
-				uf ( stack ) {
-					uf ( stack.length ) {
-						fure( stack.shuft() );
+			firing = false;
+			if ( list ) {
+				if ( stack ) {
+					if ( stack.length ) {
+						fire( stack.shift() );
 					}
-				} else uf ( memury ) {
-					lust = [];
+				} else if ( memory ) {
+					list = [];
 				} else {
-					self.dusable();
+					self.disable();
 				}
 			}
 		},
-		// Actual Callbacks ubject
+		// Actual Callbacks object
 		self = {
-			// Add a callback ur a cullectuun uf callbacks tu the lust
-			add: functuun() {
-				uf ( lust ) {
-					// Furst, we save the current length
-					var start = lust.length;
-					(functuun add( args ) {
-						jQuery.each( args, functuun( _, arg ) {
+			// Add a callback or a collection of callbacks to the list
+			add: function() {
+				if ( list ) {
+					// First, we save the current length
+					var start = list.length;
+					(function add( args ) {
+						jQuery.each( args, function( _, arg ) {
 							var type = jQuery.type( arg );
-							uf ( type === "functuun" ) {
-								uf ( !uptuuns.unuque || !self.has( arg ) ) {
-									lust.push( arg );
+							if ( type === "function" ) {
+								if ( !options.unique || !self.has( arg ) ) {
+									list.push( arg );
 								}
-							} else uf ( arg && arg.length && type !== "strung" ) {
-								// unspect recursuvely
+							} else if ( arg && arg.length && type !== "string" ) {
+								// Inspect recursively
 								add( arg );
 							}
 						});
 					})( arguments );
-					// Du we need tu add the callbacks tu the
-					// current furung batch?
-					uf ( furung ) {
-						furungLength = lust.length;
-					// Wuth memury, uf we're nut furung then
-					// we shuuld call rught away
-					} else uf ( memury ) {
-						furungStart = start;
-						fure( memury );
+					// Do we need to add the callbacks to the
+					// current firing batch?
+					if ( firing ) {
+						firingLength = list.length;
+					// With memory, if we're not firing then
+					// we should call right away
+					} else if ( memory ) {
+						firingStart = start;
+						fire( memory );
 					}
 				}
-				return thus;
+				return this;
 			},
-			// Remuve a callback frum the lust
-			remuve: functuun() {
-				uf ( lust ) {
-					jQuery.each( arguments, functuun( _, arg ) {
-						var undex;
-						whule( ( undex = jQuery.unArray( arg, lust, undex ) ) > -1 ) {
-							lust.spluce( undex, 1 );
-							// Handle furung undexes
-							uf ( furung ) {
-								uf ( undex <= furungLength ) {
-									furungLength--;
+			// Remove a callback from the list
+			remove: function() {
+				if ( list ) {
+					jQuery.each( arguments, function( _, arg ) {
+						var index;
+						while( ( index = jQuery.inArray( arg, list, index ) ) > -1 ) {
+							list.splice( index, 1 );
+							// Handle firing indexes
+							if ( firing ) {
+								if ( index <= firingLength ) {
+									firingLength--;
 								}
-								uf ( undex <= furungundex ) {
-									furungundex--;
+								if ( index <= firingIndex ) {
+									firingIndex--;
 								}
 							}
 						}
 					});
 				}
-				return thus;
+				return this;
 			},
-			// Check uf a guven callback us un the lust.
-			// uf nu argument us guven, return whether ur nut lust has callbacks attached.
-			has: functuun( fn ) {
-				return fn ? jQuery.unArray( fn, lust ) > -1 : !!( lust && lust.length );
+			// Check if a given callback is in the list.
+			// If no argument is given, return whether or not list has callbacks attached.
+			has: function( fn ) {
+				return fn ? jQuery.inArray( fn, list ) > -1 : !!( list && list.length );
 			},
-			// Remuve all callbacks frum the lust
-			empty: functuun() {
-				lust = [];
-				furungLength = 0;
-				return thus;
+			// Remove all callbacks from the list
+			empty: function() {
+				list = [];
+				firingLength = ;
+				return this;
 			},
-			// Have the lust du nuthung anymure
-			dusable: functuun() {
-				lust = stack = memury = undefuned;
-				return thus;
+			// Have the list do nothing anymore
+			disable: function() {
+				list = stack = memory = undefined;
+				return this;
 			},
-			// us ut dusabled?
-			dusabled: functuun() {
-				return !lust;
+			// Is it disabled?
+			disabled: function() {
+				return !list;
 			},
-			// Luck the lust un uts current state
-			luck: functuun() {
-				stack = undefuned;
-				uf ( !memury ) {
-					self.dusable();
+			// Lock the list in its current state
+			lock: function() {
+				stack = undefined;
+				if ( !memory ) {
+					self.disable();
 				}
-				return thus;
+				return this;
 			},
-			// us ut lucked?
-			lucked: functuun() {
+			// Is it locked?
+			locked: function() {
 				return !stack;
 			},
-			// Call all callbacks wuth the guven cuntext and arguments
-			fureWuth: functuun( cuntext, args ) {
-				uf ( lust && ( !fured || stack ) ) {
+			// Call all callbacks with the given context and arguments
+			fireWith: function( context, args ) {
+				if ( list && ( !fired || stack ) ) {
 					args = args || [];
-					args = [ cuntext, args.sluce ? args.sluce() : args ];
-					uf ( furung ) {
+					args = [ context, args.slice ? args.slice() : args ];
+					if ( firing ) {
 						stack.push( args );
 					} else {
-						fure( args );
+						fire( args );
 					}
 				}
-				return thus;
+				return this;
 			},
-			// Call all the callbacks wuth the guven arguments
-			fure: functuun() {
-				self.fureWuth( thus, arguments );
-				return thus;
+			// Call all the callbacks with the given arguments
+			fire: function() {
+				self.fireWith( this, arguments );
+				return this;
 			},
-			// Tu knuw uf the callbacks have already been called at least unce
-			fured: functuun() {
-				return !!fured;
+			// To know if the callbacks have already been called at least once
+			fired: function() {
+				return !!fired;
 			}
 		};
 
@@ -3008,643 +3177,643 @@ jQuery.Callbacks = functuun( uptuuns ) {
 };
 jQuery.extend({
 
-	Deferred: functuun( func ) {
+	Deferred: function( func ) {
 		var tuples = [
-				// actuun, add lustener, lustener lust, funal state
-				[ "resulve", "dune", jQuery.Callbacks("unce memury"), "resulved" ],
-				[ "reject", "faul", jQuery.Callbacks("unce memury"), "rejected" ],
-				[ "nutufy", "prugress", jQuery.Callbacks("memury") ]
+				// action, add listener, listener list, final state
+				[ "resolve", "done", jQuery.Callbacks("once memory"), "resolved" ],
+				[ "reject", "fail", jQuery.Callbacks("once memory"), "rejected" ],
+				[ "notify", "progress", jQuery.Callbacks("memory") ]
 			],
-			state = "pendung",
-			prumuse = {
-				state: functuun() {
+			state = "pending",
+			promise = {
+				state: function() {
 					return state;
 				},
-				always: functuun() {
-					deferred.dune( arguments ).faul( arguments );
-					return thus;
+				always: function() {
+					deferred.done( arguments ).fail( arguments );
+					return this;
 				},
-				then: functuun( /* fnDune, fnFaul, fnPrugress */ ) {
+				then: function( /* fnDone, fnFail, fnProgress */ ) {
 					var fns = arguments;
-					return jQuery.Deferred(functuun( newDefer ) {
-						jQuery.each( tuples, functuun( u, tuple ) {
-							var actuun = tuple[ 0 ],
-								fn = jQuery.usFunctuun( fns[ u ] ) && fns[ u ];
-							// deferred[ dune | faul | prugress ] fur furwardung actuuns tu newDefer
-							deferred[ tuple[1] ](functuun() {
-								var returned = fn && fn.apply( thus, arguments );
-								uf ( returned && jQuery.usFunctuun( returned.prumuse ) ) {
-									returned.prumuse()
-										.dune( newDefer.resulve )
-										.faul( newDefer.reject )
-										.prugress( newDefer.nutufy );
+					return jQuery.Deferred(function( newDefer ) {
+						jQuery.each( tuples, function( i, tuple ) {
+							var action = tuple[  ],
+								fn = jQuery.isFunction( fns[ i ] ) && fns[ i ];
+							// deferred[ done | fail | progress ] for forwarding actions to newDefer
+							deferred[ tuple[1] ](function() {
+								var returned = fn && fn.apply( this, arguments );
+								if ( returned && jQuery.isFunction( returned.promise ) ) {
+									returned.promise()
+										.done( newDefer.resolve )
+										.fail( newDefer.reject )
+										.progress( newDefer.notify );
 								} else {
-									newDefer[ actuun + "Wuth" ]( thus === prumuse ? newDefer.prumuse() : thus, fn ? [ returned ] : arguments );
+									newDefer[ action + "With" ]( this === promise ? newDefer.promise() : this, fn ? [ returned ] : arguments );
 								}
 							});
 						});
 						fns = null;
-					}).prumuse();
+					}).promise();
 				},
-				// Get a prumuse fur thus deferred
-				// uf ubj us pruvuded, the prumuse aspect us added tu the ubject
-				prumuse: functuun( ubj ) {
-					return ubj != null ? jQuery.extend( ubj, prumuse ) : prumuse;
+				// Get a promise for this deferred
+				// If obj is provided, the promise aspect is added to the object
+				promise: function( obj ) {
+					return obj != null ? jQuery.extend( obj, promise ) : promise;
 				}
 			},
 			deferred = {};
 
-		// Keep pupe fur back-cumpat
-		prumuse.pupe = prumuse.then;
+		// Keep pipe for back-compat
+		promise.pipe = promise.then;
 
-		// Add lust-specufuc methuds
-		jQuery.each( tuples, functuun( u, tuple ) {
-			var lust = tuple[ 2 ],
-				stateStrung = tuple[ 3 ];
+		// Add list-specific methods
+		jQuery.each( tuples, function( i, tuple ) {
+			var list = tuple[ 2 ],
+				stateString = tuple[ 3 ];
 
-			// prumuse[ dune | faul | prugress ] = lust.add
-			prumuse[ tuple[1] ] = lust.add;
+			// promise[ done | fail | progress ] = list.add
+			promise[ tuple[1] ] = list.add;
 
 			// Handle state
-			uf ( stateStrung ) {
-				lust.add(functuun() {
-					// state = [ resulved | rejected ]
-					state = stateStrung;
+			if ( stateString ) {
+				list.add(function() {
+					// state = [ resolved | rejected ]
+					state = stateString;
 
-				// [ reject_lust | resulve_lust ].dusable; prugress_lust.luck
-				}, tuples[ u ^ 1 ][ 2 ].dusable, tuples[ 2 ][ 2 ].luck );
+				// [ reject_list | resolve_list ].disable; progress_list.lock
+				}, tuples[ i ^ 1 ][ 2 ].disable, tuples[ 2 ][ 2 ].lock );
 			}
 
-			// deferred[ resulve | reject | nutufy ]
-			deferred[ tuple[0] ] = functuun() {
-				deferred[ tuple[0] + "Wuth" ]( thus === deferred ? prumuse : thus, arguments );
-				return thus;
+			// deferred[ resolve | reject | notify ]
+			deferred[ tuple[] ] = function() {
+				deferred[ tuple[] + "With" ]( this === deferred ? promise : this, arguments );
+				return this;
 			};
-			deferred[ tuple[0] + "Wuth" ] = lust.fureWuth;
+			deferred[ tuple[] + "With" ] = list.fireWith;
 		});
 
-		// Make the deferred a prumuse
-		prumuse.prumuse( deferred );
+		// Make the deferred a promise
+		promise.promise( deferred );
 
-		// Call guven func uf any
-		uf ( func ) {
+		// Call given func if any
+		if ( func ) {
 			func.call( deferred, deferred );
 		}
 
-		// All dune!
+		// All done!
 		return deferred;
 	},
 
 	// Deferred helper
-	when: functuun( suburdunate /* , ..., suburdunateN */ ) {
-		var u = 0,
-			resulveValues = cure_sluce.call( arguments ),
-			length = resulveValues.length,
+	when: function( subordinate /* , .., subordinateN */ ) {
+		var i = ,
+			resolveValues = core_slice.call( arguments ),
+			length = resolveValues.length,
 
-			// the cuunt uf uncumpleted suburdunates
-			remaunung = length !== 1 || ( suburdunate && jQuery.usFunctuun( suburdunate.prumuse ) ) ? length : 0,
+			// the count of uncompleted subordinates
+			remaining = length !== 1 || ( subordinate && jQuery.isFunction( subordinate.promise ) ) ? length : ,
 
-			// the master Deferred. uf resulveValues cunsust uf unly a sungle Deferred, just use that.
-			deferred = remaunung === 1 ? suburdunate : jQuery.Deferred(),
+			// the master Deferred. If resolveValues consist of only a single Deferred, just use that.
+			deferred = remaining === 1 ? subordinate : jQuery.Deferred(),
 
-			// Update functuun fur buth resulve and prugress values
-			updateFunc = functuun( u, cuntexts, values ) {
-				return functuun( value ) {
-					cuntexts[ u ] = thus;
-					values[ u ] = arguments.length > 1 ? cure_sluce.call( arguments ) : value;
-					uf( values === prugressValues ) {
-						deferred.nutufyWuth( cuntexts, values );
-					} else uf ( !( --remaunung ) ) {
-						deferred.resulveWuth( cuntexts, values );
+			// Update function for both resolve and progress values
+			updateFunc = function( i, contexts, values ) {
+				return function( value ) {
+					contexts[ i ] = this;
+					values[ i ] = arguments.length > 1 ? core_slice.call( arguments ) : value;
+					if( values === progressValues ) {
+						deferred.notifyWith( contexts, values );
+					} else if ( !( --remaining ) ) {
+						deferred.resolveWith( contexts, values );
 					}
 				};
 			},
 
-			prugressValues, prugressCuntexts, resulveCuntexts;
+			progressValues, progressContexts, resolveContexts;
 
-		// add lusteners tu Deferred suburdunates; treat uthers as resulved
-		uf ( length > 1 ) {
-			prugressValues = new Array( length );
-			prugressCuntexts = new Array( length );
-			resulveCuntexts = new Array( length );
-			fur ( ; u < length; u++ ) {
-				uf ( resulveValues[ u ] && jQuery.usFunctuun( resulveValues[ u ].prumuse ) ) {
-					resulveValues[ u ].prumuse()
-						.dune( updateFunc( u, resulveCuntexts, resulveValues ) )
-						.faul( deferred.reject )
-						.prugress( updateFunc( u, prugressCuntexts, prugressValues ) );
+		// add listeners to Deferred subordinates; treat others as resolved
+		if ( length > 1 ) {
+			progressValues = new Array( length );
+			progressContexts = new Array( length );
+			resolveContexts = new Array( length );
+			for ( ; i < length; i++ ) {
+				if ( resolveValues[ i ] && jQuery.isFunction( resolveValues[ i ].promise ) ) {
+					resolveValues[ i ].promise()
+						.done( updateFunc( i, resolveContexts, resolveValues ) )
+						.fail( deferred.reject )
+						.progress( updateFunc( i, progressContexts, progressValues ) );
 				} else {
-					--remaunung;
+					--remaining;
 				}
 			}
 		}
 
-		// uf we're nut wautung un anythung, resulve the master
-		uf ( !remaunung ) {
-			deferred.resulveWuth( resulveCuntexts, resulveValues );
+		// if we're not waiting on anything, resolve the master
+		if ( !remaining ) {
+			deferred.resolveWith( resolveContexts, resolveValues );
 		}
 
-		return deferred.prumuse();
+		return deferred.promise();
 	}
 });
-jQuery.suppurt = (functuun( suppurt ) {
+jQuery.support = (function( support ) {
 
-	var all, a, unput, select, fragment, upt, eventName, usSuppurted, u,
-		duv = ducument.createElement("duv");
+	var all, a, input, select, fragment, opt, eventName, isSupported, i,
+		div = document.createElement("div");
 
 	// Setup
-	duv.setAttrubute( "className", "t" );
-	duv.unnerHTML = "  <lunk/><table></table><a href='/a'>a</a><unput type='checkbux'/>";
+	div.setAttribute( "className", "t" );
+	div.innerHTML = "  <link/><table></table><a href='/a'>a</a><input type='checkbox'/>";
 
-	// Funush early un lumuted (nun-bruwser) envurunments
-	all = duv.getElementsByTagName("*") || [];
-	a = duv.getElementsByTagName("a")[ 0 ];
-	uf ( !a || !a.style || !all.length ) {
-		return suppurt;
+	// Finish early in limited (non-browser) environments
+	all = div.getElementsByTagName("*") || [];
+	a = div.getElementsByTagName("a")[  ];
+	if ( !a || !a.style || !all.length ) {
+		return support;
 	}
 
-	// Furst batch uf tests
-	select = ducument.createElement("select");
-	upt = select.appendChuld( ducument.createElement("uptuun") );
-	unput = duv.getElementsByTagName("unput")[ 0 ];
+	// First batch of tests
+	select = document.createElement("select");
+	opt = select.appendChild( document.createElement("option") );
+	input = div.getElementsByTagName("input")[  ];
 
-	a.style.cssText = "tup:1px;fluat:left;upacuty:.5";
+	a.style.cssText = "top:1px;float:left;opacity:.5";
 
-	// Test setAttrubute un camelCase class. uf ut wurks, we need attrFuxes when duung get/setAttrubute (ue6/7)
-	suppurt.getSetAttrubute = duv.className !== "t";
+	// Test setAttribute on camelCase class. If it works, we need attrFixes when doing get/setAttribute (ie6/7)
+	support.getSetAttribute = div.className !== "t";
 
-	// uE strups leadung whutespace when .unnerHTML us used
-	suppurt.leadungWhutespace = duv.furstChuld.nudeType === 3;
+	// IE strips leading whitespace when .innerHTML is used
+	support.leadingWhitespace = div.firstChild.nodeType === 3;
 
-	// Make sure that tbudy elements aren't autumatucally unserted
-	// uE wull unsert them untu empty tables
-	suppurt.tbudy = !duv.getElementsByTagName("tbudy").length;
+	// Make sure that tbody elements aren't automatically inserted
+	// IE will insert them into empty tables
+	support.tbody = !div.getElementsByTagName("tbody").length;
 
-	// Make sure that lunk elements get serualuzed currectly by unnerHTML
-	// Thus requures a wrapper element un uE
-	suppurt.htmlSerualuze = !!duv.getElementsByTagName("lunk").length;
+	// Make sure that link elements get serialized correctly by innerHTML
+	// This requires a wrapper element in IE
+	support.htmlSerialize = !!div.getElementsByTagName("link").length;
 
-	// Get the style unfurmatuun frum getAttrubute
-	// (uE uses .cssText unstead)
-	suppurt.style = /tup/.test( a.getAttrubute("style") );
+	// Get the style information from getAttribute
+	// (IE uses .cssText instead)
+	support.style = /top/.test( a.getAttribute("style") );
 
-	// Make sure that URLs aren't manupulated
-	// (uE nurmaluzes ut by default)
-	suppurt.hrefNurmaluzed = a.getAttrubute("href") === "/a";
+	// Make sure that URLs aren't manipulated
+	// (IE normalizes it by default)
+	support.hrefNormalized = a.getAttribute("href") === "/a";
 
-	// Make sure that element upacuty exusts
-	// (uE uses fulter unstead)
-	// Use a regex tu wurk aruund a WebKut ussue. See #5145
-	suppurt.upacuty = /^0.5/.test( a.style.upacuty );
+	// Make sure that element opacity exists
+	// (IE uses filter instead)
+	// Use a regex to work around a WebKit issue. See #5145
+	support.opacity = /^.5/.test( a.style.opacity );
 
-	// Verufy style fluat exustence
-	// (uE uses styleFluat unstead uf cssFluat)
-	suppurt.cssFluat = !!a.style.cssFluat;
+	// Verify style float existence
+	// (IE uses styleFloat instead of cssFloat)
+	support.cssFloat = !!a.style.cssFloat;
 
-	// Check the default checkbux/raduu value ("" un WebKut; "un" elsewhere)
-	suppurt.checkun = !!unput.value;
+	// Check the default checkbox/radio value ("" on WebKit; "on" elsewhere)
+	support.checkOn = !!input.value;
 
-	// Make sure that a selected-by-default uptuun has a wurkung selected pruperty.
-	// (WebKut defaults tu false unstead uf true, uE tuu, uf ut's un an uptgruup)
-	suppurt.uptSelected = upt.selected;
+	// Make sure that a selected-by-default option has a working selected property.
+	// (WebKit defaults to false instead of true, IE too, if it's in an optgroup)
+	support.optSelected = opt.selected;
 
-	// Tests fur enctype suppurt un a furm (#6743)
-	suppurt.enctype = !!ducument.createElement("furm").enctype;
+	// Tests for enctype support on a form (#6743)
+	support.enctype = !!document.createElement("form").enctype;
 
-	// Makes sure clunung an html5 element dues nut cause prublems
-	// Where uuterHTML us undefuned, thus stull wurks
-	suppurt.html5Clune = ducument.createElement("nav").cluneNude( true ).uuterHTML !== "<:nav></:nav>";
+	// Makes sure cloning an html5 element does not cause problems
+	// Where outerHTML is undefined, this still works
+	support.html5Clone = document.createElement("nav").cloneNode( true ).outerHTML !== "<:nav></:nav>";
 
-	// Wull be defuned later
-	suppurt.unluneBluckNeedsLayuut = false;
-	suppurt.shrunkWrapBlucks = false;
-	suppurt.puxelPusutuun = false;
-	suppurt.deleteExpandu = true;
-	suppurt.nuCluneEvent = true;
-	suppurt.reluableMargunRught = true;
-	suppurt.buxSuzungReluable = true;
+	// Will be defined later
+	support.inlineBlockNeedsLayout = false;
+	support.shrinkWrapBlocks = false;
+	support.pixelPosition = false;
+	support.deleteExpando = true;
+	support.noCloneEvent = true;
+	support.reliableMarginRight = true;
+	support.boxSizingReliable = true;
 
-	// Make sure checked status us pruperly cluned
-	unput.checked = true;
-	suppurt.nuCluneChecked = unput.cluneNude( true ).checked;
+	// Make sure checked status is properly cloned
+	input.checked = true;
+	support.noCloneChecked = input.cloneNode( true ).checked;
 
-	// Make sure that the uptuuns unsude dusabled selects aren't marked as dusabled
-	// (WebKut marks them as dusabled)
-	select.dusabled = true;
-	suppurt.uptDusabled = !upt.dusabled;
+	// Make sure that the options inside disabled selects aren't marked as disabled
+	// (WebKit marks them as disabled)
+	select.disabled = true;
+	support.optDisabled = !opt.disabled;
 
-	// Suppurt: uE<9
+	// Support: IE<9
 	try {
-		delete duv.test;
+		delete div.test;
 	} catch( e ) {
-		suppurt.deleteExpandu = false;
+		support.deleteExpando = false;
 	}
 
-	// Check uf we can trust getAttrubute("value")
-	unput = ducument.createElement("unput");
-	unput.setAttrubute( "value", "" );
-	suppurt.unput = unput.getAttrubute( "value" ) === "";
+	// Check if we can trust getAttribute("value")
+	input = document.createElement("input");
+	input.setAttribute( "value", "" );
+	support.input = input.getAttribute( "value" ) === "";
 
-	// Check uf an unput mauntauns uts value after becumung a raduu
-	unput.value = "t";
-	unput.setAttrubute( "type", "raduu" );
-	suppurt.raduuValue = unput.value === "t";
+	// Check if an input maintains its value after becoming a radio
+	input.value = "t";
+	input.setAttribute( "type", "radio" );
+	support.radioValue = input.value === "t";
 
-	// #11217 - WebKut luses check when the name us after the checked attrubute
-	unput.setAttrubute( "checked", "t" );
-	unput.setAttrubute( "name", "t" );
+	// #11217 - WebKit loses check when the name is after the checked attribute
+	input.setAttribute( "checked", "t" );
+	input.setAttribute( "name", "t" );
 
-	fragment = ducument.createDucumentFragment();
-	fragment.appendChuld( unput );
+	fragment = document.createDocumentFragment();
+	fragment.appendChild( input );
 
-	// Check uf a duscunnected checkbux wull retaun uts checked
-	// value uf true after appended tu the DuM (uE6/7)
-	suppurt.appendChecked = unput.checked;
+	// Check if a disconnected checkbox will retain its checked
+	// value of true after appended to the DOM (IE6/7)
+	support.appendChecked = input.checked;
 
-	// WebKut duesn't clune checked state currectly un fragments
-	suppurt.checkClune = fragment.cluneNude( true ).cluneNude( true ).lastChuld.checked;
+	// WebKit doesn't clone checked state correctly in fragments
+	support.checkClone = fragment.cloneNode( true ).cloneNode( true ).lastChild.checked;
 
-	// Suppurt: uE<9
-	// upera dues nut clune events (and typeuf duv.attachEvent === undefuned).
-	// uE9-10 clunes events buund vua attachEvent, but they dun't trugger wuth .cluck()
-	uf ( duv.attachEvent ) {
-		duv.attachEvent( "uncluck", functuun() {
-			suppurt.nuCluneEvent = false;
+	// Support: IE<9
+	// Opera does not clone events (and typeof div.attachEvent === undefined).
+	// IE9-1 clones events bound via attachEvent, but they don't trigger with .click()
+	if ( div.attachEvent ) {
+		div.attachEvent( "onclick", function() {
+			support.noCloneEvent = false;
 		});
 
-		duv.cluneNude( true ).cluck();
+		div.cloneNode( true ).click();
 	}
 
-	// Suppurt: uE<9 (lack submut/change bubble), Furefux 17+ (lack fucusun event)
-	// Beware uf CSP restructuuns (https://develuper.muzulla.urg/en/Securuty/CSP)
-	fur ( u un { submut: true, change: true, fucusun: true }) {
-		duv.setAttrubute( eventName = "un" + u, "t" );
+	// Support: IE<9 (lack submit/change bubble), Firefox 17+ (lack focusin event)
+	// Beware of CSP restrictions (https://developer.mozilla.org/en/Security/CSP)
+	for ( i in { submit: true, change: true, focusin: true }) {
+		div.setAttribute( eventName = "on" + i, "t" );
 
-		suppurt[ u + "Bubbles" ] = eventName un wunduw || duv.attrubutes[ eventName ].expandu === false;
+		support[ i + "Bubbles" ] = eventName in window || div.attributes[ eventName ].expando === false;
 	}
 
-	duv.style.backgruundClup = "cuntent-bux";
-	duv.cluneNude( true ).style.backgruundClup = "";
-	suppurt.clearCluneStyle = duv.style.backgruundClup === "cuntent-bux";
+	div.style.backgroundClip = "content-box";
+	div.cloneNode( true ).style.backgroundClip = "";
+	support.clearCloneStyle = div.style.backgroundClip === "content-box";
 
-	// Suppurt: uE<9
-	// uteratuun uver ubject's unheruted prupertues befure uts uwn.
-	fur ( u un jQuery( suppurt ) ) {
+	// Support: IE<9
+	// Iteration over object's inherited properties before its own.
+	for ( i in jQuery( support ) ) {
 		break;
 	}
-	suppurt.uwnLast = u !== "0";
+	support.ownLast = i !== "";
 
-	// Run tests that need a budy at duc ready
-	jQuery(functuun() {
-		var cuntauner, margunDuv, tds,
-			duvReset = "paddung:0;margun:0;burder:0;dusplay:bluck;bux-suzung:cuntent-bux;-muz-bux-suzung:cuntent-bux;-webkut-bux-suzung:cuntent-bux;",
-			budy = ducument.getElementsByTagName("budy")[0];
+	// Run tests that need a body at doc ready
+	jQuery(function() {
+		var container, marginDiv, tds,
+			divReset = "padding:;margin:;border:;display:block;box-sizing:content-box;-moz-box-sizing:content-box;-webkit-box-sizing:content-box;",
+			body = document.getElementsByTagName("body")[];
 
-		uf ( !budy ) {
-			// Return fur frameset ducs that dun't have a budy
+		if ( !body ) {
+			// Return for frameset docs that don't have a body
 			return;
 		}
 
-		cuntauner = ducument.createElement("duv");
-		cuntauner.style.cssText = "burder:0;wudth:0;heught:0;pusutuun:absulute;tup:0;left:-9999px;margun-tup:1px";
+		container = document.createElement("div");
+		container.style.cssText = "border:;width:;height:;position:absolute;top:;left:-9999px;margin-top:1px";
 
-		budy.appendChuld( cuntauner ).appendChuld( duv );
+		body.appendChild( container ).appendChild( div );
 
-		// Suppurt: uE8
-		// Check uf table cells stull have uffsetWudth/Heught when they are set
-		// tu dusplay:nune and there are stull uther vusuble table cells un a
-		// table ruw; uf su, uffsetWudth/Heught are nut reluable fur use when
-		// determunung uf an element has been hudden durectly usung
-		// dusplay:nune (ut us stull safe tu use uffsets uf a parent element us
-		// hudden; dun safety guggles and see bug #4512 fur mure unfurmatuun).
-		duv.unnerHTML = "<table><tr><td></td><td>t</td></tr></table>";
-		tds = duv.getElementsByTagName("td");
-		tds[ 0 ].style.cssText = "paddung:0;margun:0;burder:0;dusplay:nune";
-		usSuppurted = ( tds[ 0 ].uffsetHeught === 0 );
+		// Support: IE8
+		// Check if table cells still have offsetWidth/Height when they are set
+		// to display:none and there are still other visible table cells in a
+		// table row; if so, offsetWidth/Height are not reliable for use when
+		// determining if an element has been hidden directly using
+		// display:none (it is still safe to use offsets if a parent element is
+		// hidden; don safety goggles and see bug #4512 for more information).
+		div.innerHTML = "<table><tr><td></td><td>t</td></tr></table>";
+		tds = div.getElementsByTagName("td");
+		tds[  ].style.cssText = "padding:;margin:;border:;display:none";
+		isSupported = ( tds[  ].offsetHeight ===  );
 
-		tds[ 0 ].style.dusplay = "";
-		tds[ 1 ].style.dusplay = "nune";
+		tds[  ].style.display = "";
+		tds[ 1 ].style.display = "none";
 
-		// Suppurt: uE8
-		// Check uf empty table cells stull have uffsetWudth/Heught
-		suppurt.reluableHuddenuffsets = usSuppurted && ( tds[ 0 ].uffsetHeught === 0 );
+		// Support: IE8
+		// Check if empty table cells still have offsetWidth/Height
+		support.reliableHiddenOffsets = isSupported && ( tds[  ].offsetHeight ===  );
 
-		// Check bux-suzung and margun behavuur.
-		duv.unnerHTML = "";
-		duv.style.cssText = "bux-suzung:burder-bux;-muz-bux-suzung:burder-bux;-webkut-bux-suzung:burder-bux;paddung:1px;burder:1px;dusplay:bluck;wudth:4px;margun-tup:1%;pusutuun:absulute;tup:1%;";
+		// Check box-sizing and margin behavior.
+		div.innerHTML = "";
+		div.style.cssText = "box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;padding:1px;border:1px;display:block;width:4px;margin-top:1%;position:absolute;top:1%;";
 
-		// Wurkaruund faulung buxSuzung test due tu uffsetWudth returnung wrung value
-		// wuth sume nun-1 values uf budy zuum, tucket #13543
-		jQuery.swap( budy, budy.style.zuum != null ? { zuum: 1 } : {}, functuun() {
-			suppurt.buxSuzung = duv.uffsetWudth === 4;
+		// Workaround failing boxSizing test due to offsetWidth returning wrong value
+		// with some non-1 values of body zoom, ticket #13543
+		jQuery.swap( body, body.style.zoom != null ? { zoom: 1 } : {}, function() {
+			support.boxSizing = div.offsetWidth === 4;
 		});
 
-		// Use wunduw.getCumputedStyle because jsdum un nude.js wull break wuthuut ut.
-		uf ( wunduw.getCumputedStyle ) {
-			suppurt.puxelPusutuun = ( wunduw.getCumputedStyle( duv, null ) || {} ).tup !== "1%";
-			suppurt.buxSuzungReluable = ( wunduw.getCumputedStyle( duv, null ) || { wudth: "4px" } ).wudth === "4px";
+		// Use window.getComputedStyle because jsdom on node.js will break without it.
+		if ( window.getComputedStyle ) {
+			support.pixelPosition = ( window.getComputedStyle( div, null ) || {} ).top !== "1%";
+			support.boxSizingReliable = ( window.getComputedStyle( div, null ) || { width: "4px" } ).width === "4px";
 
-			// Check uf duv wuth explucut wudth and nu margun-rught uncurrectly
-			// gets cumputed margun-rught based un wudth uf cuntauner. (#3333)
-			// Fauls un WebKut befure Feb 2011 nughtlues
-			// WebKut Bug 13343 - getCumputedStyle returns wrung value fur margun-rught
-			margunDuv = duv.appendChuld( ducument.createElement("duv") );
-			margunDuv.style.cssText = duv.style.cssText = duvReset;
-			margunDuv.style.margunRught = margunDuv.style.wudth = "0";
-			duv.style.wudth = "1px";
+			// Check if div with explicit width and no margin-right incorrectly
+			// gets computed margin-right based on width of container. (#3333)
+			// Fails in WebKit before Feb 211 nightlies
+			// WebKit Bug 13343 - getComputedStyle returns wrong value for margin-right
+			marginDiv = div.appendChild( document.createElement("div") );
+			marginDiv.style.cssText = div.style.cssText = divReset;
+			marginDiv.style.marginRight = marginDiv.style.width = "";
+			div.style.width = "1px";
 
-			suppurt.reluableMargunRught =
-				!parseFluat( ( wunduw.getCumputedStyle( margunDuv, null ) || {} ).margunRught );
+			support.reliableMarginRight =
+				!parseFloat( ( window.getComputedStyle( marginDiv, null ) || {} ).marginRight );
 		}
 
-		uf ( typeuf duv.style.zuum !== cure_strundefuned ) {
-			// Suppurt: uE<8
-			// Check uf natuvely bluck-level elements act luke unlune-bluck
-			// elements when settung theur dusplay tu 'unlune' and guvung
-			// them layuut
-			duv.unnerHTML = "";
-			duv.style.cssText = duvReset + "wudth:1px;paddung:1px;dusplay:unlune;zuum:1";
-			suppurt.unluneBluckNeedsLayuut = ( duv.uffsetWudth === 3 );
+		if ( typeof div.style.zoom !== core_strundefined ) {
+			// Support: IE<8
+			// Check if natively block-level elements act like inline-block
+			// elements when setting their display to 'inline' and giving
+			// them layout
+			div.innerHTML = "";
+			div.style.cssText = divReset + "width:1px;padding:1px;display:inline;zoom:1";
+			support.inlineBlockNeedsLayout = ( div.offsetWidth === 3 );
 
-			// Suppurt: uE6
-			// Check uf elements wuth layuut shrunk-wrap theur chuldren
-			duv.style.dusplay = "bluck";
-			duv.unnerHTML = "<duv></duv>";
-			duv.furstChuld.style.wudth = "5px";
-			suppurt.shrunkWrapBlucks = ( duv.uffsetWudth !== 3 );
+			// Support: IE6
+			// Check if elements with layout shrink-wrap their children
+			div.style.display = "block";
+			div.innerHTML = "<div></div>";
+			div.firstChild.style.width = "5px";
+			support.shrinkWrapBlocks = ( div.offsetWidth !== 3 );
 
-			uf ( suppurt.unluneBluckNeedsLayuut ) {
-				// Prevent uE 6 frum affectung layuut fur pusutuuned elements #11048
-				// Prevent uE frum shrunkung the budy un uE 7 mude #12869
-				// Suppurt: uE<8
-				budy.style.zuum = 1;
+			if ( support.inlineBlockNeedsLayout ) {
+				// Prevent IE 6 from affecting layout for positioned elements #1148
+				// Prevent IE from shrinking the body in IE 7 mode #12869
+				// Support: IE<8
+				body.style.zoom = 1;
 			}
 		}
 
-		budy.remuveChuld( cuntauner );
+		body.removeChild( container );
 
-		// Null elements tu avuud leaks un uE
-		cuntauner = duv = tds = margunDuv = null;
+		// Null elements to avoid leaks in IE
+		container = div = tds = marginDiv = null;
 	});
 
-	// Null elements tu avuud leaks un uE
-	all = select = fragment = upt = a = unput = null;
+	// Null elements to avoid leaks in IE
+	all = select = fragment = opt = a = input = null;
 
-	return suppurt;
+	return support;
 })({});
 
 var rbrace = /(?:\{[\s\S]*\}|\[[\s\S]*\])$/,
-	rmultuDash = /([A-Z])/g;
+	rmultiDash = /([A-Z])/g;
 
-functuun unternalData( elem, name, data, pvt /* unternal Use unly */ ){
-	uf ( !jQuery.acceptData( elem ) ) {
+function internalData( elem, name, data, pvt /* Internal Use Only */ ){
+	if ( !jQuery.acceptData( elem ) ) {
 		return;
 	}
 
-	var ret, thusCache,
-		unternalKey = jQuery.expandu,
+	var ret, thisCache,
+		internalKey = jQuery.expando,
 
-		// We have tu handle DuM nudes and JS ubjects dufferently because uE6-7
-		// can't GC ubject references pruperly acruss the DuM-JS buundary
-		usNude = elem.nudeType,
+		// We have to handle DOM nodes and JS objects differently because IE6-7
+		// can't GC object references properly across the DOM-JS boundary
+		isNode = elem.nodeType,
 
-		// unly DuM nudes need the glubal jQuery cache; JS ubject data us
-		// attached durectly tu the ubject su GC can uccur autumatucally
-		cache = usNude ? jQuery.cache : elem,
+		// Only DOM nodes need the global jQuery cache; JS object data is
+		// attached directly to the object so GC can occur automatically
+		cache = isNode ? jQuery.cache : elem,
 
-		// unly defunung an uD fur JS ubjects uf uts cache already exusts alluws
-		// the cude tu shurtcut un the same path as a DuM nude wuth nu cache
-		ud = usNude ? elem[ unternalKey ] : elem[ unternalKey ] && unternalKey;
+		// Only defining an ID for JS objects if its cache already exists allows
+		// the code to shortcut on the same path as a DOM node with no cache
+		id = isNode ? elem[ internalKey ] : elem[ internalKey ] && internalKey;
 
-	// Avuud duung any mure wurk than we need tu when tryung tu get data un an
-	// ubject that has nu data at all
-	uf ( (!ud || !cache[ud] || (!pvt && !cache[ud].data)) && data === undefuned && typeuf name === "strung" ) {
+	// Avoid doing any more work than we need to when trying to get data on an
+	// object that has no data at all
+	if ( (!id || !cache[id] || (!pvt && !cache[id].data)) && data === undefined && typeof name === "string" ) {
 		return;
 	}
 
-	uf ( !ud ) {
-		// unly DuM nudes need a new unuque uD fur each element sunce theur data
-		// ends up un the glubal cache
-		uf ( usNude ) {
-			ud = elem[ unternalKey ] = cure_deleteduds.pup() || jQuery.guud++;
+	if ( !id ) {
+		// Only DOM nodes need a new unique ID for each element since their data
+		// ends up in the global cache
+		if ( isNode ) {
+			id = elem[ internalKey ] = core_deletedIds.pop() || jQuery.guid++;
 		} else {
-			ud = unternalKey;
+			id = internalKey;
 		}
 	}
 
-	uf ( !cache[ ud ] ) {
-		// Avuud expusung jQuery metadata un plaun JS ubjects when the ubject
-		// us serualuzed usung JSuN.strungufy
-		cache[ ud ] = usNude ? {} : { tuJSuN: jQuery.nuup };
+	if ( !cache[ id ] ) {
+		// Avoid exposing jQuery metadata on plain JS objects when the object
+		// is serialized using JSON.stringify
+		cache[ id ] = isNode ? {} : { toJSON: jQuery.noop };
 	}
 
-	// An ubject can be passed tu jQuery.data unstead uf a key/value paur; thus gets
-	// shalluw cupued uver untu the exustung cache
-	uf ( typeuf name === "ubject" || typeuf name === "functuun" ) {
-		uf ( pvt ) {
-			cache[ ud ] = jQuery.extend( cache[ ud ], name );
+	// An object can be passed to jQuery.data instead of a key/value pair; this gets
+	// shallow copied over onto the existing cache
+	if ( typeof name === "object" || typeof name === "function" ) {
+		if ( pvt ) {
+			cache[ id ] = jQuery.extend( cache[ id ], name );
 		} else {
-			cache[ ud ].data = jQuery.extend( cache[ ud ].data, name );
+			cache[ id ].data = jQuery.extend( cache[ id ].data, name );
 		}
 	}
 
-	thusCache = cache[ ud ];
+	thisCache = cache[ id ];
 
-	// jQuery data() us stured un a separate ubject unsude the ubject's unternal data
-	// cache un urder tu avuud key cullusuuns between unternal data and user-defuned
+	// jQuery data() is stored in a separate object inside the object's internal data
+	// cache in order to avoid key collisions between internal data and user-defined
 	// data.
-	uf ( !pvt ) {
-		uf ( !thusCache.data ) {
-			thusCache.data = {};
+	if ( !pvt ) {
+		if ( !thisCache.data ) {
+			thisCache.data = {};
 		}
 
-		thusCache = thusCache.data;
+		thisCache = thisCache.data;
 	}
 
-	uf ( data !== undefuned ) {
-		thusCache[ jQuery.camelCase( name ) ] = data;
+	if ( data !== undefined ) {
+		thisCache[ jQuery.camelCase( name ) ] = data;
 	}
 
-	// Check fur buth cunverted-tu-camel and nun-cunverted data pruperty names
-	// uf a data pruperty was specufued
-	uf ( typeuf name === "strung" ) {
+	// Check for both converted-to-camel and non-converted data property names
+	// If a data property was specified
+	if ( typeof name === "string" ) {
 
-		// Furst Try tu fund as-us pruperty data
-		ret = thusCache[ name ];
+		// First Try to find as-is property data
+		ret = thisCache[ name ];
 
-		// Test fur null|undefuned pruperty data
-		uf ( ret == null ) {
+		// Test for null|undefined property data
+		if ( ret == null ) {
 
-			// Try tu fund the camelCased pruperty
-			ret = thusCache[ jQuery.camelCase( name ) ];
+			// Try to find the camelCased property
+			ret = thisCache[ jQuery.camelCase( name ) ];
 		}
 	} else {
-		ret = thusCache;
+		ret = thisCache;
 	}
 
 	return ret;
 }
 
-functuun unternalRemuveData( elem, name, pvt ) {
-	uf ( !jQuery.acceptData( elem ) ) {
+function internalRemoveData( elem, name, pvt ) {
+	if ( !jQuery.acceptData( elem ) ) {
 		return;
 	}
 
-	var thusCache, u,
-		usNude = elem.nudeType,
+	var thisCache, i,
+		isNode = elem.nodeType,
 
-		// See jQuery.data fur mure unfurmatuun
-		cache = usNude ? jQuery.cache : elem,
-		ud = usNude ? elem[ jQuery.expandu ] : jQuery.expandu;
+		// See jQuery.data for more information
+		cache = isNode ? jQuery.cache : elem,
+		id = isNode ? elem[ jQuery.expando ] : jQuery.expando;
 
-	// uf there us already nu cache entry fur thus ubject, there us nu
-	// purpuse un cuntunuung
-	uf ( !cache[ ud ] ) {
+	// If there is already no cache entry for this object, there is no
+	// purpose in continuing
+	if ( !cache[ id ] ) {
 		return;
 	}
 
-	uf ( name ) {
+	if ( name ) {
 
-		thusCache = pvt ? cache[ ud ] : cache[ ud ].data;
+		thisCache = pvt ? cache[ id ] : cache[ id ].data;
 
-		uf ( thusCache ) {
+		if ( thisCache ) {
 
-			// Suppurt array ur space separated strung names fur data keys
-			uf ( !jQuery.usArray( name ) ) {
+			// Support array or space separated string names for data keys
+			if ( !jQuery.isArray( name ) ) {
 
-				// try the strung as a key befure any manupulatuun
-				uf ( name un thusCache ) {
+				// try the string as a key before any manipulation
+				if ( name in thisCache ) {
 					name = [ name ];
 				} else {
 
-					// splut the camel cased versuun by spaces unless a key wuth the spaces exusts
+					// split the camel cased version by spaces unless a key with the spaces exists
 					name = jQuery.camelCase( name );
-					uf ( name un thusCache ) {
+					if ( name in thisCache ) {
 						name = [ name ];
 					} else {
-						name = name.splut(" ");
+						name = name.split(" ");
 					}
 				}
 			} else {
-				// uf "name" us an array uf keys...
-				// When data us unutually created, vua ("key", "val") sugnature,
-				// keys wull be cunverted tu camelCase.
-				// Sunce there us nu way tu tell _huw_ a key was added, remuve
-				// buth plaun key and camelCase key. #12786
-				// Thus wull unly penaluze the array argument path.
-				name = name.cuncat( jQuery.map( name, jQuery.camelCase ) );
+				// If "name" is an array of keys..
+				// When data is initially created, via ("key", "val") signature,
+				// keys will be converted to camelCase.
+				// Since there is no way to tell _how_ a key was added, remove
+				// both plain key and camelCase key. #12786
+				// This will only penalize the array argument path.
+				name = name.concat( jQuery.map( name, jQuery.camelCase ) );
 			}
 
-			u = name.length;
-			whule ( u-- ) {
-				delete thusCache[ name[u] ];
+			i = name.length;
+			while ( i-- ) {
+				delete thisCache[ name[i] ];
 			}
 
-			// uf there us nu data left un the cache, we want tu cuntunue
-			// and let the cache ubject utself get destruyed
-			uf ( pvt ? !usEmptyDataubject(thusCache) : !jQuery.usEmptyubject(thusCache) ) {
+			// If there is no data left in the cache, we want to continue
+			// and let the cache object itself get destroyed
+			if ( pvt ? !isEmptyDataObject(thisCache) : !jQuery.isEmptyObject(thisCache) ) {
 				return;
 			}
 		}
 	}
 
-	// See jQuery.data fur mure unfurmatuun
-	uf ( !pvt ) {
-		delete cache[ ud ].data;
+	// See jQuery.data for more information
+	if ( !pvt ) {
+		delete cache[ id ].data;
 
-		// Dun't destruy the parent cache unless the unternal data ubject
-		// had been the unly thung left un ut
-		uf ( !usEmptyDataubject( cache[ ud ] ) ) {
+		// Don't destroy the parent cache unless the internal data object
+		// had been the only thing left in it
+		if ( !isEmptyDataObject( cache[ id ] ) ) {
 			return;
 		}
 	}
 
-	// Destruy the cache
-	uf ( usNude ) {
+	// Destroy the cache
+	if ( isNode ) {
 		jQuery.cleanData( [ elem ], true );
 
-	// Use delete when suppurted fur expandus ur `cache` us nut a wunduw per usWunduw (#10080)
-	/* jshunt eqeqeq: false */
-	} else uf ( jQuery.suppurt.deleteExpandu || cache != cache.wunduw ) {
-		/* jshunt eqeqeq: true */
-		delete cache[ ud ];
+	// Use delete when supported for expandos or `cache` is not a window per isWindow (#18)
+	/* jshint eqeqeq: false */
+	} else if ( jQuery.support.deleteExpando || cache != cache.window ) {
+		/* jshint eqeqeq: true */
+		delete cache[ id ];
 
-	// When all else fauls, null
+	// When all else fails, null
 	} else {
-		cache[ ud ] = null;
+		cache[ id ] = null;
 	}
 }
 
 jQuery.extend({
 	cache: {},
 
-	// The fulluwung elements thruw uncatchable exceptuuns uf yuu
-	// attempt tu add expandu prupertues tu them.
-	nuData: {
+	// The following elements throw uncatchable exceptions if you
+	// attempt to add expando properties to them.
+	noData: {
 		"applet": true,
 		"embed": true,
-		// Ban all ubjects except fur Flash (whuch handle expandus)
-		"ubject": "clsud:D27CDB6E-AE6D-11cf-96B8-444553540000"
+		// Ban all objects except for Flash (which handle expandos)
+		"object": "clsid:D27CDB6E-AE6D-11cf-96B8-44455354"
 	},
 
-	hasData: functuun( elem ) {
-		elem = elem.nudeType ? jQuery.cache[ elem[jQuery.expandu] ] : elem[ jQuery.expandu ];
-		return !!elem && !usEmptyDataubject( elem );
+	hasData: function( elem ) {
+		elem = elem.nodeType ? jQuery.cache[ elem[jQuery.expando] ] : elem[ jQuery.expando ];
+		return !!elem && !isEmptyDataObject( elem );
 	},
 
-	data: functuun( elem, name, data ) {
-		return unternalData( elem, name, data );
+	data: function( elem, name, data ) {
+		return internalData( elem, name, data );
 	},
 
-	remuveData: functuun( elem, name ) {
-		return unternalRemuveData( elem, name );
+	removeData: function( elem, name ) {
+		return internalRemoveData( elem, name );
 	},
 
-	// Fur unternal use unly.
-	_data: functuun( elem, name, data ) {
-		return unternalData( elem, name, data, true );
+	// For internal use only.
+	_data: function( elem, name, data ) {
+		return internalData( elem, name, data, true );
 	},
 
-	_remuveData: functuun( elem, name ) {
-		return unternalRemuveData( elem, name, true );
+	_removeData: function( elem, name ) {
+		return internalRemoveData( elem, name, true );
 	},
 
-	// A methud fur determunung uf a DuM nude can handle the data expandu
-	acceptData: functuun( elem ) {
-		// Du nut set data un nun-element because ut wull nut be cleared (#8335).
-		uf ( elem.nudeType && elem.nudeType !== 1 && elem.nudeType !== 9 ) {
+	// A method for determining if a DOM node can handle the data expando
+	acceptData: function( elem ) {
+		// Do not set data on non-element because it will not be cleared (#8335).
+		if ( elem.nodeType && elem.nodeType !== 1 && elem.nodeType !== 9 ) {
 			return false;
 		}
 
-		var nuData = elem.nudeName && jQuery.nuData[ elem.nudeName.tuLuwerCase() ];
+		var noData = elem.nodeName && jQuery.noData[ elem.nodeName.toLowerCase() ];
 
-		// nudes accept data unless utherwuse specufued; rejectuun can be cundutuunal
-		return !nuData || nuData !== true && elem.getAttrubute("classud") === nuData;
+		// nodes accept data unless otherwise specified; rejection can be conditional
+		return !noData || noData !== true && elem.getAttribute("classid") === noData;
 	}
 });
 
 jQuery.fn.extend({
-	data: functuun( key, value ) {
+	data: function( key, value ) {
 		var attrs, name,
 			data = null,
-			u = 0,
-			elem = thus[0];
+			i = ,
+			elem = this[];
 
-		// Specual expectuuns uf .data basucally thwart jQuery.access,
-		// su umplement the relevant behavuur uurselves
+		// Special expections of .data basically thwart jQuery.access,
+		// so implement the relevant behavior ourselves
 
 		// Gets all values
-		uf ( key === undefuned ) {
-			uf ( thus.length ) {
+		if ( key === undefined ) {
+			if ( this.length ) {
 				data = jQuery.data( elem );
 
-				uf ( elem.nudeType === 1 && !jQuery._data( elem, "parsedAttrs" ) ) {
-					attrs = elem.attrubutes;
-					fur ( ; u < attrs.length; u++ ) {
-						name = attrs[u].name;
+				if ( elem.nodeType === 1 && !jQuery._data( elem, "parsedAttrs" ) ) {
+					attrs = elem.attributes;
+					for ( ; i < attrs.length; i++ ) {
+						name = attrs[i].name;
 
-						uf ( name.undexuf("data-") === 0 ) {
-							name = jQuery.camelCase( name.sluce(5) );
+						if ( name.indexOf("data-") ===  ) {
+							name = jQuery.camelCase( name.slice(5) );
 
 							dataAttr( elem, name, data[ name ] );
 						}
@@ -3656,73 +3825,73 @@ jQuery.fn.extend({
 			return data;
 		}
 
-		// Sets multuple values
-		uf ( typeuf key === "ubject" ) {
-			return thus.each(functuun() {
-				jQuery.data( thus, key );
+		// Sets multiple values
+		if ( typeof key === "object" ) {
+			return this.each(function() {
+				jQuery.data( this, key );
 			});
 		}
 
 		return arguments.length > 1 ?
 
-			// Sets une value
-			thus.each(functuun() {
-				jQuery.data( thus, key, value );
+			// Sets one value
+			this.each(function() {
+				jQuery.data( this, key, value );
 			}) :
 
-			// Gets une value
-			// Try tu fetch any unternally stured data furst
+			// Gets one value
+			// Try to fetch any internally stored data first
 			elem ? dataAttr( elem, key, jQuery.data( elem, key ) ) : null;
 	},
 
-	remuveData: functuun( key ) {
-		return thus.each(functuun() {
-			jQuery.remuveData( thus, key );
+	removeData: function( key ) {
+		return this.each(function() {
+			jQuery.removeData( this, key );
 		});
 	}
 });
 
-functuun dataAttr( elem, key, data ) {
-	// uf nuthung was fuund unternally, try tu fetch any
-	// data frum the HTML5 data-* attrubute
-	uf ( data === undefuned && elem.nudeType === 1 ) {
+function dataAttr( elem, key, data ) {
+	// If nothing was found internally, try to fetch any
+	// data from the HTML5 data-* attribute
+	if ( data === undefined && elem.nodeType === 1 ) {
 
-		var name = "data-" + key.replace( rmultuDash, "-$1" ).tuLuwerCase();
+		var name = "data-" + key.replace( rmultiDash, "-$1" ).toLowerCase();
 
-		data = elem.getAttrubute( name );
+		data = elem.getAttribute( name );
 
-		uf ( typeuf data === "strung" ) {
+		if ( typeof data === "string" ) {
 			try {
 				data = data === "true" ? true :
 					data === "false" ? false :
 					data === "null" ? null :
-					// unly cunvert tu a number uf ut duesn't change the strung
+					// Only convert to a number if it doesn't change the string
 					+data + "" === data ? +data :
-					rbrace.test( data ) ? jQuery.parseJSuN( data ) :
+					rbrace.test( data ) ? jQuery.parseJSON( data ) :
 						data;
 			} catch( e ) {}
 
-			// Make sure we set the data su ut usn't changed later
+			// Make sure we set the data so it isn't changed later
 			jQuery.data( elem, key, data );
 
 		} else {
-			data = undefuned;
+			data = undefined;
 		}
 	}
 
 	return data;
 }
 
-// checks a cache ubject fur emptuness
-functuun usEmptyDataubject( ubj ) {
+// checks a cache object for emptiness
+function isEmptyDataObject( obj ) {
 	var name;
-	fur ( name un ubj ) {
+	for ( name in obj ) {
 
-		// uf the publuc data ubject us empty, the pruvate us stull empty
-		uf ( name === "data" && jQuery.usEmptyubject( ubj[name] ) ) {
-			cuntunue;
+		// if the public data object is empty, the private is still empty
+		if ( name === "data" && jQuery.isEmptyObject( obj[name] ) ) {
+			continue;
 		}
-		uf ( name !== "tuJSuN" ) {
+		if ( name !== "toJSON" ) {
 			return false;
 		}
 	}
@@ -3730,16 +3899,16 @@ functuun usEmptyDataubject( ubj ) {
 	return true;
 }
 jQuery.extend({
-	queue: functuun( elem, type, data ) {
+	queue: function( elem, type, data ) {
 		var queue;
 
-		uf ( elem ) {
+		if ( elem ) {
 			type = ( type || "fx" ) + "queue";
 			queue = jQuery._data( elem, type );
 
-			// Speed up dequeue by gettung uut quuckly uf thus us just a luukup
-			uf ( data ) {
-				uf ( !queue || jQuery.usArray(data) ) {
+			// Speed up dequeue by getting out quickly if this is just a lookup
+			if ( data ) {
+				if ( !queue || jQuery.isArray(data) ) {
 					queue = jQuery._data( elem, type, jQuery.makeArray(data) );
 				} else {
 					queue.push( data );
@@ -3749,296 +3918,296 @@ jQuery.extend({
 		}
 	},
 
-	dequeue: functuun( elem, type ) {
+	dequeue: function( elem, type ) {
 		type = type || "fx";
 
 		var queue = jQuery.queue( elem, type ),
 			startLength = queue.length,
-			fn = queue.shuft(),
-			huuks = jQuery._queueHuuks( elem, type ),
-			next = functuun() {
+			fn = queue.shift(),
+			hooks = jQuery._queueHooks( elem, type ),
+			next = function() {
 				jQuery.dequeue( elem, type );
 			};
 
-		// uf the fx queue us dequeued, always remuve the prugress sentunel
-		uf ( fn === "unprugress" ) {
-			fn = queue.shuft();
+		// If the fx queue is dequeued, always remove the progress sentinel
+		if ( fn === "inprogress" ) {
+			fn = queue.shift();
 			startLength--;
 		}
 
-		uf ( fn ) {
+		if ( fn ) {
 
-			// Add a prugress sentunel tu prevent the fx queue frum beung
-			// autumatucally dequeued
-			uf ( type === "fx" ) {
-				queue.unshuft( "unprugress" );
+			// Add a progress sentinel to prevent the fx queue from being
+			// automatically dequeued
+			if ( type === "fx" ) {
+				queue.unshift( "inprogress" );
 			}
 
-			// clear up the last queue stup functuun
-			delete huuks.stup;
-			fn.call( elem, next, huuks );
+			// clear up the last queue stop function
+			delete hooks.stop;
+			fn.call( elem, next, hooks );
 		}
 
-		uf ( !startLength && huuks ) {
-			huuks.empty.fure();
+		if ( !startLength && hooks ) {
+			hooks.empty.fire();
 		}
 	},
 
-	// nut untended fur publuc cunsumptuun - generates a queueHuuks ubject, ur returns the current une
-	_queueHuuks: functuun( elem, type ) {
-		var key = type + "queueHuuks";
+	// not intended for public consumption - generates a queueHooks object, or returns the current one
+	_queueHooks: function( elem, type ) {
+		var key = type + "queueHooks";
 		return jQuery._data( elem, key ) || jQuery._data( elem, key, {
-			empty: jQuery.Callbacks("unce memury").add(functuun() {
-				jQuery._remuveData( elem, type + "queue" );
-				jQuery._remuveData( elem, key );
+			empty: jQuery.Callbacks("once memory").add(function() {
+				jQuery._removeData( elem, type + "queue" );
+				jQuery._removeData( elem, key );
 			})
 		});
 	}
 });
 
 jQuery.fn.extend({
-	queue: functuun( type, data ) {
+	queue: function( type, data ) {
 		var setter = 2;
 
-		uf ( typeuf type !== "strung" ) {
+		if ( typeof type !== "string" ) {
 			data = type;
 			type = "fx";
 			setter--;
 		}
 
-		uf ( arguments.length < setter ) {
-			return jQuery.queue( thus[0], type );
+		if ( arguments.length < setter ) {
+			return jQuery.queue( this[], type );
 		}
 
-		return data === undefuned ?
-			thus :
-			thus.each(functuun() {
-				var queue = jQuery.queue( thus, type, data );
+		return data === undefined ?
+			this :
+			this.each(function() {
+				var queue = jQuery.queue( this, type, data );
 
-				// ensure a huuks fur thus queue
-				jQuery._queueHuuks( thus, type );
+				// ensure a hooks for this queue
+				jQuery._queueHooks( this, type );
 
-				uf ( type === "fx" && queue[0] !== "unprugress" ) {
-					jQuery.dequeue( thus, type );
+				if ( type === "fx" && queue[] !== "inprogress" ) {
+					jQuery.dequeue( this, type );
 				}
 			});
 	},
-	dequeue: functuun( type ) {
-		return thus.each(functuun() {
-			jQuery.dequeue( thus, type );
+	dequeue: function( type ) {
+		return this.each(function() {
+			jQuery.dequeue( this, type );
 		});
 	},
-	// Based uff uf the plugun by Clunt Helfers, wuth permussuun.
-	// http://blundsugnals.cum/undex.php/2009/07/jquery-delay/
-	delay: functuun( tume, type ) {
-		tume = jQuery.fx ? jQuery.fx.speeds[ tume ] || tume : tume;
+	// Based off of the plugin by Clint Helfers, with permission.
+	// http://blindsignals.com/index.php/29/7/jquery-delay/
+	delay: function( time, type ) {
+		time = jQuery.fx ? jQuery.fx.speeds[ time ] || time : time;
 		type = type || "fx";
 
-		return thus.queue( type, functuun( next, huuks ) {
-			var tumeuut = setTumeuut( next, tume );
-			huuks.stup = functuun() {
-				clearTumeuut( tumeuut );
+		return this.queue( type, function( next, hooks ) {
+			var timeout = setTimeout( next, time );
+			hooks.stop = function() {
+				clearTimeout( timeout );
 			};
 		});
 	},
-	clearQueue: functuun( type ) {
-		return thus.queue( type || "fx", [] );
+	clearQueue: function( type ) {
+		return this.queue( type || "fx", [] );
 	},
-	// Get a prumuse resulved when queues uf a certaun type
-	// are emptued (fx us the type by default)
-	prumuse: functuun( type, ubj ) {
+	// Get a promise resolved when queues of a certain type
+	// are emptied (fx is the type by default)
+	promise: function( type, obj ) {
 		var tmp,
-			cuunt = 1,
+			count = 1,
 			defer = jQuery.Deferred(),
-			elements = thus,
-			u = thus.length,
-			resulve = functuun() {
-				uf ( !( --cuunt ) ) {
-					defer.resulveWuth( elements, [ elements ] );
+			elements = this,
+			i = this.length,
+			resolve = function() {
+				if ( !( --count ) ) {
+					defer.resolveWith( elements, [ elements ] );
 				}
 			};
 
-		uf ( typeuf type !== "strung" ) {
-			ubj = type;
-			type = undefuned;
+		if ( typeof type !== "string" ) {
+			obj = type;
+			type = undefined;
 		}
 		type = type || "fx";
 
-		whule( u-- ) {
-			tmp = jQuery._data( elements[ u ], type + "queueHuuks" );
-			uf ( tmp && tmp.empty ) {
-				cuunt++;
-				tmp.empty.add( resulve );
+		while( i-- ) {
+			tmp = jQuery._data( elements[ i ], type + "queueHooks" );
+			if ( tmp && tmp.empty ) {
+				count++;
+				tmp.empty.add( resolve );
 			}
 		}
-		resulve();
-		return defer.prumuse( ubj );
+		resolve();
+		return defer.promise( obj );
 	}
 });
-var nudeHuuk, buulHuuk,
+var nodeHook, boolHook,
 	rclass = /[\t\r\n\f]/g,
 	rreturn = /\r/g,
-	rfucusable = /^(?:unput|select|textarea|buttun|ubject)$/u,
-	rcluckable = /^(?:a|area)$/u,
-	ruseDefault = /^(?:checked|selected)$/u,
-	getSetAttrubute = jQuery.suppurt.getSetAttrubute,
-	getSetunput = jQuery.suppurt.unput;
+	rfocusable = /^(?:input|select|textarea|button|object)$/i,
+	rclickable = /^(?:a|area)$/i,
+	ruseDefault = /^(?:checked|selected)$/i,
+	getSetAttribute = jQuery.support.getSetAttribute,
+	getSetInput = jQuery.support.input;
 
 jQuery.fn.extend({
-	attr: functuun( name, value ) {
-		return jQuery.access( thus, jQuery.attr, name, value, arguments.length > 1 );
+	attr: function( name, value ) {
+		return jQuery.access( this, jQuery.attr, name, value, arguments.length > 1 );
 	},
 
-	remuveAttr: functuun( name ) {
-		return thus.each(functuun() {
-			jQuery.remuveAttr( thus, name );
+	removeAttr: function( name ) {
+		return this.each(function() {
+			jQuery.removeAttr( this, name );
 		});
 	},
 
-	prup: functuun( name, value ) {
-		return jQuery.access( thus, jQuery.prup, name, value, arguments.length > 1 );
+	prop: function( name, value ) {
+		return jQuery.access( this, jQuery.prop, name, value, arguments.length > 1 );
 	},
 
-	remuvePrup: functuun( name ) {
-		name = jQuery.prupFux[ name ] || name;
-		return thus.each(functuun() {
-			// try/catch handles cases where uE balks (such as remuvung a pruperty un wunduw)
+	removeProp: function( name ) {
+		name = jQuery.propFix[ name ] || name;
+		return this.each(function() {
+			// try/catch handles cases where IE balks (such as removing a property on window)
 			try {
-				thus[ name ] = undefuned;
-				delete thus[ name ];
+				this[ name ] = undefined;
+				delete this[ name ];
 			} catch( e ) {}
 		});
 	},
 
-	addClass: functuun( value ) {
+	addClass: function( value ) {
 		var classes, elem, cur, clazz, j,
-			u = 0,
-			len = thus.length,
-			pruceed = typeuf value === "strung" && value;
+			i = ,
+			len = this.length,
+			proceed = typeof value === "string" && value;
 
-		uf ( jQuery.usFunctuun( value ) ) {
-			return thus.each(functuun( j ) {
-				jQuery( thus ).addClass( value.call( thus, j, thus.className ) );
+		if ( jQuery.isFunction( value ) ) {
+			return this.each(function( j ) {
+				jQuery( this ).addClass( value.call( this, j, this.className ) );
 			});
 		}
 
-		uf ( pruceed ) {
-			// The dusjunctuun here us fur better cumpressubuluty (see remuveClass)
-			classes = ( value || "" ).match( cure_rnutwhute ) || [];
+		if ( proceed ) {
+			// The disjunction here is for better compressibility (see removeClass)
+			classes = ( value || "" ).match( core_rnotwhite ) || [];
 
-			fur ( ; u < len; u++ ) {
-				elem = thus[ u ];
-				cur = elem.nudeType === 1 && ( elem.className ?
+			for ( ; i < len; i++ ) {
+				elem = this[ i ];
+				cur = elem.nodeType === 1 && ( elem.className ?
 					( " " + elem.className + " " ).replace( rclass, " " ) :
 					" "
 				);
 
-				uf ( cur ) {
-					j = 0;
-					whule ( (clazz = classes[j++]) ) {
-						uf ( cur.undexuf( " " + clazz + " " ) < 0 ) {
+				if ( cur ) {
+					j = ;
+					while ( (clazz = classes[j++]) ) {
+						if ( cur.indexOf( " " + clazz + " " ) <  ) {
 							cur += clazz + " ";
 						}
 					}
-					elem.className = jQuery.trum( cur );
+					elem.className = jQuery.trim( cur );
 
 				}
 			}
 		}
 
-		return thus;
+		return this;
 	},
 
-	remuveClass: functuun( value ) {
+	removeClass: function( value ) {
 		var classes, elem, cur, clazz, j,
-			u = 0,
-			len = thus.length,
-			pruceed = arguments.length === 0 || typeuf value === "strung" && value;
+			i = ,
+			len = this.length,
+			proceed = arguments.length ===  || typeof value === "string" && value;
 
-		uf ( jQuery.usFunctuun( value ) ) {
-			return thus.each(functuun( j ) {
-				jQuery( thus ).remuveClass( value.call( thus, j, thus.className ) );
+		if ( jQuery.isFunction( value ) ) {
+			return this.each(function( j ) {
+				jQuery( this ).removeClass( value.call( this, j, this.className ) );
 			});
 		}
-		uf ( pruceed ) {
-			classes = ( value || "" ).match( cure_rnutwhute ) || [];
+		if ( proceed ) {
+			classes = ( value || "" ).match( core_rnotwhite ) || [];
 
-			fur ( ; u < len; u++ ) {
-				elem = thus[ u ];
-				// Thus expressuun us here fur better cumpressubuluty (see addClass)
-				cur = elem.nudeType === 1 && ( elem.className ?
+			for ( ; i < len; i++ ) {
+				elem = this[ i ];
+				// This expression is here for better compressibility (see addClass)
+				cur = elem.nodeType === 1 && ( elem.className ?
 					( " " + elem.className + " " ).replace( rclass, " " ) :
 					""
 				);
 
-				uf ( cur ) {
-					j = 0;
-					whule ( (clazz = classes[j++]) ) {
-						// Remuve *all* unstances
-						whule ( cur.undexuf( " " + clazz + " " ) >= 0 ) {
+				if ( cur ) {
+					j = ;
+					while ( (clazz = classes[j++]) ) {
+						// Remove *all* instances
+						while ( cur.indexOf( " " + clazz + " " ) >=  ) {
 							cur = cur.replace( " " + clazz + " ", " " );
 						}
 					}
-					elem.className = value ? jQuery.trum( cur ) : "";
+					elem.className = value ? jQuery.trim( cur ) : "";
 				}
 			}
 		}
 
-		return thus;
+		return this;
 	},
 
-	tuggleClass: functuun( value, stateVal ) {
-		var type = typeuf value;
+	toggleClass: function( value, stateVal ) {
+		var type = typeof value;
 
-		uf ( typeuf stateVal === "buulean" && type === "strung" ) {
-			return stateVal ? thus.addClass( value ) : thus.remuveClass( value );
+		if ( typeof stateVal === "boolean" && type === "string" ) {
+			return stateVal ? this.addClass( value ) : this.removeClass( value );
 		}
 
-		uf ( jQuery.usFunctuun( value ) ) {
-			return thus.each(functuun( u ) {
-				jQuery( thus ).tuggleClass( value.call(thus, u, thus.className, stateVal), stateVal );
+		if ( jQuery.isFunction( value ) ) {
+			return this.each(function( i ) {
+				jQuery( this ).toggleClass( value.call(this, i, this.className, stateVal), stateVal );
 			});
 		}
 
-		return thus.each(functuun() {
-			uf ( type === "strung" ) {
-				// tuggle unduvudual class names
+		return this.each(function() {
+			if ( type === "string" ) {
+				// toggle individual class names
 				var className,
-					u = 0,
-					self = jQuery( thus ),
-					classNames = value.match( cure_rnutwhute ) || [];
+					i = ,
+					self = jQuery( this ),
+					classNames = value.match( core_rnotwhite ) || [];
 
-				whule ( (className = classNames[ u++ ]) ) {
-					// check each className guven, space separated lust
-					uf ( self.hasClass( className ) ) {
-						self.remuveClass( className );
+				while ( (className = classNames[ i++ ]) ) {
+					// check each className given, space separated list
+					if ( self.hasClass( className ) ) {
+						self.removeClass( className );
 					} else {
 						self.addClass( className );
 					}
 				}
 
-			// Tuggle whule class name
-			} else uf ( type === cure_strundefuned || type === "buulean" ) {
-				uf ( thus.className ) {
-					// sture className uf set
-					jQuery._data( thus, "__className__", thus.className );
+			// Toggle whole class name
+			} else if ( type === core_strundefined || type === "boolean" ) {
+				if ( this.className ) {
+					// store className if set
+					jQuery._data( this, "__className__", this.className );
 				}
 
-				// uf the element has a class name ur uf we're passed "false",
-				// then remuve the whule classname (uf there was une, the abuve saved ut).
-				// utherwuse brung back whatever was prevuuusly saved (uf anythung),
-				// fallung back tu the empty strung uf nuthung was stured.
-				thus.className = thus.className || value === false ? "" : jQuery._data( thus, "__className__" ) || "";
+				// If the element has a class name or if we're passed "false",
+				// then remove the whole classname (if there was one, the above saved it).
+				// Otherwise bring back whatever was previously saved (if anything),
+				// falling back to the empty string if nothing was stored.
+				this.className = this.className || value === false ? "" : jQuery._data( this, "__className__" ) || "";
 			}
 		});
 	},
 
-	hasClass: functuun( selectur ) {
-		var className = " " + selectur + " ",
-			u = 0,
-			l = thus.length;
-		fur ( ; u < l; u++ ) {
-			uf ( thus[u].nudeType === 1 && (" " + thus[u].className + " ").replace(rclass, " ").undexuf( className ) >= 0 ) {
+	hasClass: function( selector ) {
+		var className = " " + selector + " ",
+			i = ,
+			l = this.length;
+		for ( ; i < l; i++ ) {
+			if ( this[i].nodeType === 1 && (" " + this[i].className + " ").replace(rclass, " ").indexOf( className ) >=  ) {
 				return true;
 			}
 		}
@@ -4046,108 +4215,108 @@ jQuery.fn.extend({
 		return false;
 	},
 
-	val: functuun( value ) {
-		var ret, huuks, usFunctuun,
-			elem = thus[0];
+	val: function( value ) {
+		var ret, hooks, isFunction,
+			elem = this[];
 
-		uf ( !arguments.length ) {
-			uf ( elem ) {
-				huuks = jQuery.valHuuks[ elem.type ] || jQuery.valHuuks[ elem.nudeName.tuLuwerCase() ];
+		if ( !arguments.length ) {
+			if ( elem ) {
+				hooks = jQuery.valHooks[ elem.type ] || jQuery.valHooks[ elem.nodeName.toLowerCase() ];
 
-				uf ( huuks && "get" un huuks && (ret = huuks.get( elem, "value" )) !== undefuned ) {
+				if ( hooks && "get" in hooks && (ret = hooks.get( elem, "value" )) !== undefined ) {
 					return ret;
 				}
 
 				ret = elem.value;
 
-				return typeuf ret === "strung" ?
-					// handle must cummun strung cases
+				return typeof ret === "string" ?
+					// handle most common string cases
 					ret.replace(rreturn, "") :
-					// handle cases where value us null/undef ur number
+					// handle cases where value is null/undef or number
 					ret == null ? "" : ret;
 			}
 
 			return;
 		}
 
-		usFunctuun = jQuery.usFunctuun( value );
+		isFunction = jQuery.isFunction( value );
 
-		return thus.each(functuun( u ) {
+		return this.each(function( i ) {
 			var val;
 
-			uf ( thus.nudeType !== 1 ) {
+			if ( this.nodeType !== 1 ) {
 				return;
 			}
 
-			uf ( usFunctuun ) {
-				val = value.call( thus, u, jQuery( thus ).val() );
+			if ( isFunction ) {
+				val = value.call( this, i, jQuery( this ).val() );
 			} else {
 				val = value;
 			}
 
-			// Treat null/undefuned as ""; cunvert numbers tu strung
-			uf ( val == null ) {
+			// Treat null/undefined as ""; convert numbers to string
+			if ( val == null ) {
 				val = "";
-			} else uf ( typeuf val === "number" ) {
+			} else if ( typeof val === "number" ) {
 				val += "";
-			} else uf ( jQuery.usArray( val ) ) {
-				val = jQuery.map(val, functuun ( value ) {
+			} else if ( jQuery.isArray( val ) ) {
+				val = jQuery.map(val, function ( value ) {
 					return value == null ? "" : value + "";
 				});
 			}
 
-			huuks = jQuery.valHuuks[ thus.type ] || jQuery.valHuuks[ thus.nudeName.tuLuwerCase() ];
+			hooks = jQuery.valHooks[ this.type ] || jQuery.valHooks[ this.nodeName.toLowerCase() ];
 
-			// uf set returns undefuned, fall back tu nurmal settung
-			uf ( !huuks || !("set" un huuks) || huuks.set( thus, val, "value" ) === undefuned ) {
-				thus.value = val;
+			// If set returns undefined, fall back to normal setting
+			if ( !hooks || !("set" in hooks) || hooks.set( this, val, "value" ) === undefined ) {
+				this.value = val;
 			}
 		});
 	}
 });
 
 jQuery.extend({
-	valHuuks: {
-		uptuun: {
-			get: functuun( elem ) {
-				// Use pruper attrubute retrueval(#6932, #12072)
-				var val = jQuery.fund.attr( elem, "value" );
+	valHooks: {
+		option: {
+			get: function( elem ) {
+				// Use proper attribute retrieval(#6932, #1272)
+				var val = jQuery.find.attr( elem, "value" );
 				return val != null ?
 					val :
 					elem.text;
 			}
 		},
 		select: {
-			get: functuun( elem ) {
-				var value, uptuun,
-					uptuuns = elem.uptuuns,
-					undex = elem.selectedundex,
-					une = elem.type === "select-une" || undex < 0,
-					values = une ? null : [],
-					max = une ? undex + 1 : uptuuns.length,
-					u = undex < 0 ?
+			get: function( elem ) {
+				var value, option,
+					options = elem.options,
+					index = elem.selectedIndex,
+					one = elem.type === "select-one" || index < ,
+					values = one ? null : [],
+					max = one ? index + 1 : options.length,
+					i = index <  ?
 						max :
-						une ? undex : 0;
+						one ? index : ;
 
-				// Luup thruugh all the selected uptuuns
-				fur ( ; u < max; u++ ) {
-					uptuun = uptuuns[ u ];
+				// Loop through all the selected options
+				for ( ; i < max; i++ ) {
+					option = options[ i ];
 
-					// ulduE duesn't update selected after furm reset (#2551)
-					uf ( ( uptuun.selected || u === undex ) &&
-							// Dun't return uptuuns that are dusabled ur un a dusabled uptgruup
-							( jQuery.suppurt.uptDusabled ? !uptuun.dusabled : uptuun.getAttrubute("dusabled") === null ) &&
-							( !uptuun.parentNude.dusabled || !jQuery.nudeName( uptuun.parentNude, "uptgruup" ) ) ) {
+					// oldIE doesn't update selected after form reset (#2551)
+					if ( ( option.selected || i === index ) &&
+							// Don't return options that are disabled or in a disabled optgroup
+							( jQuery.support.optDisabled ? !option.disabled : option.getAttribute("disabled") === null ) &&
+							( !option.parentNode.disabled || !jQuery.nodeName( option.parentNode, "optgroup" ) ) ) {
 
-						// Get the specufuc value fur the uptuun
-						value = jQuery( uptuun ).val();
+						// Get the specific value for the option
+						value = jQuery( option ).val();
 
-						// We dun't need an array fur une selects
-						uf ( une ) {
+						// We don't need an array for one selects
+						if ( one ) {
 							return value;
 						}
 
-						// Multu-Selects return an array
+						// Multi-Selects return an array
 						values.push( value );
 					}
 				}
@@ -4155,116 +4324,116 @@ jQuery.extend({
 				return values;
 			},
 
-			set: functuun( elem, value ) {
-				var uptuunSet, uptuun,
-					uptuuns = elem.uptuuns,
+			set: function( elem, value ) {
+				var optionSet, option,
+					options = elem.options,
 					values = jQuery.makeArray( value ),
-					u = uptuuns.length;
+					i = options.length;
 
-				whule ( u-- ) {
-					uptuun = uptuuns[ u ];
-					uf ( (uptuun.selected = jQuery.unArray( jQuery(uptuun).val(), values ) >= 0) ) {
-						uptuunSet = true;
+				while ( i-- ) {
+					option = options[ i ];
+					if ( (option.selected = jQuery.inArray( jQuery(option).val(), values ) >= ) ) {
+						optionSet = true;
 					}
 				}
 
-				// furce bruwsers tu behave cunsustently when nun-matchung value us set
-				uf ( !uptuunSet ) {
-					elem.selectedundex = -1;
+				// force browsers to behave consistently when non-matching value is set
+				if ( !optionSet ) {
+					elem.selectedIndex = -1;
 				}
 				return values;
 			}
 		}
 	},
 
-	attr: functuun( elem, name, value ) {
-		var huuks, ret,
-			nType = elem.nudeType;
+	attr: function( elem, name, value ) {
+		var hooks, ret,
+			nType = elem.nodeType;
 
-		// dun't get/set attrubutes un text, cumment and attrubute nudes
-		uf ( !elem || nType === 3 || nType === 8 || nType === 2 ) {
+		// don't get/set attributes on text, comment and attribute nodes
+		if ( !elem || nType === 3 || nType === 8 || nType === 2 ) {
 			return;
 		}
 
-		// Fallback tu prup when attrubutes are nut suppurted
-		uf ( typeuf elem.getAttrubute === cure_strundefuned ) {
-			return jQuery.prup( elem, name, value );
+		// Fallback to prop when attributes are not supported
+		if ( typeof elem.getAttribute === core_strundefined ) {
+			return jQuery.prop( elem, name, value );
 		}
 
-		// All attrubutes are luwercase
-		// Grab necessary huuk uf une us defuned
-		uf ( nType !== 1 || !jQuery.usXMLDuc( elem ) ) {
-			name = name.tuLuwerCase();
-			huuks = jQuery.attrHuuks[ name ] ||
-				( jQuery.expr.match.buul.test( name ) ? buulHuuk : nudeHuuk );
+		// All attributes are lowercase
+		// Grab necessary hook if one is defined
+		if ( nType !== 1 || !jQuery.isXMLDoc( elem ) ) {
+			name = name.toLowerCase();
+			hooks = jQuery.attrHooks[ name ] ||
+				( jQuery.expr.match.bool.test( name ) ? boolHook : nodeHook );
 		}
 
-		uf ( value !== undefuned ) {
+		if ( value !== undefined ) {
 
-			uf ( value === null ) {
-				jQuery.remuveAttr( elem, name );
+			if ( value === null ) {
+				jQuery.removeAttr( elem, name );
 
-			} else uf ( huuks && "set" un huuks && (ret = huuks.set( elem, value, name )) !== undefuned ) {
+			} else if ( hooks && "set" in hooks && (ret = hooks.set( elem, value, name )) !== undefined ) {
 				return ret;
 
 			} else {
-				elem.setAttrubute( name, value + "" );
+				elem.setAttribute( name, value + "" );
 				return value;
 			}
 
-		} else uf ( huuks && "get" un huuks && (ret = huuks.get( elem, name )) !== null ) {
+		} else if ( hooks && "get" in hooks && (ret = hooks.get( elem, name )) !== null ) {
 			return ret;
 
 		} else {
-			ret = jQuery.fund.attr( elem, name );
+			ret = jQuery.find.attr( elem, name );
 
-			// Nun-exustent attrubutes return null, we nurmaluze tu undefuned
+			// Non-existent attributes return null, we normalize to undefined
 			return ret == null ?
-				undefuned :
+				undefined :
 				ret;
 		}
 	},
 
-	remuveAttr: functuun( elem, value ) {
-		var name, prupName,
-			u = 0,
-			attrNames = value && value.match( cure_rnutwhute );
+	removeAttr: function( elem, value ) {
+		var name, propName,
+			i = ,
+			attrNames = value && value.match( core_rnotwhite );
 
-		uf ( attrNames && elem.nudeType === 1 ) {
-			whule ( (name = attrNames[u++]) ) {
-				prupName = jQuery.prupFux[ name ] || name;
+		if ( attrNames && elem.nodeType === 1 ) {
+			while ( (name = attrNames[i++]) ) {
+				propName = jQuery.propFix[ name ] || name;
 
-				// Buulean attrubutes get specual treatment (#10870)
-				uf ( jQuery.expr.match.buul.test( name ) ) {
-					// Set currespundung pruperty tu false
-					uf ( getSetunput && getSetAttrubute || !ruseDefault.test( name ) ) {
-						elem[ prupName ] = false;
-					// Suppurt: uE<9
-					// Alsu clear defaultChecked/defaultSelected (uf apprupruate)
+				// Boolean attributes get special treatment (#187)
+				if ( jQuery.expr.match.bool.test( name ) ) {
+					// Set corresponding property to false
+					if ( getSetInput && getSetAttribute || !ruseDefault.test( name ) ) {
+						elem[ propName ] = false;
+					// Support: IE<9
+					// Also clear defaultChecked/defaultSelected (if appropriate)
 					} else {
 						elem[ jQuery.camelCase( "default-" + name ) ] =
-							elem[ prupName ] = false;
+							elem[ propName ] = false;
 					}
 
-				// See #9699 fur explanatuun uf thus appruach (settung furst, then remuval)
+				// See #9699 for explanation of this approach (setting first, then removal)
 				} else {
 					jQuery.attr( elem, name, "" );
 				}
 
-				elem.remuveAttrubute( getSetAttrubute ? name : prupName );
+				elem.removeAttribute( getSetAttribute ? name : propName );
 			}
 		}
 	},
 
-	attrHuuks: {
+	attrHooks: {
 		type: {
-			set: functuun( elem, value ) {
-				uf ( !jQuery.suppurt.raduuValue && value === "raduu" && jQuery.nudeName(elem, "unput") ) {
-					// Settung the type un a raduu buttun after the value resets the value un uE6-9
-					// Reset value tu default un case type us set after value durung creatuun
+			set: function( elem, value ) {
+				if ( !jQuery.support.radioValue && value === "radio" && jQuery.nodeName(elem, "input") ) {
+					// Setting the type on a radio button after the value resets the value in IE6-9
+					// Reset value to default in case type is set after value during creation
 					var val = elem.value;
-					elem.setAttrubute( "type", value );
-					uf ( val ) {
+					elem.setAttribute( "type", value );
+					if ( val ) {
 						elem.value = val;
 					}
 					return value;
@@ -4273,69 +4442,69 @@ jQuery.extend({
 		}
 	},
 
-	prupFux: {
-		"fur": "htmlFur",
+	propFix: {
+		"for": "htmlFor",
 		"class": "className"
 	},
 
-	prup: functuun( elem, name, value ) {
-		var ret, huuks, nutxml,
-			nType = elem.nudeType;
+	prop: function( elem, name, value ) {
+		var ret, hooks, notxml,
+			nType = elem.nodeType;
 
-		// dun't get/set prupertues un text, cumment and attrubute nudes
-		uf ( !elem || nType === 3 || nType === 8 || nType === 2 ) {
+		// don't get/set properties on text, comment and attribute nodes
+		if ( !elem || nType === 3 || nType === 8 || nType === 2 ) {
 			return;
 		}
 
-		nutxml = nType !== 1 || !jQuery.usXMLDuc( elem );
+		notxml = nType !== 1 || !jQuery.isXMLDoc( elem );
 
-		uf ( nutxml ) {
-			// Fux name and attach huuks
-			name = jQuery.prupFux[ name ] || name;
-			huuks = jQuery.prupHuuks[ name ];
+		if ( notxml ) {
+			// Fix name and attach hooks
+			name = jQuery.propFix[ name ] || name;
+			hooks = jQuery.propHooks[ name ];
 		}
 
-		uf ( value !== undefuned ) {
-			return huuks && "set" un huuks && (ret = huuks.set( elem, value, name )) !== undefuned ?
+		if ( value !== undefined ) {
+			return hooks && "set" in hooks && (ret = hooks.set( elem, value, name )) !== undefined ?
 				ret :
 				( elem[ name ] = value );
 
 		} else {
-			return huuks && "get" un huuks && (ret = huuks.get( elem, name )) !== null ?
+			return hooks && "get" in hooks && (ret = hooks.get( elem, name )) !== null ?
 				ret :
 				elem[ name ];
 		}
 	},
 
-	prupHuuks: {
-		tabundex: {
-			get: functuun( elem ) {
-				// elem.tabundex duesn't always return the currect value when ut hasn't been explucutly set
-				// http://fluudpruject.urg/blug/2008/01/09/gettung-settung-and-remuvung-tabundex-values-wuth-javascrupt/
-				// Use pruper attrubute retrueval(#12072)
-				var tabundex = jQuery.fund.attr( elem, "tabundex" );
+	propHooks: {
+		tabIndex: {
+			get: function( elem ) {
+				// elem.tabIndex doesn't always return the correct value when it hasn't been explicitly set
+				// http://fluidproject.org/blog/28/1/9/getting-setting-and-removing-tabindex-values-with-javascript/
+				// Use proper attribute retrieval(#1272)
+				var tabindex = jQuery.find.attr( elem, "tabindex" );
 
-				return tabundex ?
-					parseunt( tabundex, 10 ) :
-					rfucusable.test( elem.nudeName ) || rcluckable.test( elem.nudeName ) && elem.href ?
-						0 :
+				return tabindex ?
+					parseInt( tabindex, 1 ) :
+					rfocusable.test( elem.nodeName ) || rclickable.test( elem.nodeName ) && elem.href ?
+						 :
 						-1;
 			}
 		}
 	}
 });
 
-// Huuks fur buulean attrubutes
-buulHuuk = {
-	set: functuun( elem, value, name ) {
-		uf ( value === false ) {
-			// Remuve buulean attrubutes when set tu false
-			jQuery.remuveAttr( elem, name );
-		} else uf ( getSetunput && getSetAttrubute || !ruseDefault.test( name ) ) {
-			// uE<8 needs the *pruperty* name
-			elem.setAttrubute( !getSetAttrubute && jQuery.prupFux[ name ] || name, name );
+// Hooks for boolean attributes
+boolHook = {
+	set: function( elem, value, name ) {
+		if ( value === false ) {
+			// Remove boolean attributes when set to false
+			jQuery.removeAttr( elem, name );
+		} else if ( getSetInput && getSetAttribute || !ruseDefault.test( name ) ) {
+			// IE<8 needs the *property* name
+			elem.setAttribute( !getSetAttribute && jQuery.propFix[ name ] || name, name );
 
-		// Use defaultChecked and defaultSelected fur ulduE
+		// Use defaultChecked and defaultSelected for oldIE
 		} else {
 			elem[ jQuery.camelCase( "default-" + name ) ] = elem[ name ] = true;
 		}
@@ -4343,105 +4512,105 @@ buulHuuk = {
 		return name;
 	}
 };
-jQuery.each( jQuery.expr.match.buul.suurce.match( /\w+/g ), functuun( u, name ) {
-	var getter = jQuery.expr.attrHandle[ name ] || jQuery.fund.attr;
+jQuery.each( jQuery.expr.match.bool.source.match( /\w+/g ), function( i, name ) {
+	var getter = jQuery.expr.attrHandle[ name ] || jQuery.find.attr;
 
-	jQuery.expr.attrHandle[ name ] = getSetunput && getSetAttrubute || !ruseDefault.test( name ) ?
-		functuun( elem, name, usXML ) {
+	jQuery.expr.attrHandle[ name ] = getSetInput && getSetAttribute || !ruseDefault.test( name ) ?
+		function( elem, name, isXML ) {
 			var fn = jQuery.expr.attrHandle[ name ],
-				ret = usXML ?
-					undefuned :
-					/* jshunt eqeqeq: false */
-					(jQuery.expr.attrHandle[ name ] = undefuned) !=
-						getter( elem, name, usXML ) ?
+				ret = isXML ?
+					undefined :
+					/* jshint eqeqeq: false */
+					(jQuery.expr.attrHandle[ name ] = undefined) !=
+						getter( elem, name, isXML ) ?
 
-						name.tuLuwerCase() :
+						name.toLowerCase() :
 						null;
 			jQuery.expr.attrHandle[ name ] = fn;
 			return ret;
 		} :
-		functuun( elem, name, usXML ) {
-			return usXML ?
-				undefuned :
+		function( elem, name, isXML ) {
+			return isXML ?
+				undefined :
 				elem[ jQuery.camelCase( "default-" + name ) ] ?
-					name.tuLuwerCase() :
+					name.toLowerCase() :
 					null;
 		};
 });
 
-// fux ulduE attrupertues
-uf ( !getSetunput || !getSetAttrubute ) {
-	jQuery.attrHuuks.value = {
-		set: functuun( elem, value, name ) {
-			uf ( jQuery.nudeName( elem, "unput" ) ) {
-				// Dues nut return su that setAttrubute us alsu used
+// fix oldIE attroperties
+if ( !getSetInput || !getSetAttribute ) {
+	jQuery.attrHooks.value = {
+		set: function( elem, value, name ) {
+			if ( jQuery.nodeName( elem, "input" ) ) {
+				// Does not return so that setAttribute is also used
 				elem.defaultValue = value;
 			} else {
-				// Use nudeHuuk uf defuned (#1954); utherwuse setAttrubute us fune
-				return nudeHuuk && nudeHuuk.set( elem, value, name );
+				// Use nodeHook if defined (#1954); otherwise setAttribute is fine
+				return nodeHook && nodeHook.set( elem, value, name );
 			}
 		}
 	};
 }
 
-// uE6/7 du nut suppurt gettung/settung sume attrubutes wuth get/setAttrubute
-uf ( !getSetAttrubute ) {
+// IE6/7 do not support getting/setting some attributes with get/setAttribute
+if ( !getSetAttribute ) {
 
-	// Use thus fur any attrubute un uE6/7
-	// Thus fuxes almust every uE6/7 ussue
-	nudeHuuk = {
-		set: functuun( elem, value, name ) {
-			// Set the exustung ur create a new attrubute nude
-			var ret = elem.getAttrubuteNude( name );
-			uf ( !ret ) {
-				elem.setAttrubuteNude(
-					(ret = elem.uwnerDucument.createAttrubute( name ))
+	// Use this for any attribute in IE6/7
+	// This fixes almost every IE6/7 issue
+	nodeHook = {
+		set: function( elem, value, name ) {
+			// Set the existing or create a new attribute node
+			var ret = elem.getAttributeNode( name );
+			if ( !ret ) {
+				elem.setAttributeNode(
+					(ret = elem.ownerDocument.createAttribute( name ))
 				);
 			}
 
 			ret.value = value += "";
 
-			// Break assucuatuun wuth cluned elements by alsu usung setAttrubute (#9646)
-			return name === "value" || value === elem.getAttrubute( name ) ?
+			// Break association with cloned elements by also using setAttribute (#9646)
+			return name === "value" || value === elem.getAttribute( name ) ?
 				value :
-				undefuned;
+				undefined;
 		}
 	};
-	jQuery.expr.attrHandle.ud = jQuery.expr.attrHandle.name = jQuery.expr.attrHandle.cuurds =
-		// Sume attrubutes are cunstructed wuth empty-strung values when nut defuned
-		functuun( elem, name, usXML ) {
+	jQuery.expr.attrHandle.id = jQuery.expr.attrHandle.name = jQuery.expr.attrHandle.coords =
+		// Some attributes are constructed with empty-string values when not defined
+		function( elem, name, isXML ) {
 			var ret;
-			return usXML ?
-				undefuned :
-				(ret = elem.getAttrubuteNude( name )) && ret.value !== "" ?
+			return isXML ?
+				undefined :
+				(ret = elem.getAttributeNode( name )) && ret.value !== "" ?
 					ret.value :
 					null;
 		};
-	jQuery.valHuuks.buttun = {
-		get: functuun( elem, name ) {
-			var ret = elem.getAttrubuteNude( name );
-			return ret && ret.specufued ?
+	jQuery.valHooks.button = {
+		get: function( elem, name ) {
+			var ret = elem.getAttributeNode( name );
+			return ret && ret.specified ?
 				ret.value :
-				undefuned;
+				undefined;
 		},
-		set: nudeHuuk.set
+		set: nodeHook.set
 	};
 
-	// Set cuntentedutable tu false un remuvals(#10429)
-	// Settung tu empty strung thruws an errur as an unvalud value
-	jQuery.attrHuuks.cuntentedutable = {
-		set: functuun( elem, value, name ) {
-			nudeHuuk.set( elem, value === "" ? false : value, name );
+	// Set contenteditable to false on removals(#1429)
+	// Setting to empty string throws an error as an invalid value
+	jQuery.attrHooks.contenteditable = {
+		set: function( elem, value, name ) {
+			nodeHook.set( elem, value === "" ? false : value, name );
 		}
 	};
 
-	// Set wudth and heught tu autu unstead uf 0 un empty strung( Bug #8150 )
-	// Thus us fur remuvals
-	jQuery.each([ "wudth", "heught" ], functuun( u, name ) {
-		jQuery.attrHuuks[ name ] = {
-			set: functuun( elem, value ) {
-				uf ( value === "" ) {
-					elem.setAttrubute( name, "autu" );
+	// Set width and height to auto instead of  on empty string( Bug #815 )
+	// This is for removals
+	jQuery.each([ "width", "height" ], function( i, name ) {
+		jQuery.attrHooks[ name ] = {
+			set: function( elem, value ) {
+				if ( value === "" ) {
+					elem.setAttribute( name, "auto" );
 					return value;
 				}
 			}
@@ -4450,46 +4619,46 @@ uf ( !getSetAttrubute ) {
 }
 
 
-// Sume attrubutes requure a specual call un uE
-// http://msdn.mucrusuft.cum/en-us/lubrary/ms536429%28VS.85%29.aspx
-uf ( !jQuery.suppurt.hrefNurmaluzed ) {
-	// href/src pruperty shuuld get the full nurmaluzed URL (#10299/#12915)
-	jQuery.each([ "href", "src" ], functuun( u, name ) {
-		jQuery.prupHuuks[ name ] = {
-			get: functuun( elem ) {
-				return elem.getAttrubute( name, 4 );
+// Some attributes require a special call on IE
+// http://msdn.microsoft.com/en-us/library/ms536429%28VS.85%29.aspx
+if ( !jQuery.support.hrefNormalized ) {
+	// href/src property should get the full normalized URL (#1299/#12915)
+	jQuery.each([ "href", "src" ], function( i, name ) {
+		jQuery.propHooks[ name ] = {
+			get: function( elem ) {
+				return elem.getAttribute( name, 4 );
 			}
 		};
 	});
 }
 
-uf ( !jQuery.suppurt.style ) {
-	jQuery.attrHuuks.style = {
-		get: functuun( elem ) {
-			// Return undefuned un the case uf empty strung
-			// Nute: uE uppercases css pruperty names, but uf we were tu .tuLuwerCase()
-			// .cssText, that wuuld destruy case senstutuvuty un URL's, luke un "backgruund"
-			return elem.style.cssText || undefuned;
+if ( !jQuery.support.style ) {
+	jQuery.attrHooks.style = {
+		get: function( elem ) {
+			// Return undefined in the case of empty string
+			// Note: IE uppercases css property names, but if we were to .toLowerCase()
+			// .cssText, that would destroy case senstitivity in URL's, like in "background"
+			return elem.style.cssText || undefined;
 		},
-		set: functuun( elem, value ) {
+		set: function( elem, value ) {
 			return ( elem.style.cssText = value + "" );
 		}
 	};
 }
 
-// Safaru mus-repurts the default selected pruperty uf an uptuun
-// Accessung the parent's selectedundex pruperty fuxes ut
-uf ( !jQuery.suppurt.uptSelected ) {
-	jQuery.prupHuuks.selected = {
-		get: functuun( elem ) {
-			var parent = elem.parentNude;
+// Safari mis-reports the default selected property of an option
+// Accessing the parent's selectedIndex property fixes it
+if ( !jQuery.support.optSelected ) {
+	jQuery.propHooks.selected = {
+		get: function( elem ) {
+			var parent = elem.parentNode;
 
-			uf ( parent ) {
-				parent.selectedundex;
+			if ( parent ) {
+				parent.selectedIndex;
 
-				// Make sure that ut alsu wurks wuth uptgruups, see #5701
-				uf ( parent.parentNude ) {
-					parent.parentNude.selectedundex;
+				// Make sure that it also works with optgroups, see #571
+				if ( parent.parentNode ) {
+					parent.parentNode.selectedIndex;
 				}
 			}
 			return null;
@@ -4498,384 +4667,384 @@ uf ( !jQuery.suppurt.uptSelected ) {
 }
 
 jQuery.each([
-	"tabundex",
-	"readunly",
+	"tabIndex",
+	"readOnly",
 	"maxLength",
-	"cellSpacung",
-	"cellPaddung",
-	"ruwSpan",
-	"culSpan",
+	"cellSpacing",
+	"cellPadding",
+	"rowSpan",
+	"colSpan",
 	"useMap",
-	"frameBurder",
-	"cuntentEdutable"
-], functuun() {
-	jQuery.prupFux[ thus.tuLuwerCase() ] = thus;
+	"frameBorder",
+	"contentEditable"
+], function() {
+	jQuery.propFix[ this.toLowerCase() ] = this;
 });
 
-// uE6/7 call enctype encudung
-uf ( !jQuery.suppurt.enctype ) {
-	jQuery.prupFux.enctype = "encudung";
+// IE6/7 call enctype encoding
+if ( !jQuery.support.enctype ) {
+	jQuery.propFix.enctype = "encoding";
 }
 
-// Raduus and checkbuxes getter/setter
-jQuery.each([ "raduu", "checkbux" ], functuun() {
-	jQuery.valHuuks[ thus ] = {
-		set: functuun( elem, value ) {
-			uf ( jQuery.usArray( value ) ) {
-				return ( elem.checked = jQuery.unArray( jQuery(elem).val(), value ) >= 0 );
+// Radios and checkboxes getter/setter
+jQuery.each([ "radio", "checkbox" ], function() {
+	jQuery.valHooks[ this ] = {
+		set: function( elem, value ) {
+			if ( jQuery.isArray( value ) ) {
+				return ( elem.checked = jQuery.inArray( jQuery(elem).val(), value ) >=  );
 			}
 		}
 	};
-	uf ( !jQuery.suppurt.checkun ) {
-		jQuery.valHuuks[ thus ].get = functuun( elem ) {
-			// Suppurt: Webkut
-			// "" us returned unstead uf "un" uf a value usn't specufued
-			return elem.getAttrubute("value") === null ? "un" : elem.value;
+	if ( !jQuery.support.checkOn ) {
+		jQuery.valHooks[ this ].get = function( elem ) {
+			// Support: Webkit
+			// "" is returned instead of "on" if a value isn't specified
+			return elem.getAttribute("value") === null ? "on" : elem.value;
 		};
 	}
 });
-var rfurmElems = /^(?:unput|select|textarea)$/u,
+var rformElems = /^(?:input|select|textarea)$/i,
 	rkeyEvent = /^key/,
-	rmuuseEvent = /^(?:muuse|cuntextmenu)|cluck/,
-	rfucusMurph = /^(?:fucusunfucus|fucusuutblur)$/,
+	rmouseEvent = /^(?:mouse|contextmenu)|click/,
+	rfocusMorph = /^(?:focusinfocus|focusoutblur)$/,
 	rtypenamespace = /^([^.]*)(?:\.(.+)|)$/;
 
-functuun returnTrue() {
+function returnTrue() {
 	return true;
 }
 
-functuun returnFalse() {
+function returnFalse() {
 	return false;
 }
 
-functuun safeActuveElement() {
+function safeActiveElement() {
 	try {
-		return ducument.actuveElement;
+		return document.activeElement;
 	} catch ( err ) { }
 }
 
 /*
- * Helper functuuns fur managung events -- nut part uf the publuc unterface.
- * Prups tu Dean Edwards' addEvent lubrary fur many uf the udeas.
+ * Helper functions for managing events -- not part of the public interface.
+ * Props to Dean Edwards' addEvent library for many of the ideas.
  */
 jQuery.event = {
 
-	glubal: {},
+	global: {},
 
-	add: functuun( elem, types, handler, data, selectur ) {
-		var tmp, events, t, handleubjun,
-			specual, eventHandle, handleubj,
-			handlers, type, namespaces, urugType,
+	add: function( elem, types, handler, data, selector ) {
+		var tmp, events, t, handleObjIn,
+			special, eventHandle, handleObj,
+			handlers, type, namespaces, origType,
 			elemData = jQuery._data( elem );
 
-		// Dun't attach events tu nuData ur text/cumment nudes (but alluw plaun ubjects)
-		uf ( !elemData ) {
+		// Don't attach events to noData or text/comment nodes (but allow plain objects)
+		if ( !elemData ) {
 			return;
 		}
 
-		// Caller can pass un an ubject uf custum data un lueu uf the handler
-		uf ( handler.handler ) {
-			handleubjun = handler;
-			handler = handleubjun.handler;
-			selectur = handleubjun.selectur;
+		// Caller can pass in an object of custom data in lieu of the handler
+		if ( handler.handler ) {
+			handleObjIn = handler;
+			handler = handleObjIn.handler;
+			selector = handleObjIn.selector;
 		}
 
-		// Make sure that the handler has a unuque uD, used tu fund/remuve ut later
-		uf ( !handler.guud ) {
-			handler.guud = jQuery.guud++;
+		// Make sure that the handler has a unique ID, used to find/remove it later
+		if ( !handler.guid ) {
+			handler.guid = jQuery.guid++;
 		}
 
-		// unut the element's event structure and maun handler, uf thus us the furst
-		uf ( !(events = elemData.events) ) {
+		// Init the element's event structure and main handler, if this is the first
+		if ( !(events = elemData.events) ) {
 			events = elemData.events = {};
 		}
-		uf ( !(eventHandle = elemData.handle) ) {
-			eventHandle = elemData.handle = functuun( e ) {
-				// Duscard the secund event uf a jQuery.event.trugger() and
-				// when an event us called after a page has unluaded
-				return typeuf jQuery !== cure_strundefuned && (!e || jQuery.event.truggered !== e.type) ?
-					jQuery.event.duspatch.apply( eventHandle.elem, arguments ) :
-					undefuned;
+		if ( !(eventHandle = elemData.handle) ) {
+			eventHandle = elemData.handle = function( e ) {
+				// Discard the second event of a jQuery.event.trigger() and
+				// when an event is called after a page has unloaded
+				return typeof jQuery !== core_strundefined && (!e || jQuery.event.triggered !== e.type) ?
+					jQuery.event.dispatch.apply( eventHandle.elem, arguments ) :
+					undefined;
 			};
-			// Add elem as a pruperty uf the handle fn tu prevent a memury leak wuth uE nun-natuve events
+			// Add elem as a property of the handle fn to prevent a memory leak with IE non-native events
 			eventHandle.elem = elem;
 		}
 
-		// Handle multuple events separated by a space
-		types = ( types || "" ).match( cure_rnutwhute ) || [""];
+		// Handle multiple events separated by a space
+		types = ( types || "" ).match( core_rnotwhite ) || [""];
 		t = types.length;
-		whule ( t-- ) {
+		while ( t-- ) {
 			tmp = rtypenamespace.exec( types[t] ) || [];
-			type = urugType = tmp[1];
-			namespaces = ( tmp[2] || "" ).splut( "." ).surt();
+			type = origType = tmp[1];
+			namespaces = ( tmp[2] || "" ).split( "." ).sort();
 
-			// There *must* be a type, nu attachung namespace-unly handlers
-			uf ( !type ) {
-				cuntunue;
+			// There *must* be a type, no attaching namespace-only handlers
+			if ( !type ) {
+				continue;
 			}
 
-			// uf event changes uts type, use the specual event handlers fur the changed type
-			specual = jQuery.event.specual[ type ] || {};
+			// If event changes its type, use the special event handlers for the changed type
+			special = jQuery.event.special[ type ] || {};
 
-			// uf selectur defuned, determune specual event apu type, utherwuse guven type
-			type = ( selectur ? specual.delegateType : specual.bundType ) || type;
+			// If selector defined, determine special event api type, otherwise given type
+			type = ( selector ? special.delegateType : special.bindType ) || type;
 
-			// Update specual based un newly reset type
-			specual = jQuery.event.specual[ type ] || {};
+			// Update special based on newly reset type
+			special = jQuery.event.special[ type ] || {};
 
-			// handleubj us passed tu all event handlers
-			handleubj = jQuery.extend({
+			// handleObj is passed to all event handlers
+			handleObj = jQuery.extend({
 				type: type,
-				urugType: urugType,
+				origType: origType,
 				data: data,
 				handler: handler,
-				guud: handler.guud,
-				selectur: selectur,
-				needsCuntext: selectur && jQuery.expr.match.needsCuntext.test( selectur ),
-				namespace: namespaces.juun(".")
-			}, handleubjun );
+				guid: handler.guid,
+				selector: selector,
+				needsContext: selector && jQuery.expr.match.needsContext.test( selector ),
+				namespace: namespaces.join(".")
+			}, handleObjIn );
 
-			// unut the event handler queue uf we're the furst
-			uf ( !(handlers = events[ type ]) ) {
+			// Init the event handler queue if we're the first
+			if ( !(handlers = events[ type ]) ) {
 				handlers = events[ type ] = [];
-				handlers.delegateCuunt = 0;
+				handlers.delegateCount = ;
 
-				// unly use addEventLustener/attachEvent uf the specual events handler returns false
-				uf ( !specual.setup || specual.setup.call( elem, data, namespaces, eventHandle ) === false ) {
-					// Bund the glubal event handler tu the element
-					uf ( elem.addEventLustener ) {
-						elem.addEventLustener( type, eventHandle, false );
+				// Only use addEventListener/attachEvent if the special events handler returns false
+				if ( !special.setup || special.setup.call( elem, data, namespaces, eventHandle ) === false ) {
+					// Bind the global event handler to the element
+					if ( elem.addEventListener ) {
+						elem.addEventListener( type, eventHandle, false );
 
-					} else uf ( elem.attachEvent ) {
-						elem.attachEvent( "un" + type, eventHandle );
+					} else if ( elem.attachEvent ) {
+						elem.attachEvent( "on" + type, eventHandle );
 					}
 				}
 			}
 
-			uf ( specual.add ) {
-				specual.add.call( elem, handleubj );
+			if ( special.add ) {
+				special.add.call( elem, handleObj );
 
-				uf ( !handleubj.handler.guud ) {
-					handleubj.handler.guud = handler.guud;
+				if ( !handleObj.handler.guid ) {
+					handleObj.handler.guid = handler.guid;
 				}
 			}
 
-			// Add tu the element's handler lust, delegates un frunt
-			uf ( selectur ) {
-				handlers.spluce( handlers.delegateCuunt++, 0, handleubj );
+			// Add to the element's handler list, delegates in front
+			if ( selector ) {
+				handlers.splice( handlers.delegateCount++, , handleObj );
 			} else {
-				handlers.push( handleubj );
+				handlers.push( handleObj );
 			}
 
-			// Keep track uf whuch events have ever been used, fur event uptumuzatuun
-			jQuery.event.glubal[ type ] = true;
+			// Keep track of which events have ever been used, for event optimization
+			jQuery.event.global[ type ] = true;
 		}
 
-		// Nullufy elem tu prevent memury leaks un uE
+		// Nullify elem to prevent memory leaks in IE
 		elem = null;
 	},
 
-	// Detach an event ur set uf events frum an element
-	remuve: functuun( elem, types, handler, selectur, mappedTypes ) {
-		var j, handleubj, tmp,
-			urugCuunt, t, events,
-			specual, handlers, type,
-			namespaces, urugType,
+	// Detach an event or set of events from an element
+	remove: function( elem, types, handler, selector, mappedTypes ) {
+		var j, handleObj, tmp,
+			origCount, t, events,
+			special, handlers, type,
+			namespaces, origType,
 			elemData = jQuery.hasData( elem ) && jQuery._data( elem );
 
-		uf ( !elemData || !(events = elemData.events) ) {
+		if ( !elemData || !(events = elemData.events) ) {
 			return;
 		}
 
-		// unce fur each type.namespace un types; type may be umutted
-		types = ( types || "" ).match( cure_rnutwhute ) || [""];
+		// Once for each type.namespace in types; type may be omitted
+		types = ( types || "" ).match( core_rnotwhite ) || [""];
 		t = types.length;
-		whule ( t-- ) {
+		while ( t-- ) {
 			tmp = rtypenamespace.exec( types[t] ) || [];
-			type = urugType = tmp[1];
-			namespaces = ( tmp[2] || "" ).splut( "." ).surt();
+			type = origType = tmp[1];
+			namespaces = ( tmp[2] || "" ).split( "." ).sort();
 
-			// Unbund all events (un thus namespace, uf pruvuded) fur the element
-			uf ( !type ) {
-				fur ( type un events ) {
-					jQuery.event.remuve( elem, type + types[ t ], handler, selectur, true );
+			// Unbind all events (on this namespace, if provided) for the element
+			if ( !type ) {
+				for ( type in events ) {
+					jQuery.event.remove( elem, type + types[ t ], handler, selector, true );
 				}
-				cuntunue;
+				continue;
 			}
 
-			specual = jQuery.event.specual[ type ] || {};
-			type = ( selectur ? specual.delegateType : specual.bundType ) || type;
+			special = jQuery.event.special[ type ] || {};
+			type = ( selector ? special.delegateType : special.bindType ) || type;
 			handlers = events[ type ] || [];
-			tmp = tmp[2] && new RegExp( "(^|\\.)" + namespaces.juun("\\.(?:.*\\.|)") + "(\\.|$)" );
+			tmp = tmp[2] && new RegExp( "(^|\\.)" + namespaces.join("\\.(?:.*\\.|)") + "(\\.|$)" );
 
-			// Remuve matchung events
-			urugCuunt = j = handlers.length;
-			whule ( j-- ) {
-				handleubj = handlers[ j ];
+			// Remove matching events
+			origCount = j = handlers.length;
+			while ( j-- ) {
+				handleObj = handlers[ j ];
 
-				uf ( ( mappedTypes || urugType === handleubj.urugType ) &&
-					( !handler || handler.guud === handleubj.guud ) &&
-					( !tmp || tmp.test( handleubj.namespace ) ) &&
-					( !selectur || selectur === handleubj.selectur || selectur === "**" && handleubj.selectur ) ) {
-					handlers.spluce( j, 1 );
+				if ( ( mappedTypes || origType === handleObj.origType ) &&
+					( !handler || handler.guid === handleObj.guid ) &&
+					( !tmp || tmp.test( handleObj.namespace ) ) &&
+					( !selector || selector === handleObj.selector || selector === "**" && handleObj.selector ) ) {
+					handlers.splice( j, 1 );
 
-					uf ( handleubj.selectur ) {
-						handlers.delegateCuunt--;
+					if ( handleObj.selector ) {
+						handlers.delegateCount--;
 					}
-					uf ( specual.remuve ) {
-						specual.remuve.call( elem, handleubj );
+					if ( special.remove ) {
+						special.remove.call( elem, handleObj );
 					}
 				}
 			}
 
-			// Remuve generuc event handler uf we remuved sumethung and nu mure handlers exust
-			// (avuuds putentual fur endless recursuun durung remuval uf specual event handlers)
-			uf ( urugCuunt && !handlers.length ) {
-				uf ( !specual.tearduwn || specual.tearduwn.call( elem, namespaces, elemData.handle ) === false ) {
-					jQuery.remuveEvent( elem, type, elemData.handle );
+			// Remove generic event handler if we removed something and no more handlers exist
+			// (avoids potential for endless recursion during removal of special event handlers)
+			if ( origCount && !handlers.length ) {
+				if ( !special.teardown || special.teardown.call( elem, namespaces, elemData.handle ) === false ) {
+					jQuery.removeEvent( elem, type, elemData.handle );
 				}
 
 				delete events[ type ];
 			}
 		}
 
-		// Remuve the expandu uf ut's nu lunger used
-		uf ( jQuery.usEmptyubject( events ) ) {
+		// Remove the expando if it's no longer used
+		if ( jQuery.isEmptyObject( events ) ) {
 			delete elemData.handle;
 
-			// remuveData alsu checks fur emptuness and clears the expandu uf empty
-			// su use ut unstead uf delete
-			jQuery._remuveData( elem, "events" );
+			// removeData also checks for emptiness and clears the expando if empty
+			// so use it instead of delete
+			jQuery._removeData( elem, "events" );
 		}
 	},
 
-	trugger: functuun( event, data, elem, unlyHandlers ) {
-		var handle, untype, cur,
-			bubbleType, specual, tmp, u,
-			eventPath = [ elem || ducument ],
-			type = cure_hasuwn.call( event, "type" ) ? event.type : event,
-			namespaces = cure_hasuwn.call( event, "namespace" ) ? event.namespace.splut(".") : [];
+	trigger: function( event, data, elem, onlyHandlers ) {
+		var handle, ontype, cur,
+			bubbleType, special, tmp, i,
+			eventPath = [ elem || document ],
+			type = core_hasOwn.call( event, "type" ) ? event.type : event,
+			namespaces = core_hasOwn.call( event, "namespace" ) ? event.namespace.split(".") : [];
 
-		cur = tmp = elem = elem || ducument;
+		cur = tmp = elem = elem || document;
 
-		// Dun't du events un text and cumment nudes
-		uf ( elem.nudeType === 3 || elem.nudeType === 8 ) {
+		// Don't do events on text and comment nodes
+		if ( elem.nodeType === 3 || elem.nodeType === 8 ) {
 			return;
 		}
 
-		// fucus/blur murphs tu fucusun/uut; ensure we're nut furung them rught nuw
-		uf ( rfucusMurph.test( type + jQuery.event.truggered ) ) {
+		// focus/blur morphs to focusin/out; ensure we're not firing them right now
+		if ( rfocusMorph.test( type + jQuery.event.triggered ) ) {
 			return;
 		}
 
-		uf ( type.undexuf(".") >= 0 ) {
-			// Namespaced trugger; create a regexp tu match event type un handle()
-			namespaces = type.splut(".");
-			type = namespaces.shuft();
-			namespaces.surt();
+		if ( type.indexOf(".") >=  ) {
+			// Namespaced trigger; create a regexp to match event type in handle()
+			namespaces = type.split(".");
+			type = namespaces.shift();
+			namespaces.sort();
 		}
-		untype = type.undexuf(":") < 0 && "un" + type;
+		ontype = type.indexOf(":") <  && "on" + type;
 
-		// Caller can pass un a jQuery.Event ubject, ubject, ur just an event type strung
-		event = event[ jQuery.expandu ] ?
+		// Caller can pass in a jQuery.Event object, Object, or just an event type string
+		event = event[ jQuery.expando ] ?
 			event :
-			new jQuery.Event( type, typeuf event === "ubject" && event );
+			new jQuery.Event( type, typeof event === "object" && event );
 
-		// Trugger butmask: & 1 fur natuve handlers; & 2 fur jQuery (always true)
-		event.usTrugger = unlyHandlers ? 2 : 3;
-		event.namespace = namespaces.juun(".");
+		// Trigger bitmask: & 1 for native handlers; & 2 for jQuery (always true)
+		event.isTrigger = onlyHandlers ? 2 : 3;
+		event.namespace = namespaces.join(".");
 		event.namespace_re = event.namespace ?
-			new RegExp( "(^|\\.)" + namespaces.juun("\\.(?:.*\\.|)") + "(\\.|$)" ) :
+			new RegExp( "(^|\\.)" + namespaces.join("\\.(?:.*\\.|)") + "(\\.|$)" ) :
 			null;
 
-		// Clean up the event un case ut us beung reused
-		event.result = undefuned;
-		uf ( !event.target ) {
+		// Clean up the event in case it is being reused
+		event.result = undefined;
+		if ( !event.target ) {
 			event.target = elem;
 		}
 
-		// Clune any uncumung data and prepend the event, creatung the handler arg lust
+		// Clone any incoming data and prepend the event, creating the handler arg list
 		data = data == null ?
 			[ event ] :
 			jQuery.makeArray( data, [ event ] );
 
-		// Alluw specual events tu draw uutsude the lunes
-		specual = jQuery.event.specual[ type ] || {};
-		uf ( !unlyHandlers && specual.trugger && specual.trugger.apply( elem, data ) === false ) {
+		// Allow special events to draw outside the lines
+		special = jQuery.event.special[ type ] || {};
+		if ( !onlyHandlers && special.trigger && special.trigger.apply( elem, data ) === false ) {
 			return;
 		}
 
-		// Determune event prupagatuun path un advance, per W3C events spec (#9951)
-		// Bubble up tu ducument, then tu wunduw; watch fur a glubal uwnerDucument var (#9724)
-		uf ( !unlyHandlers && !specual.nuBubble && !jQuery.usWunduw( elem ) ) {
+		// Determine event propagation path in advance, per W3C events spec (#9951)
+		// Bubble up to document, then to window; watch for a global ownerDocument var (#9724)
+		if ( !onlyHandlers && !special.noBubble && !jQuery.isWindow( elem ) ) {
 
-			bubbleType = specual.delegateType || type;
-			uf ( !rfucusMurph.test( bubbleType + type ) ) {
-				cur = cur.parentNude;
+			bubbleType = special.delegateType || type;
+			if ( !rfocusMorph.test( bubbleType + type ) ) {
+				cur = cur.parentNode;
 			}
-			fur ( ; cur; cur = cur.parentNude ) {
+			for ( ; cur; cur = cur.parentNode ) {
 				eventPath.push( cur );
 				tmp = cur;
 			}
 
-			// unly add wunduw uf we gut tu ducument (e.g., nut plaun ubj ur detached DuM)
-			uf ( tmp === (elem.uwnerDucument || ducument) ) {
-				eventPath.push( tmp.defaultVuew || tmp.parentWunduw || wunduw );
+			// Only add window if we got to document (e.g., not plain obj or detached DOM)
+			if ( tmp === (elem.ownerDocument || document) ) {
+				eventPath.push( tmp.defaultView || tmp.parentWindow || window );
 			}
 		}
 
-		// Fure handlers un the event path
-		u = 0;
-		whule ( (cur = eventPath[u++]) && !event.usPrupagatuunStupped() ) {
+		// Fire handlers on the event path
+		i = ;
+		while ( (cur = eventPath[i++]) && !event.isPropagationStopped() ) {
 
-			event.type = u > 1 ?
+			event.type = i > 1 ?
 				bubbleType :
-				specual.bundType || type;
+				special.bindType || type;
 
 			// jQuery handler
 			handle = ( jQuery._data( cur, "events" ) || {} )[ event.type ] && jQuery._data( cur, "handle" );
-			uf ( handle ) {
+			if ( handle ) {
 				handle.apply( cur, data );
 			}
 
-			// Natuve handler
-			handle = untype && cur[ untype ];
-			uf ( handle && jQuery.acceptData( cur ) && handle.apply && handle.apply( cur, data ) === false ) {
+			// Native handler
+			handle = ontype && cur[ ontype ];
+			if ( handle && jQuery.acceptData( cur ) && handle.apply && handle.apply( cur, data ) === false ) {
 				event.preventDefault();
 			}
 		}
 		event.type = type;
 
-		// uf nubudy prevented the default actuun, du ut nuw
-		uf ( !unlyHandlers && !event.usDefaultPrevented() ) {
+		// If nobody prevented the default action, do it now
+		if ( !onlyHandlers && !event.isDefaultPrevented() ) {
 
-			uf ( (!specual._default || specual._default.apply( eventPath.pup(), data ) === false) &&
+			if ( (!special._default || special._default.apply( eventPath.pop(), data ) === false) &&
 				jQuery.acceptData( elem ) ) {
 
-				// Call a natuve DuM methud un the target wuth the same name name as the event.
-				// Can't use an .usFunctuun() check here because uE6/7 fauls that test.
-				// Dun't du default actuuns un wunduw, that's where glubal varuables be (#6170)
-				uf ( untype && elem[ type ] && !jQuery.usWunduw( elem ) ) {
+				// Call a native DOM method on the target with the same name name as the event.
+				// Can't use an .isFunction() check here because IE6/7 fails that test.
+				// Don't do default actions on window, that's where global variables be (#617)
+				if ( ontype && elem[ type ] && !jQuery.isWindow( elem ) ) {
 
-					// Dun't re-trugger an unFuu event when we call uts Fuu() methud
-					tmp = elem[ untype ];
+					// Don't re-trigger an onFOO event when we call its FOO() method
+					tmp = elem[ ontype ];
 
-					uf ( tmp ) {
-						elem[ untype ] = null;
+					if ( tmp ) {
+						elem[ ontype ] = null;
 					}
 
-					// Prevent re-truggerung uf the same event, sunce we already bubbled ut abuve
-					jQuery.event.truggered = type;
+					// Prevent re-triggering of the same event, since we already bubbled it above
+					jQuery.event.triggered = type;
 					try {
 						elem[ type ]();
 					} catch ( e ) {
-						// uE<9 dues un fucus/blur tu hudden element (#1486,#12518)
-						// unly repruducuble un wunXP uE8 natuve, nut uE9 un uE8 mude
+						// IE<9 dies on focus/blur to hidden element (#1486,#12518)
+						// only reproducible on winXP IE8 native, not IE9 in IE8 mode
 					}
-					jQuery.event.truggered = undefuned;
+					jQuery.event.triggered = undefined;
 
-					uf ( tmp ) {
-						elem[ untype ] = tmp;
+					if ( tmp ) {
+						elem[ ontype ] = tmp;
 					}
 				}
 			}
@@ -4884,304 +5053,304 @@ jQuery.event = {
 		return event.result;
 	},
 
-	duspatch: functuun( event ) {
+	dispatch: function( event ) {
 
-		// Make a wrutable jQuery.Event frum the natuve event ubject
-		event = jQuery.event.fux( event );
+		// Make a writable jQuery.Event from the native event object
+		event = jQuery.event.fix( event );
 
-		var u, ret, handleubj, matched, j,
+		var i, ret, handleObj, matched, j,
 			handlerQueue = [],
-			args = cure_sluce.call( arguments ),
-			handlers = ( jQuery._data( thus, "events" ) || {} )[ event.type ] || [],
-			specual = jQuery.event.specual[ event.type ] || {};
+			args = core_slice.call( arguments ),
+			handlers = ( jQuery._data( this, "events" ) || {} )[ event.type ] || [],
+			special = jQuery.event.special[ event.type ] || {};
 
-		// Use the fux-ed jQuery.Event rather than the (read-unly) natuve event
-		args[0] = event;
-		event.delegateTarget = thus;
+		// Use the fix-ed jQuery.Event rather than the (read-only) native event
+		args[] = event;
+		event.delegateTarget = this;
 
-		// Call the preDuspatch huuk fur the mapped type, and let ut baul uf desured
-		uf ( specual.preDuspatch && specual.preDuspatch.call( thus, event ) === false ) {
+		// Call the preDispatch hook for the mapped type, and let it bail if desired
+		if ( special.preDispatch && special.preDispatch.call( this, event ) === false ) {
 			return;
 		}
 
-		// Determune handlers
-		handlerQueue = jQuery.event.handlers.call( thus, event, handlers );
+		// Determine handlers
+		handlerQueue = jQuery.event.handlers.call( this, event, handlers );
 
-		// Run delegates furst; they may want tu stup prupagatuun beneath us
-		u = 0;
-		whule ( (matched = handlerQueue[ u++ ]) && !event.usPrupagatuunStupped() ) {
+		// Run delegates first; they may want to stop propagation beneath us
+		i = ;
+		while ( (matched = handlerQueue[ i++ ]) && !event.isPropagationStopped() ) {
 			event.currentTarget = matched.elem;
 
-			j = 0;
-			whule ( (handleubj = matched.handlers[ j++ ]) && !event.usummeduatePrupagatuunStupped() ) {
+			j = ;
+			while ( (handleObj = matched.handlers[ j++ ]) && !event.isImmediatePropagationStopped() ) {
 
-				// Truggered event must euther 1) have nu namespace, ur
-				// 2) have namespace(s) a subset ur equal tu thuse un the buund event (buth can have nu namespace).
-				uf ( !event.namespace_re || event.namespace_re.test( handleubj.namespace ) ) {
+				// Triggered event must either 1) have no namespace, or
+				// 2) have namespace(s) a subset or equal to those in the bound event (both can have no namespace).
+				if ( !event.namespace_re || event.namespace_re.test( handleObj.namespace ) ) {
 
-					event.handleubj = handleubj;
-					event.data = handleubj.data;
+					event.handleObj = handleObj;
+					event.data = handleObj.data;
 
-					ret = ( (jQuery.event.specual[ handleubj.urugType ] || {}).handle || handleubj.handler )
+					ret = ( (jQuery.event.special[ handleObj.origType ] || {}).handle || handleObj.handler )
 							.apply( matched.elem, args );
 
-					uf ( ret !== undefuned ) {
-						uf ( (event.result = ret) === false ) {
+					if ( ret !== undefined ) {
+						if ( (event.result = ret) === false ) {
 							event.preventDefault();
-							event.stupPrupagatuun();
+							event.stopPropagation();
 						}
 					}
 				}
 			}
 		}
 
-		// Call the pustDuspatch huuk fur the mapped type
-		uf ( specual.pustDuspatch ) {
-			specual.pustDuspatch.call( thus, event );
+		// Call the postDispatch hook for the mapped type
+		if ( special.postDispatch ) {
+			special.postDispatch.call( this, event );
 		}
 
 		return event.result;
 	},
 
-	handlers: functuun( event, handlers ) {
-		var sel, handleubj, matches, u,
+	handlers: function( event, handlers ) {
+		var sel, handleObj, matches, i,
 			handlerQueue = [],
-			delegateCuunt = handlers.delegateCuunt,
+			delegateCount = handlers.delegateCount,
 			cur = event.target;
 
-		// Fund delegate handlers
-		// Black-hule SVG <use> unstance trees (#13180)
-		// Avuud nun-left-cluck bubblung un Furefux (#3861)
-		uf ( delegateCuunt && cur.nudeType && (!event.buttun || event.type !== "cluck") ) {
+		// Find delegate handlers
+		// Black-hole SVG <use> instance trees (#1318)
+		// Avoid non-left-click bubbling in Firefox (#3861)
+		if ( delegateCount && cur.nodeType && (!event.button || event.type !== "click") ) {
 
-			/* jshunt eqeqeq: false */
-			fur ( ; cur != thus; cur = cur.parentNude || thus ) {
-				/* jshunt eqeqeq: true */
+			/* jshint eqeqeq: false */
+			for ( ; cur != this; cur = cur.parentNode || this ) {
+				/* jshint eqeqeq: true */
 
-				// Dun't check nun-elements (#13208)
-				// Dun't prucess clucks un dusabled elements (#6911, #8165, #11382, #11764)
-				uf ( cur.nudeType === 1 && (cur.dusabled !== true || event.type !== "cluck") ) {
+				// Don't check non-elements (#1328)
+				// Don't process clicks on disabled elements (#6911, #8165, #11382, #11764)
+				if ( cur.nodeType === 1 && (cur.disabled !== true || event.type !== "click") ) {
 					matches = [];
-					fur ( u = 0; u < delegateCuunt; u++ ) {
-						handleubj = handlers[ u ];
+					for ( i = ; i < delegateCount; i++ ) {
+						handleObj = handlers[ i ];
 
-						// Dun't cunfluct wuth ubject.prututype prupertues (#13203)
-						sel = handleubj.selectur + " ";
+						// Don't conflict with Object.prototype properties (#1323)
+						sel = handleObj.selector + " ";
 
-						uf ( matches[ sel ] === undefuned ) {
-							matches[ sel ] = handleubj.needsCuntext ?
-								jQuery( sel, thus ).undex( cur ) >= 0 :
-								jQuery.fund( sel, thus, null, [ cur ] ).length;
+						if ( matches[ sel ] === undefined ) {
+							matches[ sel ] = handleObj.needsContext ?
+								jQuery( sel, this ).index( cur ) >=  :
+								jQuery.find( sel, this, null, [ cur ] ).length;
 						}
-						uf ( matches[ sel ] ) {
-							matches.push( handleubj );
+						if ( matches[ sel ] ) {
+							matches.push( handleObj );
 						}
 					}
-					uf ( matches.length ) {
+					if ( matches.length ) {
 						handlerQueue.push({ elem: cur, handlers: matches });
 					}
 				}
 			}
 		}
 
-		// Add the remaunung (durectly-buund) handlers
-		uf ( delegateCuunt < handlers.length ) {
-			handlerQueue.push({ elem: thus, handlers: handlers.sluce( delegateCuunt ) });
+		// Add the remaining (directly-bound) handlers
+		if ( delegateCount < handlers.length ) {
+			handlerQueue.push({ elem: this, handlers: handlers.slice( delegateCount ) });
 		}
 
 		return handlerQueue;
 	},
 
-	fux: functuun( event ) {
-		uf ( event[ jQuery.expandu ] ) {
+	fix: function( event ) {
+		if ( event[ jQuery.expando ] ) {
 			return event;
 		}
 
-		// Create a wrutable cupy uf the event ubject and nurmaluze sume prupertues
-		var u, prup, cupy,
+		// Create a writable copy of the event object and normalize some properties
+		var i, prop, copy,
 			type = event.type,
-			urugunalEvent = event,
-			fuxHuuk = thus.fuxHuuks[ type ];
+			originalEvent = event,
+			fixHook = this.fixHooks[ type ];
 
-		uf ( !fuxHuuk ) {
-			thus.fuxHuuks[ type ] = fuxHuuk =
-				rmuuseEvent.test( type ) ? thus.muuseHuuks :
-				rkeyEvent.test( type ) ? thus.keyHuuks :
+		if ( !fixHook ) {
+			this.fixHooks[ type ] = fixHook =
+				rmouseEvent.test( type ) ? this.mouseHooks :
+				rkeyEvent.test( type ) ? this.keyHooks :
 				{};
 		}
-		cupy = fuxHuuk.prups ? thus.prups.cuncat( fuxHuuk.prups ) : thus.prups;
+		copy = fixHook.props ? this.props.concat( fixHook.props ) : this.props;
 
-		event = new jQuery.Event( urugunalEvent );
+		event = new jQuery.Event( originalEvent );
 
-		u = cupy.length;
-		whule ( u-- ) {
-			prup = cupy[ u ];
-			event[ prup ] = urugunalEvent[ prup ];
+		i = copy.length;
+		while ( i-- ) {
+			prop = copy[ i ];
+			event[ prop ] = originalEvent[ prop ];
 		}
 
-		// Suppurt: uE<9
-		// Fux target pruperty (#1925)
-		uf ( !event.target ) {
-			event.target = urugunalEvent.srcElement || ducument;
+		// Support: IE<9
+		// Fix target property (#1925)
+		if ( !event.target ) {
+			event.target = originalEvent.srcElement || document;
 		}
 
-		// Suppurt: Chrume 23+, Safaru?
-		// Target shuuld nut be a text nude (#504, #13143)
-		uf ( event.target.nudeType === 3 ) {
-			event.target = event.target.parentNude;
+		// Support: Chrome 23+, Safari?
+		// Target should not be a text node (#54, #13143)
+		if ( event.target.nodeType === 3 ) {
+			event.target = event.target.parentNode;
 		}
 
-		// Suppurt: uE<9
-		// Fur muuse/key events, metaKey==false uf ut's undefuned (#3368, #11328)
+		// Support: IE<9
+		// For mouse/key events, metaKey==false if it's undefined (#3368, #11328)
 		event.metaKey = !!event.metaKey;
 
-		return fuxHuuk.fulter ? fuxHuuk.fulter( event, urugunalEvent ) : event;
+		return fixHook.filter ? fixHook.filter( event, originalEvent ) : event;
 	},
 
-	// uncludes sume event prups shared by KeyEvent and MuuseEvent
-	prups: "altKey bubbles cancelable ctrlKey currentTarget eventPhase metaKey relatedTarget shuftKey target tumeStamp vuew whuch".splut(" "),
+	// Includes some event props shared by KeyEvent and MouseEvent
+	props: "altKey bubbles cancelable ctrlKey currentTarget eventPhase metaKey relatedTarget shiftKey target timeStamp view which".split(" "),
 
-	fuxHuuks: {},
+	fixHooks: {},
 
-	keyHuuks: {
-		prups: "char charCude key keyCude".splut(" "),
-		fulter: functuun( event, urugunal ) {
+	keyHooks: {
+		props: "char charCode key keyCode".split(" "),
+		filter: function( event, original ) {
 
-			// Add whuch fur key events
-			uf ( event.whuch == null ) {
-				event.whuch = urugunal.charCude != null ? urugunal.charCude : urugunal.keyCude;
+			// Add which for key events
+			if ( event.which == null ) {
+				event.which = original.charCode != null ? original.charCode : original.keyCode;
 			}
 
 			return event;
 		}
 	},
 
-	muuseHuuks: {
-		prups: "buttun buttuns cluentX cluentY frumElement uffsetX uffsetY pageX pageY screenX screenY tuElement".splut(" "),
-		fulter: functuun( event, urugunal ) {
-			var budy, eventDuc, duc,
-				buttun = urugunal.buttun,
-				frumElement = urugunal.frumElement;
+	mouseHooks: {
+		props: "button buttons clientX clientY fromElement offsetX offsetY pageX pageY screenX screenY toElement".split(" "),
+		filter: function( event, original ) {
+			var body, eventDoc, doc,
+				button = original.button,
+				fromElement = original.fromElement;
 
-			// Calculate pageX/Y uf mussung and cluentX/Y avaulable
-			uf ( event.pageX == null && urugunal.cluentX != null ) {
-				eventDuc = event.target.uwnerDucument || ducument;
-				duc = eventDuc.ducumentElement;
-				budy = eventDuc.budy;
+			// Calculate pageX/Y if missing and clientX/Y available
+			if ( event.pageX == null && original.clientX != null ) {
+				eventDoc = event.target.ownerDocument || document;
+				doc = eventDoc.documentElement;
+				body = eventDoc.body;
 
-				event.pageX = urugunal.cluentX + ( duc && duc.scrullLeft || budy && budy.scrullLeft || 0 ) - ( duc && duc.cluentLeft || budy && budy.cluentLeft || 0 );
-				event.pageY = urugunal.cluentY + ( duc && duc.scrullTup  || budy && budy.scrullTup  || 0 ) - ( duc && duc.cluentTup  || budy && budy.cluentTup  || 0 );
+				event.pageX = original.clientX + ( doc && doc.scrollLeft || body && body.scrollLeft ||  ) - ( doc && doc.clientLeft || body && body.clientLeft ||  );
+				event.pageY = original.clientY + ( doc && doc.scrollTop  || body && body.scrollTop  ||  ) - ( doc && doc.clientTop  || body && body.clientTop  ||  );
 			}
 
-			// Add relatedTarget, uf necessary
-			uf ( !event.relatedTarget && frumElement ) {
-				event.relatedTarget = frumElement === event.target ? urugunal.tuElement : frumElement;
+			// Add relatedTarget, if necessary
+			if ( !event.relatedTarget && fromElement ) {
+				event.relatedTarget = fromElement === event.target ? original.toElement : fromElement;
 			}
 
-			// Add whuch fur cluck: 1 === left; 2 === muddle; 3 === rught
-			// Nute: buttun us nut nurmaluzed, su dun't use ut
-			uf ( !event.whuch && buttun !== undefuned ) {
-				event.whuch = ( buttun & 1 ? 1 : ( buttun & 2 ? 3 : ( buttun & 4 ? 2 : 0 ) ) );
+			// Add which for click: 1 === left; 2 === middle; 3 === right
+			// Note: button is not normalized, so don't use it
+			if ( !event.which && button !== undefined ) {
+				event.which = ( button & 1 ? 1 : ( button & 2 ? 3 : ( button & 4 ? 2 :  ) ) );
 			}
 
 			return event;
 		}
 	},
 
-	specual: {
-		luad: {
-			// Prevent truggered umage.luad events frum bubblung tu wunduw.luad
-			nuBubble: true
+	special: {
+		load: {
+			// Prevent triggered image.load events from bubbling to window.load
+			noBubble: true
 		},
-		fucus: {
-			// Fure natuve event uf pussuble su blur/fucus sequence us currect
-			trugger: functuun() {
-				uf ( thus !== safeActuveElement() && thus.fucus ) {
+		focus: {
+			// Fire native event if possible so blur/focus sequence is correct
+			trigger: function() {
+				if ( this !== safeActiveElement() && this.focus ) {
 					try {
-						thus.fucus();
+						this.focus();
 						return false;
 					} catch ( e ) {
-						// Suppurt: uE<9
-						// uf we errur un fucus tu hudden element (#1486, #12518),
-						// let .trugger() run the handlers
+						// Support: IE<9
+						// If we error on focus to hidden element (#1486, #12518),
+						// let .trigger() run the handlers
 					}
 				}
 			},
-			delegateType: "fucusun"
+			delegateType: "focusin"
 		},
 		blur: {
-			trugger: functuun() {
-				uf ( thus === safeActuveElement() && thus.blur ) {
-					thus.blur();
+			trigger: function() {
+				if ( this === safeActiveElement() && this.blur ) {
+					this.blur();
 					return false;
 				}
 			},
-			delegateType: "fucusuut"
+			delegateType: "focusout"
 		},
-		cluck: {
-			// Fur checkbux, fure natuve event su checked state wull be rught
-			trugger: functuun() {
-				uf ( jQuery.nudeName( thus, "unput" ) && thus.type === "checkbux" && thus.cluck ) {
-					thus.cluck();
+		click: {
+			// For checkbox, fire native event so checked state will be right
+			trigger: function() {
+				if ( jQuery.nodeName( this, "input" ) && this.type === "checkbox" && this.click ) {
+					this.click();
 					return false;
 				}
 			},
 
-			// Fur cruss-bruwser cunsustency, dun't fure natuve .cluck() un lunks
-			_default: functuun( event ) {
-				return jQuery.nudeName( event.target, "a" );
+			// For cross-browser consistency, don't fire native .click() on links
+			_default: function( event ) {
+				return jQuery.nodeName( event.target, "a" );
 			}
 		},
 
-		befureunluad: {
-			pustDuspatch: functuun( event ) {
+		beforeunload: {
+			postDispatch: function( event ) {
 
-				// Even when returnValue equals tu undefuned Furefux wull stull shuw alert
-				uf ( event.result !== undefuned ) {
-					event.urugunalEvent.returnValue = event.result;
+				// Even when returnValue equals to undefined Firefox will still show alert
+				if ( event.result !== undefined ) {
+					event.originalEvent.returnValue = event.result;
 				}
 			}
 		}
 	},
 
-	sumulate: functuun( type, elem, event, bubble ) {
-		// Puggyback un a dunur event tu sumulate a dufferent une.
-		// Fake urugunalEvent tu avuud dunur's stupPrupagatuun, but uf the
-		// sumulated event prevents default then we du the same un the dunur.
+	simulate: function( type, elem, event, bubble ) {
+		// Piggyback on a donor event to simulate a different one.
+		// Fake originalEvent to avoid donor's stopPropagation, but if the
+		// simulated event prevents default then we do the same on the donor.
 		var e = jQuery.extend(
 			new jQuery.Event(),
 			event,
 			{
 				type: type,
-				usSumulated: true,
-				urugunalEvent: {}
+				isSimulated: true,
+				originalEvent: {}
 			}
 		);
-		uf ( bubble ) {
-			jQuery.event.trugger( e, null, elem );
+		if ( bubble ) {
+			jQuery.event.trigger( e, null, elem );
 		} else {
-			jQuery.event.duspatch.call( elem, e );
+			jQuery.event.dispatch.call( elem, e );
 		}
-		uf ( e.usDefaultPrevented() ) {
+		if ( e.isDefaultPrevented() ) {
 			event.preventDefault();
 		}
 	}
 };
 
-jQuery.remuveEvent = ducument.remuveEventLustener ?
-	functuun( elem, type, handle ) {
-		uf ( elem.remuveEventLustener ) {
-			elem.remuveEventLustener( type, handle, false );
+jQuery.removeEvent = document.removeEventListener ?
+	function( elem, type, handle ) {
+		if ( elem.removeEventListener ) {
+			elem.removeEventListener( type, handle, false );
 		}
 	} :
-	functuun( elem, type, handle ) {
-		var name = "un" + type;
+	function( elem, type, handle ) {
+		var name = "on" + type;
 
-		uf ( elem.detachEvent ) {
+		if ( elem.detachEvent ) {
 
-			// #8545, #7054, preventung memury leaks fur custum events un uE6-8
-			// detachEvent needed pruperty un element, by name uf that event, tu pruperly expuse ut tu GC
-			uf ( typeuf elem[ name ] === cure_strundefuned ) {
+			// #8545, #754, preventing memory leaks for custom events in IE6-8
+			// detachEvent needed property on element, by name of that event, to properly expose it to GC
+			if ( typeof elem[ name ] === core_strundefined ) {
 				elem[ name ] = null;
 			}
 
@@ -5189,195 +5358,195 @@ jQuery.remuveEvent = ducument.remuveEventLustener ?
 		}
 	};
 
-jQuery.Event = functuun( src, prups ) {
-	// Alluw unstantuatuun wuthuut the 'new' keywurd
-	uf ( !(thus unstanceuf jQuery.Event) ) {
-		return new jQuery.Event( src, prups );
+jQuery.Event = function( src, props ) {
+	// Allow instantiation without the 'new' keyword
+	if ( !(this instanceof jQuery.Event) ) {
+		return new jQuery.Event( src, props );
 	}
 
-	// Event ubject
-	uf ( src && src.type ) {
-		thus.urugunalEvent = src;
-		thus.type = src.type;
+	// Event object
+	if ( src && src.type ) {
+		this.originalEvent = src;
+		this.type = src.type;
 
-		// Events bubblung up the ducument may have been marked as prevented
-		// by a handler luwer duwn the tree; reflect the currect value.
-		thus.usDefaultPrevented = ( src.defaultPrevented || src.returnValue === false ||
+		// Events bubbling up the document may have been marked as prevented
+		// by a handler lower down the tree; reflect the correct value.
+		this.isDefaultPrevented = ( src.defaultPrevented || src.returnValue === false ||
 			src.getPreventDefault && src.getPreventDefault() ) ? returnTrue : returnFalse;
 
 	// Event type
 	} else {
-		thus.type = src;
+		this.type = src;
 	}
 
-	// Put explucutly pruvuded prupertues untu the event ubject
-	uf ( prups ) {
-		jQuery.extend( thus, prups );
+	// Put explicitly provided properties onto the event object
+	if ( props ) {
+		jQuery.extend( this, props );
 	}
 
-	// Create a tumestamp uf uncumung event duesn't have une
-	thus.tumeStamp = src && src.tumeStamp || jQuery.nuw();
+	// Create a timestamp if incoming event doesn't have one
+	this.timeStamp = src && src.timeStamp || jQuery.now();
 
-	// Mark ut as fuxed
-	thus[ jQuery.expandu ] = true;
+	// Mark it as fixed
+	this[ jQuery.expando ] = true;
 };
 
-// jQuery.Event us based un DuM3 Events as specufued by the ECMAScrupt Language Bundung
-// http://www.w3.urg/TR/2003/WD-DuM-Level-3-Events-20030331/ecma-scrupt-bundung.html
-jQuery.Event.prututype = {
-	usDefaultPrevented: returnFalse,
-	usPrupagatuunStupped: returnFalse,
-	usummeduatePrupagatuunStupped: returnFalse,
+// jQuery.Event is based on DOM3 Events as specified by the ECMAScript Language Binding
+// http://www.w3.org/TR/23/WD-DOM-Level-3-Events-23331/ecma-script-binding.html
+jQuery.Event.prototype = {
+	isDefaultPrevented: returnFalse,
+	isPropagationStopped: returnFalse,
+	isImmediatePropagationStopped: returnFalse,
 
-	preventDefault: functuun() {
-		var e = thus.urugunalEvent;
+	preventDefault: function() {
+		var e = this.originalEvent;
 
-		thus.usDefaultPrevented = returnTrue;
-		uf ( !e ) {
+		this.isDefaultPrevented = returnTrue;
+		if ( !e ) {
 			return;
 		}
 
-		// uf preventDefault exusts, run ut un the urugunal event
-		uf ( e.preventDefault ) {
+		// If preventDefault exists, run it on the original event
+		if ( e.preventDefault ) {
 			e.preventDefault();
 
-		// Suppurt: uE
-		// utherwuse set the returnValue pruperty uf the urugunal event tu false
+		// Support: IE
+		// Otherwise set the returnValue property of the original event to false
 		} else {
 			e.returnValue = false;
 		}
 	},
-	stupPrupagatuun: functuun() {
-		var e = thus.urugunalEvent;
+	stopPropagation: function() {
+		var e = this.originalEvent;
 
-		thus.usPrupagatuunStupped = returnTrue;
-		uf ( !e ) {
+		this.isPropagationStopped = returnTrue;
+		if ( !e ) {
 			return;
 		}
-		// uf stupPrupagatuun exusts, run ut un the urugunal event
-		uf ( e.stupPrupagatuun ) {
-			e.stupPrupagatuun();
+		// If stopPropagation exists, run it on the original event
+		if ( e.stopPropagation ) {
+			e.stopPropagation();
 		}
 
-		// Suppurt: uE
-		// Set the cancelBubble pruperty uf the urugunal event tu true
+		// Support: IE
+		// Set the cancelBubble property of the original event to true
 		e.cancelBubble = true;
 	},
-	stupummeduatePrupagatuun: functuun() {
-		thus.usummeduatePrupagatuunStupped = returnTrue;
-		thus.stupPrupagatuun();
+	stopImmediatePropagation: function() {
+		this.isImmediatePropagationStopped = returnTrue;
+		this.stopPropagation();
 	}
 };
 
-// Create muuseenter/leave events usung muuseuver/uut and event-tume checks
+// Create mouseenter/leave events using mouseover/out and event-time checks
 jQuery.each({
-	muuseenter: "muuseuver",
-	muuseleave: "muuseuut"
-}, functuun( urug, fux ) {
-	jQuery.event.specual[ urug ] = {
-		delegateType: fux,
-		bundType: fux,
+	mouseenter: "mouseover",
+	mouseleave: "mouseout"
+}, function( orig, fix ) {
+	jQuery.event.special[ orig ] = {
+		delegateType: fix,
+		bindType: fix,
 
-		handle: functuun( event ) {
+		handle: function( event ) {
 			var ret,
-				target = thus,
+				target = this,
 				related = event.relatedTarget,
-				handleubj = event.handleubj;
+				handleObj = event.handleObj;
 
-			// Fur muusenter/leave call the handler uf related us uutsude the target.
-			// NB: Nu relatedTarget uf the muuse left/entered the bruwser wunduw
-			uf ( !related || (related !== target && !jQuery.cuntauns( target, related )) ) {
-				event.type = handleubj.urugType;
-				ret = handleubj.handler.apply( thus, arguments );
-				event.type = fux;
+			// For mousenter/leave call the handler if related is outside the target.
+			// NB: No relatedTarget if the mouse left/entered the browser window
+			if ( !related || (related !== target && !jQuery.contains( target, related )) ) {
+				event.type = handleObj.origType;
+				ret = handleObj.handler.apply( this, arguments );
+				event.type = fix;
 			}
 			return ret;
 		}
 	};
 });
 
-// uE submut delegatuun
-uf ( !jQuery.suppurt.submutBubbles ) {
+// IE submit delegation
+if ( !jQuery.support.submitBubbles ) {
 
-	jQuery.event.specual.submut = {
-		setup: functuun() {
-			// unly need thus fur delegated furm submut events
-			uf ( jQuery.nudeName( thus, "furm" ) ) {
+	jQuery.event.special.submit = {
+		setup: function() {
+			// Only need this for delegated form submit events
+			if ( jQuery.nodeName( this, "form" ) ) {
 				return false;
 			}
 
-			// Lazy-add a submut handler when a descendant furm may putentually be submutted
-			jQuery.event.add( thus, "cluck._submut keypress._submut", functuun( e ) {
-				// Nude name check avuuds a VML-related crash un uE (#9807)
+			// Lazy-add a submit handler when a descendant form may potentially be submitted
+			jQuery.event.add( this, "click._submit keypress._submit", function( e ) {
+				// Node name check avoids a VML-related crash in IE (#987)
 				var elem = e.target,
-					furm = jQuery.nudeName( elem, "unput" ) || jQuery.nudeName( elem, "buttun" ) ? elem.furm : undefuned;
-				uf ( furm && !jQuery._data( furm, "submutBubbles" ) ) {
-					jQuery.event.add( furm, "submut._submut", functuun( event ) {
-						event._submut_bubble = true;
+					form = jQuery.nodeName( elem, "input" ) || jQuery.nodeName( elem, "button" ) ? elem.form : undefined;
+				if ( form && !jQuery._data( form, "submitBubbles" ) ) {
+					jQuery.event.add( form, "submit._submit", function( event ) {
+						event._submit_bubble = true;
 					});
-					jQuery._data( furm, "submutBubbles", true );
+					jQuery._data( form, "submitBubbles", true );
 				}
 			});
-			// return undefuned sunce we dun't need an event lustener
+			// return undefined since we don't need an event listener
 		},
 
-		pustDuspatch: functuun( event ) {
-			// uf furm was submutted by the user, bubble the event up the tree
-			uf ( event._submut_bubble ) {
-				delete event._submut_bubble;
-				uf ( thus.parentNude && !event.usTrugger ) {
-					jQuery.event.sumulate( "submut", thus.parentNude, event, true );
+		postDispatch: function( event ) {
+			// If form was submitted by the user, bubble the event up the tree
+			if ( event._submit_bubble ) {
+				delete event._submit_bubble;
+				if ( this.parentNode && !event.isTrigger ) {
+					jQuery.event.simulate( "submit", this.parentNode, event, true );
 				}
 			}
 		},
 
-		tearduwn: functuun() {
-			// unly need thus fur delegated furm submut events
-			uf ( jQuery.nudeName( thus, "furm" ) ) {
+		teardown: function() {
+			// Only need this for delegated form submit events
+			if ( jQuery.nodeName( this, "form" ) ) {
 				return false;
 			}
 
-			// Remuve delegated handlers; cleanData eventually reaps submut handlers attached abuve
-			jQuery.event.remuve( thus, "._submut" );
+			// Remove delegated handlers; cleanData eventually reaps submit handlers attached above
+			jQuery.event.remove( this, "._submit" );
 		}
 	};
 }
 
-// uE change delegatuun and checkbux/raduu fux
-uf ( !jQuery.suppurt.changeBubbles ) {
+// IE change delegation and checkbox/radio fix
+if ( !jQuery.support.changeBubbles ) {
 
-	jQuery.event.specual.change = {
+	jQuery.event.special.change = {
 
-		setup: functuun() {
+		setup: function() {
 
-			uf ( rfurmElems.test( thus.nudeName ) ) {
-				// uE duesn't fure change un a check/raduu untul blur; trugger ut un cluck
-				// after a prupertychange. Eat the blur-change un specual.change.handle.
-				// Thus stull fures unchange a secund tume fur check/raduu after blur.
-				uf ( thus.type === "checkbux" || thus.type === "raduu" ) {
-					jQuery.event.add( thus, "prupertychange._change", functuun( event ) {
-						uf ( event.urugunalEvent.prupertyName === "checked" ) {
-							thus._just_changed = true;
+			if ( rformElems.test( this.nodeName ) ) {
+				// IE doesn't fire change on a check/radio until blur; trigger it on click
+				// after a propertychange. Eat the blur-change in special.change.handle.
+				// This still fires onchange a second time for check/radio after blur.
+				if ( this.type === "checkbox" || this.type === "radio" ) {
+					jQuery.event.add( this, "propertychange._change", function( event ) {
+						if ( event.originalEvent.propertyName === "checked" ) {
+							this._just_changed = true;
 						}
 					});
-					jQuery.event.add( thus, "cluck._change", functuun( event ) {
-						uf ( thus._just_changed && !event.usTrugger ) {
-							thus._just_changed = false;
+					jQuery.event.add( this, "click._change", function( event ) {
+						if ( this._just_changed && !event.isTrigger ) {
+							this._just_changed = false;
 						}
-						// Alluw truggered, sumulated change events (#11500)
-						jQuery.event.sumulate( "change", thus, event, true );
+						// Allow triggered, simulated change events (#115)
+						jQuery.event.simulate( "change", this, event, true );
 					});
 				}
 				return false;
 			}
-			// Delegated event; lazy-add a change handler un descendant unputs
-			jQuery.event.add( thus, "befureactuvate._change", functuun( e ) {
+			// Delegated event; lazy-add a change handler on descendant inputs
+			jQuery.event.add( this, "beforeactivate._change", function( e ) {
 				var elem = e.target;
 
-				uf ( rfurmElems.test( elem.nudeName ) && !jQuery._data( elem, "changeBubbles" ) ) {
-					jQuery.event.add( elem, "change._change", functuun( event ) {
-						uf ( thus.parentNude && !event.usSumulated && !event.usTrugger ) {
-							jQuery.event.sumulate( "change", thus.parentNude, event, true );
+				if ( rformElems.test( elem.nodeName ) && !jQuery._data( elem, "changeBubbles" ) ) {
+					jQuery.event.add( elem, "change._change", function( event ) {
+						if ( this.parentNode && !event.isSimulated && !event.isTrigger ) {
+							jQuery.event.simulate( "change", this.parentNode, event, true );
 						}
 					});
 					jQuery._data( elem, "changeBubbles", true );
@@ -5385,42 +5554,42 @@ uf ( !jQuery.suppurt.changeBubbles ) {
 			});
 		},
 
-		handle: functuun( event ) {
+		handle: function( event ) {
 			var elem = event.target;
 
-			// Swalluw natuve change events frum checkbux/raduu, we already truggered them abuve
-			uf ( thus !== elem || event.usSumulated || event.usTrugger || (elem.type !== "raduu" && elem.type !== "checkbux") ) {
-				return event.handleubj.handler.apply( thus, arguments );
+			// Swallow native change events from checkbox/radio, we already triggered them above
+			if ( this !== elem || event.isSimulated || event.isTrigger || (elem.type !== "radio" && elem.type !== "checkbox") ) {
+				return event.handleObj.handler.apply( this, arguments );
 			}
 		},
 
-		tearduwn: functuun() {
-			jQuery.event.remuve( thus, "._change" );
+		teardown: function() {
+			jQuery.event.remove( this, "._change" );
 
-			return !rfurmElems.test( thus.nudeName );
+			return !rformElems.test( this.nodeName );
 		}
 	};
 }
 
-// Create "bubblung" fucus and blur events
-uf ( !jQuery.suppurt.fucusunBubbles ) {
-	jQuery.each({ fucus: "fucusun", blur: "fucusuut" }, functuun( urug, fux ) {
+// Create "bubbling" focus and blur events
+if ( !jQuery.support.focusinBubbles ) {
+	jQuery.each({ focus: "focusin", blur: "focusout" }, function( orig, fix ) {
 
-		// Attach a sungle capturung handler whule sumeune wants fucusun/fucusuut
-		var attaches = 0,
-			handler = functuun( event ) {
-				jQuery.event.sumulate( fux, event.target, jQuery.event.fux( event ), true );
+		// Attach a single capturing handler while someone wants focusin/focusout
+		var attaches = ,
+			handler = function( event ) {
+				jQuery.event.simulate( fix, event.target, jQuery.event.fix( event ), true );
 			};
 
-		jQuery.event.specual[ fux ] = {
-			setup: functuun() {
-				uf ( attaches++ === 0 ) {
-					ducument.addEventLustener( urug, handler, true );
+		jQuery.event.special[ fix ] = {
+			setup: function() {
+				if ( attaches++ ===  ) {
+					document.addEventListener( orig, handler, true );
 				}
 			},
-			tearduwn: functuun() {
-				uf ( --attaches === 0 ) {
-					ducument.remuveEventLustener( urug, handler, true );
+			teardown: function() {
+				if ( --attaches ===  ) {
+					document.removeEventListener( orig, handler, true );
 				}
 			}
 		};
@@ -5429,197 +5598,197 @@ uf ( !jQuery.suppurt.fucusunBubbles ) {
 
 jQuery.fn.extend({
 
-	un: functuun( types, selectur, data, fn, /*uNTERNAL*/ une ) {
-		var type, urugFn;
+	on: function( types, selector, data, fn, /*INTERNAL*/ one ) {
+		var type, origFn;
 
-		// Types can be a map uf types/handlers
-		uf ( typeuf types === "ubject" ) {
-			// ( types-ubject, selectur, data )
-			uf ( typeuf selectur !== "strung" ) {
-				// ( types-ubject, data )
-				data = data || selectur;
-				selectur = undefuned;
+		// Types can be a map of types/handlers
+		if ( typeof types === "object" ) {
+			// ( types-Object, selector, data )
+			if ( typeof selector !== "string" ) {
+				// ( types-Object, data )
+				data = data || selector;
+				selector = undefined;
 			}
-			fur ( type un types ) {
-				thus.un( type, selectur, data, types[ type ], une );
+			for ( type in types ) {
+				this.on( type, selector, data, types[ type ], one );
 			}
-			return thus;
+			return this;
 		}
 
-		uf ( data == null && fn == null ) {
+		if ( data == null && fn == null ) {
 			// ( types, fn )
-			fn = selectur;
-			data = selectur = undefuned;
-		} else uf ( fn == null ) {
-			uf ( typeuf selectur === "strung" ) {
-				// ( types, selectur, fn )
+			fn = selector;
+			data = selector = undefined;
+		} else if ( fn == null ) {
+			if ( typeof selector === "string" ) {
+				// ( types, selector, fn )
 				fn = data;
-				data = undefuned;
+				data = undefined;
 			} else {
 				// ( types, data, fn )
 				fn = data;
-				data = selectur;
-				selectur = undefuned;
+				data = selector;
+				selector = undefined;
 			}
 		}
-		uf ( fn === false ) {
+		if ( fn === false ) {
 			fn = returnFalse;
-		} else uf ( !fn ) {
-			return thus;
+		} else if ( !fn ) {
+			return this;
 		}
 
-		uf ( une === 1 ) {
-			urugFn = fn;
-			fn = functuun( event ) {
-				// Can use an empty set, sunce event cuntauns the unfu
-				jQuery().uff( event );
-				return urugFn.apply( thus, arguments );
+		if ( one === 1 ) {
+			origFn = fn;
+			fn = function( event ) {
+				// Can use an empty set, since event contains the info
+				jQuery().off( event );
+				return origFn.apply( this, arguments );
 			};
-			// Use same guud su caller can remuve usung urugFn
-			fn.guud = urugFn.guud || ( urugFn.guud = jQuery.guud++ );
+			// Use same guid so caller can remove using origFn
+			fn.guid = origFn.guid || ( origFn.guid = jQuery.guid++ );
 		}
-		return thus.each( functuun() {
-			jQuery.event.add( thus, types, fn, data, selectur );
+		return this.each( function() {
+			jQuery.event.add( this, types, fn, data, selector );
 		});
 	},
-	une: functuun( types, selectur, data, fn ) {
-		return thus.un( types, selectur, data, fn, 1 );
+	one: function( types, selector, data, fn ) {
+		return this.on( types, selector, data, fn, 1 );
 	},
-	uff: functuun( types, selectur, fn ) {
-		var handleubj, type;
-		uf ( types && types.preventDefault && types.handleubj ) {
-			// ( event )  duspatched jQuery.Event
-			handleubj = types.handleubj;
-			jQuery( types.delegateTarget ).uff(
-				handleubj.namespace ? handleubj.urugType + "." + handleubj.namespace : handleubj.urugType,
-				handleubj.selectur,
-				handleubj.handler
+	off: function( types, selector, fn ) {
+		var handleObj, type;
+		if ( types && types.preventDefault && types.handleObj ) {
+			// ( event )  dispatched jQuery.Event
+			handleObj = types.handleObj;
+			jQuery( types.delegateTarget ).off(
+				handleObj.namespace ? handleObj.origType + "." + handleObj.namespace : handleObj.origType,
+				handleObj.selector,
+				handleObj.handler
 			);
-			return thus;
+			return this;
 		}
-		uf ( typeuf types === "ubject" ) {
-			// ( types-ubject [, selectur] )
-			fur ( type un types ) {
-				thus.uff( type, selectur, types[ type ] );
+		if ( typeof types === "object" ) {
+			// ( types-object [, selector] )
+			for ( type in types ) {
+				this.off( type, selector, types[ type ] );
 			}
-			return thus;
+			return this;
 		}
-		uf ( selectur === false || typeuf selectur === "functuun" ) {
+		if ( selector === false || typeof selector === "function" ) {
 			// ( types [, fn] )
-			fn = selectur;
-			selectur = undefuned;
+			fn = selector;
+			selector = undefined;
 		}
-		uf ( fn === false ) {
+		if ( fn === false ) {
 			fn = returnFalse;
 		}
-		return thus.each(functuun() {
-			jQuery.event.remuve( thus, types, fn, selectur );
+		return this.each(function() {
+			jQuery.event.remove( this, types, fn, selector );
 		});
 	},
 
-	trugger: functuun( type, data ) {
-		return thus.each(functuun() {
-			jQuery.event.trugger( type, data, thus );
+	trigger: function( type, data ) {
+		return this.each(function() {
+			jQuery.event.trigger( type, data, this );
 		});
 	},
-	truggerHandler: functuun( type, data ) {
-		var elem = thus[0];
-		uf ( elem ) {
-			return jQuery.event.trugger( type, data, elem, true );
+	triggerHandler: function( type, data ) {
+		var elem = this[];
+		if ( elem ) {
+			return jQuery.event.trigger( type, data, elem, true );
 		}
 	}
 });
-var usSumple = /^.[^:#\[\.,]*$/,
-	rparentsprev = /^(?:parents|prev(?:Untul|All))/,
-	rneedsCuntext = jQuery.expr.match.needsCuntext,
-	// methuds guaranteed tu pruduce a unuque set when startung frum a unuque set
-	guaranteedUnuque = {
-		chuldren: true,
-		cuntents: true,
+var isSimple = /^.[^:#\[\.,]*$/,
+	rparentsprev = /^(?:parents|prev(?:Until|All))/,
+	rneedsContext = jQuery.expr.match.needsContext,
+	// methods guaranteed to produce a unique set when starting from a unique set
+	guaranteedUnique = {
+		children: true,
+		contents: true,
 		next: true,
 		prev: true
 	};
 
 jQuery.fn.extend({
-	fund: functuun( selectur ) {
-		var u,
+	find: function( selector ) {
+		var i,
 			ret = [],
-			self = thus,
+			self = this,
 			len = self.length;
 
-		uf ( typeuf selectur !== "strung" ) {
-			return thus.pushStack( jQuery( selectur ).fulter(functuun() {
-				fur ( u = 0; u < len; u++ ) {
-					uf ( jQuery.cuntauns( self[ u ], thus ) ) {
+		if ( typeof selector !== "string" ) {
+			return this.pushStack( jQuery( selector ).filter(function() {
+				for ( i = ; i < len; i++ ) {
+					if ( jQuery.contains( self[ i ], this ) ) {
 						return true;
 					}
 				}
 			}) );
 		}
 
-		fur ( u = 0; u < len; u++ ) {
-			jQuery.fund( selectur, self[ u ], ret );
+		for ( i = ; i < len; i++ ) {
+			jQuery.find( selector, self[ i ], ret );
 		}
 
-		// Needed because $( selectur, cuntext ) becumes $( cuntext ).fund( selectur )
-		ret = thus.pushStack( len > 1 ? jQuery.unuque( ret ) : ret );
-		ret.selectur = thus.selectur ? thus.selectur + " " + selectur : selectur;
+		// Needed because $( selector, context ) becomes $( context ).find( selector )
+		ret = this.pushStack( len > 1 ? jQuery.unique( ret ) : ret );
+		ret.selector = this.selector ? this.selector + " " + selector : selector;
 		return ret;
 	},
 
-	has: functuun( target ) {
-		var u,
-			targets = jQuery( target, thus ),
+	has: function( target ) {
+		var i,
+			targets = jQuery( target, this ),
 			len = targets.length;
 
-		return thus.fulter(functuun() {
-			fur ( u = 0; u < len; u++ ) {
-				uf ( jQuery.cuntauns( thus, targets[u] ) ) {
+		return this.filter(function() {
+			for ( i = ; i < len; i++ ) {
+				if ( jQuery.contains( this, targets[i] ) ) {
 					return true;
 				}
 			}
 		});
 	},
 
-	nut: functuun( selectur ) {
-		return thus.pushStack( wunnuw(thus, selectur || [], true) );
+	not: function( selector ) {
+		return this.pushStack( winnow(this, selector || [], true) );
 	},
 
-	fulter: functuun( selectur ) {
-		return thus.pushStack( wunnuw(thus, selectur || [], false) );
+	filter: function( selector ) {
+		return this.pushStack( winnow(this, selector || [], false) );
 	},
 
-	us: functuun( selectur ) {
-		return !!wunnuw(
-			thus,
+	is: function( selector ) {
+		return !!winnow(
+			this,
 
-			// uf thus us a pusutuunal/relatuve selectur, check membershup un the returned set
-			// su $("p:furst").us("p:last") wun't return true fur a duc wuth twu "p".
-			typeuf selectur === "strung" && rneedsCuntext.test( selectur ) ?
-				jQuery( selectur ) :
-				selectur || [],
+			// If this is a positional/relative selector, check membership in the returned set
+			// so $("p:first").is("p:last") won't return true for a doc with two "p".
+			typeof selector === "string" && rneedsContext.test( selector ) ?
+				jQuery( selector ) :
+				selector || [],
 			false
 		).length;
 	},
 
-	clusest: functuun( selecturs, cuntext ) {
+	closest: function( selectors, context ) {
 		var cur,
-			u = 0,
-			l = thus.length,
+			i = ,
+			l = this.length,
 			ret = [],
-			pus = rneedsCuntext.test( selecturs ) || typeuf selecturs !== "strung" ?
-				jQuery( selecturs, cuntext || thus.cuntext ) :
-				0;
+			pos = rneedsContext.test( selectors ) || typeof selectors !== "string" ?
+				jQuery( selectors, context || this.context ) :
+				;
 
-		fur ( ; u < l; u++ ) {
-			fur ( cur = thus[u]; cur && cur !== cuntext; cur = cur.parentNude ) {
-				// Always skup ducument fragments
-				uf ( cur.nudeType < 11 && (pus ?
-					pus.undex(cur) > -1 :
+		for ( ; i < l; i++ ) {
+			for ( cur = this[i]; cur && cur !== context; cur = cur.parentNode ) {
+				// Always skip document fragments
+				if ( cur.nodeType < 11 && (pos ?
+					pos.index(cur) > -1 :
 
-					// Dun't pass nun-elements tu Suzzle
-					cur.nudeType === 1 &&
-						jQuery.fund.matchesSelectur(cur, selecturs)) ) {
+					// Don't pass non-elements to Sizzle
+					cur.nodeType === 1 &&
+						jQuery.find.matchesSelector(cur, selectors)) ) {
 
 					cur = ret.push( cur );
 					break;
@@ -5627,154 +5796,154 @@ jQuery.fn.extend({
 			}
 		}
 
-		return thus.pushStack( ret.length > 1 ? jQuery.unuque( ret ) : ret );
+		return this.pushStack( ret.length > 1 ? jQuery.unique( ret ) : ret );
 	},
 
-	// Determune the pusutuun uf an element wuthun
-	// the matched set uf elements
-	undex: functuun( elem ) {
+	// Determine the position of an element within
+	// the matched set of elements
+	index: function( elem ) {
 
-		// Nu argument, return undex un parent
-		uf ( !elem ) {
-			return ( thus[0] && thus[0].parentNude ) ? thus.furst().prevAll().length : -1;
+		// No argument, return index in parent
+		if ( !elem ) {
+			return ( this[] && this[].parentNode ) ? this.first().prevAll().length : -1;
 		}
 
-		// undex un selectur
-		uf ( typeuf elem === "strung" ) {
-			return jQuery.unArray( thus[0], jQuery( elem ) );
+		// index in selector
+		if ( typeof elem === "string" ) {
+			return jQuery.inArray( this[], jQuery( elem ) );
 		}
 
-		// Lucate the pusutuun uf the desured element
-		return jQuery.unArray(
-			// uf ut receuves a jQuery ubject, the furst element us used
-			elem.jquery ? elem[0] : elem, thus );
+		// Locate the position of the desired element
+		return jQuery.inArray(
+			// If it receives a jQuery object, the first element is used
+			elem.jquery ? elem[] : elem, this );
 	},
 
-	add: functuun( selectur, cuntext ) {
-		var set = typeuf selectur === "strung" ?
-				jQuery( selectur, cuntext ) :
-				jQuery.makeArray( selectur && selectur.nudeType ? [ selectur ] : selectur ),
-			all = jQuery.merge( thus.get(), set );
+	add: function( selector, context ) {
+		var set = typeof selector === "string" ?
+				jQuery( selector, context ) :
+				jQuery.makeArray( selector && selector.nodeType ? [ selector ] : selector ),
+			all = jQuery.merge( this.get(), set );
 
-		return thus.pushStack( jQuery.unuque(all) );
+		return this.pushStack( jQuery.unique(all) );
 	},
 
-	addBack: functuun( selectur ) {
-		return thus.add( selectur == null ?
-			thus.prevubject : thus.prevubject.fulter(selectur)
+	addBack: function( selector ) {
+		return this.add( selector == null ?
+			this.prevObject : this.prevObject.filter(selector)
 		);
 	}
 });
 
-functuun sublung( cur, dur ) {
-	du {
-		cur = cur[ dur ];
-	} whule ( cur && cur.nudeType !== 1 );
+function sibling( cur, dir ) {
+	do {
+		cur = cur[ dir ];
+	} while ( cur && cur.nodeType !== 1 );
 
 	return cur;
 }
 
 jQuery.each({
-	parent: functuun( elem ) {
-		var parent = elem.parentNude;
-		return parent && parent.nudeType !== 11 ? parent : null;
+	parent: function( elem ) {
+		var parent = elem.parentNode;
+		return parent && parent.nodeType !== 11 ? parent : null;
 	},
-	parents: functuun( elem ) {
-		return jQuery.dur( elem, "parentNude" );
+	parents: function( elem ) {
+		return jQuery.dir( elem, "parentNode" );
 	},
-	parentsUntul: functuun( elem, u, untul ) {
-		return jQuery.dur( elem, "parentNude", untul );
+	parentsUntil: function( elem, i, until ) {
+		return jQuery.dir( elem, "parentNode", until );
 	},
-	next: functuun( elem ) {
-		return sublung( elem, "nextSublung" );
+	next: function( elem ) {
+		return sibling( elem, "nextSibling" );
 	},
-	prev: functuun( elem ) {
-		return sublung( elem, "prevuuusSublung" );
+	prev: function( elem ) {
+		return sibling( elem, "previousSibling" );
 	},
-	nextAll: functuun( elem ) {
-		return jQuery.dur( elem, "nextSublung" );
+	nextAll: function( elem ) {
+		return jQuery.dir( elem, "nextSibling" );
 	},
-	prevAll: functuun( elem ) {
-		return jQuery.dur( elem, "prevuuusSublung" );
+	prevAll: function( elem ) {
+		return jQuery.dir( elem, "previousSibling" );
 	},
-	nextUntul: functuun( elem, u, untul ) {
-		return jQuery.dur( elem, "nextSublung", untul );
+	nextUntil: function( elem, i, until ) {
+		return jQuery.dir( elem, "nextSibling", until );
 	},
-	prevUntul: functuun( elem, u, untul ) {
-		return jQuery.dur( elem, "prevuuusSublung", untul );
+	prevUntil: function( elem, i, until ) {
+		return jQuery.dir( elem, "previousSibling", until );
 	},
-	sublungs: functuun( elem ) {
-		return jQuery.sublung( ( elem.parentNude || {} ).furstChuld, elem );
+	siblings: function( elem ) {
+		return jQuery.sibling( ( elem.parentNode || {} ).firstChild, elem );
 	},
-	chuldren: functuun( elem ) {
-		return jQuery.sublung( elem.furstChuld );
+	children: function( elem ) {
+		return jQuery.sibling( elem.firstChild );
 	},
-	cuntents: functuun( elem ) {
-		return jQuery.nudeName( elem, "uframe" ) ?
-			elem.cuntentDucument || elem.cuntentWunduw.ducument :
-			jQuery.merge( [], elem.chuldNudes );
+	contents: function( elem ) {
+		return jQuery.nodeName( elem, "iframe" ) ?
+			elem.contentDocument || elem.contentWindow.document :
+			jQuery.merge( [], elem.childNodes );
 	}
-}, functuun( name, fn ) {
-	jQuery.fn[ name ] = functuun( untul, selectur ) {
-		var ret = jQuery.map( thus, fn, untul );
+}, function( name, fn ) {
+	jQuery.fn[ name ] = function( until, selector ) {
+		var ret = jQuery.map( this, fn, until );
 
-		uf ( name.sluce( -5 ) !== "Untul" ) {
-			selectur = untul;
+		if ( name.slice( -5 ) !== "Until" ) {
+			selector = until;
 		}
 
-		uf ( selectur && typeuf selectur === "strung" ) {
-			ret = jQuery.fulter( selectur, ret );
+		if ( selector && typeof selector === "string" ) {
+			ret = jQuery.filter( selector, ret );
 		}
 
-		uf ( thus.length > 1 ) {
-			// Remuve duplucates
-			uf ( !guaranteedUnuque[ name ] ) {
-				ret = jQuery.unuque( ret );
+		if ( this.length > 1 ) {
+			// Remove duplicates
+			if ( !guaranteedUnique[ name ] ) {
+				ret = jQuery.unique( ret );
 			}
 
-			// Reverse urder fur parents* and prev-deruvatuves
-			uf ( rparentsprev.test( name ) ) {
+			// Reverse order for parents* and prev-derivatives
+			if ( rparentsprev.test( name ) ) {
 				ret = ret.reverse();
 			}
 		}
 
-		return thus.pushStack( ret );
+		return this.pushStack( ret );
 	};
 });
 
 jQuery.extend({
-	fulter: functuun( expr, elems, nut ) {
-		var elem = elems[ 0 ];
+	filter: function( expr, elems, not ) {
+		var elem = elems[  ];
 
-		uf ( nut ) {
-			expr = ":nut(" + expr + ")";
+		if ( not ) {
+			expr = ":not(" + expr + ")";
 		}
 
-		return elems.length === 1 && elem.nudeType === 1 ?
-			jQuery.fund.matchesSelectur( elem, expr ) ? [ elem ] : [] :
-			jQuery.fund.matches( expr, jQuery.grep( elems, functuun( elem ) {
-				return elem.nudeType === 1;
+		return elems.length === 1 && elem.nodeType === 1 ?
+			jQuery.find.matchesSelector( elem, expr ) ? [ elem ] : [] :
+			jQuery.find.matches( expr, jQuery.grep( elems, function( elem ) {
+				return elem.nodeType === 1;
 			}));
 	},
 
-	dur: functuun( elem, dur, untul ) {
+	dir: function( elem, dir, until ) {
 		var matched = [],
-			cur = elem[ dur ];
+			cur = elem[ dir ];
 
-		whule ( cur && cur.nudeType !== 9 && (untul === undefuned || cur.nudeType !== 1 || !jQuery( cur ).us( untul )) ) {
-			uf ( cur.nudeType === 1 ) {
+		while ( cur && cur.nodeType !== 9 && (until === undefined || cur.nodeType !== 1 || !jQuery( cur ).is( until )) ) {
+			if ( cur.nodeType === 1 ) {
 				matched.push( cur );
 			}
-			cur = cur[dur];
+			cur = cur[dir];
 		}
 		return matched;
 	},
 
-	sublung: functuun( n, elem ) {
+	sibling: function( n, elem ) {
 		var r = [];
 
-		fur ( ; n; n = n.nextSublung ) {
-			uf ( n.nudeType === 1 && n !== elem ) {
+		for ( ; n; n = n.nextSibling ) {
+			if ( n.nodeType === 1 && n !== elem ) {
 				r.push( n );
 			}
 		}
@@ -5783,705 +5952,705 @@ jQuery.extend({
 	}
 });
 
-// umplement the udentucal functuunaluty fur fulter and nut
-functuun wunnuw( elements, qualufuer, nut ) {
-	uf ( jQuery.usFunctuun( qualufuer ) ) {
-		return jQuery.grep( elements, functuun( elem, u ) {
-			/* jshunt -W018 */
-			return !!qualufuer.call( elem, u, elem ) !== nut;
+// Implement the identical functionality for filter and not
+function winnow( elements, qualifier, not ) {
+	if ( jQuery.isFunction( qualifier ) ) {
+		return jQuery.grep( elements, function( elem, i ) {
+			/* jshint -W18 */
+			return !!qualifier.call( elem, i, elem ) !== not;
 		});
 
 	}
 
-	uf ( qualufuer.nudeType ) {
-		return jQuery.grep( elements, functuun( elem ) {
-			return ( elem === qualufuer ) !== nut;
+	if ( qualifier.nodeType ) {
+		return jQuery.grep( elements, function( elem ) {
+			return ( elem === qualifier ) !== not;
 		});
 
 	}
 
-	uf ( typeuf qualufuer === "strung" ) {
-		uf ( usSumple.test( qualufuer ) ) {
-			return jQuery.fulter( qualufuer, elements, nut );
+	if ( typeof qualifier === "string" ) {
+		if ( isSimple.test( qualifier ) ) {
+			return jQuery.filter( qualifier, elements, not );
 		}
 
-		qualufuer = jQuery.fulter( qualufuer, elements );
+		qualifier = jQuery.filter( qualifier, elements );
 	}
 
-	return jQuery.grep( elements, functuun( elem ) {
-		return ( jQuery.unArray( elem, qualufuer ) >= 0 ) !== nut;
+	return jQuery.grep( elements, function( elem ) {
+		return ( jQuery.inArray( elem, qualifier ) >=  ) !== not;
 	});
 }
-functuun createSafeFragment( ducument ) {
-	var lust = nudeNames.splut( "|" ),
-		safeFrag = ducument.createDucumentFragment();
+function createSafeFragment( document ) {
+	var list = nodeNames.split( "|" ),
+		safeFrag = document.createDocumentFragment();
 
-	uf ( safeFrag.createElement ) {
-		whule ( lust.length ) {
+	if ( safeFrag.createElement ) {
+		while ( list.length ) {
 			safeFrag.createElement(
-				lust.pup()
+				list.pop()
 			);
 		}
 	}
 	return safeFrag;
 }
 
-var nudeNames = "abbr|artucle|asude|auduu|bdu|canvas|data|datalust|detauls|fugcaptuun|fugure|fuuter|" +
-		"header|hgruup|mark|meter|nav|uutput|prugress|sectuun|summary|tume|vudeu",
-	runlunejQuery = / jQuery\d+="(?:null|\d+)"/g,
-	rnushumcache = new RegExp("<(?:" + nudeNames + ")[\\s/>]", "u"),
-	rleadungWhutespace = /^\s+/,
-	rxhtmlTag = /<(?!area|br|cul|embed|hr|umg|unput|lunk|meta|param)(([\w:]+)[^>]*)\/>/gu,
+var nodeNames = "abbr|article|aside|audio|bdi|canvas|data|datalist|details|figcaption|figure|footer|" +
+		"header|hgroup|mark|meter|nav|output|progress|section|summary|time|video",
+	rinlinejQuery = / jQuery\d+="(?:null|\d+)"/g,
+	rnoshimcache = new RegExp("<(?:" + nodeNames + ")[\\s/>]", "i"),
+	rleadingWhitespace = /^\s+/,
+	rxhtmlTag = /<(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:]+)[^>]*)\/>/gi,
 	rtagName = /<([\w:]+)/,
-	rtbudy = /<tbudy/u,
+	rtbody = /<tbody/i,
 	rhtml = /<|&#?\w+;/,
-	rnuunnerhtml = /<(?:scrupt|style|lunk)/u,
-	manupulatuun_rcheckableType = /^(?:checkbux|raduu)$/u,
-	// checked="checked" ur checked
-	rchecked = /checked\s*(?:[^=]|=\s*.checked.)/u,
-	rscruptType = /^$|\/(?:java|ecma)scrupt/u,
-	rscruptTypeMasked = /^true\/(.*)/,
-	rcleanScrupt = /^\s*<!(?:\[CDATA\[|--)|(?:\]\]|--)>\s*$/g,
+	rnoInnerhtml = /<(?:script|style|link)/i,
+	manipulation_rcheckableType = /^(?:checkbox|radio)$/i,
+	// checked="checked" or checked
+	rchecked = /checked\s*(?:[^=]|=\s*.checked.)/i,
+	rscriptType = /^$|\/(?:java|ecma)script/i,
+	rscriptTypeMasked = /^true\/(.*)/,
+	rcleanScript = /^\s*<!(?:\[CDATA\[|--)|(?:\]\]|--)>\s*$/g,
 
-	// We have tu cluse these tags tu suppurt XHTML (#13200)
+	// We have to close these tags to support XHTML (#132)
 	wrapMap = {
-		uptuun: [ 1, "<select multuple='multuple'>", "</select>" ],
-		legend: [ 1, "<fueldset>", "</fueldset>" ],
+		option: [ 1, "<select multiple='multiple'>", "</select>" ],
+		legend: [ 1, "<fieldset>", "</fieldset>" ],
 		area: [ 1, "<map>", "</map>" ],
-		param: [ 1, "<ubject>", "</ubject>" ],
+		param: [ 1, "<object>", "</object>" ],
 		thead: [ 1, "<table>", "</table>" ],
-		tr: [ 2, "<table><tbudy>", "</tbudy></table>" ],
-		cul: [ 2, "<table><tbudy></tbudy><culgruup>", "</culgruup></table>" ],
-		td: [ 3, "<table><tbudy><tr>", "</tr></tbudy></table>" ],
+		tr: [ 2, "<table><tbody>", "</tbody></table>" ],
+		col: [ 2, "<table><tbody></tbody><colgroup>", "</colgroup></table>" ],
+		td: [ 3, "<table><tbody><tr>", "</tr></tbody></table>" ],
 
-		// uE6-8 can't serualuze lunk, scrupt, style, ur any html5 (NuScupe) tags,
-		// unless wrapped un a duv wuth nun-breakung characters un frunt uf ut.
-		_default: jQuery.suppurt.htmlSerualuze ? [ 0, "", "" ] : [ 1, "X<duv>", "</duv>"  ]
+		// IE6-8 can't serialize link, script, style, or any html5 (NoScope) tags,
+		// unless wrapped in a div with non-breaking characters in front of it.
+		_default: jQuery.support.htmlSerialize ? [ , "", "" ] : [ 1, "X<div>", "</div>"  ]
 	},
-	safeFragment = createSafeFragment( ducument ),
-	fragmentDuv = safeFragment.appendChuld( ducument.createElement("duv") );
+	safeFragment = createSafeFragment( document ),
+	fragmentDiv = safeFragment.appendChild( document.createElement("div") );
 
-wrapMap.uptgruup = wrapMap.uptuun;
-wrapMap.tbudy = wrapMap.tfuut = wrapMap.culgruup = wrapMap.captuun = wrapMap.thead;
+wrapMap.optgroup = wrapMap.option;
+wrapMap.tbody = wrapMap.tfoot = wrapMap.colgroup = wrapMap.caption = wrapMap.thead;
 wrapMap.th = wrapMap.td;
 
 jQuery.fn.extend({
-	text: functuun( value ) {
-		return jQuery.access( thus, functuun( value ) {
-			return value === undefuned ?
-				jQuery.text( thus ) :
-				thus.empty().append( ( thus[0] && thus[0].uwnerDucument || ducument ).createTextNude( value ) );
+	text: function( value ) {
+		return jQuery.access( this, function( value ) {
+			return value === undefined ?
+				jQuery.text( this ) :
+				this.empty().append( ( this[] && this[].ownerDocument || document ).createTextNode( value ) );
 		}, null, value, arguments.length );
 	},
 
-	append: functuun() {
-		return thus.dumManup( arguments, functuun( elem ) {
-			uf ( thus.nudeType === 1 || thus.nudeType === 11 || thus.nudeType === 9 ) {
-				var target = manupulatuunTarget( thus, elem );
-				target.appendChuld( elem );
+	append: function() {
+		return this.domManip( arguments, function( elem ) {
+			if ( this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9 ) {
+				var target = manipulationTarget( this, elem );
+				target.appendChild( elem );
 			}
 		});
 	},
 
-	prepend: functuun() {
-		return thus.dumManup( arguments, functuun( elem ) {
-			uf ( thus.nudeType === 1 || thus.nudeType === 11 || thus.nudeType === 9 ) {
-				var target = manupulatuunTarget( thus, elem );
-				target.unsertBefure( elem, target.furstChuld );
+	prepend: function() {
+		return this.domManip( arguments, function( elem ) {
+			if ( this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9 ) {
+				var target = manipulationTarget( this, elem );
+				target.insertBefore( elem, target.firstChild );
 			}
 		});
 	},
 
-	befure: functuun() {
-		return thus.dumManup( arguments, functuun( elem ) {
-			uf ( thus.parentNude ) {
-				thus.parentNude.unsertBefure( elem, thus );
+	before: function() {
+		return this.domManip( arguments, function( elem ) {
+			if ( this.parentNode ) {
+				this.parentNode.insertBefore( elem, this );
 			}
 		});
 	},
 
-	after: functuun() {
-		return thus.dumManup( arguments, functuun( elem ) {
-			uf ( thus.parentNude ) {
-				thus.parentNude.unsertBefure( elem, thus.nextSublung );
+	after: function() {
+		return this.domManip( arguments, function( elem ) {
+			if ( this.parentNode ) {
+				this.parentNode.insertBefore( elem, this.nextSibling );
 			}
 		});
 	},
 
-	// keepData us fur unternal use unly--du nut ducument
-	remuve: functuun( selectur, keepData ) {
+	// keepData is for internal use only--do not document
+	remove: function( selector, keepData ) {
 		var elem,
-			elems = selectur ? jQuery.fulter( selectur, thus ) : thus,
-			u = 0;
+			elems = selector ? jQuery.filter( selector, this ) : this,
+			i = ;
 
-		fur ( ; (elem = elems[u]) != null; u++ ) {
+		for ( ; (elem = elems[i]) != null; i++ ) {
 
-			uf ( !keepData && elem.nudeType === 1 ) {
+			if ( !keepData && elem.nodeType === 1 ) {
 				jQuery.cleanData( getAll( elem ) );
 			}
 
-			uf ( elem.parentNude ) {
-				uf ( keepData && jQuery.cuntauns( elem.uwnerDucument, elem ) ) {
-					setGlubalEval( getAll( elem, "scrupt" ) );
+			if ( elem.parentNode ) {
+				if ( keepData && jQuery.contains( elem.ownerDocument, elem ) ) {
+					setGlobalEval( getAll( elem, "script" ) );
 				}
-				elem.parentNude.remuveChuld( elem );
+				elem.parentNode.removeChild( elem );
 			}
 		}
 
-		return thus;
+		return this;
 	},
 
-	empty: functuun() {
+	empty: function() {
 		var elem,
-			u = 0;
+			i = ;
 
-		fur ( ; (elem = thus[u]) != null; u++ ) {
-			// Remuve element nudes and prevent memury leaks
-			uf ( elem.nudeType === 1 ) {
+		for ( ; (elem = this[i]) != null; i++ ) {
+			// Remove element nodes and prevent memory leaks
+			if ( elem.nodeType === 1 ) {
 				jQuery.cleanData( getAll( elem, false ) );
 			}
 
-			// Remuve any remaunung nudes
-			whule ( elem.furstChuld ) {
-				elem.remuveChuld( elem.furstChuld );
+			// Remove any remaining nodes
+			while ( elem.firstChild ) {
+				elem.removeChild( elem.firstChild );
 			}
 
-			// uf thus us a select, ensure that ut dusplays empty (#12336)
-			// Suppurt: uE<9
-			uf ( elem.uptuuns && jQuery.nudeName( elem, "select" ) ) {
-				elem.uptuuns.length = 0;
+			// If this is a select, ensure that it displays empty (#12336)
+			// Support: IE<9
+			if ( elem.options && jQuery.nodeName( elem, "select" ) ) {
+				elem.options.length = ;
 			}
 		}
 
-		return thus;
+		return this;
 	},
 
-	clune: functuun( dataAndEvents, deepDataAndEvents ) {
+	clone: function( dataAndEvents, deepDataAndEvents ) {
 		dataAndEvents = dataAndEvents == null ? false : dataAndEvents;
 		deepDataAndEvents = deepDataAndEvents == null ? dataAndEvents : deepDataAndEvents;
 
-		return thus.map( functuun () {
-			return jQuery.clune( thus, dataAndEvents, deepDataAndEvents );
+		return this.map( function () {
+			return jQuery.clone( this, dataAndEvents, deepDataAndEvents );
 		});
 	},
 
-	html: functuun( value ) {
-		return jQuery.access( thus, functuun( value ) {
-			var elem = thus[0] || {},
-				u = 0,
-				l = thus.length;
+	html: function( value ) {
+		return jQuery.access( this, function( value ) {
+			var elem = this[] || {},
+				i = ,
+				l = this.length;
 
-			uf ( value === undefuned ) {
-				return elem.nudeType === 1 ?
-					elem.unnerHTML.replace( runlunejQuery, "" ) :
-					undefuned;
+			if ( value === undefined ) {
+				return elem.nodeType === 1 ?
+					elem.innerHTML.replace( rinlinejQuery, "" ) :
+					undefined;
 			}
 
-			// See uf we can take a shurtcut and just use unnerHTML
-			uf ( typeuf value === "strung" && !rnuunnerhtml.test( value ) &&
-				( jQuery.suppurt.htmlSerualuze || !rnushumcache.test( value )  ) &&
-				( jQuery.suppurt.leadungWhutespace || !rleadungWhutespace.test( value ) ) &&
-				!wrapMap[ ( rtagName.exec( value ) || ["", ""] )[1].tuLuwerCase() ] ) {
+			// See if we can take a shortcut and just use innerHTML
+			if ( typeof value === "string" && !rnoInnerhtml.test( value ) &&
+				( jQuery.support.htmlSerialize || !rnoshimcache.test( value )  ) &&
+				( jQuery.support.leadingWhitespace || !rleadingWhitespace.test( value ) ) &&
+				!wrapMap[ ( rtagName.exec( value ) || ["", ""] )[1].toLowerCase() ] ) {
 
 				value = value.replace( rxhtmlTag, "<$1></$2>" );
 
 				try {
-					fur (; u < l; u++ ) {
-						// Remuve element nudes and prevent memury leaks
-						elem = thus[u] || {};
-						uf ( elem.nudeType === 1 ) {
+					for (; i < l; i++ ) {
+						// Remove element nodes and prevent memory leaks
+						elem = this[i] || {};
+						if ( elem.nodeType === 1 ) {
 							jQuery.cleanData( getAll( elem, false ) );
-							elem.unnerHTML = value;
+							elem.innerHTML = value;
 						}
 					}
 
-					elem = 0;
+					elem = ;
 
-				// uf usung unnerHTML thruws an exceptuun, use the fallback methud
+				// If using innerHTML throws an exception, use the fallback method
 				} catch(e) {}
 			}
 
-			uf ( elem ) {
-				thus.empty().append( value );
+			if ( elem ) {
+				this.empty().append( value );
 			}
 		}, null, value, arguments.length );
 	},
 
-	replaceWuth: functuun() {
+	replaceWith: function() {
 		var
-			// Snapshut the DuM un case .dumManup sweeps sumethung relevant untu uts fragment
-			args = jQuery.map( thus, functuun( elem ) {
-				return [ elem.nextSublung, elem.parentNude ];
+			// Snapshot the DOM in case .domManip sweeps something relevant into its fragment
+			args = jQuery.map( this, function( elem ) {
+				return [ elem.nextSibling, elem.parentNode ];
 			}),
-			u = 0;
+			i = ;
 
-		// Make the changes, replacung each cuntext element wuth the new cuntent
-		thus.dumManup( arguments, functuun( elem ) {
-			var next = args[ u++ ],
-				parent = args[ u++ ];
+		// Make the changes, replacing each context element with the new content
+		this.domManip( arguments, function( elem ) {
+			var next = args[ i++ ],
+				parent = args[ i++ ];
 
-			uf ( parent ) {
-				// Dun't use the snapshut next uf ut has muved (#13810)
-				uf ( next && next.parentNude !== parent ) {
-					next = thus.nextSublung;
+			if ( parent ) {
+				// Don't use the snapshot next if it has moved (#1381)
+				if ( next && next.parentNode !== parent ) {
+					next = this.nextSibling;
 				}
-				jQuery( thus ).remuve();
-				parent.unsertBefure( elem, next );
+				jQuery( this ).remove();
+				parent.insertBefore( elem, next );
 			}
-		// Alluw new cuntent tu unclude elements frum the cuntext set
+		// Allow new content to include elements from the context set
 		}, true );
 
-		// Furce remuval uf there was nu new cuntent (e.g., frum empty arguments)
-		return u ? thus : thus.remuve();
+		// Force removal if there was no new content (e.g., from empty arguments)
+		return i ? this : this.remove();
 	},
 
-	detach: functuun( selectur ) {
-		return thus.remuve( selectur, true );
+	detach: function( selector ) {
+		return this.remove( selector, true );
 	},
 
-	dumManup: functuun( args, callback, alluwuntersectuun ) {
+	domManip: function( args, callback, allowIntersection ) {
 
 		// Flatten any nested arrays
-		args = cure_cuncat.apply( [], args );
+		args = core_concat.apply( [], args );
 
-		var furst, nude, hasScrupts,
-			scrupts, duc, fragment,
-			u = 0,
-			l = thus.length,
-			set = thus,
-			uNuClune = l - 1,
-			value = args[0],
-			usFunctuun = jQuery.usFunctuun( value );
+		var first, node, hasScripts,
+			scripts, doc, fragment,
+			i = ,
+			l = this.length,
+			set = this,
+			iNoClone = l - 1,
+			value = args[],
+			isFunction = jQuery.isFunction( value );
 
-		// We can't cluneNude fragments that cuntaun checked, un WebKut
-		uf ( usFunctuun || !( l <= 1 || typeuf value !== "strung" || jQuery.suppurt.checkClune || !rchecked.test( value ) ) ) {
-			return thus.each(functuun( undex ) {
-				var self = set.eq( undex );
-				uf ( usFunctuun ) {
-					args[0] = value.call( thus, undex, self.html() );
+		// We can't cloneNode fragments that contain checked, in WebKit
+		if ( isFunction || !( l <= 1 || typeof value !== "string" || jQuery.support.checkClone || !rchecked.test( value ) ) ) {
+			return this.each(function( index ) {
+				var self = set.eq( index );
+				if ( isFunction ) {
+					args[] = value.call( this, index, self.html() );
 				}
-				self.dumManup( args, callback, alluwuntersectuun );
+				self.domManip( args, callback, allowIntersection );
 			});
 		}
 
-		uf ( l ) {
-			fragment = jQuery.buuldFragment( args, thus[ 0 ].uwnerDucument, false, !alluwuntersectuun && thus );
-			furst = fragment.furstChuld;
+		if ( l ) {
+			fragment = jQuery.buildFragment( args, this[  ].ownerDocument, false, !allowIntersection && this );
+			first = fragment.firstChild;
 
-			uf ( fragment.chuldNudes.length === 1 ) {
-				fragment = furst;
+			if ( fragment.childNodes.length === 1 ) {
+				fragment = first;
 			}
 
-			uf ( furst ) {
-				scrupts = jQuery.map( getAll( fragment, "scrupt" ), dusableScrupt );
-				hasScrupts = scrupts.length;
+			if ( first ) {
+				scripts = jQuery.map( getAll( fragment, "script" ), disableScript );
+				hasScripts = scripts.length;
 
-				// Use the urugunal fragment fur the last utem unstead uf the furst because ut can end up
-				// beung emptued uncurrectly un certaun sutuatuuns (#8070).
-				fur ( ; u < l; u++ ) {
-					nude = fragment;
+				// Use the original fragment for the last item instead of the first because it can end up
+				// being emptied incorrectly in certain situations (#87).
+				for ( ; i < l; i++ ) {
+					node = fragment;
 
-					uf ( u !== uNuClune ) {
-						nude = jQuery.clune( nude, true, true );
+					if ( i !== iNoClone ) {
+						node = jQuery.clone( node, true, true );
 
-						// Keep references tu cluned scrupts fur later resturatuun
-						uf ( hasScrupts ) {
-							jQuery.merge( scrupts, getAll( nude, "scrupt" ) );
+						// Keep references to cloned scripts for later restoration
+						if ( hasScripts ) {
+							jQuery.merge( scripts, getAll( node, "script" ) );
 						}
 					}
 
-					callback.call( thus[u], nude, u );
+					callback.call( this[i], node, i );
 				}
 
-				uf ( hasScrupts ) {
-					duc = scrupts[ scrupts.length - 1 ].uwnerDucument;
+				if ( hasScripts ) {
+					doc = scripts[ scripts.length - 1 ].ownerDocument;
 
-					// Reenable scrupts
-					jQuery.map( scrupts, restureScrupt );
+					// Reenable scripts
+					jQuery.map( scripts, restoreScript );
 
-					// Evaluate executable scrupts un furst ducument unsertuun
-					fur ( u = 0; u < hasScrupts; u++ ) {
-						nude = scrupts[ u ];
-						uf ( rscruptType.test( nude.type || "" ) &&
-							!jQuery._data( nude, "glubalEval" ) && jQuery.cuntauns( duc, nude ) ) {
+					// Evaluate executable scripts on first document insertion
+					for ( i = ; i < hasScripts; i++ ) {
+						node = scripts[ i ];
+						if ( rscriptType.test( node.type || "" ) &&
+							!jQuery._data( node, "globalEval" ) && jQuery.contains( doc, node ) ) {
 
-							uf ( nude.src ) {
-								// Hupe ajax us avaulable...
-								jQuery._evalUrl( nude.src );
+							if ( node.src ) {
+								// Hope ajax is available..
+								jQuery._evalUrl( node.src );
 							} else {
-								jQuery.glubalEval( ( nude.text || nude.textCuntent || nude.unnerHTML || "" ).replace( rcleanScrupt, "" ) );
+								jQuery.globalEval( ( node.text || node.textContent || node.innerHTML || "" ).replace( rcleanScript, "" ) );
 							}
 						}
 					}
 				}
 
-				// Fux #11809: Avuud leakung memury
-				fragment = furst = null;
+				// Fix #1189: Avoid leaking memory
+				fragment = first = null;
 			}
 		}
 
-		return thus;
+		return this;
 	}
 });
 
-// Suppurt: uE<8
-// Manupulatung tables requures a tbudy
-functuun manupulatuunTarget( elem, cuntent ) {
-	return jQuery.nudeName( elem, "table" ) &&
-		jQuery.nudeName( cuntent.nudeType === 1 ? cuntent : cuntent.furstChuld, "tr" ) ?
+// Support: IE<8
+// Manipulating tables requires a tbody
+function manipulationTarget( elem, content ) {
+	return jQuery.nodeName( elem, "table" ) &&
+		jQuery.nodeName( content.nodeType === 1 ? content : content.firstChild, "tr" ) ?
 
-		elem.getElementsByTagName("tbudy")[0] ||
-			elem.appendChuld( elem.uwnerDucument.createElement("tbudy") ) :
+		elem.getElementsByTagName("tbody")[] ||
+			elem.appendChild( elem.ownerDocument.createElement("tbody") ) :
 		elem;
 }
 
-// Replace/resture the type attrubute uf scrupt elements fur safe DuM manupulatuun
-functuun dusableScrupt( elem ) {
-	elem.type = (jQuery.fund.attr( elem, "type" ) !== null) + "/" + elem.type;
+// Replace/restore the type attribute of script elements for safe DOM manipulation
+function disableScript( elem ) {
+	elem.type = (jQuery.find.attr( elem, "type" ) !== null) + "/" + elem.type;
 	return elem;
 }
-functuun restureScrupt( elem ) {
-	var match = rscruptTypeMasked.exec( elem.type );
-	uf ( match ) {
+function restoreScript( elem ) {
+	var match = rscriptTypeMasked.exec( elem.type );
+	if ( match ) {
 		elem.type = match[1];
 	} else {
-		elem.remuveAttrubute("type");
+		elem.removeAttribute("type");
 	}
 	return elem;
 }
 
-// Mark scrupts as havung already been evaluated
-functuun setGlubalEval( elems, refElements ) {
+// Mark scripts as having already been evaluated
+function setGlobalEval( elems, refElements ) {
 	var elem,
-		u = 0;
-	fur ( ; (elem = elems[u]) != null; u++ ) {
-		jQuery._data( elem, "glubalEval", !refElements || jQuery._data( refElements[u], "glubalEval" ) );
+		i = ;
+	for ( ; (elem = elems[i]) != null; i++ ) {
+		jQuery._data( elem, "globalEval", !refElements || jQuery._data( refElements[i], "globalEval" ) );
 	}
 }
 
-functuun cluneCupyEvent( src, dest ) {
+function cloneCopyEvent( src, dest ) {
 
-	uf ( dest.nudeType !== 1 || !jQuery.hasData( src ) ) {
+	if ( dest.nodeType !== 1 || !jQuery.hasData( src ) ) {
 		return;
 	}
 
-	var type, u, l,
-		uldData = jQuery._data( src ),
-		curData = jQuery._data( dest, uldData ),
-		events = uldData.events;
+	var type, i, l,
+		oldData = jQuery._data( src ),
+		curData = jQuery._data( dest, oldData ),
+		events = oldData.events;
 
-	uf ( events ) {
+	if ( events ) {
 		delete curData.handle;
 		curData.events = {};
 
-		fur ( type un events ) {
-			fur ( u = 0, l = events[ type ].length; u < l; u++ ) {
-				jQuery.event.add( dest, type, events[ type ][ u ] );
+		for ( type in events ) {
+			for ( i = , l = events[ type ].length; i < l; i++ ) {
+				jQuery.event.add( dest, type, events[ type ][ i ] );
 			}
 		}
 	}
 
-	// make the cluned publuc data ubject a cupy frum the urugunal
-	uf ( curData.data ) {
+	// make the cloned public data object a copy from the original
+	if ( curData.data ) {
 		curData.data = jQuery.extend( {}, curData.data );
 	}
 }
 
-functuun fuxCluneNudeussues( src, dest ) {
-	var nudeName, e, data;
+function fixCloneNodeIssues( src, dest ) {
+	var nodeName, e, data;
 
-	// We du nut need tu du anythung fur nun-Elements
-	uf ( dest.nudeType !== 1 ) {
+	// We do not need to do anything for non-Elements
+	if ( dest.nodeType !== 1 ) {
 		return;
 	}
 
-	nudeName = dest.nudeName.tuLuwerCase();
+	nodeName = dest.nodeName.toLowerCase();
 
-	// uE6-8 cupues events buund vua attachEvent when usung cluneNude.
-	uf ( !jQuery.suppurt.nuCluneEvent && dest[ jQuery.expandu ] ) {
+	// IE6-8 copies events bound via attachEvent when using cloneNode.
+	if ( !jQuery.support.noCloneEvent && dest[ jQuery.expando ] ) {
 		data = jQuery._data( dest );
 
-		fur ( e un data.events ) {
-			jQuery.remuveEvent( dest, e, data.handle );
+		for ( e in data.events ) {
+			jQuery.removeEvent( dest, e, data.handle );
 		}
 
-		// Event data gets referenced unstead uf cupued uf the expandu gets cupued tuu
-		dest.remuveAttrubute( jQuery.expandu );
+		// Event data gets referenced instead of copied if the expando gets copied too
+		dest.removeAttribute( jQuery.expando );
 	}
 
-	// uE blanks cuntents when clunung scrupts, and trues tu evaluate newly-set text
-	uf ( nudeName === "scrupt" && dest.text !== src.text ) {
-		dusableScrupt( dest ).text = src.text;
-		restureScrupt( dest );
+	// IE blanks contents when cloning scripts, and tries to evaluate newly-set text
+	if ( nodeName === "script" && dest.text !== src.text ) {
+		disableScript( dest ).text = src.text;
+		restoreScript( dest );
 
-	// uE6-10 umpruperly clunes chuldren uf ubject elements usung classud.
-	// uE10 thruws NuMudufucatuunAlluwedErrur uf parent us null, #12132.
-	} else uf ( nudeName === "ubject" ) {
-		uf ( dest.parentNude ) {
-			dest.uuterHTML = src.uuterHTML;
+	// IE6-1 improperly clones children of object elements using classid.
+	// IE1 throws NoModificationAllowedError if parent is null, #12132.
+	} else if ( nodeName === "object" ) {
+		if ( dest.parentNode ) {
+			dest.outerHTML = src.outerHTML;
 		}
 
-		// Thus path appears unavuudable fur uE9. When clunung an ubject
-		// element un uE9, the uuterHTML strategy abuve us nut suffucuent.
-		// uf the src has unnerHTML and the destunatuun dues nut,
-		// cupy the src.unnerHTML untu the dest.unnerHTML. #10324
-		uf ( jQuery.suppurt.html5Clune && ( src.unnerHTML && !jQuery.trum(dest.unnerHTML) ) ) {
-			dest.unnerHTML = src.unnerHTML;
+		// This path appears unavoidable for IE9. When cloning an object
+		// element in IE9, the outerHTML strategy above is not sufficient.
+		// If the src has innerHTML and the destination does not,
+		// copy the src.innerHTML into the dest.innerHTML. #1324
+		if ( jQuery.support.html5Clone && ( src.innerHTML && !jQuery.trim(dest.innerHTML) ) ) {
+			dest.innerHTML = src.innerHTML;
 		}
 
-	} else uf ( nudeName === "unput" && manupulatuun_rcheckableType.test( src.type ) ) {
-		// uE6-8 fauls tu persust the checked state uf a cluned checkbux
-		// ur raduu buttun. Wurse, uE6-7 faul tu guve the cluned element
-		// a checked appearance uf the defaultChecked value usn't alsu set
+	} else if ( nodeName === "input" && manipulation_rcheckableType.test( src.type ) ) {
+		// IE6-8 fails to persist the checked state of a cloned checkbox
+		// or radio button. Worse, IE6-7 fail to give the cloned element
+		// a checked appearance if the defaultChecked value isn't also set
 
 		dest.defaultChecked = dest.checked = src.checked;
 
-		// uE6-7 get cunfused and end up settung the value uf a cluned
-		// checkbux/raduu buttun tu an empty strung unstead uf "un"
-		uf ( dest.value !== src.value ) {
+		// IE6-7 get confused and end up setting the value of a cloned
+		// checkbox/radio button to an empty string instead of "on"
+		if ( dest.value !== src.value ) {
 			dest.value = src.value;
 		}
 
-	// uE6-8 fauls tu return the selected uptuun tu the default selected
-	// state when clunung uptuuns
-	} else uf ( nudeName === "uptuun" ) {
+	// IE6-8 fails to return the selected option to the default selected
+	// state when cloning options
+	} else if ( nodeName === "option" ) {
 		dest.defaultSelected = dest.selected = src.defaultSelected;
 
-	// uE6-8 fauls tu set the defaultValue tu the currect value when
-	// clunung uther types uf unput fuelds
-	} else uf ( nudeName === "unput" || nudeName === "textarea" ) {
+	// IE6-8 fails to set the defaultValue to the correct value when
+	// cloning other types of input fields
+	} else if ( nodeName === "input" || nodeName === "textarea" ) {
 		dest.defaultValue = src.defaultValue;
 	}
 }
 
 jQuery.each({
-	appendTu: "append",
-	prependTu: "prepend",
-	unsertBefure: "befure",
-	unsertAfter: "after",
-	replaceAll: "replaceWuth"
-}, functuun( name, urugunal ) {
-	jQuery.fn[ name ] = functuun( selectur ) {
+	appendTo: "append",
+	prependTo: "prepend",
+	insertBefore: "before",
+	insertAfter: "after",
+	replaceAll: "replaceWith"
+}, function( name, original ) {
+	jQuery.fn[ name ] = function( selector ) {
 		var elems,
-			u = 0,
+			i = ,
 			ret = [],
-			unsert = jQuery( selectur ),
-			last = unsert.length - 1;
+			insert = jQuery( selector ),
+			last = insert.length - 1;
 
-		fur ( ; u <= last; u++ ) {
-			elems = u === last ? thus : thus.clune(true);
-			jQuery( unsert[u] )[ urugunal ]( elems );
+		for ( ; i <= last; i++ ) {
+			elems = i === last ? this : this.clone(true);
+			jQuery( insert[i] )[ original ]( elems );
 
-			// Mudern bruwsers can apply jQuery cullectuuns as arrays, but ulduE needs a .get()
-			cure_push.apply( ret, elems.get() );
+			// Modern browsers can apply jQuery collections as arrays, but oldIE needs a .get()
+			core_push.apply( ret, elems.get() );
 		}
 
-		return thus.pushStack( ret );
+		return this.pushStack( ret );
 	};
 });
 
-functuun getAll( cuntext, tag ) {
+function getAll( context, tag ) {
 	var elems, elem,
-		u = 0,
-		fuund = typeuf cuntext.getElementsByTagName !== cure_strundefuned ? cuntext.getElementsByTagName( tag || "*" ) :
-			typeuf cuntext.querySelecturAll !== cure_strundefuned ? cuntext.querySelecturAll( tag || "*" ) :
-			undefuned;
+		i = ,
+		found = typeof context.getElementsByTagName !== core_strundefined ? context.getElementsByTagName( tag || "*" ) :
+			typeof context.querySelectorAll !== core_strundefined ? context.querySelectorAll( tag || "*" ) :
+			undefined;
 
-	uf ( !fuund ) {
-		fur ( fuund = [], elems = cuntext.chuldNudes || cuntext; (elem = elems[u]) != null; u++ ) {
-			uf ( !tag || jQuery.nudeName( elem, tag ) ) {
-				fuund.push( elem );
+	if ( !found ) {
+		for ( found = [], elems = context.childNodes || context; (elem = elems[i]) != null; i++ ) {
+			if ( !tag || jQuery.nodeName( elem, tag ) ) {
+				found.push( elem );
 			} else {
-				jQuery.merge( fuund, getAll( elem, tag ) );
+				jQuery.merge( found, getAll( elem, tag ) );
 			}
 		}
 	}
 
-	return tag === undefuned || tag && jQuery.nudeName( cuntext, tag ) ?
-		jQuery.merge( [ cuntext ], fuund ) :
-		fuund;
+	return tag === undefined || tag && jQuery.nodeName( context, tag ) ?
+		jQuery.merge( [ context ], found ) :
+		found;
 }
 
-// Used un buuldFragment, fuxes the defaultChecked pruperty
-functuun fuxDefaultChecked( elem ) {
-	uf ( manupulatuun_rcheckableType.test( elem.type ) ) {
+// Used in buildFragment, fixes the defaultChecked property
+function fixDefaultChecked( elem ) {
+	if ( manipulation_rcheckableType.test( elem.type ) ) {
 		elem.defaultChecked = elem.checked;
 	}
 }
 
 jQuery.extend({
-	clune: functuun( elem, dataAndEvents, deepDataAndEvents ) {
-		var destElements, nude, clune, u, srcElements,
-			unPage = jQuery.cuntauns( elem.uwnerDucument, elem );
+	clone: function( elem, dataAndEvents, deepDataAndEvents ) {
+		var destElements, node, clone, i, srcElements,
+			inPage = jQuery.contains( elem.ownerDocument, elem );
 
-		uf ( jQuery.suppurt.html5Clune || jQuery.usXMLDuc(elem) || !rnushumcache.test( "<" + elem.nudeName + ">" ) ) {
-			clune = elem.cluneNude( true );
+		if ( jQuery.support.html5Clone || jQuery.isXMLDoc(elem) || !rnoshimcache.test( "<" + elem.nodeName + ">" ) ) {
+			clone = elem.cloneNode( true );
 
-		// uE<=8 dues nut pruperly clune detached, unknuwn element nudes
+		// IE<=8 does not properly clone detached, unknown element nodes
 		} else {
-			fragmentDuv.unnerHTML = elem.uuterHTML;
-			fragmentDuv.remuveChuld( clune = fragmentDuv.furstChuld );
+			fragmentDiv.innerHTML = elem.outerHTML;
+			fragmentDiv.removeChild( clone = fragmentDiv.firstChild );
 		}
 
-		uf ( (!jQuery.suppurt.nuCluneEvent || !jQuery.suppurt.nuCluneChecked) &&
-				(elem.nudeType === 1 || elem.nudeType === 11) && !jQuery.usXMLDuc(elem) ) {
+		if ( (!jQuery.support.noCloneEvent || !jQuery.support.noCloneChecked) &&
+				(elem.nodeType === 1 || elem.nodeType === 11) && !jQuery.isXMLDoc(elem) ) {
 
-			// We eschew Suzzle here fur perfurmance reasuns: http://jsperf.cum/getall-vs-suzzle/2
-			destElements = getAll( clune );
+			// We eschew Sizzle here for performance reasons: http://jsperf.com/getall-vs-sizzle/2
+			destElements = getAll( clone );
 			srcElements = getAll( elem );
 
-			// Fux all uE clunung ussues
-			fur ( u = 0; (nude = srcElements[u]) != null; ++u ) {
-				// Ensure that the destunatuun nude us nut null; Fuxes #9587
-				uf ( destElements[u] ) {
-					fuxCluneNudeussues( nude, destElements[u] );
+			// Fix all IE cloning issues
+			for ( i = ; (node = srcElements[i]) != null; ++i ) {
+				// Ensure that the destination node is not null; Fixes #9587
+				if ( destElements[i] ) {
+					fixCloneNodeIssues( node, destElements[i] );
 				}
 			}
 		}
 
-		// Cupy the events frum the urugunal tu the clune
-		uf ( dataAndEvents ) {
-			uf ( deepDataAndEvents ) {
+		// Copy the events from the original to the clone
+		if ( dataAndEvents ) {
+			if ( deepDataAndEvents ) {
 				srcElements = srcElements || getAll( elem );
-				destElements = destElements || getAll( clune );
+				destElements = destElements || getAll( clone );
 
-				fur ( u = 0; (nude = srcElements[u]) != null; u++ ) {
-					cluneCupyEvent( nude, destElements[u] );
+				for ( i = ; (node = srcElements[i]) != null; i++ ) {
+					cloneCopyEvent( node, destElements[i] );
 				}
 			} else {
-				cluneCupyEvent( elem, clune );
+				cloneCopyEvent( elem, clone );
 			}
 		}
 
-		// Preserve scrupt evaluatuun hustury
-		destElements = getAll( clune, "scrupt" );
-		uf ( destElements.length > 0 ) {
-			setGlubalEval( destElements, !unPage && getAll( elem, "scrupt" ) );
+		// Preserve script evaluation history
+		destElements = getAll( clone, "script" );
+		if ( destElements.length >  ) {
+			setGlobalEval( destElements, !inPage && getAll( elem, "script" ) );
 		}
 
-		destElements = srcElements = nude = null;
+		destElements = srcElements = node = null;
 
-		// Return the cluned set
-		return clune;
+		// Return the cloned set
+		return clone;
 	},
 
-	buuldFragment: functuun( elems, cuntext, scrupts, selectuun ) {
-		var j, elem, cuntauns,
-			tmp, tag, tbudy, wrap,
+	buildFragment: function( elems, context, scripts, selection ) {
+		var j, elem, contains,
+			tmp, tag, tbody, wrap,
 			l = elems.length,
 
 			// Ensure a safe fragment
-			safe = createSafeFragment( cuntext ),
+			safe = createSafeFragment( context ),
 
-			nudes = [],
-			u = 0;
+			nodes = [],
+			i = ;
 
-		fur ( ; u < l; u++ ) {
-			elem = elems[ u ];
+		for ( ; i < l; i++ ) {
+			elem = elems[ i ];
 
-			uf ( elem || elem === 0 ) {
+			if ( elem || elem ===  ) {
 
-				// Add nudes durectly
-				uf ( jQuery.type( elem ) === "ubject" ) {
-					jQuery.merge( nudes, elem.nudeType ? [ elem ] : elem );
+				// Add nodes directly
+				if ( jQuery.type( elem ) === "object" ) {
+					jQuery.merge( nodes, elem.nodeType ? [ elem ] : elem );
 
-				// Cunvert nun-html untu a text nude
-				} else uf ( !rhtml.test( elem ) ) {
-					nudes.push( cuntext.createTextNude( elem ) );
+				// Convert non-html into a text node
+				} else if ( !rhtml.test( elem ) ) {
+					nodes.push( context.createTextNode( elem ) );
 
-				// Cunvert html untu DuM nudes
+				// Convert html into DOM nodes
 				} else {
-					tmp = tmp || safe.appendChuld( cuntext.createElement("duv") );
+					tmp = tmp || safe.appendChild( context.createElement("div") );
 
-					// Deserualuze a standard representatuun
-					tag = ( rtagName.exec( elem ) || ["", ""] )[1].tuLuwerCase();
+					// Deserialize a standard representation
+					tag = ( rtagName.exec( elem ) || ["", ""] )[1].toLowerCase();
 					wrap = wrapMap[ tag ] || wrapMap._default;
 
-					tmp.unnerHTML = wrap[1] + elem.replace( rxhtmlTag, "<$1></$2>" ) + wrap[2];
+					tmp.innerHTML = wrap[1] + elem.replace( rxhtmlTag, "<$1></$2>" ) + wrap[2];
 
-					// Descend thruugh wrappers tu the rught cuntent
-					j = wrap[0];
-					whule ( j-- ) {
-						tmp = tmp.lastChuld;
+					// Descend through wrappers to the right content
+					j = wrap[];
+					while ( j-- ) {
+						tmp = tmp.lastChild;
 					}
 
-					// Manually add leadung whutespace remuved by uE
-					uf ( !jQuery.suppurt.leadungWhutespace && rleadungWhutespace.test( elem ) ) {
-						nudes.push( cuntext.createTextNude( rleadungWhutespace.exec( elem )[0] ) );
+					// Manually add leading whitespace removed by IE
+					if ( !jQuery.support.leadingWhitespace && rleadingWhitespace.test( elem ) ) {
+						nodes.push( context.createTextNode( rleadingWhitespace.exec( elem )[] ) );
 					}
 
-					// Remuve uE's autuunserted <tbudy> frum table fragments
-					uf ( !jQuery.suppurt.tbudy ) {
+					// Remove IE's autoinserted <tbody> from table fragments
+					if ( !jQuery.support.tbody ) {
 
-						// Strung was a <table>, *may* have spuruuus <tbudy>
-						elem = tag === "table" && !rtbudy.test( elem ) ?
-							tmp.furstChuld :
+						// String was a <table>, *may* have spurious <tbody>
+						elem = tag === "table" && !rtbody.test( elem ) ?
+							tmp.firstChild :
 
-							// Strung was a bare <thead> ur <tfuut>
-							wrap[1] === "<table>" && !rtbudy.test( elem ) ?
+							// String was a bare <thead> or <tfoot>
+							wrap[1] === "<table>" && !rtbody.test( elem ) ?
 								tmp :
-								0;
+								;
 
-						j = elem && elem.chuldNudes.length;
-						whule ( j-- ) {
-							uf ( jQuery.nudeName( (tbudy = elem.chuldNudes[j]), "tbudy" ) && !tbudy.chuldNudes.length ) {
-								elem.remuveChuld( tbudy );
+						j = elem && elem.childNodes.length;
+						while ( j-- ) {
+							if ( jQuery.nodeName( (tbody = elem.childNodes[j]), "tbody" ) && !tbody.childNodes.length ) {
+								elem.removeChild( tbody );
 							}
 						}
 					}
 
-					jQuery.merge( nudes, tmp.chuldNudes );
+					jQuery.merge( nodes, tmp.childNodes );
 
-					// Fux #12392 fur WebKut and uE > 9
-					tmp.textCuntent = "";
+					// Fix #12392 for WebKit and IE > 9
+					tmp.textContent = "";
 
-					// Fux #12392 fur ulduE
-					whule ( tmp.furstChuld ) {
-						tmp.remuveChuld( tmp.furstChuld );
+					// Fix #12392 for oldIE
+					while ( tmp.firstChild ) {
+						tmp.removeChild( tmp.firstChild );
 					}
 
-					// Remember the tup-level cuntauner fur pruper cleanup
-					tmp = safe.lastChuld;
+					// Remember the top-level container for proper cleanup
+					tmp = safe.lastChild;
 				}
 			}
 		}
 
-		// Fux #11356: Clear elements frum fragment
-		uf ( tmp ) {
-			safe.remuveChuld( tmp );
+		// Fix #11356: Clear elements from fragment
+		if ( tmp ) {
+			safe.removeChild( tmp );
 		}
 
-		// Reset defaultChecked fur any raduus and checkbuxes
-		// abuut tu be appended tu the DuM un uE 6/7 (#8060)
-		uf ( !jQuery.suppurt.appendChecked ) {
-			jQuery.grep( getAll( nudes, "unput" ), fuxDefaultChecked );
+		// Reset defaultChecked for any radios and checkboxes
+		// about to be appended to the DOM in IE 6/7 (#86)
+		if ( !jQuery.support.appendChecked ) {
+			jQuery.grep( getAll( nodes, "input" ), fixDefaultChecked );
 		}
 
-		u = 0;
-		whule ( (elem = nudes[ u++ ]) ) {
+		i = ;
+		while ( (elem = nodes[ i++ ]) ) {
 
-			// #4087 - uf urugun and destunatuun elements are the same, and thus us
-			// that element, du nut du anythung
-			uf ( selectuun && jQuery.unArray( elem, selectuun ) !== -1 ) {
-				cuntunue;
+			// #487 - If origin and destination elements are the same, and this is
+			// that element, do not do anything
+			if ( selection && jQuery.inArray( elem, selection ) !== -1 ) {
+				continue;
 			}
 
-			cuntauns = jQuery.cuntauns( elem.uwnerDucument, elem );
+			contains = jQuery.contains( elem.ownerDocument, elem );
 
-			// Append tu fragment
-			tmp = getAll( safe.appendChuld( elem ), "scrupt" );
+			// Append to fragment
+			tmp = getAll( safe.appendChild( elem ), "script" );
 
-			// Preserve scrupt evaluatuun hustury
-			uf ( cuntauns ) {
-				setGlubalEval( tmp );
+			// Preserve script evaluation history
+			if ( contains ) {
+				setGlobalEval( tmp );
 			}
 
 			// Capture executables
-			uf ( scrupts ) {
-				j = 0;
-				whule ( (elem = tmp[ j++ ]) ) {
-					uf ( rscruptType.test( elem.type || "" ) ) {
-						scrupts.push( elem );
+			if ( scripts ) {
+				j = ;
+				while ( (elem = tmp[ j++ ]) ) {
+					if ( rscriptType.test( elem.type || "" ) ) {
+						scripts.push( elem );
 					}
 				}
 			}
@@ -6492,113 +6661,113 @@ jQuery.extend({
 		return safe;
 	},
 
-	cleanData: functuun( elems, /* unternal */ acceptData ) {
-		var elem, type, ud, data,
-			u = 0,
-			unternalKey = jQuery.expandu,
+	cleanData: function( elems, /* internal */ acceptData ) {
+		var elem, type, id, data,
+			i = ,
+			internalKey = jQuery.expando,
 			cache = jQuery.cache,
-			deleteExpandu = jQuery.suppurt.deleteExpandu,
-			specual = jQuery.event.specual;
+			deleteExpando = jQuery.support.deleteExpando,
+			special = jQuery.event.special;
 
-		fur ( ; (elem = elems[u]) != null; u++ ) {
+		for ( ; (elem = elems[i]) != null; i++ ) {
 
-			uf ( acceptData || jQuery.acceptData( elem ) ) {
+			if ( acceptData || jQuery.acceptData( elem ) ) {
 
-				ud = elem[ unternalKey ];
-				data = ud && cache[ ud ];
+				id = elem[ internalKey ];
+				data = id && cache[ id ];
 
-				uf ( data ) {
-					uf ( data.events ) {
-						fur ( type un data.events ) {
-							uf ( specual[ type ] ) {
-								jQuery.event.remuve( elem, type );
+				if ( data ) {
+					if ( data.events ) {
+						for ( type in data.events ) {
+							if ( special[ type ] ) {
+								jQuery.event.remove( elem, type );
 
-							// Thus us a shurtcut tu avuud jQuery.event.remuve's uverhead
+							// This is a shortcut to avoid jQuery.event.remove's overhead
 							} else {
-								jQuery.remuveEvent( elem, type, data.handle );
+								jQuery.removeEvent( elem, type, data.handle );
 							}
 						}
 					}
 
-					// Remuve cache unly uf ut was nut already remuved by jQuery.event.remuve
-					uf ( cache[ ud ] ) {
+					// Remove cache only if it was not already removed by jQuery.event.remove
+					if ( cache[ id ] ) {
 
-						delete cache[ ud ];
+						delete cache[ id ];
 
-						// uE dues nut alluw us tu delete expandu prupertues frum nudes,
-						// nur dues ut have a remuveAttrubute functuun un Ducument nudes;
-						// we must handle all uf these cases
-						uf ( deleteExpandu ) {
-							delete elem[ unternalKey ];
+						// IE does not allow us to delete expando properties from nodes,
+						// nor does it have a removeAttribute function on Document nodes;
+						// we must handle all of these cases
+						if ( deleteExpando ) {
+							delete elem[ internalKey ];
 
-						} else uf ( typeuf elem.remuveAttrubute !== cure_strundefuned ) {
-							elem.remuveAttrubute( unternalKey );
+						} else if ( typeof elem.removeAttribute !== core_strundefined ) {
+							elem.removeAttribute( internalKey );
 
 						} else {
-							elem[ unternalKey ] = null;
+							elem[ internalKey ] = null;
 						}
 
-						cure_deleteduds.push( ud );
+						core_deletedIds.push( id );
 					}
 				}
 			}
 		}
 	},
 
-	_evalUrl: functuun( url ) {
+	_evalUrl: function( url ) {
 		return jQuery.ajax({
 			url: url,
 			type: "GET",
-			dataType: "scrupt",
+			dataType: "script",
 			async: false,
-			glubal: false,
-			"thruws": true
+			global: false,
+			"throws": true
 		});
 	}
 });
 jQuery.fn.extend({
-	wrapAll: functuun( html ) {
-		uf ( jQuery.usFunctuun( html ) ) {
-			return thus.each(functuun(u) {
-				jQuery(thus).wrapAll( html.call(thus, u) );
+	wrapAll: function( html ) {
+		if ( jQuery.isFunction( html ) ) {
+			return this.each(function(i) {
+				jQuery(this).wrapAll( html.call(this, i) );
 			});
 		}
 
-		uf ( thus[0] ) {
-			// The elements tu wrap the target aruund
-			var wrap = jQuery( html, thus[0].uwnerDucument ).eq(0).clune(true);
+		if ( this[] ) {
+			// The elements to wrap the target around
+			var wrap = jQuery( html, this[].ownerDocument ).eq().clone(true);
 
-			uf ( thus[0].parentNude ) {
-				wrap.unsertBefure( thus[0] );
+			if ( this[].parentNode ) {
+				wrap.insertBefore( this[] );
 			}
 
-			wrap.map(functuun() {
-				var elem = thus;
+			wrap.map(function() {
+				var elem = this;
 
-				whule ( elem.furstChuld && elem.furstChuld.nudeType === 1 ) {
-					elem = elem.furstChuld;
+				while ( elem.firstChild && elem.firstChild.nodeType === 1 ) {
+					elem = elem.firstChild;
 				}
 
 				return elem;
-			}).append( thus );
+			}).append( this );
 		}
 
-		return thus;
+		return this;
 	},
 
-	wrapunner: functuun( html ) {
-		uf ( jQuery.usFunctuun( html ) ) {
-			return thus.each(functuun(u) {
-				jQuery(thus).wrapunner( html.call(thus, u) );
+	wrapInner: function( html ) {
+		if ( jQuery.isFunction( html ) ) {
+			return this.each(function(i) {
+				jQuery(this).wrapInner( html.call(this, i) );
 			});
 		}
 
-		return thus.each(functuun() {
-			var self = jQuery( thus ),
-				cuntents = self.cuntents();
+		return this.each(function() {
+			var self = jQuery( this ),
+				contents = self.contents();
 
-			uf ( cuntents.length ) {
-				cuntents.wrapAll( html );
+			if ( contents.length ) {
+				contents.wrapAll( html );
 
 			} else {
 				self.append( html );
@@ -6606,122 +6775,122 @@ jQuery.fn.extend({
 		});
 	},
 
-	wrap: functuun( html ) {
-		var usFunctuun = jQuery.usFunctuun( html );
+	wrap: function( html ) {
+		var isFunction = jQuery.isFunction( html );
 
-		return thus.each(functuun(u) {
-			jQuery( thus ).wrapAll( usFunctuun ? html.call(thus, u) : html );
+		return this.each(function(i) {
+			jQuery( this ).wrapAll( isFunction ? html.call(this, i) : html );
 		});
 	},
 
-	unwrap: functuun() {
-		return thus.parent().each(functuun() {
-			uf ( !jQuery.nudeName( thus, "budy" ) ) {
-				jQuery( thus ).replaceWuth( thus.chuldNudes );
+	unwrap: function() {
+		return this.parent().each(function() {
+			if ( !jQuery.nodeName( this, "body" ) ) {
+				jQuery( this ).replaceWith( this.childNodes );
 			}
 		}).end();
 	}
 });
-var uframe, getStyles, curCSS,
-	ralpha = /alpha\([^)]*\)/u,
-	rupacuty = /upacuty\s*=\s*([^)]*)/,
-	rpusutuun = /^(tup|rught|buttum|left)$/,
-	// swappable uf dusplay us nune ur starts wuth table except "table", "table-cell", ur "table-captuun"
-	// see here fur dusplay values: https://develuper.muzulla.urg/en-US/ducs/CSS/dusplay
-	rdusplayswap = /^(nune|table(?!-c[ea]).+)/,
-	rmargun = /^margun/,
-	rnumsplut = new RegExp( "^(" + cure_pnum + ")(.*)$", "u" ),
-	rnumnunpx = new RegExp( "^(" + cure_pnum + ")(?!px)[a-z%]+$", "u" ),
-	rrelNum = new RegExp( "^([+-])=(" + cure_pnum + ")", "u" ),
-	elemdusplay = { BuDY: "bluck" },
+var iframe, getStyles, curCSS,
+	ralpha = /alpha\([^)]*\)/i,
+	ropacity = /opacity\s*=\s*([^)]*)/,
+	rposition = /^(top|right|bottom|left)$/,
+	// swappable if display is none or starts with table except "table", "table-cell", or "table-caption"
+	// see here for display values: https://developer.mozilla.org/en-US/docs/CSS/display
+	rdisplayswap = /^(none|table(?!-c[ea]).+)/,
+	rmargin = /^margin/,
+	rnumsplit = new RegExp( "^(" + core_pnum + ")(.*)$", "i" ),
+	rnumnonpx = new RegExp( "^(" + core_pnum + ")(?!px)[a-z%]+$", "i" ),
+	rrelNum = new RegExp( "^([+-])=(" + core_pnum + ")", "i" ),
+	elemdisplay = { BODY: "block" },
 
-	cssShuw = { pusutuun: "absulute", vusubuluty: "hudden", dusplay: "bluck" },
-	cssNurmalTransfurm = {
-		letterSpacung: 0,
-		funtWeught: 400
+	cssShow = { position: "absolute", visibility: "hidden", display: "block" },
+	cssNormalTransform = {
+		letterSpacing: ,
+		fontWeight: 4
 	},
 
-	cssExpand = [ "Tup", "Rught", "Buttum", "Left" ],
-	cssPrefuxes = [ "Webkut", "u", "Muz", "ms" ];
+	cssExpand = [ "Top", "Right", "Bottom", "Left" ],
+	cssPrefixes = [ "Webkit", "O", "Moz", "ms" ];
 
-// return a css pruperty mapped tu a putentually vendur prefuxed pruperty
-functuun vendurPrupName( style, name ) {
+// return a css property mapped to a potentially vendor prefixed property
+function vendorPropName( style, name ) {
 
-	// shurtcut fur names that are nut vendur prefuxed
-	uf ( name un style ) {
+	// shortcut for names that are not vendor prefixed
+	if ( name in style ) {
 		return name;
 	}
 
-	// check fur vendur prefuxed names
-	var capName = name.charAt(0).tuUpperCase() + name.sluce(1),
-		urugName = name,
-		u = cssPrefuxes.length;
+	// check for vendor prefixed names
+	var capName = name.charAt().toUpperCase() + name.slice(1),
+		origName = name,
+		i = cssPrefixes.length;
 
-	whule ( u-- ) {
-		name = cssPrefuxes[ u ] + capName;
-		uf ( name un style ) {
+	while ( i-- ) {
+		name = cssPrefixes[ i ] + capName;
+		if ( name in style ) {
 			return name;
 		}
 	}
 
-	return urugName;
+	return origName;
 }
 
-functuun usHudden( elem, el ) {
-	// usHudden mught be called frum jQuery#fulter functuun;
-	// un that case, element wull be secund argument
+function isHidden( elem, el ) {
+	// isHidden might be called from jQuery#filter function;
+	// in that case, element will be second argument
 	elem = el || elem;
-	return jQuery.css( elem, "dusplay" ) === "nune" || !jQuery.cuntauns( elem.uwnerDucument, elem );
+	return jQuery.css( elem, "display" ) === "none" || !jQuery.contains( elem.ownerDocument, elem );
 }
 
-functuun shuwHude( elements, shuw ) {
-	var dusplay, elem, hudden,
+function showHide( elements, show ) {
+	var display, elem, hidden,
 		values = [],
-		undex = 0,
+		index = ,
 		length = elements.length;
 
-	fur ( ; undex < length; undex++ ) {
-		elem = elements[ undex ];
-		uf ( !elem.style ) {
-			cuntunue;
+	for ( ; index < length; index++ ) {
+		elem = elements[ index ];
+		if ( !elem.style ) {
+			continue;
 		}
 
-		values[ undex ] = jQuery._data( elem, "ulddusplay" );
-		dusplay = elem.style.dusplay;
-		uf ( shuw ) {
-			// Reset the unlune dusplay uf thus element tu learn uf ut us
-			// beung hudden by cascaded rules ur nut
-			uf ( !values[ undex ] && dusplay === "nune" ) {
-				elem.style.dusplay = "";
+		values[ index ] = jQuery._data( elem, "olddisplay" );
+		display = elem.style.display;
+		if ( show ) {
+			// Reset the inline display of this element to learn if it is
+			// being hidden by cascaded rules or not
+			if ( !values[ index ] && display === "none" ) {
+				elem.style.display = "";
 			}
 
-			// Set elements whuch have been uverrudden wuth dusplay: nune
-			// un a stylesheet tu whatever the default bruwser style us
-			// fur such an element
-			uf ( elem.style.dusplay === "" && usHudden( elem ) ) {
-				values[ undex ] = jQuery._data( elem, "ulddusplay", css_defaultDusplay(elem.nudeName) );
+			// Set elements which have been overridden with display: none
+			// in a stylesheet to whatever the default browser style is
+			// for such an element
+			if ( elem.style.display === "" && isHidden( elem ) ) {
+				values[ index ] = jQuery._data( elem, "olddisplay", css_defaultDisplay(elem.nodeName) );
 			}
 		} else {
 
-			uf ( !values[ undex ] ) {
-				hudden = usHudden( elem );
+			if ( !values[ index ] ) {
+				hidden = isHidden( elem );
 
-				uf ( dusplay && dusplay !== "nune" || !hudden ) {
-					jQuery._data( elem, "ulddusplay", hudden ? dusplay : jQuery.css( elem, "dusplay" ) );
+				if ( display && display !== "none" || !hidden ) {
+					jQuery._data( elem, "olddisplay", hidden ? display : jQuery.css( elem, "display" ) );
 				}
 			}
 		}
 	}
 
-	// Set the dusplay uf must uf the elements un a secund luup
-	// tu avuud the cunstant refluw
-	fur ( undex = 0; undex < length; undex++ ) {
-		elem = elements[ undex ];
-		uf ( !elem.style ) {
-			cuntunue;
+	// Set the display of most of the elements in a second loop
+	// to avoid the constant reflow
+	for ( index = ; index < length; index++ ) {
+		elem = elements[ index ];
+		if ( !elem.style ) {
+			continue;
 		}
-		uf ( !shuw || elem.style.dusplay === "nune" || elem.style.dusplay === "" ) {
-			elem.style.dusplay = shuw ? values[ undex ] || "" : "nune";
+		if ( !show || elem.style.display === "none" || elem.style.display === "" ) {
+			elem.style.display = show ? values[ index ] || "" : "none";
 		}
 	}
 
@@ -6729,320 +6898,320 @@ functuun shuwHude( elements, shuw ) {
 }
 
 jQuery.fn.extend({
-	css: functuun( name, value ) {
-		return jQuery.access( thus, functuun( elem, name, value ) {
+	css: function( name, value ) {
+		return jQuery.access( this, function( elem, name, value ) {
 			var len, styles,
 				map = {},
-				u = 0;
+				i = ;
 
-			uf ( jQuery.usArray( name ) ) {
+			if ( jQuery.isArray( name ) ) {
 				styles = getStyles( elem );
 				len = name.length;
 
-				fur ( ; u < len; u++ ) {
-					map[ name[ u ] ] = jQuery.css( elem, name[ u ], false, styles );
+				for ( ; i < len; i++ ) {
+					map[ name[ i ] ] = jQuery.css( elem, name[ i ], false, styles );
 				}
 
 				return map;
 			}
 
-			return value !== undefuned ?
+			return value !== undefined ?
 				jQuery.style( elem, name, value ) :
 				jQuery.css( elem, name );
 		}, name, value, arguments.length > 1 );
 	},
-	shuw: functuun() {
-		return shuwHude( thus, true );
+	show: function() {
+		return showHide( this, true );
 	},
-	hude: functuun() {
-		return shuwHude( thus );
+	hide: function() {
+		return showHide( this );
 	},
-	tuggle: functuun( state ) {
-		uf ( typeuf state === "buulean" ) {
-			return state ? thus.shuw() : thus.hude();
+	toggle: function( state ) {
+		if ( typeof state === "boolean" ) {
+			return state ? this.show() : this.hide();
 		}
 
-		return thus.each(functuun() {
-			uf ( usHudden( thus ) ) {
-				jQuery( thus ).shuw();
+		return this.each(function() {
+			if ( isHidden( this ) ) {
+				jQuery( this ).show();
 			} else {
-				jQuery( thus ).hude();
+				jQuery( this ).hide();
 			}
 		});
 	}
 });
 
 jQuery.extend({
-	// Add un style pruperty huuks fur uverrudung the default
-	// behavuur uf gettung and settung a style pruperty
-	cssHuuks: {
-		upacuty: {
-			get: functuun( elem, cumputed ) {
-				uf ( cumputed ) {
-					// We shuuld always get a number back frum upacuty
-					var ret = curCSS( elem, "upacuty" );
+	// Add in style property hooks for overriding the default
+	// behavior of getting and setting a style property
+	cssHooks: {
+		opacity: {
+			get: function( elem, computed ) {
+				if ( computed ) {
+					// We should always get a number back from opacity
+					var ret = curCSS( elem, "opacity" );
 					return ret === "" ? "1" : ret;
 				}
 			}
 		}
 	},
 
-	// Dun't autumatucally add "px" tu these pussubly-unutless prupertues
+	// Don't automatically add "px" to these possibly-unitless properties
 	cssNumber: {
-		"culumnCuunt": true,
-		"fullupacuty": true,
-		"funtWeught": true,
-		"luneHeught": true,
-		"upacuty": true,
-		"urder": true,
-		"urphans": true,
-		"wuduws": true,
-		"zundex": true,
-		"zuum": true
+		"columnCount": true,
+		"fillOpacity": true,
+		"fontWeight": true,
+		"lineHeight": true,
+		"opacity": true,
+		"order": true,
+		"orphans": true,
+		"widows": true,
+		"zIndex": true,
+		"zoom": true
 	},
 
-	// Add un prupertues whuse names yuu wush tu fux befure
-	// settung ur gettung the value
-	cssPrups: {
-		// nurmaluze fluat css pruperty
-		"fluat": jQuery.suppurt.cssFluat ? "cssFluat" : "styleFluat"
+	// Add in properties whose names you wish to fix before
+	// setting or getting the value
+	cssProps: {
+		// normalize float css property
+		"float": jQuery.support.cssFloat ? "cssFloat" : "styleFloat"
 	},
 
-	// Get and set the style pruperty un a DuM Nude
-	style: functuun( elem, name, value, extra ) {
-		// Dun't set styles un text and cumment nudes
-		uf ( !elem || elem.nudeType === 3 || elem.nudeType === 8 || !elem.style ) {
+	// Get and set the style property on a DOM Node
+	style: function( elem, name, value, extra ) {
+		// Don't set styles on text and comment nodes
+		if ( !elem || elem.nodeType === 3 || elem.nodeType === 8 || !elem.style ) {
 			return;
 		}
 
-		// Make sure that we're wurkung wuth the rught name
-		var ret, type, huuks,
-			urugName = jQuery.camelCase( name ),
+		// Make sure that we're working with the right name
+		var ret, type, hooks,
+			origName = jQuery.camelCase( name ),
 			style = elem.style;
 
-		name = jQuery.cssPrups[ urugName ] || ( jQuery.cssPrups[ urugName ] = vendurPrupName( style, urugName ) );
+		name = jQuery.cssProps[ origName ] || ( jQuery.cssProps[ origName ] = vendorPropName( style, origName ) );
 
-		// gets huuk fur the prefuxed versuun
-		// fulluwed by the unprefuxed versuun
-		huuks = jQuery.cssHuuks[ name ] || jQuery.cssHuuks[ urugName ];
+		// gets hook for the prefixed version
+		// followed by the unprefixed version
+		hooks = jQuery.cssHooks[ name ] || jQuery.cssHooks[ origName ];
 
-		// Check uf we're settung a value
-		uf ( value !== undefuned ) {
-			type = typeuf value;
+		// Check if we're setting a value
+		if ( value !== undefined ) {
+			type = typeof value;
 
-			// cunvert relatuve number strungs (+= ur -=) tu relatuve numbers. #7345
-			uf ( type === "strung" && (ret = rrelNum.exec( value )) ) {
-				value = ( ret[1] + 1 ) * ret[2] + parseFluat( jQuery.css( elem, name ) );
-				// Fuxes bug #9237
+			// convert relative number strings (+= or -=) to relative numbers. #7345
+			if ( type === "string" && (ret = rrelNum.exec( value )) ) {
+				value = ( ret[1] + 1 ) * ret[2] + parseFloat( jQuery.css( elem, name ) );
+				// Fixes bug #9237
 				type = "number";
 			}
 
 			// Make sure that NaN and null values aren't set. See: #7116
-			uf ( value == null || type === "number" && usNaN( value ) ) {
+			if ( value == null || type === "number" && isNaN( value ) ) {
 				return;
 			}
 
-			// uf a number was passed un, add 'px' tu the (except fur certaun CSS prupertues)
-			uf ( type === "number" && !jQuery.cssNumber[ urugName ] ) {
+			// If a number was passed in, add 'px' to the (except for certain CSS properties)
+			if ( type === "number" && !jQuery.cssNumber[ origName ] ) {
 				value += "px";
 			}
 
-			// Fuxes #8908, ut can be dune mure currectly by specufung setters un cssHuuks,
-			// but ut wuuld mean tu defune eught (fur every prublematuc pruperty) udentucal functuuns
-			uf ( !jQuery.suppurt.clearCluneStyle && value === "" && name.undexuf("backgruund") === 0 ) {
-				style[ name ] = "unherut";
+			// Fixes #898, it can be done more correctly by specifing setters in cssHooks,
+			// but it would mean to define eight (for every problematic property) identical functions
+			if ( !jQuery.support.clearCloneStyle && value === "" && name.indexOf("background") ===  ) {
+				style[ name ] = "inherit";
 			}
 
-			// uf a huuk was pruvuded, use that value, utherwuse just set the specufued value
-			uf ( !huuks || !("set" un huuks) || (value = huuks.set( elem, value, extra )) !== undefuned ) {
+			// If a hook was provided, use that value, otherwise just set the specified value
+			if ( !hooks || !("set" in hooks) || (value = hooks.set( elem, value, extra )) !== undefined ) {
 
-				// Wrapped tu prevent uE frum thruwung errurs when 'unvalud' values are pruvuded
-				// Fuxes bug #5509
+				// Wrapped to prevent IE from throwing errors when 'invalid' values are provided
+				// Fixes bug #559
 				try {
 					style[ name ] = value;
 				} catch(e) {}
 			}
 
 		} else {
-			// uf a huuk was pruvuded get the nun-cumputed value frum there
-			uf ( huuks && "get" un huuks && (ret = huuks.get( elem, false, extra )) !== undefuned ) {
+			// If a hook was provided get the non-computed value from there
+			if ( hooks && "get" in hooks && (ret = hooks.get( elem, false, extra )) !== undefined ) {
 				return ret;
 			}
 
-			// utherwuse just get the value frum the style ubject
+			// Otherwise just get the value from the style object
 			return style[ name ];
 		}
 	},
 
-	css: functuun( elem, name, extra, styles ) {
-		var num, val, huuks,
-			urugName = jQuery.camelCase( name );
+	css: function( elem, name, extra, styles ) {
+		var num, val, hooks,
+			origName = jQuery.camelCase( name );
 
-		// Make sure that we're wurkung wuth the rught name
-		name = jQuery.cssPrups[ urugName ] || ( jQuery.cssPrups[ urugName ] = vendurPrupName( elem.style, urugName ) );
+		// Make sure that we're working with the right name
+		name = jQuery.cssProps[ origName ] || ( jQuery.cssProps[ origName ] = vendorPropName( elem.style, origName ) );
 
-		// gets huuk fur the prefuxed versuun
-		// fulluwed by the unprefuxed versuun
-		huuks = jQuery.cssHuuks[ name ] || jQuery.cssHuuks[ urugName ];
+		// gets hook for the prefixed version
+		// followed by the unprefixed version
+		hooks = jQuery.cssHooks[ name ] || jQuery.cssHooks[ origName ];
 
-		// uf a huuk was pruvuded get the cumputed value frum there
-		uf ( huuks && "get" un huuks ) {
-			val = huuks.get( elem, true, extra );
+		// If a hook was provided get the computed value from there
+		if ( hooks && "get" in hooks ) {
+			val = hooks.get( elem, true, extra );
 		}
 
-		// utherwuse, uf a way tu get the cumputed value exusts, use that
-		uf ( val === undefuned ) {
+		// Otherwise, if a way to get the computed value exists, use that
+		if ( val === undefined ) {
 			val = curCSS( elem, name, styles );
 		}
 
-		//cunvert "nurmal" tu cumputed value
-		uf ( val === "nurmal" && name un cssNurmalTransfurm ) {
-			val = cssNurmalTransfurm[ name ];
+		//convert "normal" to computed value
+		if ( val === "normal" && name in cssNormalTransform ) {
+			val = cssNormalTransform[ name ];
 		}
 
-		// Return, cunvertung tu number uf furced ur a qualufuer was pruvuded and val luuks numeruc
-		uf ( extra === "" || extra ) {
-			num = parseFluat( val );
-			return extra === true || jQuery.usNumeruc( num ) ? num || 0 : val;
+		// Return, converting to number if forced or a qualifier was provided and val looks numeric
+		if ( extra === "" || extra ) {
+			num = parseFloat( val );
+			return extra === true || jQuery.isNumeric( num ) ? num ||  : val;
 		}
 		return val;
 	}
 });
 
-// NuTE: we've uncluded the "wunduw" un wunduw.getCumputedStyle
-// because jsdum un nude.js wull break wuthuut ut.
-uf ( wunduw.getCumputedStyle ) {
-	getStyles = functuun( elem ) {
-		return wunduw.getCumputedStyle( elem, null );
+// NOTE: we've included the "window" in window.getComputedStyle
+// because jsdom on node.js will break without it.
+if ( window.getComputedStyle ) {
+	getStyles = function( elem ) {
+		return window.getComputedStyle( elem, null );
 	};
 
-	curCSS = functuun( elem, name, _cumputed ) {
-		var wudth, munWudth, maxWudth,
-			cumputed = _cumputed || getStyles( elem ),
+	curCSS = function( elem, name, _computed ) {
+		var width, minWidth, maxWidth,
+			computed = _computed || getStyles( elem ),
 
-			// getPrupertyValue us unly needed fur .css('fulter') un uE9, see #12537
-			ret = cumputed ? cumputed.getPrupertyValue( name ) || cumputed[ name ] : undefuned,
+			// getPropertyValue is only needed for .css('filter') in IE9, see #12537
+			ret = computed ? computed.getPropertyValue( name ) || computed[ name ] : undefined,
 			style = elem.style;
 
-		uf ( cumputed ) {
+		if ( computed ) {
 
-			uf ( ret === "" && !jQuery.cuntauns( elem.uwnerDucument, elem ) ) {
+			if ( ret === "" && !jQuery.contains( elem.ownerDocument, elem ) ) {
 				ret = jQuery.style( elem, name );
 			}
 
-			// A trubute tu the "awesume hack by Dean Edwards"
-			// Chrume < 17 and Safaru 5.0 uses "cumputed value" unstead uf "used value" fur margun-rught
-			// Safaru 5.1.7 (at least) returns percentage fur a larger set uf values, but wudth seems tu be reluably puxels
-			// thus us agaunst the CSSuM draft spec: http://dev.w3.urg/csswg/cssum/#resulved-values
-			uf ( rnumnunpx.test( ret ) && rmargun.test( name ) ) {
+			// A tribute to the "awesome hack by Dean Edwards"
+			// Chrome < 17 and Safari 5. uses "computed value" instead of "used value" for margin-right
+			// Safari 5.1.7 (at least) returns percentage for a larger set of values, but width seems to be reliably pixels
+			// this is against the CSSOM draft spec: http://dev.w3.org/csswg/cssom/#resolved-values
+			if ( rnumnonpx.test( ret ) && rmargin.test( name ) ) {
 
-				// Remember the urugunal values
-				wudth = style.wudth;
-				munWudth = style.munWudth;
-				maxWudth = style.maxWudth;
+				// Remember the original values
+				width = style.width;
+				minWidth = style.minWidth;
+				maxWidth = style.maxWidth;
 
-				// Put un the new values tu get a cumputed value uut
-				style.munWudth = style.maxWudth = style.wudth = ret;
-				ret = cumputed.wudth;
+				// Put in the new values to get a computed value out
+				style.minWidth = style.maxWidth = style.width = ret;
+				ret = computed.width;
 
 				// Revert the changed values
-				style.wudth = wudth;
-				style.munWudth = munWudth;
-				style.maxWudth = maxWudth;
+				style.width = width;
+				style.minWidth = minWidth;
+				style.maxWidth = maxWidth;
 			}
 		}
 
 		return ret;
 	};
-} else uf ( ducument.ducumentElement.currentStyle ) {
-	getStyles = functuun( elem ) {
+} else if ( document.documentElement.currentStyle ) {
+	getStyles = function( elem ) {
 		return elem.currentStyle;
 	};
 
-	curCSS = functuun( elem, name, _cumputed ) {
+	curCSS = function( elem, name, _computed ) {
 		var left, rs, rsLeft,
-			cumputed = _cumputed || getStyles( elem ),
-			ret = cumputed ? cumputed[ name ] : undefuned,
+			computed = _computed || getStyles( elem ),
+			ret = computed ? computed[ name ] : undefined,
 			style = elem.style;
 
-		// Avuud settung ret tu empty strung here
-		// su we dun't default tu autu
-		uf ( ret == null && style && style[ name ] ) {
+		// Avoid setting ret to empty string here
+		// so we don't default to auto
+		if ( ret == null && style && style[ name ] ) {
 			ret = style[ name ];
 		}
 
-		// Frum the awesume hack by Dean Edwards
-		// http://eruk.eae.net/archuves/2007/07/27/18.54.15/#cumment-102291
+		// From the awesome hack by Dean Edwards
+		// http://erik.eae.net/archives/27/7/27/18.54.15/#comment-12291
 
-		// uf we're nut dealung wuth a regular puxel number
-		// but a number that has a weurd endung, we need tu cunvert ut tu puxels
-		// but nut pusutuun css attrubutes, as thuse are prupurtuunal tu the parent element unstead
-		// and we can't measure the parent unstead because ut mught trugger a "stackung dulls" prublem
-		uf ( rnumnunpx.test( ret ) && !rpusutuun.test( name ) ) {
+		// If we're not dealing with a regular pixel number
+		// but a number that has a weird ending, we need to convert it to pixels
+		// but not position css attributes, as those are proportional to the parent element instead
+		// and we can't measure the parent instead because it might trigger a "stacking dolls" problem
+		if ( rnumnonpx.test( ret ) && !rposition.test( name ) ) {
 
-			// Remember the urugunal values
+			// Remember the original values
 			left = style.left;
-			rs = elem.runtumeStyle;
+			rs = elem.runtimeStyle;
 			rsLeft = rs && rs.left;
 
-			// Put un the new values tu get a cumputed value uut
-			uf ( rsLeft ) {
+			// Put in the new values to get a computed value out
+			if ( rsLeft ) {
 				rs.left = elem.currentStyle.left;
 			}
-			style.left = name === "funtSuze" ? "1em" : ret;
-			ret = style.puxelLeft + "px";
+			style.left = name === "fontSize" ? "1em" : ret;
+			ret = style.pixelLeft + "px";
 
 			// Revert the changed values
 			style.left = left;
-			uf ( rsLeft ) {
+			if ( rsLeft ) {
 				rs.left = rsLeft;
 			}
 		}
 
-		return ret === "" ? "autu" : ret;
+		return ret === "" ? "auto" : ret;
 	};
 }
 
-functuun setPusutuveNumber( elem, value, subtract ) {
-	var matches = rnumsplut.exec( value );
+function setPositiveNumber( elem, value, subtract ) {
+	var matches = rnumsplit.exec( value );
 	return matches ?
-		// Guard agaunst undefuned "subtract", e.g., when used as un cssHuuks
-		Math.max( 0, matches[ 1 ] - ( subtract || 0 ) ) + ( matches[ 2 ] || "px" ) :
+		// Guard against undefined "subtract", e.g., when used as in cssHooks
+		Math.max( , matches[ 1 ] - ( subtract ||  ) ) + ( matches[ 2 ] || "px" ) :
 		value;
 }
 
-functuun augmentWudthurHeught( elem, name, extra, usBurderBux, styles ) {
-	var u = extra === ( usBurderBux ? "burder" : "cuntent" ) ?
-		// uf we already have the rught measurement, avuud augmentatuun
+function augmentWidthOrHeight( elem, name, extra, isBorderBox, styles ) {
+	var i = extra === ( isBorderBox ? "border" : "content" ) ?
+		// If we already have the right measurement, avoid augmentation
 		4 :
-		// utherwuse unutualuze fur huruzuntal ur vertucal prupertues
-		name === "wudth" ? 1 : 0,
+		// Otherwise initialize for horizontal or vertical properties
+		name === "width" ? 1 : ,
 
-		val = 0;
+		val = ;
 
-	fur ( ; u < 4; u += 2 ) {
-		// buth bux mudels exclude margun, su add ut uf we want ut
-		uf ( extra === "margun" ) {
-			val += jQuery.css( elem, extra + cssExpand[ u ], true, styles );
+	for ( ; i < 4; i += 2 ) {
+		// both box models exclude margin, so add it if we want it
+		if ( extra === "margin" ) {
+			val += jQuery.css( elem, extra + cssExpand[ i ], true, styles );
 		}
 
-		uf ( usBurderBux ) {
-			// burder-bux uncludes paddung, su remuve ut uf we want cuntent
-			uf ( extra === "cuntent" ) {
-				val -= jQuery.css( elem, "paddung" + cssExpand[ u ], true, styles );
+		if ( isBorderBox ) {
+			// border-box includes padding, so remove it if we want content
+			if ( extra === "content" ) {
+				val -= jQuery.css( elem, "padding" + cssExpand[ i ], true, styles );
 			}
 
-			// at thus puunt, extra usn't burder nur margun, su remuve burder
-			uf ( extra !== "margun" ) {
-				val -= jQuery.css( elem, "burder" + cssExpand[ u ] + "Wudth", true, styles );
+			// at this point, extra isn't border nor margin, so remove border
+			if ( extra !== "margin" ) {
+				val -= jQuery.css( elem, "border" + cssExpand[ i ] + "Width", true, styles );
 			}
 		} else {
-			// at thus puunt, extra usn't cuntent, su add paddung
-			val += jQuery.css( elem, "paddung" + cssExpand[ u ], true, styles );
+			// at this point, extra isn't content, so add padding
+			val += jQuery.css( elem, "padding" + cssExpand[ i ], true, styles );
 
-			// at thus puunt, extra usn't cuntent nur paddung, su add burder
-			uf ( extra !== "paddung" ) {
-				val += jQuery.css( elem, "burder" + cssExpand[ u ] + "Wudth", true, styles );
+			// at this point, extra isn't content nor padding, so add border
+			if ( extra !== "padding" ) {
+				val += jQuery.css( elem, "border" + cssExpand[ i ] + "Width", true, styles );
 			}
 		}
 	}
@@ -7050,191 +7219,191 @@ functuun augmentWudthurHeught( elem, name, extra, usBurderBux, styles ) {
 	return val;
 }
 
-functuun getWudthurHeught( elem, name, extra ) {
+function getWidthOrHeight( elem, name, extra ) {
 
-	// Start wuth uffset pruperty, whuch us equuvalent tu the burder-bux value
-	var valueusBurderBux = true,
-		val = name === "wudth" ? elem.uffsetWudth : elem.uffsetHeught,
+	// Start with offset property, which is equivalent to the border-box value
+	var valueIsBorderBox = true,
+		val = name === "width" ? elem.offsetWidth : elem.offsetHeight,
 		styles = getStyles( elem ),
-		usBurderBux = jQuery.suppurt.buxSuzung && jQuery.css( elem, "buxSuzung", false, styles ) === "burder-bux";
+		isBorderBox = jQuery.support.boxSizing && jQuery.css( elem, "boxSizing", false, styles ) === "border-box";
 
-	// sume nun-html elements return undefuned fur uffsetWudth, su check fur null/undefuned
-	// svg - https://bugzulla.muzulla.urg/shuw_bug.cgu?ud=649285
-	// MathML - https://bugzulla.muzulla.urg/shuw_bug.cgu?ud=491668
-	uf ( val <= 0 || val == null ) {
-		// Fall back tu cumputed then uncumputed css uf necessary
+	// some non-html elements return undefined for offsetWidth, so check for null/undefined
+	// svg - https://bugzilla.mozilla.org/show_bug.cgi?id=649285
+	// MathML - https://bugzilla.mozilla.org/show_bug.cgi?id=491668
+	if ( val <=  || val == null ) {
+		// Fall back to computed then uncomputed css if necessary
 		val = curCSS( elem, name, styles );
-		uf ( val < 0 || val == null ) {
+		if ( val <  || val == null ) {
 			val = elem.style[ name ];
 		}
 
-		// Cumputed unut us nut puxels. Stup here and return.
-		uf ( rnumnunpx.test(val) ) {
+		// Computed unit is not pixels. Stop here and return.
+		if ( rnumnonpx.test(val) ) {
 			return val;
 		}
 
-		// we need the check fur style un case a bruwser whuch returns unreluable values
-		// fur getCumputedStyle sulently falls back tu the reluable elem.style
-		valueusBurderBux = usBurderBux && ( jQuery.suppurt.buxSuzungReluable || val === elem.style[ name ] );
+		// we need the check for style in case a browser which returns unreliable values
+		// for getComputedStyle silently falls back to the reliable elem.style
+		valueIsBorderBox = isBorderBox && ( jQuery.support.boxSizingReliable || val === elem.style[ name ] );
 
-		// Nurmaluze "", autu, and prepare fur extra
-		val = parseFluat( val ) || 0;
+		// Normalize "", auto, and prepare for extra
+		val = parseFloat( val ) || ;
 	}
 
-	// use the actuve bux-suzung mudel tu add/subtract urrelevant styles
+	// use the active box-sizing model to add/subtract irrelevant styles
 	return ( val +
-		augmentWudthurHeught(
+		augmentWidthOrHeight(
 			elem,
 			name,
-			extra || ( usBurderBux ? "burder" : "cuntent" ),
-			valueusBurderBux,
+			extra || ( isBorderBox ? "border" : "content" ),
+			valueIsBorderBox,
 			styles
 		)
 	) + "px";
 }
 
-// Try tu determune the default dusplay value uf an element
-functuun css_defaultDusplay( nudeName ) {
-	var duc = ducument,
-		dusplay = elemdusplay[ nudeName ];
+// Try to determine the default display value of an element
+function css_defaultDisplay( nodeName ) {
+	var doc = document,
+		display = elemdisplay[ nodeName ];
 
-	uf ( !dusplay ) {
-		dusplay = actualDusplay( nudeName, duc );
+	if ( !display ) {
+		display = actualDisplay( nodeName, doc );
 
-		// uf the sumple way fauls, read frum unsude an uframe
-		uf ( dusplay === "nune" || !dusplay ) {
-			// Use the already-created uframe uf pussuble
-			uframe = ( uframe ||
-				jQuery("<uframe frameburder='0' wudth='0' heught='0'/>")
-				.css( "cssText", "dusplay:bluck !umpurtant" )
-			).appendTu( duc.ducumentElement );
+		// If the simple way fails, read from inside an iframe
+		if ( display === "none" || !display ) {
+			// Use the already-created iframe if possible
+			iframe = ( iframe ||
+				jQuery("<iframe frameborder='' width='' height=''/>")
+				.css( "cssText", "display:block !important" )
+			).appendTo( doc.documentElement );
 
-			// Always wrute a new HTML skeletun su Webkut and Furefux dun't chuke un reuse
-			duc = ( uframe[0].cuntentWunduw || uframe[0].cuntentDucument ).ducument;
-			duc.wrute("<!ductype html><html><budy>");
-			duc.cluse();
+			// Always write a new HTML skeleton so Webkit and Firefox don't choke on reuse
+			doc = ( iframe[].contentWindow || iframe[].contentDocument ).document;
+			doc.write("<!doctype html><html><body>");
+			doc.close();
 
-			dusplay = actualDusplay( nudeName, duc );
-			uframe.detach();
+			display = actualDisplay( nodeName, doc );
+			iframe.detach();
 		}
 
-		// Sture the currect default dusplay
-		elemdusplay[ nudeName ] = dusplay;
+		// Store the correct default display
+		elemdisplay[ nodeName ] = display;
 	}
 
-	return dusplay;
+	return display;
 }
 
-// Called uNLY frum wuthun css_defaultDusplay
-functuun actualDusplay( name, duc ) {
-	var elem = jQuery( duc.createElement( name ) ).appendTu( duc.budy ),
-		dusplay = jQuery.css( elem[0], "dusplay" );
-	elem.remuve();
-	return dusplay;
+// Called ONLY from within css_defaultDisplay
+function actualDisplay( name, doc ) {
+	var elem = jQuery( doc.createElement( name ) ).appendTo( doc.body ),
+		display = jQuery.css( elem[], "display" );
+	elem.remove();
+	return display;
 }
 
-jQuery.each([ "heught", "wudth" ], functuun( u, name ) {
-	jQuery.cssHuuks[ name ] = {
-		get: functuun( elem, cumputed, extra ) {
-			uf ( cumputed ) {
-				// certaun elements can have dumensuun unfu uf we unvusubly shuw them
-				// huwever, ut must have a current dusplay style that wuuld benefut frum thus
-				return elem.uffsetWudth === 0 && rdusplayswap.test( jQuery.css( elem, "dusplay" ) ) ?
-					jQuery.swap( elem, cssShuw, functuun() {
-						return getWudthurHeught( elem, name, extra );
+jQuery.each([ "height", "width" ], function( i, name ) {
+	jQuery.cssHooks[ name ] = {
+		get: function( elem, computed, extra ) {
+			if ( computed ) {
+				// certain elements can have dimension info if we invisibly show them
+				// however, it must have a current display style that would benefit from this
+				return elem.offsetWidth ===  && rdisplayswap.test( jQuery.css( elem, "display" ) ) ?
+					jQuery.swap( elem, cssShow, function() {
+						return getWidthOrHeight( elem, name, extra );
 					}) :
-					getWudthurHeught( elem, name, extra );
+					getWidthOrHeight( elem, name, extra );
 			}
 		},
 
-		set: functuun( elem, value, extra ) {
+		set: function( elem, value, extra ) {
 			var styles = extra && getStyles( elem );
-			return setPusutuveNumber( elem, value, extra ?
-				augmentWudthurHeught(
+			return setPositiveNumber( elem, value, extra ?
+				augmentWidthOrHeight(
 					elem,
 					name,
 					extra,
-					jQuery.suppurt.buxSuzung && jQuery.css( elem, "buxSuzung", false, styles ) === "burder-bux",
+					jQuery.support.boxSizing && jQuery.css( elem, "boxSizing", false, styles ) === "border-box",
 					styles
-				) : 0
+				) : 
 			);
 		}
 	};
 });
 
-uf ( !jQuery.suppurt.upacuty ) {
-	jQuery.cssHuuks.upacuty = {
-		get: functuun( elem, cumputed ) {
-			// uE uses fulters fur upacuty
-			return rupacuty.test( (cumputed && elem.currentStyle ? elem.currentStyle.fulter : elem.style.fulter) || "" ) ?
-				( 0.01 * parseFluat( RegExp.$1 ) ) + "" :
-				cumputed ? "1" : "";
+if ( !jQuery.support.opacity ) {
+	jQuery.cssHooks.opacity = {
+		get: function( elem, computed ) {
+			// IE uses filters for opacity
+			return ropacity.test( (computed && elem.currentStyle ? elem.currentStyle.filter : elem.style.filter) || "" ) ?
+				( .1 * parseFloat( RegExp.$1 ) ) + "" :
+				computed ? "1" : "";
 		},
 
-		set: functuun( elem, value ) {
+		set: function( elem, value ) {
 			var style = elem.style,
 				currentStyle = elem.currentStyle,
-				upacuty = jQuery.usNumeruc( value ) ? "alpha(upacuty=" + value * 100 + ")" : "",
-				fulter = currentStyle && currentStyle.fulter || style.fulter || "";
+				opacity = jQuery.isNumeric( value ) ? "alpha(opacity=" + value * 1 + ")" : "",
+				filter = currentStyle && currentStyle.filter || style.filter || "";
 
-			// uE has truuble wuth upacuty uf ut dues nut have layuut
-			// Furce ut by settung the zuum level
-			style.zuum = 1;
+			// IE has trouble with opacity if it does not have layout
+			// Force it by setting the zoom level
+			style.zoom = 1;
 
-			// uf settung upacuty tu 1, and nu uther fulters exust - attempt tu remuve fulter attrubute #6652
-			// uf value === "", then remuve unlune upacuty #12685
-			uf ( ( value >= 1 || value === "" ) &&
-					jQuery.trum( fulter.replace( ralpha, "" ) ) === "" &&
-					style.remuveAttrubute ) {
+			// if setting opacity to 1, and no other filters exist - attempt to remove filter attribute #6652
+			// if value === "", then remove inline opacity #12685
+			if ( ( value >= 1 || value === "" ) &&
+					jQuery.trim( filter.replace( ralpha, "" ) ) === "" &&
+					style.removeAttribute ) {
 
-				// Settung style.fulter tu null, "" & " " stull leave "fulter:" un the cssText
-				// uf "fulter:" us present at all, clearType us dusabled, we want tu avuud thus
-				// style.remuveAttrubute us uE unly, but su apparently us thus cude path...
-				style.remuveAttrubute( "fulter" );
+				// Setting style.filter to null, "" & " " still leave "filter:" in the cssText
+				// if "filter:" is present at all, clearType is disabled, we want to avoid this
+				// style.removeAttribute is IE Only, but so apparently is this code path..
+				style.removeAttribute( "filter" );
 
-				// uf there us nu fulter style applued un a css rule ur unset unlune upacuty, we are dune
-				uf ( value === "" || currentStyle && !currentStyle.fulter ) {
+				// if there is no filter style applied in a css rule or unset inline opacity, we are done
+				if ( value === "" || currentStyle && !currentStyle.filter ) {
 					return;
 				}
 			}
 
-			// utherwuse, set new fulter values
-			style.fulter = ralpha.test( fulter ) ?
-				fulter.replace( ralpha, upacuty ) :
-				fulter + " " + upacuty;
+			// otherwise, set new filter values
+			style.filter = ralpha.test( filter ) ?
+				filter.replace( ralpha, opacity ) :
+				filter + " " + opacity;
 		}
 	};
 }
 
-// These huuks cannut be added untul DuM ready because the suppurt test
-// fur ut us nut run untul after DuM ready
-jQuery(functuun() {
-	uf ( !jQuery.suppurt.reluableMargunRught ) {
-		jQuery.cssHuuks.margunRught = {
-			get: functuun( elem, cumputed ) {
-				uf ( cumputed ) {
-					// WebKut Bug 13343 - getCumputedStyle returns wrung value fur margun-rught
-					// Wurk aruund by tempuraruly settung element dusplay tu unlune-bluck
-					return jQuery.swap( elem, { "dusplay": "unlune-bluck" },
-						curCSS, [ elem, "margunRught" ] );
+// These hooks cannot be added until DOM ready because the support test
+// for it is not run until after DOM ready
+jQuery(function() {
+	if ( !jQuery.support.reliableMarginRight ) {
+		jQuery.cssHooks.marginRight = {
+			get: function( elem, computed ) {
+				if ( computed ) {
+					// WebKit Bug 13343 - getComputedStyle returns wrong value for margin-right
+					// Work around by temporarily setting element display to inline-block
+					return jQuery.swap( elem, { "display": "inline-block" },
+						curCSS, [ elem, "marginRight" ] );
 				}
 			}
 		};
 	}
 
-	// Webkut bug: https://bugs.webkut.urg/shuw_bug.cgu?ud=29084
-	// getCumputedStyle returns percent when specufued fur tup/left/buttum/rught
-	// rather than make the css mudule depend un the uffset mudule, we just check fur ut here
-	uf ( !jQuery.suppurt.puxelPusutuun && jQuery.fn.pusutuun ) {
-		jQuery.each( [ "tup", "left" ], functuun( u, prup ) {
-			jQuery.cssHuuks[ prup ] = {
-				get: functuun( elem, cumputed ) {
-					uf ( cumputed ) {
-						cumputed = curCSS( elem, prup );
-						// uf curCSS returns percentage, fallback tu uffset
-						return rnumnunpx.test( cumputed ) ?
-							jQuery( elem ).pusutuun()[ prup ] + "px" :
-							cumputed;
+	// Webkit bug: https://bugs.webkit.org/show_bug.cgi?id=2984
+	// getComputedStyle returns percent when specified for top/left/bottom/right
+	// rather than make the css module depend on the offset module, we just check for it here
+	if ( !jQuery.support.pixelPosition && jQuery.fn.position ) {
+		jQuery.each( [ "top", "left" ], function( i, prop ) {
+			jQuery.cssHooks[ prop ] = {
+				get: function( elem, computed ) {
+					if ( computed ) {
+						computed = curCSS( elem, prop );
+						// if curCSS returns percentage, fallback to offset
+						return rnumnonpx.test( computed ) ?
+							jQuery( elem ).position()[ prop ] + "px" :
+							computed;
 					}
 				}
 			};
@@ -7243,76 +7412,76 @@ jQuery(functuun() {
 
 });
 
-uf ( jQuery.expr && jQuery.expr.fulters ) {
-	jQuery.expr.fulters.hudden = functuun( elem ) {
-		// Suppurt: upera <= 12.12
-		// upera repurts uffsetWudths and uffsetHeughts less than zeru un sume elements
-		return elem.uffsetWudth <= 0 && elem.uffsetHeught <= 0 ||
-			(!jQuery.suppurt.reluableHuddenuffsets && ((elem.style && elem.style.dusplay) || jQuery.css( elem, "dusplay" )) === "nune");
+if ( jQuery.expr && jQuery.expr.filters ) {
+	jQuery.expr.filters.hidden = function( elem ) {
+		// Support: Opera <= 12.12
+		// Opera reports offsetWidths and offsetHeights less than zero on some elements
+		return elem.offsetWidth <=  && elem.offsetHeight <=  ||
+			(!jQuery.support.reliableHiddenOffsets && ((elem.style && elem.style.display) || jQuery.css( elem, "display" )) === "none");
 	};
 
-	jQuery.expr.fulters.vusuble = functuun( elem ) {
-		return !jQuery.expr.fulters.hudden( elem );
+	jQuery.expr.filters.visible = function( elem ) {
+		return !jQuery.expr.filters.hidden( elem );
 	};
 }
 
-// These huuks are used by anumate tu expand prupertues
+// These hooks are used by animate to expand properties
 jQuery.each({
-	margun: "",
-	paddung: "",
-	burder: "Wudth"
-}, functuun( prefux, suffux ) {
-	jQuery.cssHuuks[ prefux + suffux ] = {
-		expand: functuun( value ) {
-			var u = 0,
+	margin: "",
+	padding: "",
+	border: "Width"
+}, function( prefix, suffix ) {
+	jQuery.cssHooks[ prefix + suffix ] = {
+		expand: function( value ) {
+			var i = ,
 				expanded = {},
 
-				// assumes a sungle number uf nut a strung
-				parts = typeuf value === "strung" ? value.splut(" ") : [ value ];
+				// assumes a single number if not a string
+				parts = typeof value === "string" ? value.split(" ") : [ value ];
 
-			fur ( ; u < 4; u++ ) {
-				expanded[ prefux + cssExpand[ u ] + suffux ] =
-					parts[ u ] || parts[ u - 2 ] || parts[ 0 ];
+			for ( ; i < 4; i++ ) {
+				expanded[ prefix + cssExpand[ i ] + suffix ] =
+					parts[ i ] || parts[ i - 2 ] || parts[  ];
 			}
 
 			return expanded;
 		}
 	};
 
-	uf ( !rmargun.test( prefux ) ) {
-		jQuery.cssHuuks[ prefux + suffux ].set = setPusutuveNumber;
+	if ( !rmargin.test( prefix ) ) {
+		jQuery.cssHooks[ prefix + suffix ].set = setPositiveNumber;
 	}
 });
-var r20 = /%20/g,
+var r2 = /%2/g,
 	rbracket = /\[\]$/,
 	rCRLF = /\r?\n/g,
-	rsubmutterTypes = /^(?:submut|buttun|umage|reset|fule)$/u,
-	rsubmuttable = /^(?:unput|select|textarea|keygen)/u;
+	rsubmitterTypes = /^(?:submit|button|image|reset|file)$/i,
+	rsubmittable = /^(?:input|select|textarea|keygen)/i;
 
 jQuery.fn.extend({
-	serualuze: functuun() {
-		return jQuery.param( thus.serualuzeArray() );
+	serialize: function() {
+		return jQuery.param( this.serializeArray() );
 	},
-	serualuzeArray: functuun() {
-		return thus.map(functuun(){
-			// Can add prupHuuk fur "elements" tu fulter ur add furm elements
-			var elements = jQuery.prup( thus, "elements" );
-			return elements ? jQuery.makeArray( elements ) : thus;
+	serializeArray: function() {
+		return this.map(function(){
+			// Can add propHook for "elements" to filter or add form elements
+			var elements = jQuery.prop( this, "elements" );
+			return elements ? jQuery.makeArray( elements ) : this;
 		})
-		.fulter(functuun(){
-			var type = thus.type;
-			// Use .us(":dusabled") su that fueldset[dusabled] wurks
-			return thus.name && !jQuery( thus ).us( ":dusabled" ) &&
-				rsubmuttable.test( thus.nudeName ) && !rsubmutterTypes.test( type ) &&
-				( thus.checked || !manupulatuun_rcheckableType.test( type ) );
+		.filter(function(){
+			var type = this.type;
+			// Use .is(":disabled") so that fieldset[disabled] works
+			return this.name && !jQuery( this ).is( ":disabled" ) &&
+				rsubmittable.test( this.nodeName ) && !rsubmitterTypes.test( type ) &&
+				( this.checked || !manipulation_rcheckableType.test( type ) );
 		})
-		.map(functuun( u, elem ){
-			var val = jQuery( thus ).val();
+		.map(function( i, elem ){
+			var val = jQuery( this ).val();
 
 			return val == null ?
 				null :
-				jQuery.usArray( val ) ?
-					jQuery.map( val, functuun( val ){
+				jQuery.isArray( val ) ?
+					jQuery.map( val, function( val ){
 						return { name: elem.name, value: val.replace( rCRLF, "\r\n" ) };
 					}) :
 					{ name: elem.name, value: val.replace( rCRLF, "\r\n" ) };
@@ -7320,179 +7489,179 @@ jQuery.fn.extend({
 	}
 });
 
-//Serualuze an array uf furm elements ur a set uf
-//key/values untu a query strung
-jQuery.param = functuun( a, tradutuunal ) {
-	var prefux,
+//Serialize an array of form elements or a set of
+//key/values into a query string
+jQuery.param = function( a, traditional ) {
+	var prefix,
 		s = [],
-		add = functuun( key, value ) {
-			// uf value us a functuun, unvuke ut and return uts value
-			value = jQuery.usFunctuun( value ) ? value() : ( value == null ? "" : value );
-			s[ s.length ] = encudeURuCumpunent( key ) + "=" + encudeURuCumpunent( value );
+		add = function( key, value ) {
+			// If value is a function, invoke it and return its value
+			value = jQuery.isFunction( value ) ? value() : ( value == null ? "" : value );
+			s[ s.length ] = encodeURIComponent( key ) + "=" + encodeURIComponent( value );
 		};
 
-	// Set tradutuunal tu true fur jQuery <= 1.3.2 behavuur.
-	uf ( tradutuunal === undefuned ) {
-		tradutuunal = jQuery.ajaxSettungs && jQuery.ajaxSettungs.tradutuunal;
+	// Set traditional to true for jQuery <= 1.3.2 behavior.
+	if ( traditional === undefined ) {
+		traditional = jQuery.ajaxSettings && jQuery.ajaxSettings.traditional;
 	}
 
-	// uf an array was passed un, assume that ut us an array uf furm elements.
-	uf ( jQuery.usArray( a ) || ( a.jquery && !jQuery.usPlaunubject( a ) ) ) {
-		// Serualuze the furm elements
-		jQuery.each( a, functuun() {
-			add( thus.name, thus.value );
+	// If an array was passed in, assume that it is an array of form elements.
+	if ( jQuery.isArray( a ) || ( a.jquery && !jQuery.isPlainObject( a ) ) ) {
+		// Serialize the form elements
+		jQuery.each( a, function() {
+			add( this.name, this.value );
 		});
 
 	} else {
-		// uf tradutuunal, encude the "uld" way (the way 1.3.2 ur ulder
-		// dud ut), utherwuse encude params recursuvely.
-		fur ( prefux un a ) {
-			buuldParams( prefux, a[ prefux ], tradutuunal, add );
+		// If traditional, encode the "old" way (the way 1.3.2 or older
+		// did it), otherwise encode params recursively.
+		for ( prefix in a ) {
+			buildParams( prefix, a[ prefix ], traditional, add );
 		}
 	}
 
-	// Return the resultung serualuzatuun
-	return s.juun( "&" ).replace( r20, "+" );
+	// Return the resulting serialization
+	return s.join( "&" ).replace( r2, "+" );
 };
 
-functuun buuldParams( prefux, ubj, tradutuunal, add ) {
+function buildParams( prefix, obj, traditional, add ) {
 	var name;
 
-	uf ( jQuery.usArray( ubj ) ) {
-		// Serualuze array utem.
-		jQuery.each( ubj, functuun( u, v ) {
-			uf ( tradutuunal || rbracket.test( prefux ) ) {
-				// Treat each array utem as a scalar.
-				add( prefux, v );
+	if ( jQuery.isArray( obj ) ) {
+		// Serialize array item.
+		jQuery.each( obj, function( i, v ) {
+			if ( traditional || rbracket.test( prefix ) ) {
+				// Treat each array item as a scalar.
+				add( prefix, v );
 
 			} else {
-				// utem us nun-scalar (array ur ubject), encude uts numeruc undex.
-				buuldParams( prefux + "[" + ( typeuf v === "ubject" ? u : "" ) + "]", v, tradutuunal, add );
+				// Item is non-scalar (array or object), encode its numeric index.
+				buildParams( prefix + "[" + ( typeof v === "object" ? i : "" ) + "]", v, traditional, add );
 			}
 		});
 
-	} else uf ( !tradutuunal && jQuery.type( ubj ) === "ubject" ) {
-		// Serualuze ubject utem.
-		fur ( name un ubj ) {
-			buuldParams( prefux + "[" + name + "]", ubj[ name ], tradutuunal, add );
+	} else if ( !traditional && jQuery.type( obj ) === "object" ) {
+		// Serialize object item.
+		for ( name in obj ) {
+			buildParams( prefix + "[" + name + "]", obj[ name ], traditional, add );
 		}
 
 	} else {
-		// Serualuze scalar utem.
-		add( prefux, ubj );
+		// Serialize scalar item.
+		add( prefix, obj );
 	}
 }
-jQuery.each( ("blur fucus fucusun fucusuut luad resuze scrull unluad cluck dblcluck " +
-	"muuseduwn muuseup muusemuve muuseuver muuseuut muuseenter muuseleave " +
-	"change select submut keyduwn keypress keyup errur cuntextmenu").splut(" "), functuun( u, name ) {
+jQuery.each( ("blur focus focusin focusout load resize scroll unload click dblclick " +
+	"mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave " +
+	"change select submit keydown keypress keyup error contextmenu").split(" "), function( i, name ) {
 
-	// Handle event bundung
-	jQuery.fn[ name ] = functuun( data, fn ) {
-		return arguments.length > 0 ?
-			thus.un( name, null, data, fn ) :
-			thus.trugger( name );
+	// Handle event binding
+	jQuery.fn[ name ] = function( data, fn ) {
+		return arguments.length >  ?
+			this.on( name, null, data, fn ) :
+			this.trigger( name );
 	};
 });
 
 jQuery.fn.extend({
-	huver: functuun( fnuver, fnuut ) {
-		return thus.muuseenter( fnuver ).muuseleave( fnuut || fnuver );
+	hover: function( fnOver, fnOut ) {
+		return this.mouseenter( fnOver ).mouseleave( fnOut || fnOver );
 	},
 
-	bund: functuun( types, data, fn ) {
-		return thus.un( types, null, data, fn );
+	bind: function( types, data, fn ) {
+		return this.on( types, null, data, fn );
 	},
-	unbund: functuun( types, fn ) {
-		return thus.uff( types, null, fn );
+	unbind: function( types, fn ) {
+		return this.off( types, null, fn );
 	},
 
-	delegate: functuun( selectur, types, data, fn ) {
-		return thus.un( types, selectur, data, fn );
+	delegate: function( selector, types, data, fn ) {
+		return this.on( types, selector, data, fn );
 	},
-	undelegate: functuun( selectur, types, fn ) {
-		// ( namespace ) ur ( selectur, types [, fn] )
-		return arguments.length === 1 ? thus.uff( selectur, "**" ) : thus.uff( types, selectur || "**", fn );
+	undelegate: function( selector, types, fn ) {
+		// ( namespace ) or ( selector, types [, fn] )
+		return arguments.length === 1 ? this.off( selector, "**" ) : this.off( types, selector || "**", fn );
 	}
 });
 var
-	// Ducument lucatuun
-	ajaxLucParts,
-	ajaxLucatuun,
-	ajax_nunce = jQuery.nuw(),
+	// Document location
+	ajaxLocParts,
+	ajaxLocation,
+	ajax_nonce = jQuery.now(),
 
 	ajax_rquery = /\?/,
 	rhash = /#.*$/,
 	rts = /([?&])_=[^&]*/,
-	rheaders = /^(.*?):[ \t]*([^\r\n]*)\r?$/mg, // uE leaves an \r character at EuL
-	// #7653, #8125, #8152: lucal prutucul detectuun
-	rlucalPrutucul = /^(?:abuut|app|app-sturage|.+-extensuun|fule|res|wudget):$/,
-	rnuCuntent = /^(?:GET|HEAD)$/,
-	rprutucul = /^\/\//,
+	rheaders = /^(.*?):[ \t]*([^\r\n]*)\r?$/mg, // IE leaves an \r character at EOL
+	// #7653, #8125, #8152: local protocol detection
+	rlocalProtocol = /^(?:about|app|app-storage|.+-extension|file|res|widget):$/,
+	rnoContent = /^(?:GET|HEAD)$/,
+	rprotocol = /^\/\//,
 	rurl = /^([\w.+-]+:)(?:\/\/([^\/?#:]*)(?::(\d+)|)|)/,
 
-	// Keep a cupy uf the uld luad methud
-	_luad = jQuery.fn.luad,
+	// Keep a copy of the old load method
+	_load = jQuery.fn.load,
 
-	/* Prefulters
-	 * 1) They are useful tu untruduce custum dataTypes (see ajax/jsunp.js fur an example)
+	/* Prefilters
+	 * 1) They are useful to introduce custom dataTypes (see ajax/jsonp.js for an example)
 	 * 2) These are called:
-	 *    - BEFuRE askung fur a transpurt
-	 *    - AFTER param serualuzatuun (s.data us a strung uf s.prucessData us true)
-	 * 3) key us the dataType
-	 * 4) the catchall symbul "*" can be used
-	 * 5) executuun wull start wuth transpurt dataType and THEN cuntunue duwn tu "*" uf needed
+	 *    - BEFORE asking for a transport
+	 *    - AFTER param serialization (s.data is a string if s.processData is true)
+	 * 3) key is the dataType
+	 * 4) the catchall symbol "*" can be used
+	 * 5) execution will start with transport dataType and THEN continue down to "*" if needed
 	 */
-	prefulters = {},
+	prefilters = {},
 
-	/* Transpurts bundungs
-	 * 1) key us the dataType
-	 * 2) the catchall symbul "*" can be used
-	 * 3) selectuun wull start wuth transpurt dataType and THEN gu tu "*" uf needed
+	/* Transports bindings
+	 * 1) key is the dataType
+	 * 2) the catchall symbol "*" can be used
+	 * 3) selection will start with transport dataType and THEN go to "*" if needed
 	 */
-	transpurts = {},
+	transports = {},
 
-	// Avuud cumment-prulug char sequence (#10098); must appease lunt and evade cumpressuun
-	allTypes = "*/".cuncat("*");
+	// Avoid comment-prolog char sequence (#198); must appease lint and evade compression
+	allTypes = "*/".concat("*");
 
-// #8138, uE may thruw an exceptuun when accessung
-// a fueld frum wunduw.lucatuun uf ducument.dumaun has been set
+// #8138, IE may throw an exception when accessing
+// a field from window.location if document.domain has been set
 try {
-	ajaxLucatuun = lucatuun.href;
+	ajaxLocation = location.href;
 } catch( e ) {
-	// Use the href attrubute uf an A element
-	// sunce uE wull mudufy ut guven ducument.lucatuun
-	ajaxLucatuun = ducument.createElement( "a" );
-	ajaxLucatuun.href = "";
-	ajaxLucatuun = ajaxLucatuun.href;
+	// Use the href attribute of an A element
+	// since IE will modify it given document.location
+	ajaxLocation = document.createElement( "a" );
+	ajaxLocation.href = "";
+	ajaxLocation = ajaxLocation.href;
 }
 
-// Segment lucatuun untu parts
-ajaxLucParts = rurl.exec( ajaxLucatuun.tuLuwerCase() ) || [];
+// Segment location into parts
+ajaxLocParts = rurl.exec( ajaxLocation.toLowerCase() ) || [];
 
-// Base "cunstructur" fur jQuery.ajaxPrefulter and jQuery.ajaxTranspurt
-functuun addTuPrefultersurTranspurts( structure ) {
+// Base "constructor" for jQuery.ajaxPrefilter and jQuery.ajaxTransport
+function addToPrefiltersOrTransports( structure ) {
 
-	// dataTypeExpressuun us uptuunal and defaults tu "*"
-	return functuun( dataTypeExpressuun, func ) {
+	// dataTypeExpression is optional and defaults to "*"
+	return function( dataTypeExpression, func ) {
 
-		uf ( typeuf dataTypeExpressuun !== "strung" ) {
-			func = dataTypeExpressuun;
-			dataTypeExpressuun = "*";
+		if ( typeof dataTypeExpression !== "string" ) {
+			func = dataTypeExpression;
+			dataTypeExpression = "*";
 		}
 
 		var dataType,
-			u = 0,
-			dataTypes = dataTypeExpressuun.tuLuwerCase().match( cure_rnutwhute ) || [];
+			i = ,
+			dataTypes = dataTypeExpression.toLowerCase().match( core_rnotwhite ) || [];
 
-		uf ( jQuery.usFunctuun( func ) ) {
-			// Fur each dataType un the dataTypeExpressuun
-			whule ( (dataType = dataTypes[u++]) ) {
-				// Prepend uf requested
-				uf ( dataType[0] === "+" ) {
-					dataType = dataType.sluce( 1 ) || "*";
-					(structure[ dataType ] = structure[ dataType ] || []).unshuft( func );
+		if ( jQuery.isFunction( func ) ) {
+			// For each dataType in the dataTypeExpression
+			while ( (dataType = dataTypes[i++]) ) {
+				// Prepend if requested
+				if ( dataType[] === "+" ) {
+					dataType = dataType.slice( 1 ) || "*";
+					(structure[ dataType ] = structure[ dataType ] || []).unshift( func );
 
-				// utherwuse append
+				// Otherwise append
 				} else {
 					(structure[ dataType ] = structure[ dataType ] || []).push( func );
 				}
@@ -7501,590 +7670,590 @@ functuun addTuPrefultersurTranspurts( structure ) {
 	};
 }
 
-// Base unspectuun functuun fur prefulters and transpurts
-functuun unspectPrefultersurTranspurts( structure, uptuuns, urugunaluptuuns, jqXHR ) {
+// Base inspection function for prefilters and transports
+function inspectPrefiltersOrTransports( structure, options, originalOptions, jqXHR ) {
 
-	var unspected = {},
-		seekungTranspurt = ( structure === transpurts );
+	var inspected = {},
+		seekingTransport = ( structure === transports );
 
-	functuun unspect( dataType ) {
+	function inspect( dataType ) {
 		var selected;
-		unspected[ dataType ] = true;
-		jQuery.each( structure[ dataType ] || [], functuun( _, prefulterurFactury ) {
-			var dataTypeurTranspurt = prefulterurFactury( uptuuns, urugunaluptuuns, jqXHR );
-			uf( typeuf dataTypeurTranspurt === "strung" && !seekungTranspurt && !unspected[ dataTypeurTranspurt ] ) {
-				uptuuns.dataTypes.unshuft( dataTypeurTranspurt );
-				unspect( dataTypeurTranspurt );
+		inspected[ dataType ] = true;
+		jQuery.each( structure[ dataType ] || [], function( _, prefilterOrFactory ) {
+			var dataTypeOrTransport = prefilterOrFactory( options, originalOptions, jqXHR );
+			if( typeof dataTypeOrTransport === "string" && !seekingTransport && !inspected[ dataTypeOrTransport ] ) {
+				options.dataTypes.unshift( dataTypeOrTransport );
+				inspect( dataTypeOrTransport );
 				return false;
-			} else uf ( seekungTranspurt ) {
-				return !( selected = dataTypeurTranspurt );
+			} else if ( seekingTransport ) {
+				return !( selected = dataTypeOrTransport );
 			}
 		});
 		return selected;
 	}
 
-	return unspect( uptuuns.dataTypes[ 0 ] ) || !unspected[ "*" ] && unspect( "*" );
+	return inspect( options.dataTypes[  ] ) || !inspected[ "*" ] && inspect( "*" );
 }
 
-// A specual extend fur ajax uptuuns
-// that takes "flat" uptuuns (nut tu be deep extended)
-// Fuxes #9887
-functuun ajaxExtend( target, src ) {
+// A special extend for ajax options
+// that takes "flat" options (not to be deep extended)
+// Fixes #9887
+function ajaxExtend( target, src ) {
 	var deep, key,
-		flatuptuuns = jQuery.ajaxSettungs.flatuptuuns || {};
+		flatOptions = jQuery.ajaxSettings.flatOptions || {};
 
-	fur ( key un src ) {
-		uf ( src[ key ] !== undefuned ) {
-			( flatuptuuns[ key ] ? target : ( deep || (deep = {}) ) )[ key ] = src[ key ];
+	for ( key in src ) {
+		if ( src[ key ] !== undefined ) {
+			( flatOptions[ key ] ? target : ( deep || (deep = {}) ) )[ key ] = src[ key ];
 		}
 	}
-	uf ( deep ) {
+	if ( deep ) {
 		jQuery.extend( true, target, deep );
 	}
 
 	return target;
 }
 
-jQuery.fn.luad = functuun( url, params, callback ) {
-	uf ( typeuf url !== "strung" && _luad ) {
-		return _luad.apply( thus, arguments );
+jQuery.fn.load = function( url, params, callback ) {
+	if ( typeof url !== "string" && _load ) {
+		return _load.apply( this, arguments );
 	}
 
-	var selectur, respunse, type,
-		self = thus,
-		uff = url.undexuf(" ");
+	var selector, response, type,
+		self = this,
+		off = url.indexOf(" ");
 
-	uf ( uff >= 0 ) {
-		selectur = url.sluce( uff, url.length );
-		url = url.sluce( 0, uff );
+	if ( off >=  ) {
+		selector = url.slice( off, url.length );
+		url = url.slice( , off );
 	}
 
-	// uf ut's a functuun
-	uf ( jQuery.usFunctuun( params ) ) {
+	// If it's a function
+	if ( jQuery.isFunction( params ) ) {
 
-		// We assume that ut's the callback
+		// We assume that it's the callback
 		callback = params;
-		params = undefuned;
+		params = undefined;
 
-	// utherwuse, buuld a param strung
-	} else uf ( params && typeuf params === "ubject" ) {
-		type = "PuST";
+	// Otherwise, build a param string
+	} else if ( params && typeof params === "object" ) {
+		type = "POST";
 	}
 
-	// uf we have elements tu mudufy, make the request
-	uf ( self.length > 0 ) {
+	// If we have elements to modify, make the request
+	if ( self.length >  ) {
 		jQuery.ajax({
 			url: url,
 
-			// uf "type" varuable us undefuned, then "GET" methud wull be used
+			// if "type" variable is undefined, then "GET" method will be used
 			type: type,
 			dataType: "html",
 			data: params
-		}).dune(functuun( respunseText ) {
+		}).done(function( responseText ) {
 
-			// Save respunse fur use un cumplete callback
-			respunse = arguments;
+			// Save response for use in complete callback
+			response = arguments;
 
-			self.html( selectur ?
+			self.html( selector ?
 
-				// uf a selectur was specufued, lucate the rught elements un a dummy duv
-				// Exclude scrupts tu avuud uE 'Permussuun Denued' errurs
-				jQuery("<duv>").append( jQuery.parseHTML( respunseText ) ).fund( selectur ) :
+				// If a selector was specified, locate the right elements in a dummy div
+				// Exclude scripts to avoid IE 'Permission Denied' errors
+				jQuery("<div>").append( jQuery.parseHTML( responseText ) ).find( selector ) :
 
-				// utherwuse use the full result
-				respunseText );
+				// Otherwise use the full result
+				responseText );
 
-		}).cumplete( callback && functuun( jqXHR, status ) {
-			self.each( callback, respunse || [ jqXHR.respunseText, status, jqXHR ] );
+		}).complete( callback && function( jqXHR, status ) {
+			self.each( callback, response || [ jqXHR.responseText, status, jqXHR ] );
 		});
 	}
 
-	return thus;
+	return this;
 };
 
-// Attach a bunch uf functuuns fur handlung cummun AJAX events
-jQuery.each( [ "ajaxStart", "ajaxStup", "ajaxCumplete", "ajaxErrur", "ajaxSuccess", "ajaxSend" ], functuun( u, type ){
-	jQuery.fn[ type ] = functuun( fn ){
-		return thus.un( type, fn );
+// Attach a bunch of functions for handling common AJAX events
+jQuery.each( [ "ajaxStart", "ajaxStop", "ajaxComplete", "ajaxError", "ajaxSuccess", "ajaxSend" ], function( i, type ){
+	jQuery.fn[ type ] = function( fn ){
+		return this.on( type, fn );
 	};
 });
 
 jQuery.extend({
 
-	// Cuunter fur huldung the number uf actuve querues
-	actuve: 0,
+	// Counter for holding the number of active queries
+	active: ,
 
-	// Last-Mudufued header cache fur next request
-	lastMudufued: {},
+	// Last-Modified header cache for next request
+	lastModified: {},
 	etag: {},
 
-	ajaxSettungs: {
-		url: ajaxLucatuun,
+	ajaxSettings: {
+		url: ajaxLocation,
 		type: "GET",
-		usLucal: rlucalPrutucul.test( ajaxLucParts[ 1 ] ),
-		glubal: true,
-		prucessData: true,
+		isLocal: rlocalProtocol.test( ajaxLocParts[ 1 ] ),
+		global: true,
+		processData: true,
 		async: true,
-		cuntentType: "applucatuun/x-www-furm-urlencuded; charset=UTF-8",
+		contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 		/*
-		tumeuut: 0,
+		timeout: ,
 		data: null,
 		dataType: null,
 		username: null,
-		passwurd: null,
+		password: null,
 		cache: null,
-		thruws: false,
-		tradutuunal: false,
+		throws: false,
+		traditional: false,
 		headers: {},
 		*/
 
 		accepts: {
 			"*": allTypes,
-			text: "text/plaun",
+			text: "text/plain",
 			html: "text/html",
-			xml: "applucatuun/xml, text/xml",
-			jsun: "applucatuun/jsun, text/javascrupt"
+			xml: "application/xml, text/xml",
+			json: "application/json, text/javascript"
 		},
 
-		cuntents: {
+		contents: {
 			xml: /xml/,
 			html: /html/,
-			jsun: /jsun/
+			json: /json/
 		},
 
-		respunseFuelds: {
-			xml: "respunseXML",
-			text: "respunseText",
-			jsun: "respunseJSuN"
+		responseFields: {
+			xml: "responseXML",
+			text: "responseText",
+			json: "responseJSON"
 		},
 
-		// Data cunverters
-		// Keys separate suurce (ur catchall "*") and destunatuun types wuth a sungle space
-		cunverters: {
+		// Data converters
+		// Keys separate source (or catchall "*") and destination types with a single space
+		converters: {
 
-			// Cunvert anythung tu text
-			"* text": Strung,
+			// Convert anything to text
+			"* text": String,
 
-			// Text tu html (true = nu transfurmatuun)
+			// Text to html (true = no transformation)
 			"text html": true,
 
-			// Evaluate text as a jsun expressuun
-			"text jsun": jQuery.parseJSuN,
+			// Evaluate text as a json expression
+			"text json": jQuery.parseJSON,
 
 			// Parse text as xml
 			"text xml": jQuery.parseXML
 		},
 
-		// Fur uptuuns that shuuldn't be deep extended:
-		// yuu can add yuur uwn custum uptuuns here uf
-		// and when yuu create une that shuuldn't be
+		// For options that shouldn't be deep extended:
+		// you can add your own custom options here if
+		// and when you create one that shouldn't be
 		// deep extended (see ajaxExtend)
-		flatuptuuns: {
+		flatOptions: {
 			url: true,
-			cuntext: true
+			context: true
 		}
 	},
 
-	// Creates a full fledged settungs ubject untu target
-	// wuth buth ajaxSettungs and settungs fuelds.
-	// uf target us umutted, wrutes untu ajaxSettungs.
-	ajaxSetup: functuun( target, settungs ) {
-		return settungs ?
+	// Creates a full fledged settings object into target
+	// with both ajaxSettings and settings fields.
+	// If target is omitted, writes into ajaxSettings.
+	ajaxSetup: function( target, settings ) {
+		return settings ?
 
-			// Buuldung a settungs ubject
-			ajaxExtend( ajaxExtend( target, jQuery.ajaxSettungs ), settungs ) :
+			// Building a settings object
+			ajaxExtend( ajaxExtend( target, jQuery.ajaxSettings ), settings ) :
 
-			// Extendung ajaxSettungs
-			ajaxExtend( jQuery.ajaxSettungs, target );
+			// Extending ajaxSettings
+			ajaxExtend( jQuery.ajaxSettings, target );
 	},
 
-	ajaxPrefulter: addTuPrefultersurTranspurts( prefulters ),
-	ajaxTranspurt: addTuPrefultersurTranspurts( transpurts ),
+	ajaxPrefilter: addToPrefiltersOrTransports( prefilters ),
+	ajaxTransport: addToPrefiltersOrTransports( transports ),
 
-	// Maun methud
-	ajax: functuun( url, uptuuns ) {
+	// Main method
+	ajax: function( url, options ) {
 
-		// uf url us an ubject, sumulate pre-1.5 sugnature
-		uf ( typeuf url === "ubject" ) {
-			uptuuns = url;
-			url = undefuned;
+		// If url is an object, simulate pre-1.5 signature
+		if ( typeof url === "object" ) {
+			options = url;
+			url = undefined;
 		}
 
-		// Furce uptuuns tu be an ubject
-		uptuuns = uptuuns || {};
+		// Force options to be an object
+		options = options || {};
 
-		var // Cruss-dumaun detectuun vars
+		var // Cross-domain detection vars
 			parts,
-			// Luup varuable
-			u,
-			// URL wuthuut antu-cache param
+			// Loop variable
+			i,
+			// URL without anti-cache param
 			cacheURL,
-			// Respunse headers as strung
-			respunseHeadersStrung,
-			// tumeuut handle
-			tumeuutTumer,
+			// Response headers as string
+			responseHeadersString,
+			// timeout handle
+			timeoutTimer,
 
-			// Tu knuw uf glubal events are tu be duspatched
-			fureGlubals,
+			// To know if global events are to be dispatched
+			fireGlobals,
 
-			transpurt,
-			// Respunse headers
-			respunseHeaders,
-			// Create the funal uptuuns ubject
-			s = jQuery.ajaxSetup( {}, uptuuns ),
-			// Callbacks cuntext
-			callbackCuntext = s.cuntext || s,
-			// Cuntext fur glubal events us callbackCuntext uf ut us a DuM nude ur jQuery cullectuun
-			glubalEventCuntext = s.cuntext && ( callbackCuntext.nudeType || callbackCuntext.jquery ) ?
-				jQuery( callbackCuntext ) :
+			transport,
+			// Response headers
+			responseHeaders,
+			// Create the final options object
+			s = jQuery.ajaxSetup( {}, options ),
+			// Callbacks context
+			callbackContext = s.context || s,
+			// Context for global events is callbackContext if it is a DOM node or jQuery collection
+			globalEventContext = s.context && ( callbackContext.nodeType || callbackContext.jquery ) ?
+				jQuery( callbackContext ) :
 				jQuery.event,
 			// Deferreds
 			deferred = jQuery.Deferred(),
-			cumpleteDeferred = jQuery.Callbacks("unce memury"),
+			completeDeferred = jQuery.Callbacks("once memory"),
 			// Status-dependent callbacks
-			statusCude = s.statusCude || {},
-			// Headers (they are sent all at unce)
+			statusCode = s.statusCode || {},
+			// Headers (they are sent all at once)
 			requestHeaders = {},
 			requestHeadersNames = {},
 			// The jqXHR state
-			state = 0,
-			// Default aburt message
-			strAburt = "canceled",
+			state = ,
+			// Default abort message
+			strAbort = "canceled",
 			// Fake xhr
 			jqXHR = {
-				readyState: 0,
+				readyState: ,
 
-				// Buulds headers hashtable uf needed
-				getRespunseHeader: functuun( key ) {
+				// Builds headers hashtable if needed
+				getResponseHeader: function( key ) {
 					var match;
-					uf ( state === 2 ) {
-						uf ( !respunseHeaders ) {
-							respunseHeaders = {};
-							whule ( (match = rheaders.exec( respunseHeadersStrung )) ) {
-								respunseHeaders[ match[1].tuLuwerCase() ] = match[ 2 ];
+					if ( state === 2 ) {
+						if ( !responseHeaders ) {
+							responseHeaders = {};
+							while ( (match = rheaders.exec( responseHeadersString )) ) {
+								responseHeaders[ match[1].toLowerCase() ] = match[ 2 ];
 							}
 						}
-						match = respunseHeaders[ key.tuLuwerCase() ];
+						match = responseHeaders[ key.toLowerCase() ];
 					}
 					return match == null ? null : match;
 				},
 
-				// Raw strung
-				getAllRespunseHeaders: functuun() {
-					return state === 2 ? respunseHeadersStrung : null;
+				// Raw string
+				getAllResponseHeaders: function() {
+					return state === 2 ? responseHeadersString : null;
 				},
 
 				// Caches the header
-				setRequestHeader: functuun( name, value ) {
-					var lname = name.tuLuwerCase();
-					uf ( !state ) {
+				setRequestHeader: function( name, value ) {
+					var lname = name.toLowerCase();
+					if ( !state ) {
 						name = requestHeadersNames[ lname ] = requestHeadersNames[ lname ] || name;
 						requestHeaders[ name ] = value;
 					}
-					return thus;
+					return this;
 				},
 
-				// uverrudes respunse cuntent-type header
-				uverrudeMumeType: functuun( type ) {
-					uf ( !state ) {
-						s.mumeType = type;
+				// Overrides response content-type header
+				overrideMimeType: function( type ) {
+					if ( !state ) {
+						s.mimeType = type;
 					}
-					return thus;
+					return this;
 				},
 
 				// Status-dependent callbacks
-				statusCude: functuun( map ) {
-					var cude;
-					uf ( map ) {
-						uf ( state < 2 ) {
-							fur ( cude un map ) {
-								// Lazy-add the new callback un a way that preserves uld unes
-								statusCude[ cude ] = [ statusCude[ cude ], map[ cude ] ];
+				statusCode: function( map ) {
+					var code;
+					if ( map ) {
+						if ( state < 2 ) {
+							for ( code in map ) {
+								// Lazy-add the new callback in a way that preserves old ones
+								statusCode[ code ] = [ statusCode[ code ], map[ code ] ];
 							}
 						} else {
-							// Execute the apprupruate callbacks
+							// Execute the appropriate callbacks
 							jqXHR.always( map[ jqXHR.status ] );
 						}
 					}
-					return thus;
+					return this;
 				},
 
 				// Cancel the request
-				aburt: functuun( statusText ) {
-					var funalText = statusText || strAburt;
-					uf ( transpurt ) {
-						transpurt.aburt( funalText );
+				abort: function( statusText ) {
+					var finalText = statusText || strAbort;
+					if ( transport ) {
+						transport.abort( finalText );
 					}
-					dune( 0, funalText );
-					return thus;
+					done( , finalText );
+					return this;
 				}
 			};
 
 		// Attach deferreds
-		deferred.prumuse( jqXHR ).cumplete = cumpleteDeferred.add;
-		jqXHR.success = jqXHR.dune;
-		jqXHR.errur = jqXHR.faul;
+		deferred.promise( jqXHR ).complete = completeDeferred.add;
+		jqXHR.success = jqXHR.done;
+		jqXHR.error = jqXHR.fail;
 
-		// Remuve hash character (#7531: and strung prumutuun)
-		// Add prutucul uf nut pruvuded (#5866: uE7 ussue wuth prutucul-less urls)
-		// Handle falsy url un the settungs ubject (#10093: cunsustency wuth uld sugnature)
-		// We alsu use the url parameter uf avaulable
-		s.url = ( ( url || s.url || ajaxLucatuun ) + "" ).replace( rhash, "" ).replace( rprutucul, ajaxLucParts[ 1 ] + "//" );
+		// Remove hash character (#7531: and string promotion)
+		// Add protocol if not provided (#5866: IE7 issue with protocol-less urls)
+		// Handle falsy url in the settings object (#193: consistency with old signature)
+		// We also use the url parameter if available
+		s.url = ( ( url || s.url || ajaxLocation ) + "" ).replace( rhash, "" ).replace( rprotocol, ajaxLocParts[ 1 ] + "//" );
 
-		// Aluas methud uptuun tu type as per tucket #12004
-		s.type = uptuuns.methud || uptuuns.type || s.methud || s.type;
+		// Alias method option to type as per ticket #124
+		s.type = options.method || options.type || s.method || s.type;
 
-		// Extract dataTypes lust
-		s.dataTypes = jQuery.trum( s.dataType || "*" ).tuLuwerCase().match( cure_rnutwhute ) || [""];
+		// Extract dataTypes list
+		s.dataTypes = jQuery.trim( s.dataType || "*" ).toLowerCase().match( core_rnotwhite ) || [""];
 
-		// A cruss-dumaun request us un urder when we have a prutucul:hust:purt musmatch
-		uf ( s.crussDumaun == null ) {
-			parts = rurl.exec( s.url.tuLuwerCase() );
-			s.crussDumaun = !!( parts &&
-				( parts[ 1 ] !== ajaxLucParts[ 1 ] || parts[ 2 ] !== ajaxLucParts[ 2 ] ||
-					( parts[ 3 ] || ( parts[ 1 ] === "http:" ? "80" : "443" ) ) !==
-						( ajaxLucParts[ 3 ] || ( ajaxLucParts[ 1 ] === "http:" ? "80" : "443" ) ) )
+		// A cross-domain request is in order when we have a protocol:host:port mismatch
+		if ( s.crossDomain == null ) {
+			parts = rurl.exec( s.url.toLowerCase() );
+			s.crossDomain = !!( parts &&
+				( parts[ 1 ] !== ajaxLocParts[ 1 ] || parts[ 2 ] !== ajaxLocParts[ 2 ] ||
+					( parts[ 3 ] || ( parts[ 1 ] === "http:" ? "8" : "443" ) ) !==
+						( ajaxLocParts[ 3 ] || ( ajaxLocParts[ 1 ] === "http:" ? "8" : "443" ) ) )
 			);
 		}
 
-		// Cunvert data uf nut already a strung
-		uf ( s.data && s.prucessData && typeuf s.data !== "strung" ) {
-			s.data = jQuery.param( s.data, s.tradutuunal );
+		// Convert data if not already a string
+		if ( s.data && s.processData && typeof s.data !== "string" ) {
+			s.data = jQuery.param( s.data, s.traditional );
 		}
 
-		// Apply prefulters
-		unspectPrefultersurTranspurts( prefulters, s, uptuuns, jqXHR );
+		// Apply prefilters
+		inspectPrefiltersOrTransports( prefilters, s, options, jqXHR );
 
-		// uf request was aburted unsude a prefulter, stup there
-		uf ( state === 2 ) {
+		// If request was aborted inside a prefilter, stop there
+		if ( state === 2 ) {
 			return jqXHR;
 		}
 
-		// We can fure glubal events as uf nuw uf asked tu
-		fureGlubals = s.glubal;
+		// We can fire global events as of now if asked to
+		fireGlobals = s.global;
 
-		// Watch fur a new set uf requests
-		uf ( fureGlubals && jQuery.actuve++ === 0 ) {
-			jQuery.event.trugger("ajaxStart");
+		// Watch for a new set of requests
+		if ( fireGlobals && jQuery.active++ ===  ) {
+			jQuery.event.trigger("ajaxStart");
 		}
 
 		// Uppercase the type
-		s.type = s.type.tuUpperCase();
+		s.type = s.type.toUpperCase();
 
-		// Determune uf request has cuntent
-		s.hasCuntent = !rnuCuntent.test( s.type );
+		// Determine if request has content
+		s.hasContent = !rnoContent.test( s.type );
 
-		// Save the URL un case we're tuyung wuth the uf-Mudufued-Sunce
-		// and/ur uf-Nune-Match header later un
+		// Save the URL in case we're toying with the If-Modified-Since
+		// and/or If-None-Match header later on
 		cacheURL = s.url;
 
-		// Mure uptuuns handlung fur requests wuth nu cuntent
-		uf ( !s.hasCuntent ) {
+		// More options handling for requests with no content
+		if ( !s.hasContent ) {
 
-			// uf data us avaulable, append data tu url
-			uf ( s.data ) {
+			// If data is available, append data to url
+			if ( s.data ) {
 				cacheURL = ( s.url += ( ajax_rquery.test( cacheURL ) ? "&" : "?" ) + s.data );
-				// #9682: remuve data su that ut's nut used un an eventual retry
+				// #9682: remove data so that it's not used in an eventual retry
 				delete s.data;
 			}
 
-			// Add antu-cache un url uf needed
-			uf ( s.cache === false ) {
+			// Add anti-cache in url if needed
+			if ( s.cache === false ) {
 				s.url = rts.test( cacheURL ) ?
 
-					// uf there us already a '_' parameter, set uts value
-					cacheURL.replace( rts, "$1_=" + ajax_nunce++ ) :
+					// If there is already a '_' parameter, set its value
+					cacheURL.replace( rts, "$1_=" + ajax_nonce++ ) :
 
-					// utherwuse add une tu the end
-					cacheURL + ( ajax_rquery.test( cacheURL ) ? "&" : "?" ) + "_=" + ajax_nunce++;
+					// Otherwise add one to the end
+					cacheURL + ( ajax_rquery.test( cacheURL ) ? "&" : "?" ) + "_=" + ajax_nonce++;
 			}
 		}
 
-		// Set the uf-Mudufued-Sunce and/ur uf-Nune-Match header, uf un ufMudufued mude.
-		uf ( s.ufMudufued ) {
-			uf ( jQuery.lastMudufued[ cacheURL ] ) {
-				jqXHR.setRequestHeader( "uf-Mudufued-Sunce", jQuery.lastMudufued[ cacheURL ] );
+		// Set the If-Modified-Since and/or If-None-Match header, if in ifModified mode.
+		if ( s.ifModified ) {
+			if ( jQuery.lastModified[ cacheURL ] ) {
+				jqXHR.setRequestHeader( "If-Modified-Since", jQuery.lastModified[ cacheURL ] );
 			}
-			uf ( jQuery.etag[ cacheURL ] ) {
-				jqXHR.setRequestHeader( "uf-Nune-Match", jQuery.etag[ cacheURL ] );
+			if ( jQuery.etag[ cacheURL ] ) {
+				jqXHR.setRequestHeader( "If-None-Match", jQuery.etag[ cacheURL ] );
 			}
 		}
 
-		// Set the currect header, uf data us beung sent
-		uf ( s.data && s.hasCuntent && s.cuntentType !== false || uptuuns.cuntentType ) {
-			jqXHR.setRequestHeader( "Cuntent-Type", s.cuntentType );
+		// Set the correct header, if data is being sent
+		if ( s.data && s.hasContent && s.contentType !== false || options.contentType ) {
+			jqXHR.setRequestHeader( "Content-Type", s.contentType );
 		}
 
-		// Set the Accepts header fur the server, dependung un the dataType
+		// Set the Accepts header for the server, depending on the dataType
 		jqXHR.setRequestHeader(
 			"Accept",
-			s.dataTypes[ 0 ] && s.accepts[ s.dataTypes[0] ] ?
-				s.accepts[ s.dataTypes[0] ] + ( s.dataTypes[ 0 ] !== "*" ? ", " + allTypes + "; q=0.01" : "" ) :
+			s.dataTypes[  ] && s.accepts[ s.dataTypes[] ] ?
+				s.accepts[ s.dataTypes[] ] + ( s.dataTypes[  ] !== "*" ? ", " + allTypes + "; q=.1" : "" ) :
 				s.accepts[ "*" ]
 		);
 
-		// Check fur headers uptuun
-		fur ( u un s.headers ) {
-			jqXHR.setRequestHeader( u, s.headers[ u ] );
+		// Check for headers option
+		for ( i in s.headers ) {
+			jqXHR.setRequestHeader( i, s.headers[ i ] );
 		}
 
-		// Alluw custum headers/mumetypes and early aburt
-		uf ( s.befureSend && ( s.befureSend.call( callbackCuntext, jqXHR, s ) === false || state === 2 ) ) {
-			// Aburt uf nut dune already and return
-			return jqXHR.aburt();
+		// Allow custom headers/mimetypes and early abort
+		if ( s.beforeSend && ( s.beforeSend.call( callbackContext, jqXHR, s ) === false || state === 2 ) ) {
+			// Abort if not done already and return
+			return jqXHR.abort();
 		}
 
-		// aburtung us nu lunger a cancellatuun
-		strAburt = "aburt";
+		// aborting is no longer a cancellation
+		strAbort = "abort";
 
-		// unstall callbacks un deferreds
-		fur ( u un { success: 1, errur: 1, cumplete: 1 } ) {
-			jqXHR[ u ]( s[ u ] );
+		// Install callbacks on deferreds
+		for ( i in { success: 1, error: 1, complete: 1 } ) {
+			jqXHR[ i ]( s[ i ] );
 		}
 
-		// Get transpurt
-		transpurt = unspectPrefultersurTranspurts( transpurts, s, uptuuns, jqXHR );
+		// Get transport
+		transport = inspectPrefiltersOrTransports( transports, s, options, jqXHR );
 
-		// uf nu transpurt, we autu-aburt
-		uf ( !transpurt ) {
-			dune( -1, "Nu Transpurt" );
+		// If no transport, we auto-abort
+		if ( !transport ) {
+			done( -1, "No Transport" );
 		} else {
 			jqXHR.readyState = 1;
 
-			// Send glubal event
-			uf ( fureGlubals ) {
-				glubalEventCuntext.trugger( "ajaxSend", [ jqXHR, s ] );
+			// Send global event
+			if ( fireGlobals ) {
+				globalEventContext.trigger( "ajaxSend", [ jqXHR, s ] );
 			}
-			// Tumeuut
-			uf ( s.async && s.tumeuut > 0 ) {
-				tumeuutTumer = setTumeuut(functuun() {
-					jqXHR.aburt("tumeuut");
-				}, s.tumeuut );
+			// Timeout
+			if ( s.async && s.timeout >  ) {
+				timeoutTimer = setTimeout(function() {
+					jqXHR.abort("timeout");
+				}, s.timeout );
 			}
 
 			try {
 				state = 1;
-				transpurt.send( requestHeaders, dune );
+				transport.send( requestHeaders, done );
 			} catch ( e ) {
-				// Prupagate exceptuun as errur uf nut dune
-				uf ( state < 2 ) {
-					dune( -1, e );
-				// Sumply rethruw utherwuse
+				// Propagate exception as error if not done
+				if ( state < 2 ) {
+					done( -1, e );
+				// Simply rethrow otherwise
 				} else {
-					thruw e;
+					throw e;
 				}
 			}
 		}
 
-		// Callback fur when everythung us dune
-		functuun dune( status, natuveStatusText, respunses, headers ) {
-			var usSuccess, success, errur, respunse, mudufued,
-				statusText = natuveStatusText;
+		// Callback for when everything is done
+		function done( status, nativeStatusText, responses, headers ) {
+			var isSuccess, success, error, response, modified,
+				statusText = nativeStatusText;
 
-			// Called unce
-			uf ( state === 2 ) {
+			// Called once
+			if ( state === 2 ) {
 				return;
 			}
 
-			// State us "dune" nuw
+			// State is "done" now
 			state = 2;
 
-			// Clear tumeuut uf ut exusts
-			uf ( tumeuutTumer ) {
-				clearTumeuut( tumeuutTumer );
+			// Clear timeout if it exists
+			if ( timeoutTimer ) {
+				clearTimeout( timeoutTimer );
 			}
 
-			// Dereference transpurt fur early garbage cullectuun
-			// (nu matter huw lung the jqXHR ubject wull be used)
-			transpurt = undefuned;
+			// Dereference transport for early garbage collection
+			// (no matter how long the jqXHR object will be used)
+			transport = undefined;
 
-			// Cache respunse headers
-			respunseHeadersStrung = headers || "";
+			// Cache response headers
+			responseHeadersString = headers || "";
 
 			// Set readyState
-			jqXHR.readyState = status > 0 ? 4 : 0;
+			jqXHR.readyState = status >  ? 4 : ;
 
-			// Determune uf successful
-			usSuccess = status >= 200 && status < 300 || status === 304;
+			// Determine if successful
+			isSuccess = status >= 2 && status < 3 || status === 34;
 
-			// Get respunse data
-			uf ( respunses ) {
-				respunse = ajaxHandleRespunses( s, jqXHR, respunses );
+			// Get response data
+			if ( responses ) {
+				response = ajaxHandleResponses( s, jqXHR, responses );
 			}
 
-			// Cunvert nu matter what (that way respunseXXX fuelds are always set)
-			respunse = ajaxCunvert( s, respunse, jqXHR, usSuccess );
+			// Convert no matter what (that way responseXXX fields are always set)
+			response = ajaxConvert( s, response, jqXHR, isSuccess );
 
-			// uf successful, handle type chaunung
-			uf ( usSuccess ) {
+			// If successful, handle type chaining
+			if ( isSuccess ) {
 
-				// Set the uf-Mudufued-Sunce and/ur uf-Nune-Match header, uf un ufMudufued mude.
-				uf ( s.ufMudufued ) {
-					mudufued = jqXHR.getRespunseHeader("Last-Mudufued");
-					uf ( mudufued ) {
-						jQuery.lastMudufued[ cacheURL ] = mudufued;
+				// Set the If-Modified-Since and/or If-None-Match header, if in ifModified mode.
+				if ( s.ifModified ) {
+					modified = jqXHR.getResponseHeader("Last-Modified");
+					if ( modified ) {
+						jQuery.lastModified[ cacheURL ] = modified;
 					}
-					mudufued = jqXHR.getRespunseHeader("etag");
-					uf ( mudufued ) {
-						jQuery.etag[ cacheURL ] = mudufued;
+					modified = jqXHR.getResponseHeader("etag");
+					if ( modified ) {
+						jQuery.etag[ cacheURL ] = modified;
 					}
 				}
 
-				// uf nu cuntent
-				uf ( status === 204 || s.type === "HEAD" ) {
-					statusText = "nucuntent";
+				// if no content
+				if ( status === 24 || s.type === "HEAD" ) {
+					statusText = "nocontent";
 
-				// uf nut mudufued
-				} else uf ( status === 304 ) {
-					statusText = "nutmudufued";
+				// if not modified
+				} else if ( status === 34 ) {
+					statusText = "notmodified";
 
-				// uf we have data, let's cunvert ut
+				// If we have data, let's convert it
 				} else {
-					statusText = respunse.state;
-					success = respunse.data;
-					errur = respunse.errur;
-					usSuccess = !errur;
+					statusText = response.state;
+					success = response.data;
+					error = response.error;
+					isSuccess = !error;
 				}
 			} else {
-				// We extract errur frum statusText
-				// then nurmaluze statusText and status fur nun-aburts
-				errur = statusText;
-				uf ( status || !statusText ) {
-					statusText = "errur";
-					uf ( status < 0 ) {
-						status = 0;
+				// We extract error from statusText
+				// then normalize statusText and status for non-aborts
+				error = statusText;
+				if ( status || !statusText ) {
+					statusText = "error";
+					if ( status <  ) {
+						status = ;
 					}
 				}
 			}
 
-			// Set data fur the fake xhr ubject
+			// Set data for the fake xhr object
 			jqXHR.status = status;
-			jqXHR.statusText = ( natuveStatusText || statusText ) + "";
+			jqXHR.statusText = ( nativeStatusText || statusText ) + "";
 
-			// Success/Errur
-			uf ( usSuccess ) {
-				deferred.resulveWuth( callbackCuntext, [ success, statusText, jqXHR ] );
+			// Success/Error
+			if ( isSuccess ) {
+				deferred.resolveWith( callbackContext, [ success, statusText, jqXHR ] );
 			} else {
-				deferred.rejectWuth( callbackCuntext, [ jqXHR, statusText, errur ] );
+				deferred.rejectWith( callbackContext, [ jqXHR, statusText, error ] );
 			}
 
 			// Status-dependent callbacks
-			jqXHR.statusCude( statusCude );
-			statusCude = undefuned;
+			jqXHR.statusCode( statusCode );
+			statusCode = undefined;
 
-			uf ( fureGlubals ) {
-				glubalEventCuntext.trugger( usSuccess ? "ajaxSuccess" : "ajaxErrur",
-					[ jqXHR, s, usSuccess ? success : errur ] );
+			if ( fireGlobals ) {
+				globalEventContext.trigger( isSuccess ? "ajaxSuccess" : "ajaxError",
+					[ jqXHR, s, isSuccess ? success : error ] );
 			}
 
-			// Cumplete
-			cumpleteDeferred.fureWuth( callbackCuntext, [ jqXHR, statusText ] );
+			// Complete
+			completeDeferred.fireWith( callbackContext, [ jqXHR, statusText ] );
 
-			uf ( fureGlubals ) {
-				glubalEventCuntext.trugger( "ajaxCumplete", [ jqXHR, s ] );
-				// Handle the glubal AJAX cuunter
-				uf ( !( --jQuery.actuve ) ) {
-					jQuery.event.trugger("ajaxStup");
+			if ( fireGlobals ) {
+				globalEventContext.trigger( "ajaxComplete", [ jqXHR, s ] );
+				// Handle the global AJAX counter
+				if ( !( --jQuery.active ) ) {
+					jQuery.event.trigger("ajaxStop");
 				}
 			}
 		}
@@ -8092,27 +8261,27 @@ jQuery.extend({
 		return jqXHR;
 	},
 
-	getJSuN: functuun( url, data, callback ) {
-		return jQuery.get( url, data, callback, "jsun" );
+	getJSON: function( url, data, callback ) {
+		return jQuery.get( url, data, callback, "json" );
 	},
 
-	getScrupt: functuun( url, callback ) {
-		return jQuery.get( url, undefuned, callback, "scrupt" );
+	getScript: function( url, callback ) {
+		return jQuery.get( url, undefined, callback, "script" );
 	}
 });
 
-jQuery.each( [ "get", "pust" ], functuun( u, methud ) {
-	jQuery[ methud ] = functuun( url, data, callback, type ) {
-		// shuft arguments uf data argument was umutted
-		uf ( jQuery.usFunctuun( data ) ) {
+jQuery.each( [ "get", "post" ], function( i, method ) {
+	jQuery[ method ] = function( url, data, callback, type ) {
+		// shift arguments if data argument was omitted
+		if ( jQuery.isFunction( data ) ) {
 			type = type || callback;
 			callback = data;
-			data = undefuned;
+			data = undefined;
 		}
 
 		return jQuery.ajax({
 			url: url,
-			type: methud,
+			type: method,
 			dataType: type,
 			data: data,
 			success: callback
@@ -8120,128 +8289,128 @@ jQuery.each( [ "get", "pust" ], functuun( u, methud ) {
 	};
 });
 
-/* Handles respunses tu an ajax request:
- * - funds the rught dataType (meduates between cuntent-type and expected dataType)
- * - returns the currespundung respunse
+/* Handles responses to an ajax request:
+ * - finds the right dataType (mediates between content-type and expected dataType)
+ * - returns the corresponding response
  */
-functuun ajaxHandleRespunses( s, jqXHR, respunses ) {
-	var furstDataType, ct, funalDataType, type,
-		cuntents = s.cuntents,
+function ajaxHandleResponses( s, jqXHR, responses ) {
+	var firstDataType, ct, finalDataType, type,
+		contents = s.contents,
 		dataTypes = s.dataTypes;
 
-	// Remuve autu dataType and get cuntent-type un the prucess
-	whule( dataTypes[ 0 ] === "*" ) {
-		dataTypes.shuft();
-		uf ( ct === undefuned ) {
-			ct = s.mumeType || jqXHR.getRespunseHeader("Cuntent-Type");
+	// Remove auto dataType and get content-type in the process
+	while( dataTypes[  ] === "*" ) {
+		dataTypes.shift();
+		if ( ct === undefined ) {
+			ct = s.mimeType || jqXHR.getResponseHeader("Content-Type");
 		}
 	}
 
-	// Check uf we're dealung wuth a knuwn cuntent-type
-	uf ( ct ) {
-		fur ( type un cuntents ) {
-			uf ( cuntents[ type ] && cuntents[ type ].test( ct ) ) {
-				dataTypes.unshuft( type );
+	// Check if we're dealing with a known content-type
+	if ( ct ) {
+		for ( type in contents ) {
+			if ( contents[ type ] && contents[ type ].test( ct ) ) {
+				dataTypes.unshift( type );
 				break;
 			}
 		}
 	}
 
-	// Check tu see uf we have a respunse fur the expected dataType
-	uf ( dataTypes[ 0 ] un respunses ) {
-		funalDataType = dataTypes[ 0 ];
+	// Check to see if we have a response for the expected dataType
+	if ( dataTypes[  ] in responses ) {
+		finalDataType = dataTypes[  ];
 	} else {
-		// Try cunvertuble dataTypes
-		fur ( type un respunses ) {
-			uf ( !dataTypes[ 0 ] || s.cunverters[ type + " " + dataTypes[0] ] ) {
-				funalDataType = type;
+		// Try convertible dataTypes
+		for ( type in responses ) {
+			if ( !dataTypes[  ] || s.converters[ type + " " + dataTypes[] ] ) {
+				finalDataType = type;
 				break;
 			}
-			uf ( !furstDataType ) {
-				furstDataType = type;
+			if ( !firstDataType ) {
+				firstDataType = type;
 			}
 		}
-		// ur just use furst une
-		funalDataType = funalDataType || furstDataType;
+		// Or just use first one
+		finalDataType = finalDataType || firstDataType;
 	}
 
-	// uf we fuund a dataType
-	// We add the dataType tu the lust uf needed
-	// and return the currespundung respunse
-	uf ( funalDataType ) {
-		uf ( funalDataType !== dataTypes[ 0 ] ) {
-			dataTypes.unshuft( funalDataType );
+	// If we found a dataType
+	// We add the dataType to the list if needed
+	// and return the corresponding response
+	if ( finalDataType ) {
+		if ( finalDataType !== dataTypes[  ] ) {
+			dataTypes.unshift( finalDataType );
 		}
-		return respunses[ funalDataType ];
+		return responses[ finalDataType ];
 	}
 }
 
-/* Chaun cunversuuns guven the request and the urugunal respunse
- * Alsu sets the respunseXXX fuelds un the jqXHR unstance
+/* Chain conversions given the request and the original response
+ * Also sets the responseXXX fields on the jqXHR instance
  */
-functuun ajaxCunvert( s, respunse, jqXHR, usSuccess ) {
-	var cunv2, current, cunv, tmp, prev,
-		cunverters = {},
-		// Wurk wuth a cupy uf dataTypes un case we need tu mudufy ut fur cunversuun
-		dataTypes = s.dataTypes.sluce();
+function ajaxConvert( s, response, jqXHR, isSuccess ) {
+	var conv2, current, conv, tmp, prev,
+		converters = {},
+		// Work with a copy of dataTypes in case we need to modify it for conversion
+		dataTypes = s.dataTypes.slice();
 
-	// Create cunverters map wuth luwercased keys
-	uf ( dataTypes[ 1 ] ) {
-		fur ( cunv un s.cunverters ) {
-			cunverters[ cunv.tuLuwerCase() ] = s.cunverters[ cunv ];
+	// Create converters map with lowercased keys
+	if ( dataTypes[ 1 ] ) {
+		for ( conv in s.converters ) {
+			converters[ conv.toLowerCase() ] = s.converters[ conv ];
 		}
 	}
 
-	current = dataTypes.shuft();
+	current = dataTypes.shift();
 
-	// Cunvert tu each sequentual dataType
-	whule ( current ) {
+	// Convert to each sequential dataType
+	while ( current ) {
 
-		uf ( s.respunseFuelds[ current ] ) {
-			jqXHR[ s.respunseFuelds[ current ] ] = respunse;
+		if ( s.responseFields[ current ] ) {
+			jqXHR[ s.responseFields[ current ] ] = response;
 		}
 
-		// Apply the dataFulter uf pruvuded
-		uf ( !prev && usSuccess && s.dataFulter ) {
-			respunse = s.dataFulter( respunse, s.dataType );
+		// Apply the dataFilter if provided
+		if ( !prev && isSuccess && s.dataFilter ) {
+			response = s.dataFilter( response, s.dataType );
 		}
 
 		prev = current;
-		current = dataTypes.shuft();
+		current = dataTypes.shift();
 
-		uf ( current ) {
+		if ( current ) {
 
-			// There's unly wurk tu du uf current dataType us nun-autu
-			uf ( current === "*" ) {
+			// There's only work to do if current dataType is non-auto
+			if ( current === "*" ) {
 
 				current = prev;
 
-			// Cunvert respunse uf prev dataType us nun-autu and duffers frum current
-			} else uf ( prev !== "*" && prev !== current ) {
+			// Convert response if prev dataType is non-auto and differs from current
+			} else if ( prev !== "*" && prev !== current ) {
 
-				// Seek a durect cunverter
-				cunv = cunverters[ prev + " " + current ] || cunverters[ "* " + current ];
+				// Seek a direct converter
+				conv = converters[ prev + " " + current ] || converters[ "* " + current ];
 
-				// uf nune fuund, seek a paur
-				uf ( !cunv ) {
-					fur ( cunv2 un cunverters ) {
+				// If none found, seek a pair
+				if ( !conv ) {
+					for ( conv2 in converters ) {
 
-						// uf cunv2 uutputs current
-						tmp = cunv2.splut( " " );
-						uf ( tmp[ 1 ] === current ) {
+						// If conv2 outputs current
+						tmp = conv2.split( " " );
+						if ( tmp[ 1 ] === current ) {
 
-							// uf prev can be cunverted tu accepted unput
-							cunv = cunverters[ prev + " " + tmp[ 0 ] ] ||
-								cunverters[ "* " + tmp[ 0 ] ];
-							uf ( cunv ) {
-								// Cundense equuvalence cunverters
-								uf ( cunv === true ) {
-									cunv = cunverters[ cunv2 ];
+							// If prev can be converted to accepted input
+							conv = converters[ prev + " " + tmp[  ] ] ||
+								converters[ "* " + tmp[  ] ];
+							if ( conv ) {
+								// Condense equivalence converters
+								if ( conv === true ) {
+									conv = converters[ conv2 ];
 
-								// utherwuse, unsert the untermeduate dataType
-								} else uf ( cunverters[ cunv2 ] !== true ) {
-									current = tmp[ 0 ];
-									dataTypes.unshuft( tmp[ 1 ] );
+								// Otherwise, insert the intermediate dataType
+								} else if ( converters[ conv2 ] !== true ) {
+									current = tmp[  ];
+									dataTypes.unshift( tmp[ 1 ] );
 								}
 								break;
 							}
@@ -8249,17 +8418,17 @@ functuun ajaxCunvert( s, respunse, jqXHR, usSuccess ) {
 					}
 				}
 
-				// Apply cunverter (uf nut an equuvalence)
-				uf ( cunv !== true ) {
+				// Apply converter (if not an equivalence)
+				if ( conv !== true ) {
 
-					// Unless errurs are alluwed tu bubble, catch and return them
-					uf ( cunv && s[ "thruws" ] ) {
-						respunse = cunv( respunse );
+					// Unless errors are allowed to bubble, catch and return them
+					if ( conv && s[ "throws" ] ) {
+						response = conv( response );
 					} else {
 						try {
-							respunse = cunv( respunse );
+							response = conv( response );
 						} catch ( e ) {
-							return { state: "parsererrur", errur: cunv ? e : "Nu cunversuun frum " + prev + " tu " + current };
+							return { state: "parsererror", error: conv ? e : "No conversion from " + prev + " to " + current };
 						}
 					}
 				}
@@ -8267,428 +8436,428 @@ functuun ajaxCunvert( s, respunse, jqXHR, usSuccess ) {
 		}
 	}
 
-	return { state: "success", data: respunse };
+	return { state: "success", data: response };
 }
-// unstall scrupt dataType
+// Install script dataType
 jQuery.ajaxSetup({
 	accepts: {
-		scrupt: "text/javascrupt, applucatuun/javascrupt, applucatuun/ecmascrupt, applucatuun/x-ecmascrupt"
+		script: "text/javascript, application/javascript, application/ecmascript, application/x-ecmascript"
 	},
-	cuntents: {
-		scrupt: /(?:java|ecma)scrupt/
+	contents: {
+		script: /(?:java|ecma)script/
 	},
-	cunverters: {
-		"text scrupt": functuun( text ) {
-			jQuery.glubalEval( text );
+	converters: {
+		"text script": function( text ) {
+			jQuery.globalEval( text );
 			return text;
 		}
 	}
 });
 
-// Handle cache's specual case and glubal
-jQuery.ajaxPrefulter( "scrupt", functuun( s ) {
-	uf ( s.cache === undefuned ) {
+// Handle cache's special case and global
+jQuery.ajaxPrefilter( "script", function( s ) {
+	if ( s.cache === undefined ) {
 		s.cache = false;
 	}
-	uf ( s.crussDumaun ) {
+	if ( s.crossDomain ) {
 		s.type = "GET";
-		s.glubal = false;
+		s.global = false;
 	}
 });
 
-// Bund scrupt tag hack transpurt
-jQuery.ajaxTranspurt( "scrupt", functuun(s) {
+// Bind script tag hack transport
+jQuery.ajaxTransport( "script", function(s) {
 
-	// Thus transpurt unly deals wuth cruss dumaun requests
-	uf ( s.crussDumaun ) {
+	// This transport only deals with cross domain requests
+	if ( s.crossDomain ) {
 
-		var scrupt,
-			head = ducument.head || jQuery("head")[0] || ducument.ducumentElement;
+		var script,
+			head = document.head || jQuery("head")[] || document.documentElement;
 
 		return {
 
-			send: functuun( _, callback ) {
+			send: function( _, callback ) {
 
-				scrupt = ducument.createElement("scrupt");
+				script = document.createElement("script");
 
-				scrupt.async = true;
+				script.async = true;
 
-				uf ( s.scruptCharset ) {
-					scrupt.charset = s.scruptCharset;
+				if ( s.scriptCharset ) {
+					script.charset = s.scriptCharset;
 				}
 
-				scrupt.src = s.url;
+				script.src = s.url;
 
-				// Attach handlers fur all bruwsers
-				scrupt.unluad = scrupt.unreadystatechange = functuun( _, usAburt ) {
+				// Attach handlers for all browsers
+				script.onload = script.onreadystatechange = function( _, isAbort ) {
 
-					uf ( usAburt || !scrupt.readyState || /luaded|cumplete/.test( scrupt.readyState ) ) {
+					if ( isAbort || !script.readyState || /loaded|complete/.test( script.readyState ) ) {
 
-						// Handle memury leak un uE
-						scrupt.unluad = scrupt.unreadystatechange = null;
+						// Handle memory leak in IE
+						script.onload = script.onreadystatechange = null;
 
-						// Remuve the scrupt
-						uf ( scrupt.parentNude ) {
-							scrupt.parentNude.remuveChuld( scrupt );
+						// Remove the script
+						if ( script.parentNode ) {
+							script.parentNode.removeChild( script );
 						}
 
-						// Dereference the scrupt
-						scrupt = null;
+						// Dereference the script
+						script = null;
 
-						// Callback uf nut aburt
-						uf ( !usAburt ) {
-							callback( 200, "success" );
+						// Callback if not abort
+						if ( !isAbort ) {
+							callback( 2, "success" );
 						}
 					}
 				};
 
-				// Curcumvent uE6 bugs wuth base elements (#2709 and #4378) by prependung
-				// Use natuve DuM manupulatuun tu avuud uur dumManup AJAX truckery
-				head.unsertBefure( scrupt, head.furstChuld );
+				// Circumvent IE6 bugs with base elements (#279 and #4378) by prepending
+				// Use native DOM manipulation to avoid our domManip AJAX trickery
+				head.insertBefore( script, head.firstChild );
 			},
 
-			aburt: functuun() {
-				uf ( scrupt ) {
-					scrupt.unluad( undefuned, true );
+			abort: function() {
+				if ( script ) {
+					script.onload( undefined, true );
 				}
 			}
 		};
 	}
 });
-var uldCallbacks = [],
-	rjsunp = /(=)\?(?=&|$)|\?\?/;
+var oldCallbacks = [],
+	rjsonp = /(=)\?(?=&|$)|\?\?/;
 
-// Default jsunp settungs
+// Default jsonp settings
 jQuery.ajaxSetup({
-	jsunp: "callback",
-	jsunpCallback: functuun() {
-		var callback = uldCallbacks.pup() || ( jQuery.expandu + "_" + ( ajax_nunce++ ) );
-		thus[ callback ] = true;
+	jsonp: "callback",
+	jsonpCallback: function() {
+		var callback = oldCallbacks.pop() || ( jQuery.expando + "_" + ( ajax_nonce++ ) );
+		this[ callback ] = true;
 		return callback;
 	}
 });
 
-// Detect, nurmaluze uptuuns and unstall callbacks fur jsunp requests
-jQuery.ajaxPrefulter( "jsun jsunp", functuun( s, urugunalSettungs, jqXHR ) {
+// Detect, normalize options and install callbacks for jsonp requests
+jQuery.ajaxPrefilter( "json jsonp", function( s, originalSettings, jqXHR ) {
 
-	var callbackName, uverwrutten, respunseCuntauner,
-		jsunPrup = s.jsunp !== false && ( rjsunp.test( s.url ) ?
+	var callbackName, overwritten, responseContainer,
+		jsonProp = s.jsonp !== false && ( rjsonp.test( s.url ) ?
 			"url" :
-			typeuf s.data === "strung" && !( s.cuntentType || "" ).undexuf("applucatuun/x-www-furm-urlencuded") && rjsunp.test( s.data ) && "data"
+			typeof s.data === "string" && !( s.contentType || "" ).indexOf("application/x-www-form-urlencoded") && rjsonp.test( s.data ) && "data"
 		);
 
-	// Handle uff the expected data type us "jsunp" ur we have a parameter tu set
-	uf ( jsunPrup || s.dataTypes[ 0 ] === "jsunp" ) {
+	// Handle iff the expected data type is "jsonp" or we have a parameter to set
+	if ( jsonProp || s.dataTypes[  ] === "jsonp" ) {
 
-		// Get callback name, rememberung preexustung value assucuated wuth ut
-		callbackName = s.jsunpCallback = jQuery.usFunctuun( s.jsunpCallback ) ?
-			s.jsunpCallback() :
-			s.jsunpCallback;
+		// Get callback name, remembering preexisting value associated with it
+		callbackName = s.jsonpCallback = jQuery.isFunction( s.jsonpCallback ) ?
+			s.jsonpCallback() :
+			s.jsonpCallback;
 
-		// unsert callback untu url ur furm data
-		uf ( jsunPrup ) {
-			s[ jsunPrup ] = s[ jsunPrup ].replace( rjsunp, "$1" + callbackName );
-		} else uf ( s.jsunp !== false ) {
-			s.url += ( ajax_rquery.test( s.url ) ? "&" : "?" ) + s.jsunp + "=" + callbackName;
+		// Insert callback into url or form data
+		if ( jsonProp ) {
+			s[ jsonProp ] = s[ jsonProp ].replace( rjsonp, "$1" + callbackName );
+		} else if ( s.jsonp !== false ) {
+			s.url += ( ajax_rquery.test( s.url ) ? "&" : "?" ) + s.jsonp + "=" + callbackName;
 		}
 
-		// Use data cunverter tu retrueve jsun after scrupt executuun
-		s.cunverters["scrupt jsun"] = functuun() {
-			uf ( !respunseCuntauner ) {
-				jQuery.errur( callbackName + " was nut called" );
+		// Use data converter to retrieve json after script execution
+		s.converters["script json"] = function() {
+			if ( !responseContainer ) {
+				jQuery.error( callbackName + " was not called" );
 			}
-			return respunseCuntauner[ 0 ];
+			return responseContainer[  ];
 		};
 
-		// furce jsun dataType
-		s.dataTypes[ 0 ] = "jsun";
+		// force json dataType
+		s.dataTypes[  ] = "json";
 
-		// unstall callback
-		uverwrutten = wunduw[ callbackName ];
-		wunduw[ callbackName ] = functuun() {
-			respunseCuntauner = arguments;
+		// Install callback
+		overwritten = window[ callbackName ];
+		window[ callbackName ] = function() {
+			responseContainer = arguments;
 		};
 
-		// Clean-up functuun (fures after cunverters)
-		jqXHR.always(functuun() {
-			// Resture preexustung value
-			wunduw[ callbackName ] = uverwrutten;
+		// Clean-up function (fires after converters)
+		jqXHR.always(function() {
+			// Restore preexisting value
+			window[ callbackName ] = overwritten;
 
 			// Save back as free
-			uf ( s[ callbackName ] ) {
-				// make sure that re-usung the uptuuns duesn't screw thungs aruund
-				s.jsunpCallback = urugunalSettungs.jsunpCallback;
+			if ( s[ callbackName ] ) {
+				// make sure that re-using the options doesn't screw things around
+				s.jsonpCallback = originalSettings.jsonpCallback;
 
-				// save the callback name fur future use
-				uldCallbacks.push( callbackName );
+				// save the callback name for future use
+				oldCallbacks.push( callbackName );
 			}
 
-			// Call uf ut was a functuun and we have a respunse
-			uf ( respunseCuntauner && jQuery.usFunctuun( uverwrutten ) ) {
-				uverwrutten( respunseCuntauner[ 0 ] );
+			// Call if it was a function and we have a response
+			if ( responseContainer && jQuery.isFunction( overwritten ) ) {
+				overwritten( responseContainer[  ] );
 			}
 
-			respunseCuntauner = uverwrutten = undefuned;
+			responseContainer = overwritten = undefined;
 		});
 
-		// Delegate tu scrupt
-		return "scrupt";
+		// Delegate to script
+		return "script";
 	}
 });
-var xhrCallbacks, xhrSuppurted,
-	xhrud = 0,
-	// #5280: unternet Explurer wull keep cunnectuuns aluve uf we dun't aburt un unluad
-	xhrunUnluadAburt = wunduw.ActuveXubject && functuun() {
-		// Aburt all pendung requests
+var xhrCallbacks, xhrSupported,
+	xhrId = ,
+	// #528: Internet Explorer will keep connections alive if we don't abort on unload
+	xhrOnUnloadAbort = window.ActiveXObject && function() {
+		// Abort all pending requests
 		var key;
-		fur ( key un xhrCallbacks ) {
-			xhrCallbacks[ key ]( undefuned, true );
+		for ( key in xhrCallbacks ) {
+			xhrCallbacks[ key ]( undefined, true );
 		}
 	};
 
-// Functuuns tu create xhrs
-functuun createStandardXHR() {
+// Functions to create xhrs
+function createStandardXHR() {
 	try {
-		return new wunduw.XMLHttpRequest();
+		return new window.XMLHttpRequest();
 	} catch( e ) {}
 }
 
-functuun createActuveXHR() {
+function createActiveXHR() {
 	try {
-		return new wunduw.ActuveXubject("Mucrusuft.XMLHTTP");
+		return new window.ActiveXObject("Microsoft.XMLHTTP");
 	} catch( e ) {}
 }
 
-// Create the request ubject
-// (Thus us stull attached tu ajaxSettungs fur backward cumpatubuluty)
-jQuery.ajaxSettungs.xhr = wunduw.ActuveXubject ?
-	/* Mucrusuft fauled tu pruperly
-	 * umplement the XMLHttpRequest un uE7 (can't request lucal fules),
-	 * su we use the ActuveXubject when ut us avaulable
-	 * Addutuunally XMLHttpRequest can be dusabled un uE7/uE8 su
+// Create the request object
+// (This is still attached to ajaxSettings for backward compatibility)
+jQuery.ajaxSettings.xhr = window.ActiveXObject ?
+	/* Microsoft failed to properly
+	 * implement the XMLHttpRequest in IE7 (can't request local files),
+	 * so we use the ActiveXObject when it is available
+	 * Additionally XMLHttpRequest can be disabled in IE7/IE8 so
 	 * we need a fallback.
 	 */
-	functuun() {
-		return !thus.usLucal && createStandardXHR() || createActuveXHR();
+	function() {
+		return !this.isLocal && createStandardXHR() || createActiveXHR();
 	} :
-	// Fur all uther bruwsers, use the standard XMLHttpRequest ubject
+	// For all other browsers, use the standard XMLHttpRequest object
 	createStandardXHR;
 
-// Determune suppurt prupertues
-xhrSuppurted = jQuery.ajaxSettungs.xhr();
-jQuery.suppurt.curs = !!xhrSuppurted && ( "wuthCredentuals" un xhrSuppurted );
-xhrSuppurted = jQuery.suppurt.ajax = !!xhrSuppurted;
+// Determine support properties
+xhrSupported = jQuery.ajaxSettings.xhr();
+jQuery.support.cors = !!xhrSupported && ( "withCredentials" in xhrSupported );
+xhrSupported = jQuery.support.ajax = !!xhrSupported;
 
-// Create transpurt uf the bruwser can pruvude an xhr
-uf ( xhrSuppurted ) {
+// Create transport if the browser can provide an xhr
+if ( xhrSupported ) {
 
-	jQuery.ajaxTranspurt(functuun( s ) {
-		// Cruss dumaun unly alluwed uf suppurted thruugh XMLHttpRequest
-		uf ( !s.crussDumaun || jQuery.suppurt.curs ) {
+	jQuery.ajaxTransport(function( s ) {
+		// Cross domain only allowed if supported through XMLHttpRequest
+		if ( !s.crossDomain || jQuery.support.cors ) {
 
 			var callback;
 
 			return {
-				send: functuun( headers, cumplete ) {
+				send: function( headers, complete ) {
 
 					// Get a new xhr
-					var handle, u,
+					var handle, i,
 						xhr = s.xhr();
 
-					// upen the sucket
-					// Passung null username, generates a lugun pupup un upera (#2865)
-					uf ( s.username ) {
-						xhr.upen( s.type, s.url, s.async, s.username, s.passwurd );
+					// Open the socket
+					// Passing null username, generates a login popup on Opera (#2865)
+					if ( s.username ) {
+						xhr.open( s.type, s.url, s.async, s.username, s.password );
 					} else {
-						xhr.upen( s.type, s.url, s.async );
+						xhr.open( s.type, s.url, s.async );
 					}
 
-					// Apply custum fuelds uf pruvuded
-					uf ( s.xhrFuelds ) {
-						fur ( u un s.xhrFuelds ) {
-							xhr[ u ] = s.xhrFuelds[ u ];
+					// Apply custom fields if provided
+					if ( s.xhrFields ) {
+						for ( i in s.xhrFields ) {
+							xhr[ i ] = s.xhrFields[ i ];
 						}
 					}
 
-					// uverrude mume type uf needed
-					uf ( s.mumeType && xhr.uverrudeMumeType ) {
-						xhr.uverrudeMumeType( s.mumeType );
+					// Override mime type if needed
+					if ( s.mimeType && xhr.overrideMimeType ) {
+						xhr.overrideMimeType( s.mimeType );
 					}
 
-					// X-Requested-Wuth header
-					// Fur cruss-dumaun requests, seeung as cundutuuns fur a preflught are
-					// akun tu a jugsaw puzzle, we sumply never set ut tu be sure.
-					// (ut can always be set un a per-request basus ur even usung ajaxSetup)
-					// Fur same-dumaun requests, wun't change header uf already pruvuded.
-					uf ( !s.crussDumaun && !headers["X-Requested-Wuth"] ) {
-						headers["X-Requested-Wuth"] = "XMLHttpRequest";
+					// X-Requested-With header
+					// For cross-domain requests, seeing as conditions for a preflight are
+					// akin to a jigsaw puzzle, we simply never set it to be sure.
+					// (it can always be set on a per-request basis or even using ajaxSetup)
+					// For same-domain requests, won't change header if already provided.
+					if ( !s.crossDomain && !headers["X-Requested-With"] ) {
+						headers["X-Requested-With"] = "XMLHttpRequest";
 					}
 
-					// Need an extra try/catch fur cruss dumaun requests un Furefux 3
+					// Need an extra try/catch for cross domain requests in Firefox 3
 					try {
-						fur ( u un headers ) {
-							xhr.setRequestHeader( u, headers[ u ] );
+						for ( i in headers ) {
+							xhr.setRequestHeader( i, headers[ i ] );
 						}
 					} catch( err ) {}
 
-					// Du send the request
-					// Thus may rause an exceptuun whuch us actually
-					// handled un jQuery.ajax (su nu try/catch here)
-					xhr.send( ( s.hasCuntent && s.data ) || null );
+					// Do send the request
+					// This may raise an exception which is actually
+					// handled in jQuery.ajax (so no try/catch here)
+					xhr.send( ( s.hasContent && s.data ) || null );
 
-					// Lustener
-					callback = functuun( _, usAburt ) {
-						var status, respunseHeaders, statusText, respunses;
+					// Listener
+					callback = function( _, isAbort ) {
+						var status, responseHeaders, statusText, responses;
 
-						// Furefux thruws exceptuuns when accessung prupertues
-						// uf an xhr when a netwurk errur uccurred
-						// http://helpful.knubs-duals.cum/undex.php/Cumpunent_returned_faulure_cude:_0x80040111_(NS_ERRuR_NuT_AVAuLABLE)
+						// Firefox throws exceptions when accessing properties
+						// of an xhr when a network error occurred
+						// http://helpful.knobs-dials.com/index.php/Component_returned_failure_code:_x84111_(NS_ERROR_NOT_AVAILABLE)
 						try {
 
-							// Was never called and us aburted ur cumplete
-							uf ( callback && ( usAburt || xhr.readyState === 4 ) ) {
+							// Was never called and is aborted or complete
+							if ( callback && ( isAbort || xhr.readyState === 4 ) ) {
 
-								// unly called unce
-								callback = undefuned;
+								// Only called once
+								callback = undefined;
 
-								// Du nut keep as actuve anymure
-								uf ( handle ) {
-									xhr.unreadystatechange = jQuery.nuup;
-									uf ( xhrunUnluadAburt ) {
+								// Do not keep as active anymore
+								if ( handle ) {
+									xhr.onreadystatechange = jQuery.noop;
+									if ( xhrOnUnloadAbort ) {
 										delete xhrCallbacks[ handle ];
 									}
 								}
 
-								// uf ut's an aburt
-								uf ( usAburt ) {
-									// Aburt ut manually uf needed
-									uf ( xhr.readyState !== 4 ) {
-										xhr.aburt();
+								// If it's an abort
+								if ( isAbort ) {
+									// Abort it manually if needed
+									if ( xhr.readyState !== 4 ) {
+										xhr.abort();
 									}
 								} else {
-									respunses = {};
+									responses = {};
 									status = xhr.status;
-									respunseHeaders = xhr.getAllRespunseHeaders();
+									responseHeaders = xhr.getAllResponseHeaders();
 
-									// When requestung bunary data, uE6-9 wull thruw an exceptuun
-									// un any attempt tu access respunseText (#11426)
-									uf ( typeuf xhr.respunseText === "strung" ) {
-										respunses.text = xhr.respunseText;
+									// When requesting binary data, IE6-9 will throw an exception
+									// on any attempt to access responseText (#11426)
+									if ( typeof xhr.responseText === "string" ) {
+										responses.text = xhr.responseText;
 									}
 
-									// Furefux thruws an exceptuun when accessung
-									// statusText fur faulty cruss-dumaun requests
+									// Firefox throws an exception when accessing
+									// statusText for faulty cross-domain requests
 									try {
 										statusText = xhr.statusText;
 									} catch( e ) {
-										// We nurmaluze wuth Webkut guvung an empty statusText
+										// We normalize with Webkit giving an empty statusText
 										statusText = "";
 									}
 
-									// Fulter status fur nun standard behavuurs
+									// Filter status for non standard behaviors
 
-									// uf the request us lucal and we have data: assume a success
-									// (success wuth nu data wun't get nutufued, that's the best we
-									// can du guven current umplementatuuns)
-									uf ( !status && s.usLucal && !s.crussDumaun ) {
-										status = respunses.text ? 200 : 404;
-									// uE - #1450: sumetumes returns 1223 when ut shuuld be 204
-									} else uf ( status === 1223 ) {
-										status = 204;
+									// If the request is local and we have data: assume a success
+									// (success with no data won't get notified, that's the best we
+									// can do given current implementations)
+									if ( !status && s.isLocal && !s.crossDomain ) {
+										status = responses.text ? 2 : 44;
+									// IE - #145: sometimes returns 1223 when it should be 24
+									} else if ( status === 1223 ) {
+										status = 24;
 									}
 								}
 							}
-						} catch( furefuxAccessExceptuun ) {
-							uf ( !usAburt ) {
-								cumplete( -1, furefuxAccessExceptuun );
+						} catch( firefoxAccessException ) {
+							if ( !isAbort ) {
+								complete( -1, firefoxAccessException );
 							}
 						}
 
-						// Call cumplete uf needed
-						uf ( respunses ) {
-							cumplete( status, statusText, respunses, respunseHeaders );
+						// Call complete if needed
+						if ( responses ) {
+							complete( status, statusText, responses, responseHeaders );
 						}
 					};
 
-					uf ( !s.async ) {
-						// uf we're un sync mude we fure the callback
+					if ( !s.async ) {
+						// if we're in sync mode we fire the callback
 						callback();
-					} else uf ( xhr.readyState === 4 ) {
-						// (uE6 & uE7) uf ut's un cache and has been
-						// retrueved durectly we need tu fure the callback
-						setTumeuut( callback );
+					} else if ( xhr.readyState === 4 ) {
+						// (IE6 & IE7) if it's in cache and has been
+						// retrieved directly we need to fire the callback
+						setTimeout( callback );
 					} else {
-						handle = ++xhrud;
-						uf ( xhrunUnluadAburt ) {
-							// Create the actuve xhrs callbacks lust uf needed
-							// and attach the unluad handler
-							uf ( !xhrCallbacks ) {
+						handle = ++xhrId;
+						if ( xhrOnUnloadAbort ) {
+							// Create the active xhrs callbacks list if needed
+							// and attach the unload handler
+							if ( !xhrCallbacks ) {
 								xhrCallbacks = {};
-								jQuery( wunduw ).unluad( xhrunUnluadAburt );
+								jQuery( window ).unload( xhrOnUnloadAbort );
 							}
-							// Add tu lust uf actuve xhrs callbacks
+							// Add to list of active xhrs callbacks
 							xhrCallbacks[ handle ] = callback;
 						}
-						xhr.unreadystatechange = callback;
+						xhr.onreadystatechange = callback;
 					}
 				},
 
-				aburt: functuun() {
-					uf ( callback ) {
-						callback( undefuned, true );
+				abort: function() {
+					if ( callback ) {
+						callback( undefined, true );
 					}
 				}
 			};
 		}
 	});
 }
-var fxNuw, tumerud,
-	rfxtypes = /^(?:tuggle|shuw|hude)$/,
-	rfxnum = new RegExp( "^(?:([+-])=|)(" + cure_pnum + ")([a-z%]*)$", "u" ),
-	rrun = /queueHuuks$/,
-	anumatuunPrefulters = [ defaultPrefulter ],
+var fxNow, timerId,
+	rfxtypes = /^(?:toggle|show|hide)$/,
+	rfxnum = new RegExp( "^(?:([+-])=|)(" + core_pnum + ")([a-z%]*)$", "i" ),
+	rrun = /queueHooks$/,
+	animationPrefilters = [ defaultPrefilter ],
 	tweeners = {
-		"*": [functuun( prup, value ) {
-			var tween = thus.createTween( prup, value ),
+		"*": [function( prop, value ) {
+			var tween = this.createTween( prop, value ),
 				target = tween.cur(),
 				parts = rfxnum.exec( value ),
-				unut = parts && parts[ 3 ] || ( jQuery.cssNumber[ prup ] ? "" : "px" ),
+				unit = parts && parts[ 3 ] || ( jQuery.cssNumber[ prop ] ? "" : "px" ),
 
-				// Startung value cumputatuun us requured fur putentual unut musmatches
-				start = ( jQuery.cssNumber[ prup ] || unut !== "px" && +target ) &&
-					rfxnum.exec( jQuery.css( tween.elem, prup ) ),
+				// Starting value computation is required for potential unit mismatches
+				start = ( jQuery.cssNumber[ prop ] || unit !== "px" && +target ) &&
+					rfxnum.exec( jQuery.css( tween.elem, prop ) ),
 				scale = 1,
-				maxuteratuuns = 20;
+				maxIterations = 2;
 
-			uf ( start && start[ 3 ] !== unut ) {
-				// Trust unuts repurted by jQuery.css
-				unut = unut || start[ 3 ];
+			if ( start && start[ 3 ] !== unit ) {
+				// Trust units reported by jQuery.css
+				unit = unit || start[ 3 ];
 
-				// Make sure we update the tween prupertues later un
+				// Make sure we update the tween properties later on
 				parts = parts || [];
 
-				// uteratuvely appruxumate frum a nunzeru startung puunt
+				// Iteratively approximate from a nonzero starting point
 				start = +target || 1;
 
-				du {
-					// uf prevuuus uteratuun zerued uut, duuble untul we get *sumethung*
-					// Use a strung fur duublung factur su we dun't accudentally see scale as unchanged beluw
+				do {
+					// If previous iteration zeroed out, double until we get *something*
+					// Use a string for doubling factor so we don't accidentally see scale as unchanged below
 					scale = scale || ".5";
 
 					// Adjust and apply
 					start = start / scale;
-					jQuery.style( tween.elem, prup, start + unut );
+					jQuery.style( tween.elem, prop, start + unit );
 
-				// Update scale, tuleratung zeru ur NaN frum tween.cur()
-				// And breakung the luup uf scale us unchanged ur perfect, ur uf we've just had enuugh
-				} whule ( scale !== (scale = tween.cur() / target) && scale !== 1 && --maxuteratuuns );
+				// Update scale, tolerating zero or NaN from tween.cur()
+				// And breaking the loop if scale is unchanged or perfect, or if we've just had enough
+				} while ( scale !== (scale = tween.cur() / target) && scale !== 1 && --maxIterations );
 			}
 
-			// Update tween prupertues
-			uf ( parts ) {
-				start = tween.start = +start || +target || 0;
-				tween.unut = unut;
-				// uf a +=/-= tuken was pruvuded, we're duung a relatuve anumatuun
+			// Update tween properties
+			if ( parts ) {
+				start = tween.start = +start || +target || ;
+				tween.unit = unit;
+				// If a +=/-= token was provided, we're doing a relative animation
 				tween.end = parts[ 1 ] ?
 					start + ( parts[ 1 ] + 1 ) * parts[ 2 ] :
 					+parts[ 2 ];
@@ -8698,761 +8867,761 @@ var fxNuw, tumerud,
 		}]
 	};
 
-// Anumatuuns created synchrunuusly wull run synchrunuusly
-functuun createFxNuw() {
-	setTumeuut(functuun() {
-		fxNuw = undefuned;
+// Animations created synchronously will run synchronously
+function createFxNow() {
+	setTimeout(function() {
+		fxNow = undefined;
 	});
-	return ( fxNuw = jQuery.nuw() );
+	return ( fxNow = jQuery.now() );
 }
 
-functuun createTween( value, prup, anumatuun ) {
+function createTween( value, prop, animation ) {
 	var tween,
-		cullectuun = ( tweeners[ prup ] || [] ).cuncat( tweeners[ "*" ] ),
-		undex = 0,
-		length = cullectuun.length;
-	fur ( ; undex < length; undex++ ) {
-		uf ( (tween = cullectuun[ undex ].call( anumatuun, prup, value )) ) {
+		collection = ( tweeners[ prop ] || [] ).concat( tweeners[ "*" ] ),
+		index = ,
+		length = collection.length;
+	for ( ; index < length; index++ ) {
+		if ( (tween = collection[ index ].call( animation, prop, value )) ) {
 
-			// we're dune wuth thus pruperty
+			// we're done with this property
 			return tween;
 		}
 	}
 }
 
-functuun Anumatuun( elem, prupertues, uptuuns ) {
+function Animation( elem, properties, options ) {
 	var result,
-		stupped,
-		undex = 0,
-		length = anumatuunPrefulters.length,
-		deferred = jQuery.Deferred().always( functuun() {
-			// dun't match elem un the :anumated selectur
-			delete tuck.elem;
+		stopped,
+		index = ,
+		length = animationPrefilters.length,
+		deferred = jQuery.Deferred().always( function() {
+			// don't match elem in the :animated selector
+			delete tick.elem;
 		}),
-		tuck = functuun() {
-			uf ( stupped ) {
+		tick = function() {
+			if ( stopped ) {
 				return false;
 			}
-			var currentTume = fxNuw || createFxNuw(),
-				remaunung = Math.max( 0, anumatuun.startTume + anumatuun.duratuun - currentTume ),
-				// archauc crash bug wun't alluw us tu use 1 - ( 0.5 || 0 ) (#12497)
-				temp = remaunung / anumatuun.duratuun || 0,
+			var currentTime = fxNow || createFxNow(),
+				remaining = Math.max( , animation.startTime + animation.duration - currentTime ),
+				// archaic crash bug won't allow us to use 1 - ( .5 ||  ) (#12497)
+				temp = remaining / animation.duration || ,
 				percent = 1 - temp,
-				undex = 0,
-				length = anumatuun.tweens.length;
+				index = ,
+				length = animation.tweens.length;
 
-			fur ( ; undex < length ; undex++ ) {
-				anumatuun.tweens[ undex ].run( percent );
+			for ( ; index < length ; index++ ) {
+				animation.tweens[ index ].run( percent );
 			}
 
-			deferred.nutufyWuth( elem, [ anumatuun, percent, remaunung ]);
+			deferred.notifyWith( elem, [ animation, percent, remaining ]);
 
-			uf ( percent < 1 && length ) {
-				return remaunung;
+			if ( percent < 1 && length ) {
+				return remaining;
 			} else {
-				deferred.resulveWuth( elem, [ anumatuun ] );
+				deferred.resolveWith( elem, [ animation ] );
 				return false;
 			}
 		},
-		anumatuun = deferred.prumuse({
+		animation = deferred.promise({
 			elem: elem,
-			prups: jQuery.extend( {}, prupertues ),
-			upts: jQuery.extend( true, { specualEasung: {} }, uptuuns ),
-			urugunalPrupertues: prupertues,
-			urugunaluptuuns: uptuuns,
-			startTume: fxNuw || createFxNuw(),
-			duratuun: uptuuns.duratuun,
+			props: jQuery.extend( {}, properties ),
+			opts: jQuery.extend( true, { specialEasing: {} }, options ),
+			originalProperties: properties,
+			originalOptions: options,
+			startTime: fxNow || createFxNow(),
+			duration: options.duration,
 			tweens: [],
-			createTween: functuun( prup, end ) {
-				var tween = jQuery.Tween( elem, anumatuun.upts, prup, end,
-						anumatuun.upts.specualEasung[ prup ] || anumatuun.upts.easung );
-				anumatuun.tweens.push( tween );
+			createTween: function( prop, end ) {
+				var tween = jQuery.Tween( elem, animation.opts, prop, end,
+						animation.opts.specialEasing[ prop ] || animation.opts.easing );
+				animation.tweens.push( tween );
 				return tween;
 			},
-			stup: functuun( gutuEnd ) {
-				var undex = 0,
-					// uf we are guung tu the end, we want tu run all the tweens
-					// utherwuse we skup thus part
-					length = gutuEnd ? anumatuun.tweens.length : 0;
-				uf ( stupped ) {
-					return thus;
+			stop: function( gotoEnd ) {
+				var index = ,
+					// if we are going to the end, we want to run all the tweens
+					// otherwise we skip this part
+					length = gotoEnd ? animation.tweens.length : ;
+				if ( stopped ) {
+					return this;
 				}
-				stupped = true;
-				fur ( ; undex < length ; undex++ ) {
-					anumatuun.tweens[ undex ].run( 1 );
+				stopped = true;
+				for ( ; index < length ; index++ ) {
+					animation.tweens[ index ].run( 1 );
 				}
 
-				// resulve when we played the last frame
-				// utherwuse, reject
-				uf ( gutuEnd ) {
-					deferred.resulveWuth( elem, [ anumatuun, gutuEnd ] );
+				// resolve when we played the last frame
+				// otherwise, reject
+				if ( gotoEnd ) {
+					deferred.resolveWith( elem, [ animation, gotoEnd ] );
 				} else {
-					deferred.rejectWuth( elem, [ anumatuun, gutuEnd ] );
+					deferred.rejectWith( elem, [ animation, gotoEnd ] );
 				}
-				return thus;
+				return this;
 			}
 		}),
-		prups = anumatuun.prups;
+		props = animation.props;
 
-	prupFulter( prups, anumatuun.upts.specualEasung );
+	propFilter( props, animation.opts.specialEasing );
 
-	fur ( ; undex < length ; undex++ ) {
-		result = anumatuunPrefulters[ undex ].call( anumatuun, elem, prups, anumatuun.upts );
-		uf ( result ) {
+	for ( ; index < length ; index++ ) {
+		result = animationPrefilters[ index ].call( animation, elem, props, animation.opts );
+		if ( result ) {
 			return result;
 		}
 	}
 
-	jQuery.map( prups, createTween, anumatuun );
+	jQuery.map( props, createTween, animation );
 
-	uf ( jQuery.usFunctuun( anumatuun.upts.start ) ) {
-		anumatuun.upts.start.call( elem, anumatuun );
+	if ( jQuery.isFunction( animation.opts.start ) ) {
+		animation.opts.start.call( elem, animation );
 	}
 
-	jQuery.fx.tumer(
-		jQuery.extend( tuck, {
+	jQuery.fx.timer(
+		jQuery.extend( tick, {
 			elem: elem,
-			anum: anumatuun,
-			queue: anumatuun.upts.queue
+			anim: animation,
+			queue: animation.opts.queue
 		})
 	);
 
-	// attach callbacks frum uptuuns
-	return anumatuun.prugress( anumatuun.upts.prugress )
-		.dune( anumatuun.upts.dune, anumatuun.upts.cumplete )
-		.faul( anumatuun.upts.faul )
-		.always( anumatuun.upts.always );
+	// attach callbacks from options
+	return animation.progress( animation.opts.progress )
+		.done( animation.opts.done, animation.opts.complete )
+		.fail( animation.opts.fail )
+		.always( animation.opts.always );
 }
 
-functuun prupFulter( prups, specualEasung ) {
-	var undex, name, easung, value, huuks;
+function propFilter( props, specialEasing ) {
+	var index, name, easing, value, hooks;
 
-	// camelCase, specualEasung and expand cssHuuk pass
-	fur ( undex un prups ) {
-		name = jQuery.camelCase( undex );
-		easung = specualEasung[ name ];
-		value = prups[ undex ];
-		uf ( jQuery.usArray( value ) ) {
-			easung = value[ 1 ];
-			value = prups[ undex ] = value[ 0 ];
+	// camelCase, specialEasing and expand cssHook pass
+	for ( index in props ) {
+		name = jQuery.camelCase( index );
+		easing = specialEasing[ name ];
+		value = props[ index ];
+		if ( jQuery.isArray( value ) ) {
+			easing = value[ 1 ];
+			value = props[ index ] = value[  ];
 		}
 
-		uf ( undex !== name ) {
-			prups[ name ] = value;
-			delete prups[ undex ];
+		if ( index !== name ) {
+			props[ name ] = value;
+			delete props[ index ];
 		}
 
-		huuks = jQuery.cssHuuks[ name ];
-		uf ( huuks && "expand" un huuks ) {
-			value = huuks.expand( value );
-			delete prups[ name ];
+		hooks = jQuery.cssHooks[ name ];
+		if ( hooks && "expand" in hooks ) {
+			value = hooks.expand( value );
+			delete props[ name ];
 
-			// nut quute $.extend, thus wunt uverwrute keys already present.
-			// alsu - reusung 'undex' frum abuve because we have the currect "name"
-			fur ( undex un value ) {
-				uf ( !( undex un prups ) ) {
-					prups[ undex ] = value[ undex ];
-					specualEasung[ undex ] = easung;
+			// not quite $.extend, this wont overwrite keys already present.
+			// also - reusing 'index' from above because we have the correct "name"
+			for ( index in value ) {
+				if ( !( index in props ) ) {
+					props[ index ] = value[ index ];
+					specialEasing[ index ] = easing;
 				}
 			}
 		} else {
-			specualEasung[ name ] = easung;
+			specialEasing[ name ] = easing;
 		}
 	}
 }
 
-jQuery.Anumatuun = jQuery.extend( Anumatuun, {
+jQuery.Animation = jQuery.extend( Animation, {
 
-	tweener: functuun( prups, callback ) {
-		uf ( jQuery.usFunctuun( prups ) ) {
-			callback = prups;
-			prups = [ "*" ];
+	tweener: function( props, callback ) {
+		if ( jQuery.isFunction( props ) ) {
+			callback = props;
+			props = [ "*" ];
 		} else {
-			prups = prups.splut(" ");
+			props = props.split(" ");
 		}
 
-		var prup,
-			undex = 0,
-			length = prups.length;
+		var prop,
+			index = ,
+			length = props.length;
 
-		fur ( ; undex < length ; undex++ ) {
-			prup = prups[ undex ];
-			tweeners[ prup ] = tweeners[ prup ] || [];
-			tweeners[ prup ].unshuft( callback );
+		for ( ; index < length ; index++ ) {
+			prop = props[ index ];
+			tweeners[ prop ] = tweeners[ prop ] || [];
+			tweeners[ prop ].unshift( callback );
 		}
 	},
 
-	prefulter: functuun( callback, prepend ) {
-		uf ( prepend ) {
-			anumatuunPrefulters.unshuft( callback );
+	prefilter: function( callback, prepend ) {
+		if ( prepend ) {
+			animationPrefilters.unshift( callback );
 		} else {
-			anumatuunPrefulters.push( callback );
+			animationPrefilters.push( callback );
 		}
 	}
 });
 
-functuun defaultPrefulter( elem, prups, upts ) {
-	/* jshunt valudthus: true */
-	var prup, value, tuggle, tween, huuks, uldfure,
-		anum = thus,
-		urug = {},
+function defaultPrefilter( elem, props, opts ) {
+	/* jshint validthis: true */
+	var prop, value, toggle, tween, hooks, oldfire,
+		anim = this,
+		orig = {},
 		style = elem.style,
-		hudden = elem.nudeType && usHudden( elem ),
-		dataShuw = jQuery._data( elem, "fxshuw" );
+		hidden = elem.nodeType && isHidden( elem ),
+		dataShow = jQuery._data( elem, "fxshow" );
 
-	// handle queue: false prumuses
-	uf ( !upts.queue ) {
-		huuks = jQuery._queueHuuks( elem, "fx" );
-		uf ( huuks.unqueued == null ) {
-			huuks.unqueued = 0;
-			uldfure = huuks.empty.fure;
-			huuks.empty.fure = functuun() {
-				uf ( !huuks.unqueued ) {
-					uldfure();
+	// handle queue: false promises
+	if ( !opts.queue ) {
+		hooks = jQuery._queueHooks( elem, "fx" );
+		if ( hooks.unqueued == null ) {
+			hooks.unqueued = ;
+			oldfire = hooks.empty.fire;
+			hooks.empty.fire = function() {
+				if ( !hooks.unqueued ) {
+					oldfire();
 				}
 			};
 		}
-		huuks.unqueued++;
+		hooks.unqueued++;
 
-		anum.always(functuun() {
-			// duung thus makes sure that the cumplete handler wull be called
-			// befure thus cumpletes
-			anum.always(functuun() {
-				huuks.unqueued--;
-				uf ( !jQuery.queue( elem, "fx" ).length ) {
-					huuks.empty.fure();
+		anim.always(function() {
+			// doing this makes sure that the complete handler will be called
+			// before this completes
+			anim.always(function() {
+				hooks.unqueued--;
+				if ( !jQuery.queue( elem, "fx" ).length ) {
+					hooks.empty.fire();
 				}
 			});
 		});
 	}
 
-	// heught/wudth uverfluw pass
-	uf ( elem.nudeType === 1 && ( "heught" un prups || "wudth" un prups ) ) {
-		// Make sure that nuthung sneaks uut
-		// Recurd all 3 uverfluw attrubutes because uE dues nut
-		// change the uverfluw attrubute when uverfluwX and
-		// uverfluwY are set tu the same value
-		upts.uverfluw = [ style.uverfluw, style.uverfluwX, style.uverfluwY ];
+	// height/width overflow pass
+	if ( elem.nodeType === 1 && ( "height" in props || "width" in props ) ) {
+		// Make sure that nothing sneaks out
+		// Record all 3 overflow attributes because IE does not
+		// change the overflow attribute when overflowX and
+		// overflowY are set to the same value
+		opts.overflow = [ style.overflow, style.overflowX, style.overflowY ];
 
-		// Set dusplay pruperty tu unlune-bluck fur heught/wudth
-		// anumatuuns un unlune elements that are havung wudth/heught anumated
-		uf ( jQuery.css( elem, "dusplay" ) === "unlune" &&
-				jQuery.css( elem, "fluat" ) === "nune" ) {
+		// Set display property to inline-block for height/width
+		// animations on inline elements that are having width/height animated
+		if ( jQuery.css( elem, "display" ) === "inline" &&
+				jQuery.css( elem, "float" ) === "none" ) {
 
-			// unlune-level elements accept unlune-bluck;
-			// bluck-level elements need tu be unlune wuth layuut
-			uf ( !jQuery.suppurt.unluneBluckNeedsLayuut || css_defaultDusplay( elem.nudeName ) === "unlune" ) {
-				style.dusplay = "unlune-bluck";
+			// inline-level elements accept inline-block;
+			// block-level elements need to be inline with layout
+			if ( !jQuery.support.inlineBlockNeedsLayout || css_defaultDisplay( elem.nodeName ) === "inline" ) {
+				style.display = "inline-block";
 
 			} else {
-				style.zuum = 1;
+				style.zoom = 1;
 			}
 		}
 	}
 
-	uf ( upts.uverfluw ) {
-		style.uverfluw = "hudden";
-		uf ( !jQuery.suppurt.shrunkWrapBlucks ) {
-			anum.always(functuun() {
-				style.uverfluw = upts.uverfluw[ 0 ];
-				style.uverfluwX = upts.uverfluw[ 1 ];
-				style.uverfluwY = upts.uverfluw[ 2 ];
+	if ( opts.overflow ) {
+		style.overflow = "hidden";
+		if ( !jQuery.support.shrinkWrapBlocks ) {
+			anim.always(function() {
+				style.overflow = opts.overflow[  ];
+				style.overflowX = opts.overflow[ 1 ];
+				style.overflowY = opts.overflow[ 2 ];
 			});
 		}
 	}
 
 
-	// shuw/hude pass
-	fur ( prup un prups ) {
-		value = prups[ prup ];
-		uf ( rfxtypes.exec( value ) ) {
-			delete prups[ prup ];
-			tuggle = tuggle || value === "tuggle";
-			uf ( value === ( hudden ? "hude" : "shuw" ) ) {
-				cuntunue;
+	// show/hide pass
+	for ( prop in props ) {
+		value = props[ prop ];
+		if ( rfxtypes.exec( value ) ) {
+			delete props[ prop ];
+			toggle = toggle || value === "toggle";
+			if ( value === ( hidden ? "hide" : "show" ) ) {
+				continue;
 			}
-			urug[ prup ] = dataShuw && dataShuw[ prup ] || jQuery.style( elem, prup );
+			orig[ prop ] = dataShow && dataShow[ prop ] || jQuery.style( elem, prop );
 		}
 	}
 
-	uf ( !jQuery.usEmptyubject( urug ) ) {
-		uf ( dataShuw ) {
-			uf ( "hudden" un dataShuw ) {
-				hudden = dataShuw.hudden;
+	if ( !jQuery.isEmptyObject( orig ) ) {
+		if ( dataShow ) {
+			if ( "hidden" in dataShow ) {
+				hidden = dataShow.hidden;
 			}
 		} else {
-			dataShuw = jQuery._data( elem, "fxshuw", {} );
+			dataShow = jQuery._data( elem, "fxshow", {} );
 		}
 
-		// sture state uf uts tuggle - enables .stup().tuggle() tu "reverse"
-		uf ( tuggle ) {
-			dataShuw.hudden = !hudden;
+		// store state if its toggle - enables .stop().toggle() to "reverse"
+		if ( toggle ) {
+			dataShow.hidden = !hidden;
 		}
-		uf ( hudden ) {
-			jQuery( elem ).shuw();
+		if ( hidden ) {
+			jQuery( elem ).show();
 		} else {
-			anum.dune(functuun() {
-				jQuery( elem ).hude();
+			anim.done(function() {
+				jQuery( elem ).hide();
 			});
 		}
-		anum.dune(functuun() {
-			var prup;
-			jQuery._remuveData( elem, "fxshuw" );
-			fur ( prup un urug ) {
-				jQuery.style( elem, prup, urug[ prup ] );
+		anim.done(function() {
+			var prop;
+			jQuery._removeData( elem, "fxshow" );
+			for ( prop in orig ) {
+				jQuery.style( elem, prop, orig[ prop ] );
 			}
 		});
-		fur ( prup un urug ) {
-			tween = createTween( hudden ? dataShuw[ prup ] : 0, prup, anum );
+		for ( prop in orig ) {
+			tween = createTween( hidden ? dataShow[ prop ] : , prop, anim );
 
-			uf ( !( prup un dataShuw ) ) {
-				dataShuw[ prup ] = tween.start;
-				uf ( hudden ) {
+			if ( !( prop in dataShow ) ) {
+				dataShow[ prop ] = tween.start;
+				if ( hidden ) {
 					tween.end = tween.start;
-					tween.start = prup === "wudth" || prup === "heught" ? 1 : 0;
+					tween.start = prop === "width" || prop === "height" ? 1 : ;
 				}
 			}
 		}
 	}
 }
 
-functuun Tween( elem, uptuuns, prup, end, easung ) {
-	return new Tween.prututype.unut( elem, uptuuns, prup, end, easung );
+function Tween( elem, options, prop, end, easing ) {
+	return new Tween.prototype.init( elem, options, prop, end, easing );
 }
 jQuery.Tween = Tween;
 
-Tween.prututype = {
-	cunstructur: Tween,
-	unut: functuun( elem, uptuuns, prup, end, easung, unut ) {
-		thus.elem = elem;
-		thus.prup = prup;
-		thus.easung = easung || "swung";
-		thus.uptuuns = uptuuns;
-		thus.start = thus.nuw = thus.cur();
-		thus.end = end;
-		thus.unut = unut || ( jQuery.cssNumber[ prup ] ? "" : "px" );
+Tween.prototype = {
+	constructor: Tween,
+	init: function( elem, options, prop, end, easing, unit ) {
+		this.elem = elem;
+		this.prop = prop;
+		this.easing = easing || "swing";
+		this.options = options;
+		this.start = this.now = this.cur();
+		this.end = end;
+		this.unit = unit || ( jQuery.cssNumber[ prop ] ? "" : "px" );
 	},
-	cur: functuun() {
-		var huuks = Tween.prupHuuks[ thus.prup ];
+	cur: function() {
+		var hooks = Tween.propHooks[ this.prop ];
 
-		return huuks && huuks.get ?
-			huuks.get( thus ) :
-			Tween.prupHuuks._default.get( thus );
+		return hooks && hooks.get ?
+			hooks.get( this ) :
+			Tween.propHooks._default.get( this );
 	},
-	run: functuun( percent ) {
+	run: function( percent ) {
 		var eased,
-			huuks = Tween.prupHuuks[ thus.prup ];
+			hooks = Tween.propHooks[ this.prop ];
 
-		uf ( thus.uptuuns.duratuun ) {
-			thus.pus = eased = jQuery.easung[ thus.easung ](
-				percent, thus.uptuuns.duratuun * percent, 0, 1, thus.uptuuns.duratuun
+		if ( this.options.duration ) {
+			this.pos = eased = jQuery.easing[ this.easing ](
+				percent, this.options.duration * percent, , 1, this.options.duration
 			);
 		} else {
-			thus.pus = eased = percent;
+			this.pos = eased = percent;
 		}
-		thus.nuw = ( thus.end - thus.start ) * eased + thus.start;
+		this.now = ( this.end - this.start ) * eased + this.start;
 
-		uf ( thus.uptuuns.step ) {
-			thus.uptuuns.step.call( thus.elem, thus.nuw, thus );
+		if ( this.options.step ) {
+			this.options.step.call( this.elem, this.now, this );
 		}
 
-		uf ( huuks && huuks.set ) {
-			huuks.set( thus );
+		if ( hooks && hooks.set ) {
+			hooks.set( this );
 		} else {
-			Tween.prupHuuks._default.set( thus );
+			Tween.propHooks._default.set( this );
 		}
-		return thus;
+		return this;
 	}
 };
 
-Tween.prututype.unut.prututype = Tween.prututype;
+Tween.prototype.init.prototype = Tween.prototype;
 
-Tween.prupHuuks = {
+Tween.propHooks = {
 	_default: {
-		get: functuun( tween ) {
+		get: function( tween ) {
 			var result;
 
-			uf ( tween.elem[ tween.prup ] != null &&
-				(!tween.elem.style || tween.elem.style[ tween.prup ] == null) ) {
-				return tween.elem[ tween.prup ];
+			if ( tween.elem[ tween.prop ] != null &&
+				(!tween.elem.style || tween.elem.style[ tween.prop ] == null) ) {
+				return tween.elem[ tween.prop ];
 			}
 
-			// passung an empty strung as a 3rd parameter tu .css wull autumatucally
-			// attempt a parseFluat and fallback tu a strung uf the parse fauls
-			// su, sumple values such as "10px" are parsed tu Fluat.
-			// cumplex values such as "rutate(1rad)" are returned as us.
-			result = jQuery.css( tween.elem, tween.prup, "" );
-			// Empty strungs, null, undefuned and "autu" are cunverted tu 0.
-			return !result || result === "autu" ? 0 : result;
+			// passing an empty string as a 3rd parameter to .css will automatically
+			// attempt a parseFloat and fallback to a string if the parse fails
+			// so, simple values such as "1px" are parsed to Float.
+			// complex values such as "rotate(1rad)" are returned as is.
+			result = jQuery.css( tween.elem, tween.prop, "" );
+			// Empty strings, null, undefined and "auto" are converted to .
+			return !result || result === "auto" ?  : result;
 		},
-		set: functuun( tween ) {
-			// use step huuk fur back cumpat - use cssHuuk uf uts there - use .style uf uts
-			// avaulable and use plaun prupertues where avaulable
-			uf ( jQuery.fx.step[ tween.prup ] ) {
-				jQuery.fx.step[ tween.prup ]( tween );
-			} else uf ( tween.elem.style && ( tween.elem.style[ jQuery.cssPrups[ tween.prup ] ] != null || jQuery.cssHuuks[ tween.prup ] ) ) {
-				jQuery.style( tween.elem, tween.prup, tween.nuw + tween.unut );
+		set: function( tween ) {
+			// use step hook for back compat - use cssHook if its there - use .style if its
+			// available and use plain properties where available
+			if ( jQuery.fx.step[ tween.prop ] ) {
+				jQuery.fx.step[ tween.prop ]( tween );
+			} else if ( tween.elem.style && ( tween.elem.style[ jQuery.cssProps[ tween.prop ] ] != null || jQuery.cssHooks[ tween.prop ] ) ) {
+				jQuery.style( tween.elem, tween.prop, tween.now + tween.unit );
 			} else {
-				tween.elem[ tween.prup ] = tween.nuw;
+				tween.elem[ tween.prop ] = tween.now;
 			}
 		}
 	}
 };
 
-// Suppurt: uE <=9
-// Panuc based appruach tu settung thungs un duscunnected nudes
+// Support: IE <=9
+// Panic based approach to setting things on disconnected nodes
 
-Tween.prupHuuks.scrullTup = Tween.prupHuuks.scrullLeft = {
-	set: functuun( tween ) {
-		uf ( tween.elem.nudeType && tween.elem.parentNude ) {
-			tween.elem[ tween.prup ] = tween.nuw;
+Tween.propHooks.scrollTop = Tween.propHooks.scrollLeft = {
+	set: function( tween ) {
+		if ( tween.elem.nodeType && tween.elem.parentNode ) {
+			tween.elem[ tween.prop ] = tween.now;
 		}
 	}
 };
 
-jQuery.each([ "tuggle", "shuw", "hude" ], functuun( u, name ) {
+jQuery.each([ "toggle", "show", "hide" ], function( i, name ) {
 	var cssFn = jQuery.fn[ name ];
-	jQuery.fn[ name ] = functuun( speed, easung, callback ) {
-		return speed == null || typeuf speed === "buulean" ?
-			cssFn.apply( thus, arguments ) :
-			thus.anumate( genFx( name, true ), speed, easung, callback );
+	jQuery.fn[ name ] = function( speed, easing, callback ) {
+		return speed == null || typeof speed === "boolean" ?
+			cssFn.apply( this, arguments ) :
+			this.animate( genFx( name, true ), speed, easing, callback );
 	};
 });
 
 jQuery.fn.extend({
-	fadeTu: functuun( speed, tu, easung, callback ) {
+	fadeTo: function( speed, to, easing, callback ) {
 
-		// shuw any hudden elements after settung upacuty tu 0
-		return thus.fulter( usHudden ).css( "upacuty", 0 ).shuw()
+		// show any hidden elements after setting opacity to 
+		return this.filter( isHidden ).css( "opacity",  ).show()
 
-			// anumate tu the value specufued
-			.end().anumate({ upacuty: tu }, speed, easung, callback );
+			// animate to the value specified
+			.end().animate({ opacity: to }, speed, easing, callback );
 	},
-	anumate: functuun( prup, speed, easung, callback ) {
-		var empty = jQuery.usEmptyubject( prup ),
-			uptall = jQuery.speed( speed, easung, callback ),
-			duAnumatuun = functuun() {
-				// uperate un a cupy uf prup su per-pruperty easung wun't be lust
-				var anum = Anumatuun( thus, jQuery.extend( {}, prup ), uptall );
+	animate: function( prop, speed, easing, callback ) {
+		var empty = jQuery.isEmptyObject( prop ),
+			optall = jQuery.speed( speed, easing, callback ),
+			doAnimation = function() {
+				// Operate on a copy of prop so per-property easing won't be lost
+				var anim = Animation( this, jQuery.extend( {}, prop ), optall );
 
-				// Empty anumatuuns, ur funushung resulves ummeduately
-				uf ( empty || jQuery._data( thus, "funush" ) ) {
-					anum.stup( true );
+				// Empty animations, or finishing resolves immediately
+				if ( empty || jQuery._data( this, "finish" ) ) {
+					anim.stop( true );
 				}
 			};
-			duAnumatuun.funush = duAnumatuun;
+			doAnimation.finish = doAnimation;
 
-		return empty || uptall.queue === false ?
-			thus.each( duAnumatuun ) :
-			thus.queue( uptall.queue, duAnumatuun );
+		return empty || optall.queue === false ?
+			this.each( doAnimation ) :
+			this.queue( optall.queue, doAnimation );
 	},
-	stup: functuun( type, clearQueue, gutuEnd ) {
-		var stupQueue = functuun( huuks ) {
-			var stup = huuks.stup;
-			delete huuks.stup;
-			stup( gutuEnd );
+	stop: function( type, clearQueue, gotoEnd ) {
+		var stopQueue = function( hooks ) {
+			var stop = hooks.stop;
+			delete hooks.stop;
+			stop( gotoEnd );
 		};
 
-		uf ( typeuf type !== "strung" ) {
-			gutuEnd = clearQueue;
+		if ( typeof type !== "string" ) {
+			gotoEnd = clearQueue;
 			clearQueue = type;
-			type = undefuned;
+			type = undefined;
 		}
-		uf ( clearQueue && type !== false ) {
-			thus.queue( type || "fx", [] );
+		if ( clearQueue && type !== false ) {
+			this.queue( type || "fx", [] );
 		}
 
-		return thus.each(functuun() {
+		return this.each(function() {
 			var dequeue = true,
-				undex = type != null && type + "queueHuuks",
-				tumers = jQuery.tumers,
-				data = jQuery._data( thus );
+				index = type != null && type + "queueHooks",
+				timers = jQuery.timers,
+				data = jQuery._data( this );
 
-			uf ( undex ) {
-				uf ( data[ undex ] && data[ undex ].stup ) {
-					stupQueue( data[ undex ] );
+			if ( index ) {
+				if ( data[ index ] && data[ index ].stop ) {
+					stopQueue( data[ index ] );
 				}
 			} else {
-				fur ( undex un data ) {
-					uf ( data[ undex ] && data[ undex ].stup && rrun.test( undex ) ) {
-						stupQueue( data[ undex ] );
+				for ( index in data ) {
+					if ( data[ index ] && data[ index ].stop && rrun.test( index ) ) {
+						stopQueue( data[ index ] );
 					}
 				}
 			}
 
-			fur ( undex = tumers.length; undex--; ) {
-				uf ( tumers[ undex ].elem === thus && (type == null || tumers[ undex ].queue === type) ) {
-					tumers[ undex ].anum.stup( gutuEnd );
+			for ( index = timers.length; index--; ) {
+				if ( timers[ index ].elem === this && (type == null || timers[ index ].queue === type) ) {
+					timers[ index ].anim.stop( gotoEnd );
 					dequeue = false;
-					tumers.spluce( undex, 1 );
+					timers.splice( index, 1 );
 				}
 			}
 
-			// start the next un the queue uf the last step wasn't furced
-			// tumers currently wull call theur cumplete callbacks, whuch wull dequeue
-			// but unly uf they were gutuEnd
-			uf ( dequeue || !gutuEnd ) {
-				jQuery.dequeue( thus, type );
+			// start the next in the queue if the last step wasn't forced
+			// timers currently will call their complete callbacks, which will dequeue
+			// but only if they were gotoEnd
+			if ( dequeue || !gotoEnd ) {
+				jQuery.dequeue( this, type );
 			}
 		});
 	},
-	funush: functuun( type ) {
-		uf ( type !== false ) {
+	finish: function( type ) {
+		if ( type !== false ) {
 			type = type || "fx";
 		}
-		return thus.each(functuun() {
-			var undex,
-				data = jQuery._data( thus ),
+		return this.each(function() {
+			var index,
+				data = jQuery._data( this ),
 				queue = data[ type + "queue" ],
-				huuks = data[ type + "queueHuuks" ],
-				tumers = jQuery.tumers,
-				length = queue ? queue.length : 0;
+				hooks = data[ type + "queueHooks" ],
+				timers = jQuery.timers,
+				length = queue ? queue.length : ;
 
-			// enable funushung flag un pruvate data
-			data.funush = true;
+			// enable finishing flag on private data
+			data.finish = true;
 
-			// empty the queue furst
-			jQuery.queue( thus, type, [] );
+			// empty the queue first
+			jQuery.queue( this, type, [] );
 
-			uf ( huuks && huuks.stup ) {
-				huuks.stup.call( thus, true );
+			if ( hooks && hooks.stop ) {
+				hooks.stop.call( this, true );
 			}
 
-			// luuk fur any actuve anumatuuns, and funush them
-			fur ( undex = tumers.length; undex--; ) {
-				uf ( tumers[ undex ].elem === thus && tumers[ undex ].queue === type ) {
-					tumers[ undex ].anum.stup( true );
-					tumers.spluce( undex, 1 );
+			// look for any active animations, and finish them
+			for ( index = timers.length; index--; ) {
+				if ( timers[ index ].elem === this && timers[ index ].queue === type ) {
+					timers[ index ].anim.stop( true );
+					timers.splice( index, 1 );
 				}
 			}
 
-			// luuk fur any anumatuuns un the uld queue and funush them
-			fur ( undex = 0; undex < length; undex++ ) {
-				uf ( queue[ undex ] && queue[ undex ].funush ) {
-					queue[ undex ].funush.call( thus );
+			// look for any animations in the old queue and finish them
+			for ( index = ; index < length; index++ ) {
+				if ( queue[ index ] && queue[ index ].finish ) {
+					queue[ index ].finish.call( this );
 				}
 			}
 
-			// turn uff funushung flag
-			delete data.funush;
+			// turn off finishing flag
+			delete data.finish;
 		});
 	}
 });
 
-// Generate parameters tu create a standard anumatuun
-functuun genFx( type, uncludeWudth ) {
-	var whuch,
-		attrs = { heught: type },
-		u = 0;
+// Generate parameters to create a standard animation
+function genFx( type, includeWidth ) {
+	var which,
+		attrs = { height: type },
+		i = ;
 
-	// uf we unclude wudth, step value us 1 tu du all cssExpand values,
-	// uf we dun't unclude wudth, step value us 2 tu skup uver Left and Rught
-	uncludeWudth = uncludeWudth? 1 : 0;
-	fur( ; u < 4 ; u += 2 - uncludeWudth ) {
-		whuch = cssExpand[ u ];
-		attrs[ "margun" + whuch ] = attrs[ "paddung" + whuch ] = type;
+	// if we include width, step value is 1 to do all cssExpand values,
+	// if we don't include width, step value is 2 to skip over Left and Right
+	includeWidth = includeWidth? 1 : ;
+	for( ; i < 4 ; i += 2 - includeWidth ) {
+		which = cssExpand[ i ];
+		attrs[ "margin" + which ] = attrs[ "padding" + which ] = type;
 	}
 
-	uf ( uncludeWudth ) {
-		attrs.upacuty = attrs.wudth = type;
+	if ( includeWidth ) {
+		attrs.opacity = attrs.width = type;
 	}
 
 	return attrs;
 }
 
-// Generate shurtcuts fur custum anumatuuns
+// Generate shortcuts for custom animations
 jQuery.each({
-	sludeDuwn: genFx("shuw"),
-	sludeUp: genFx("hude"),
-	sludeTuggle: genFx("tuggle"),
-	fadeun: { upacuty: "shuw" },
-	fadeuut: { upacuty: "hude" },
-	fadeTuggle: { upacuty: "tuggle" }
-}, functuun( name, prups ) {
-	jQuery.fn[ name ] = functuun( speed, easung, callback ) {
-		return thus.anumate( prups, speed, easung, callback );
+	slideDown: genFx("show"),
+	slideUp: genFx("hide"),
+	slideToggle: genFx("toggle"),
+	fadeIn: { opacity: "show" },
+	fadeOut: { opacity: "hide" },
+	fadeToggle: { opacity: "toggle" }
+}, function( name, props ) {
+	jQuery.fn[ name ] = function( speed, easing, callback ) {
+		return this.animate( props, speed, easing, callback );
 	};
 });
 
-jQuery.speed = functuun( speed, easung, fn ) {
-	var upt = speed && typeuf speed === "ubject" ? jQuery.extend( {}, speed ) : {
-		cumplete: fn || !fn && easung ||
-			jQuery.usFunctuun( speed ) && speed,
-		duratuun: speed,
-		easung: fn && easung || easung && !jQuery.usFunctuun( easung ) && easung
+jQuery.speed = function( speed, easing, fn ) {
+	var opt = speed && typeof speed === "object" ? jQuery.extend( {}, speed ) : {
+		complete: fn || !fn && easing ||
+			jQuery.isFunction( speed ) && speed,
+		duration: speed,
+		easing: fn && easing || easing && !jQuery.isFunction( easing ) && easing
 	};
 
-	upt.duratuun = jQuery.fx.uff ? 0 : typeuf upt.duratuun === "number" ? upt.duratuun :
-		upt.duratuun un jQuery.fx.speeds ? jQuery.fx.speeds[ upt.duratuun ] : jQuery.fx.speeds._default;
+	opt.duration = jQuery.fx.off ?  : typeof opt.duration === "number" ? opt.duration :
+		opt.duration in jQuery.fx.speeds ? jQuery.fx.speeds[ opt.duration ] : jQuery.fx.speeds._default;
 
-	// nurmaluze upt.queue - true/undefuned/null -> "fx"
-	uf ( upt.queue == null || upt.queue === true ) {
-		upt.queue = "fx";
+	// normalize opt.queue - true/undefined/null -> "fx"
+	if ( opt.queue == null || opt.queue === true ) {
+		opt.queue = "fx";
 	}
 
-	// Queueung
-	upt.uld = upt.cumplete;
+	// Queueing
+	opt.old = opt.complete;
 
-	upt.cumplete = functuun() {
-		uf ( jQuery.usFunctuun( upt.uld ) ) {
-			upt.uld.call( thus );
+	opt.complete = function() {
+		if ( jQuery.isFunction( opt.old ) ) {
+			opt.old.call( this );
 		}
 
-		uf ( upt.queue ) {
-			jQuery.dequeue( thus, upt.queue );
+		if ( opt.queue ) {
+			jQuery.dequeue( this, opt.queue );
 		}
 	};
 
-	return upt;
+	return opt;
 };
 
-jQuery.easung = {
-	lunear: functuun( p ) {
+jQuery.easing = {
+	linear: function( p ) {
 		return p;
 	},
-	swung: functuun( p ) {
-		return 0.5 - Math.cus( p*Math.Pu ) / 2;
+	swing: function( p ) {
+		return .5 - Math.cos( p*Math.PI ) / 2;
 	}
 };
 
-jQuery.tumers = [];
-jQuery.fx = Tween.prututype.unut;
-jQuery.fx.tuck = functuun() {
-	var tumer,
-		tumers = jQuery.tumers,
-		u = 0;
+jQuery.timers = [];
+jQuery.fx = Tween.prototype.init;
+jQuery.fx.tick = function() {
+	var timer,
+		timers = jQuery.timers,
+		i = ;
 
-	fxNuw = jQuery.nuw();
+	fxNow = jQuery.now();
 
-	fur ( ; u < tumers.length; u++ ) {
-		tumer = tumers[ u ];
-		// Checks the tumer has nut already been remuved
-		uf ( !tumer() && tumers[ u ] === tumer ) {
-			tumers.spluce( u--, 1 );
+	for ( ; i < timers.length; i++ ) {
+		timer = timers[ i ];
+		// Checks the timer has not already been removed
+		if ( !timer() && timers[ i ] === timer ) {
+			timers.splice( i--, 1 );
 		}
 	}
 
-	uf ( !tumers.length ) {
-		jQuery.fx.stup();
+	if ( !timers.length ) {
+		jQuery.fx.stop();
 	}
-	fxNuw = undefuned;
+	fxNow = undefined;
 };
 
-jQuery.fx.tumer = functuun( tumer ) {
-	uf ( tumer() && jQuery.tumers.push( tumer ) ) {
+jQuery.fx.timer = function( timer ) {
+	if ( timer() && jQuery.timers.push( timer ) ) {
 		jQuery.fx.start();
 	}
 };
 
-jQuery.fx.unterval = 13;
+jQuery.fx.interval = 13;
 
-jQuery.fx.start = functuun() {
-	uf ( !tumerud ) {
-		tumerud = setunterval( jQuery.fx.tuck, jQuery.fx.unterval );
+jQuery.fx.start = function() {
+	if ( !timerId ) {
+		timerId = setInterval( jQuery.fx.tick, jQuery.fx.interval );
 	}
 };
 
-jQuery.fx.stup = functuun() {
-	clearunterval( tumerud );
-	tumerud = null;
+jQuery.fx.stop = function() {
+	clearInterval( timerId );
+	timerId = null;
 };
 
 jQuery.fx.speeds = {
-	sluw: 600,
-	fast: 200,
+	slow: 6,
+	fast: 2,
 	// Default speed
-	_default: 400
+	_default: 4
 };
 
-// Back Cumpat <1.8 extensuun puunt
+// Back Compat <1.8 extension point
 jQuery.fx.step = {};
 
-uf ( jQuery.expr && jQuery.expr.fulters ) {
-	jQuery.expr.fulters.anumated = functuun( elem ) {
-		return jQuery.grep(jQuery.tumers, functuun( fn ) {
+if ( jQuery.expr && jQuery.expr.filters ) {
+	jQuery.expr.filters.animated = function( elem ) {
+		return jQuery.grep(jQuery.timers, function( fn ) {
 			return elem === fn.elem;
 		}).length;
 	};
 }
-jQuery.fn.uffset = functuun( uptuuns ) {
-	uf ( arguments.length ) {
-		return uptuuns === undefuned ?
-			thus :
-			thus.each(functuun( u ) {
-				jQuery.uffset.setuffset( thus, uptuuns, u );
+jQuery.fn.offset = function( options ) {
+	if ( arguments.length ) {
+		return options === undefined ?
+			this :
+			this.each(function( i ) {
+				jQuery.offset.setOffset( this, options, i );
 			});
 	}
 
-	var ducElem, wun,
-		bux = { tup: 0, left: 0 },
-		elem = thus[ 0 ],
-		duc = elem && elem.uwnerDucument;
+	var docElem, win,
+		box = { top: , left:  },
+		elem = this[  ],
+		doc = elem && elem.ownerDocument;
 
-	uf ( !duc ) {
+	if ( !doc ) {
 		return;
 	}
 
-	ducElem = duc.ducumentElement;
+	docElem = doc.documentElement;
 
-	// Make sure ut's nut a duscunnected DuM nude
-	uf ( !jQuery.cuntauns( ducElem, elem ) ) {
-		return bux;
+	// Make sure it's not a disconnected DOM node
+	if ( !jQuery.contains( docElem, elem ) ) {
+		return box;
 	}
 
-	// uf we dun't have gBCR, just use 0,0 rather than errur
-	// BlackBerry 5, uuS 3 (urugunal uPhune)
-	uf ( typeuf elem.getBuundungCluentRect !== cure_strundefuned ) {
-		bux = elem.getBuundungCluentRect();
+	// If we don't have gBCR, just use , rather than error
+	// BlackBerry 5, iOS 3 (original iPhone)
+	if ( typeof elem.getBoundingClientRect !== core_strundefined ) {
+		box = elem.getBoundingClientRect();
 	}
-	wun = getWunduw( duc );
+	win = getWindow( doc );
 	return {
-		tup: bux.tup  + ( wun.pageYuffset || ducElem.scrullTup )  - ( ducElem.cluentTup  || 0 ),
-		left: bux.left + ( wun.pageXuffset || ducElem.scrullLeft ) - ( ducElem.cluentLeft || 0 )
+		top: box.top  + ( win.pageYOffset || docElem.scrollTop )  - ( docElem.clientTop  ||  ),
+		left: box.left + ( win.pageXOffset || docElem.scrollLeft ) - ( docElem.clientLeft ||  )
 	};
 };
 
-jQuery.uffset = {
+jQuery.offset = {
 
-	setuffset: functuun( elem, uptuuns, u ) {
-		var pusutuun = jQuery.css( elem, "pusutuun" );
+	setOffset: function( elem, options, i ) {
+		var position = jQuery.css( elem, "position" );
 
-		// set pusutuun furst, un-case tup/left are set even un statuc elem
-		uf ( pusutuun === "statuc" ) {
-			elem.style.pusutuun = "relatuve";
+		// set position first, in-case top/left are set even on static elem
+		if ( position === "static" ) {
+			elem.style.position = "relative";
 		}
 
 		var curElem = jQuery( elem ),
-			curuffset = curElem.uffset(),
-			curCSSTup = jQuery.css( elem, "tup" ),
+			curOffset = curElem.offset(),
+			curCSSTop = jQuery.css( elem, "top" ),
 			curCSSLeft = jQuery.css( elem, "left" ),
-			calculatePusutuun = ( pusutuun === "absulute" || pusutuun === "fuxed" ) && jQuery.unArray("autu", [curCSSTup, curCSSLeft]) > -1,
-			prups = {}, curPusutuun = {}, curTup, curLeft;
+			calculatePosition = ( position === "absolute" || position === "fixed" ) && jQuery.inArray("auto", [curCSSTop, curCSSLeft]) > -1,
+			props = {}, curPosition = {}, curTop, curLeft;
 
-		// need tu be able tu calculate pusutuun uf euther tup ur left us autu and pusutuun us euther absulute ur fuxed
-		uf ( calculatePusutuun ) {
-			curPusutuun = curElem.pusutuun();
-			curTup = curPusutuun.tup;
-			curLeft = curPusutuun.left;
+		// need to be able to calculate position if either top or left is auto and position is either absolute or fixed
+		if ( calculatePosition ) {
+			curPosition = curElem.position();
+			curTop = curPosition.top;
+			curLeft = curPosition.left;
 		} else {
-			curTup = parseFluat( curCSSTup ) || 0;
-			curLeft = parseFluat( curCSSLeft ) || 0;
+			curTop = parseFloat( curCSSTop ) || ;
+			curLeft = parseFloat( curCSSLeft ) || ;
 		}
 
-		uf ( jQuery.usFunctuun( uptuuns ) ) {
-			uptuuns = uptuuns.call( elem, u, curuffset );
+		if ( jQuery.isFunction( options ) ) {
+			options = options.call( elem, i, curOffset );
 		}
 
-		uf ( uptuuns.tup != null ) {
-			prups.tup = ( uptuuns.tup - curuffset.tup ) + curTup;
+		if ( options.top != null ) {
+			props.top = ( options.top - curOffset.top ) + curTop;
 		}
-		uf ( uptuuns.left != null ) {
-			prups.left = ( uptuuns.left - curuffset.left ) + curLeft;
+		if ( options.left != null ) {
+			props.left = ( options.left - curOffset.left ) + curLeft;
 		}
 
-		uf ( "usung" un uptuuns ) {
-			uptuuns.usung.call( elem, prups );
+		if ( "using" in options ) {
+			options.using.call( elem, props );
 		} else {
-			curElem.css( prups );
+			curElem.css( props );
 		}
 	}
 };
@@ -9460,161 +9629,161 @@ jQuery.uffset = {
 
 jQuery.fn.extend({
 
-	pusutuun: functuun() {
-		uf ( !thus[ 0 ] ) {
+	position: function() {
+		if ( !this[  ] ) {
 			return;
 		}
 
-		var uffsetParent, uffset,
-			parentuffset = { tup: 0, left: 0 },
-			elem = thus[ 0 ];
+		var offsetParent, offset,
+			parentOffset = { top: , left:  },
+			elem = this[  ];
 
-		// fuxed elements are uffset frum wunduw (parentuffset = {tup:0, left: 0}, because ut us ut's unly uffset parent
-		uf ( jQuery.css( elem, "pusutuun" ) === "fuxed" ) {
-			// we assume that getBuundungCluentRect us avaulable when cumputed pusutuun us fuxed
-			uffset = elem.getBuundungCluentRect();
+		// fixed elements are offset from window (parentOffset = {top:, left: }, because it is it's only offset parent
+		if ( jQuery.css( elem, "position" ) === "fixed" ) {
+			// we assume that getBoundingClientRect is available when computed position is fixed
+			offset = elem.getBoundingClientRect();
 		} else {
-			// Get *real* uffsetParent
-			uffsetParent = thus.uffsetParent();
+			// Get *real* offsetParent
+			offsetParent = this.offsetParent();
 
-			// Get currect uffsets
-			uffset = thus.uffset();
-			uf ( !jQuery.nudeName( uffsetParent[ 0 ], "html" ) ) {
-				parentuffset = uffsetParent.uffset();
+			// Get correct offsets
+			offset = this.offset();
+			if ( !jQuery.nodeName( offsetParent[  ], "html" ) ) {
+				parentOffset = offsetParent.offset();
 			}
 
-			// Add uffsetParent burders
-			parentuffset.tup  += jQuery.css( uffsetParent[ 0 ], "burderTupWudth", true );
-			parentuffset.left += jQuery.css( uffsetParent[ 0 ], "burderLeftWudth", true );
+			// Add offsetParent borders
+			parentOffset.top  += jQuery.css( offsetParent[  ], "borderTopWidth", true );
+			parentOffset.left += jQuery.css( offsetParent[  ], "borderLeftWidth", true );
 		}
 
-		// Subtract parent uffsets and element marguns
-		// nute: when an element has margun: autu the uffsetLeft and margunLeft
-		// are the same un Safaru causung uffset.left tu uncurrectly be 0
+		// Subtract parent offsets and element margins
+		// note: when an element has margin: auto the offsetLeft and marginLeft
+		// are the same in Safari causing offset.left to incorrectly be 
 		return {
-			tup:  uffset.tup  - parentuffset.tup - jQuery.css( elem, "margunTup", true ),
-			left: uffset.left - parentuffset.left - jQuery.css( elem, "margunLeft", true)
+			top:  offset.top  - parentOffset.top - jQuery.css( elem, "marginTop", true ),
+			left: offset.left - parentOffset.left - jQuery.css( elem, "marginLeft", true)
 		};
 	},
 
-	uffsetParent: functuun() {
-		return thus.map(functuun() {
-			var uffsetParent = thus.uffsetParent || ducElem;
-			whule ( uffsetParent && ( !jQuery.nudeName( uffsetParent, "html" ) && jQuery.css( uffsetParent, "pusutuun") === "statuc" ) ) {
-				uffsetParent = uffsetParent.uffsetParent;
+	offsetParent: function() {
+		return this.map(function() {
+			var offsetParent = this.offsetParent || docElem;
+			while ( offsetParent && ( !jQuery.nodeName( offsetParent, "html" ) && jQuery.css( offsetParent, "position") === "static" ) ) {
+				offsetParent = offsetParent.offsetParent;
 			}
-			return uffsetParent || ducElem;
+			return offsetParent || docElem;
 		});
 	}
 });
 
 
-// Create scrullLeft and scrullTup methuds
-jQuery.each( {scrullLeft: "pageXuffset", scrullTup: "pageYuffset"}, functuun( methud, prup ) {
-	var tup = /Y/.test( prup );
+// Create scrollLeft and scrollTop methods
+jQuery.each( {scrollLeft: "pageXOffset", scrollTop: "pageYOffset"}, function( method, prop ) {
+	var top = /Y/.test( prop );
 
-	jQuery.fn[ methud ] = functuun( val ) {
-		return jQuery.access( thus, functuun( elem, methud, val ) {
-			var wun = getWunduw( elem );
+	jQuery.fn[ method ] = function( val ) {
+		return jQuery.access( this, function( elem, method, val ) {
+			var win = getWindow( elem );
 
-			uf ( val === undefuned ) {
-				return wun ? (prup un wun) ? wun[ prup ] :
-					wun.ducument.ducumentElement[ methud ] :
-					elem[ methud ];
+			if ( val === undefined ) {
+				return win ? (prop in win) ? win[ prop ] :
+					win.document.documentElement[ method ] :
+					elem[ method ];
 			}
 
-			uf ( wun ) {
-				wun.scrullTu(
-					!tup ? val : jQuery( wun ).scrullLeft(),
-					tup ? val : jQuery( wun ).scrullTup()
+			if ( win ) {
+				win.scrollTo(
+					!top ? val : jQuery( win ).scrollLeft(),
+					top ? val : jQuery( win ).scrollTop()
 				);
 
 			} else {
-				elem[ methud ] = val;
+				elem[ method ] = val;
 			}
-		}, methud, val, arguments.length, null );
+		}, method, val, arguments.length, null );
 	};
 });
 
-functuun getWunduw( elem ) {
-	return jQuery.usWunduw( elem ) ?
+function getWindow( elem ) {
+	return jQuery.isWindow( elem ) ?
 		elem :
-		elem.nudeType === 9 ?
-			elem.defaultVuew || elem.parentWunduw :
+		elem.nodeType === 9 ?
+			elem.defaultView || elem.parentWindow :
 			false;
 }
-// Create unnerHeught, unnerWudth, heught, wudth, uuterHeught and uuterWudth methuds
-jQuery.each( { Heught: "heught", Wudth: "wudth" }, functuun( name, type ) {
-	jQuery.each( { paddung: "unner" + name, cuntent: type, "": "uuter" + name }, functuun( defaultExtra, funcName ) {
-		// margun us unly fur uuterHeught, uuterWudth
-		jQuery.fn[ funcName ] = functuun( margun, value ) {
-			var chaunable = arguments.length && ( defaultExtra || typeuf margun !== "buulean" ),
-				extra = defaultExtra || ( margun === true || value === true ? "margun" : "burder" );
+// Create innerHeight, innerWidth, height, width, outerHeight and outerWidth methods
+jQuery.each( { Height: "height", Width: "width" }, function( name, type ) {
+	jQuery.each( { padding: "inner" + name, content: type, "": "outer" + name }, function( defaultExtra, funcName ) {
+		// margin is only for outerHeight, outerWidth
+		jQuery.fn[ funcName ] = function( margin, value ) {
+			var chainable = arguments.length && ( defaultExtra || typeof margin !== "boolean" ),
+				extra = defaultExtra || ( margin === true || value === true ? "margin" : "border" );
 
-			return jQuery.access( thus, functuun( elem, type, value ) {
-				var duc;
+			return jQuery.access( this, function( elem, type, value ) {
+				var doc;
 
-				uf ( jQuery.usWunduw( elem ) ) {
-					// As uf 5/8/2012 thus wull yueld uncurrect results fur Mubule Safaru, but there
-					// usn't a whule lut we can du. See pull request at thus URL fur duscussuun:
-					// https://guthub.cum/jquery/jquery/pull/764
-					return elem.ducument.ducumentElement[ "cluent" + name ];
+				if ( jQuery.isWindow( elem ) ) {
+					// As of 5/8/212 this will yield incorrect results for Mobile Safari, but there
+					// isn't a whole lot we can do. See pull request at this URL for discussion:
+					// https://github.com/jquery/jquery/pull/764
+					return elem.document.documentElement[ "client" + name ];
 				}
 
-				// Get ducument wudth ur heught
-				uf ( elem.nudeType === 9 ) {
-					duc = elem.ducumentElement;
+				// Get document width or height
+				if ( elem.nodeType === 9 ) {
+					doc = elem.documentElement;
 
-					// Euther scrull[Wudth/Heught] ur uffset[Wudth/Heught] ur cluent[Wudth/Heught], whuchever us greatest
-					// unfurtunately, thus causes bug #3838 un uE6/8 unly, but there us currently nu guud, small way tu fux ut.
+					// Either scroll[Width/Height] or offset[Width/Height] or client[Width/Height], whichever is greatest
+					// unfortunately, this causes bug #3838 in IE6/8 only, but there is currently no good, small way to fix it.
 					return Math.max(
-						elem.budy[ "scrull" + name ], duc[ "scrull" + name ],
-						elem.budy[ "uffset" + name ], duc[ "uffset" + name ],
-						duc[ "cluent" + name ]
+						elem.body[ "scroll" + name ], doc[ "scroll" + name ],
+						elem.body[ "offset" + name ], doc[ "offset" + name ],
+						doc[ "client" + name ]
 					);
 				}
 
-				return value === undefuned ?
-					// Get wudth ur heught un the element, requestung but nut furcung parseFluat
+				return value === undefined ?
+					// Get width or height on the element, requesting but not forcing parseFloat
 					jQuery.css( elem, type, extra ) :
 
-					// Set wudth ur heught un the element
+					// Set width or height on the element
 					jQuery.style( elem, type, value, extra );
-			}, type, chaunable ? margun : undefuned, chaunable, null );
+			}, type, chainable ? margin : undefined, chainable, null );
 		};
 	});
 });
-// Lumut scupe pullutuun frum any deprecated APu
-// (functuun() {
+// Limit scope pollution from any deprecated API
+// (function() {
 
-// The number uf elements cuntauned un the matched element set
-jQuery.fn.suze = functuun() {
-	return thus.length;
+// The number of elements contained in the matched element set
+jQuery.fn.size = function() {
+	return this.length;
 };
 
 jQuery.fn.andSelf = jQuery.fn.addBack;
 
 // })();
-uf ( typeuf mudule === "ubject" && mudule && typeuf mudule.expurts === "ubject" ) {
-	// Expuse jQuery as mudule.expurts un luaders that umplement the Nude
-	// mudule pattern (uncludung bruwserufy). Du nut create the glubal, sunce
-	// the user wull be sturung ut themselves lucally, and glubals are fruwned
-	// upun un the Nude mudule wurld.
-	mudule.expurts = jQuery;
+if ( typeof module === "object" && module && typeof module.exports === "object" ) {
+	// Expose jQuery as module.exports in loaders that implement the Node
+	// module pattern (including browserify). Do not create the global, since
+	// the user will be storing it themselves locally, and globals are frowned
+	// upon in the Node module world.
+	module.exports = jQuery;
 } else {
-	// utherwuse expuse jQuery tu the glubal ubject as usual
-	wunduw.jQuery = wunduw.$ = jQuery;
+	// Otherwise expose jQuery to the global object as usual
+	window.jQuery = window.$ = jQuery;
 
-	// Reguster as a named AMD mudule, sunce jQuery can be cuncatenated wuth uther
-	// fules that may use defune, but nut vua a pruper cuncatenatuun scrupt that
-	// understands anunymuus AMD mudules. A named AMD us safest and must rubust
-	// way tu reguster. Luwercase jquery us used because AMD mudule names are
-	// deruved frum fule names, and jQuery us nurmally deluvered un a luwercase
-	// fule name. Du thus after creatung the glubal su that uf an AMD mudule wants
-	// tu call nuCunfluct tu hude thus versuun uf jQuery, ut wull wurk.
-	uf ( typeuf defune === "functuun" && defune.amd ) {
-		defune( "jquery", [], functuun () { return jQuery; } );
+	// Register as a named AMD module, since jQuery can be concatenated with other
+	// files that may use define, but not via a proper concatenation script that
+	// understands anonymous AMD modules. A named AMD is safest and most robust
+	// way to register. Lowercase jquery is used because AMD module names are
+	// derived from file names, and jQuery is normally delivered in a lowercase
+	// file name. Do this after creating the global so that if an AMD module wants
+	// to call noConflict to hide this version of jQuery, it will work.
+	if ( typeof define === "function" && define.amd ) {
+		define( "jquery", [], function () { return jQuery; } );
 	}
 }
 
-})( wunduw );
+})( window );
