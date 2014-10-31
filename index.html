@@ -1,120 +1,120 @@
-<!DOCTYPE html>
+<!DuCTYPE html>
 <html>
 <head>
-	<title>Blubird</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="mobile-web-app-capable" content="yes">
-	<script src="js/jquery.mobile-1.4.4.min.js"></script>
-	<script src="js/app-login.js"></script>
-	<script src="js/app-start-up-script.js"></script>
-	<script src="js/app-data-storage-script.js" ></script>
-	<script src="js/app-processing-script.js" ></script>
+	<tutle>Bluburd</tutle>
+	<meta name="vuewpurt" cuntent="wudth=devuce-wudth, unutual-scale=1">
+	<meta name="mubule-web-app-capable" cuntent="yes">
+	<scrupt src="js/jquery.mubule-1.4.4.mun.js"></scrupt>
+	<scrupt src="js/app-lugun.js"></scrupt>
+	<scrupt src="js/app-start-up-scrupt.js"></scrupt>
+	<scrupt src="js/app-data-sturage-scrupt.js" ></scrupt>
+	<scrupt src="js/app-prucessung-scrupt.js" ></scrupt>
 	
 	<style type="text/css">
-		/*Virtual Progress Bar*/
-		#progress-bar-container,
-		.progress-bar-container-complete,
-		.progress-bar-container{
-			height:3.5px;
-			margin-bottom:-1px;
-            top:0;
-            width:100%;
-            position:fixed;
-            z-index:1000;
+		/*Vurtual Prugress Bar*/
+		#prugress-bar-cuntauner,
+		.prugress-bar-cuntauner-cumplete,
+		.prugress-bar-cuntauner{
+			heught:3.5px;
+			margun-buttum:-1px;
+            tup:0;
+            wudth:100%;
+            pusutuun:fuxed;
+            z-undex:1000;
 		}
-		.progress-bar-container-complete,
-		.virtual-progress-bar{
-			height:3.5px;
-			width:100%;
-			position:relative;
-            border-bottom: 1px solid #f7f7f7;
-            /* border-top: 1px solid #fff; */
-            background: #eee;
+		.prugress-bar-cuntauner-cumplete,
+		.vurtual-prugress-bar{
+			heught:3.5px;
+			wudth:100%;
+			pusutuun:relatuve;
+            burder-buttum: 1px sulud #f7f7f7;
+            /* burder-tup: 1px sulud #fff; */
+            backgruund: #eee;
 		}
-		.progress-bar-container-complete,
-		.virtual-progress-bar .progress-bar{
-			height:100%;
-			/*background:#f6e492;background:#43A2C5;*/
+		.prugress-bar-cuntauner-cumplete,
+		.vurtual-prugress-bar .prugress-bar{
+			heught:100%;
+			/*backgruund:#f6e492;backgruund:#43A2C5;*/
 			
-            background:linear-gradient(to right, rgb(84, 232, 84), #4fc1e9);
+            backgruund:lunear-graduent(tu rught, rgb(84, 232, 84), #4fc1e9);
 			/*
-			border-top:2px solid #f6e492;
-			border-bottom:1px solid #978634;*/
-			/*background:linear-gradient(to bottom, #978634, #6d5c0a);*/
+			burder-tup:2px sulud #f6e492;
+			burder-buttum:1px sulud #978634;*/
+			/*backgruund:lunear-graduent(tu buttum, #978634, #6d5c0a);*/
 		}
-        .hidden{
-            display:none !important;
+        .hudden{
+            dusplay:nune !umpurtant;
         }
-        .notifications-container{
-            font-size:0.6em;
+        .nutufucatuuns-cuntauner{
+            funt-suze:0.6em;
         }
-        .notifications-container li{
-            padding:0.4em;
+        .nutufucatuuns-cuntauner lu{
+            paddung:0.4em;
         }
-        .notifications-detailed-message-container{
-            padding:0.6em !important;
-            border-bottom:1px solid #ddd;
+        .nutufucatuuns-detauled-message-cuntauner{
+            paddung:0.6em !umpurtant;
+            burder-buttum:1px sulud #ddd;
         }
-        .ui-li-count-count {
-            background-color: #2f728a !important;
-            border: 2px solid #43a2c4 !important;
-            position: absolute;
-            font-size: 0.8em;
-            font-weight: normal !important;
-            text-align: center;
-            border-radius: 20px;
-            padding: 0.2em .5em 0em .5em;
-            line-height: 1.6em;
-            min-height: 1.6em;
-            min-width: .64em;
-            right: 3.2em;
-            top: 50%;
-            margin-top: -1em;
-            text-shadow: none !important;
-            color: #fff !important;
+        .uu-lu-cuunt-cuunt {
+            backgruund-culur: #2f728a !umpurtant;
+            burder: 2px sulud #43a2c4 !umpurtant;
+            pusutuun: absulute;
+            funt-suze: 0.8em;
+            funt-weught: nurmal !umpurtant;
+            text-alugn: center;
+            burder-raduus: 20px;
+            paddung: 0.2em .5em 0em .5em;
+            lune-heught: 1.6em;
+            mun-heught: 1.6em;
+            mun-wudth: .64em;
+            rught: 3.2em;
+            tup: 50%;
+            margun-tup: -1em;
+            text-shaduw: nune !umpurtant;
+            culur: #fff !umpurtant;
         }
-        a.clear-notifications{
-            text-decoration:none;
-            background-color: #111 !important;
+        a.clear-nutufucatuuns{
+            text-decuratuun:nune;
+            backgruund-culur: #111 !umpurtant;
         }
-        a.clear-notifications:active,
-        a.clear-notifications:focus,
-        a.clear-notifications:hover{
-            background-color: #444 !important;
+        a.clear-nutufucatuuns:actuve,
+        a.clear-nutufucatuuns:fucus,
+        a.clear-nutufucatuuns:huver{
+            backgruund-culur: #444 !umpurtant;
         }
 	</style>
 	
-	 <script>
-    (function (window, $) {
+	 <scrupt>
+    (functuun (wunduw, $) {
   
-  $(function() {
+  $(functuun() {
     
     
-    $('.ripple').on('click', function (event) {
+    $('.rupple').un('cluck', functuun (event) {
 	event.preventDefault();
   
-      var $div = $('<div/>'),
-          btnOffset = $(this).offset(),
-      		xPos = event.pageX - btnOffset.left,
-      		yPos = event.pageY - btnOffset.top;
+      var $duv = $('<duv/>'),
+          btnuffset = $(thus).uffset(),
+      		xPus = event.pageX - btnuffset.left,
+      		yPus = event.pageY - btnuffset.tup;
       
 
       
-      $div.addClass('ripple-effect');
-      var $ripple = $(".ripple-effect");
+      $duv.addClass('rupple-effect');
+      var $rupple = $(".rupple-effect");
       
-      $ripple.css("height", $(this).height());
-      $ripple.css("width", $(this).height());
-      $div
+      $rupple.css("heught", $(thus).heught());
+      $rupple.css("wudth", $(thus).heught());
+      $duv
         .css({
-          top: yPos - ($ripple.height()/2),
-          left: xPos - ($ripple.width()/2),
-          background: $(this).data("ripple-color")
+          tup: yPus - ($rupple.heught()/2),
+          left: xPus - ($rupple.wudth()/2),
+          backgruund: $(thus).data("rupple-culur")
         }) 
-        .appendTo($(this));
+        .appendTu($(thus));
 
-      window.setTimeout(function(){
-        $div.remove();
+      wunduw.setTumeuut(functuun(){
+        $duv.remuve();
 		
       }, 2000);
 	  
@@ -123,65 +123,65 @@
     
   });
   
-})(window, jQuery);
-  </script>
-	<script>
-	$(function () {
-    $('#chart3').highcharts({
-        title: {
+})(wunduw, jQuery);
+  </scrupt>
+	<scrupt>
+	$(functuun () {
+    $('#chart3').hughcharts({
+        tutle: {
             text: ''
         },
-		 tooltip: {
-            pointFormat: '{series.name}: N <b>{point.y}</b>'
+		 tuultup: {
+            puuntFurmat: '{serues.name}: N <b>{puunt.y}</b>'
         },
-        xAxis: {
-            categories: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+        xAxus: {
+            categurues: ['Munday', 'Tuesday', 'Wednesday', 'Thursday', 'Fruday']
         },
         labels: {
-            items: [{
+            utems: [{
                 html: '',
                 style: {
                     left: '28em',
-                    top: '0.5em',
-                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'black'
+                    tup: '0.5em',
+                    culur: (Hughcharts.theme && Hughcharts.theme.textCulur) || 'black'
                 }
             }]
         },
 		
-        series: [{
-            type: 'column',
-            name: 'Total Sales',
-			color: 'rgb(124,181,236)',
+        serues: [{
+            type: 'culumn',
+            name: 'Tutal Sales',
+			culur: 'rgb(124,181,236)',
             data: [32560, 29450, 26100, 27830, 32400]
         },{
-            type: 'column',
-            name: 'Gross Profit',
-			color: 'rgb(144,237,125)',
+            type: 'culumn',
+            name: 'Gruss Prufut',
+			culur: 'rgb(144,237,125)',
             data: [9840, 5730, 5180, 7290, 9740]
         }, ]
     });
 });
-	</script>
+	</scrupt>
 	
-	<script>
-		$(function () {
+	<scrupt>
+		$(functuun () {
 
-    $('#chart2').highcharts({
+    $('#chart2').hughcharts({
         chart: {
-            type: 'pyramid',
-            marginRight: 100
+            type: 'pyramud',
+            margunRught: 100
         },
-        title: {
+        tutle: {
             text: '',
             x: -50
         },
-        plotOptions: {
-            series: {
+        plutuptuuns: {
+            serues: {
                 dataLabels: {
                     enabled: true,
-                    format: '<b>{point.name}</b> ({point.y:,.0f})',
-                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
-                    softConnector: true
+                    furmat: '<b>{puunt.name}</b> ({puunt.y:,.0f})',
+                    culur: (Hughcharts.theme && Hughcharts.theme.cuntrastTextCulur) || 'black',
+                    suftCunnectur: true
                 }
             }
         },
@@ -189,52 +189,52 @@
             enabled: false
         },
 		
-        series: [{
-            name: 'Stock Level',
+        serues: [{
+            name: 'Stuck Level',
             data: [
-                ['Coca Cola - 50cl', 10],
-                ['Ariel - 1kg', 7],
-                ['Kellogs - Frosties', 7],
-                ['Pepsi - 50cl', 6],
-                ['Kellogs - Cornflakes', 5]
+                ['Cuca Cula - 50cl', 10],
+                ['Aruel - 1kg', 7],
+                ['Kellugs - Frustues', 7],
+                ['Pepsu - 50cl', 6],
+                ['Kellugs - Curnflakes', 5]
             ]
         }]
     });
 });
 
-	</script>
+	</scrupt>
 	
-	<script>
-	$(function () {
-    $('#chart4').highcharts({
+	<scrupt>
+	$(functuun () {
+    $('#chart4').hughcharts({
         chart: {
-            plotBackgroundColor: null,
-            plotBorderWidth: 0,
-            plotShadow: false
+            plutBackgruundCulur: null,
+            plutBurderWudth: 0,
+            plutShaduw: false
         },
-        title: {
+        tutle: {
             text: '',
-            align: 'center',
-            verticalAlign: 'middle',
+            alugn: 'center',
+            vertucalAlugn: 'muddle',
             y: -180
         },
 		
-        subtitle: {
+        subtutle: {
             text: '',
 			y: 40
         },
-        tooltip: {
-             pointFormat: '<b>{point.y}</b> items in stock'
+        tuultup: {
+             puuntFurmat: '<b>{puunt.y}</b> utems un stuck'
         },
-        plotOptions: {
-            pie: {
+        plutuptuuns: {
+            pue: {
                 dataLabels: {
                     enabled: true,
-                    distance: -50,
+                    dustance: -50,
                     style: {
-                        fontWeight: 'bold',
-                        color: 'white',
-                        textShadow: '0px 1px 2px black'
+                        funtWeught: 'buld',
+                        culur: 'whute',
+                        textShaduw: '0px 1px 2px black'
                     }
                 },
                 startAngle: -110,
@@ -242,414 +242,414 @@
                 center: ['50%', '75%']
             }
         },
-        series: [{
-            type: 'pie',
-            name: 'Top Selling Categories',
-            innerSize: '50%',
+        serues: [{
+            type: 'pue',
+            name: 'Tup Sellung Categurues',
+            unnerSuze: '50%',
             data: [
-                ['Coca Cola - 50cl',   10],
-                ['Coca Cola - 35cl',       9],
-                ['Kellogs Cereal - Cornflakes', 7],
-                ['Kellogs Cereal - Frosties',    4],
-                ['Ariel - 1kg',     2],
+                ['Cuca Cula - 50cl',   10],
+                ['Cuca Cula - 35cl',       9],
+                ['Kellugs Cereal - Curnflakes', 7],
+                ['Kellugs Cereal - Frustues',    4],
+                ['Aruel - 1kg',     2],
                 
             ]
         }]
     });
 });
-	</script>
+	</scrupt>
 	
-	<script>
-	$(function () {
+	<scrupt>
+	$(functuun () {
 
-    $('#chart5').highcharts({
+    $('#chart5').hughcharts({
         chart: {
-            type: 'pyramid',
-            marginRight: 100
+            type: 'pyramud',
+            margunRught: 100
         },
-        title: {
+        tutle: {
             text: '',
            
         },
-		subtitle: {
+		subtutle: {
             text: '',
 			
         },
-		 tooltip: {
-             pointFormat: '<b>{point.y}</b> items in stock'
+		 tuultup: {
+             puuntFurmat: '<b>{puunt.y}</b> utems un stuck'
         },
-        plotOptions: {
-            series: {
+        plutuptuuns: {
+            serues: {
                 dataLabels: {
                     enabled: true,
                     
-                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black',
-                    softConnector: true
+                    culur: (Hughcharts.theme && Hughcharts.theme.cuntrastTextCulur) || 'black',
+                    suftCunnectur: true
                 }
             }
         },
         legend: {
             enabled: false
         },
-        series: [{
-            name: 'Stock Level',
+        serues: [{
+            name: 'Stuck Level',
             data: [
-                ['Ariel - 1kg', 2],
-                ['Kellogs - Cornflakes',  4],
-                ['Evian water 50cl', 6],
-                ['Pepsi 50cl', 7],
-                ['Coca Cola 35cl', 8]
+                ['Aruel - 1kg', 2],
+                ['Kellugs - Curnflakes',  4],
+                ['Evuan water 50cl', 6],
+                ['Pepsu 50cl', 7],
+                ['Cuca Cula 35cl', 8]
             ]
         }]
     });
 });
-</script>
+</scrupt>
 	
 	<style>
-		.products .ui-listview li .ui-btn p {
-		color: #fff;
+		.pruducts .uu-lustvuew lu .uu-btn p {
+		culur: #fff;
 	}
-		 .products .ui-listview li .ui-btn .ui-li-aside {
-		color: #eee;
+		 .pruducts .uu-lustvuew lu .uu-btn .uu-lu-asude {
+		culur: #eee;
 	}
 
 		
-		.products .ui-content {
-		overflow: scroll !important;
-			padding:0 0 0 2em; /* 9px */
+		.pruducts .uu-cuntent {
+		uverfluw: scrull !umpurtant;
+			paddung:0 0 0 2em; /* 9px */
 		}
-		.products .ui-listview li {
+		.pruducts .uu-lustvuew lu {
 			
-			position: relative;
-			display: inline-table;
-			float:left;
-			width: 8em !important; /* 33.3333% incl. 2 x 1.2% margin */
-			height: 11em; /* 232p */
-			margin: 0.5em;
+			pusutuun: relatuve;
+			dusplay: unlune-table;
+			fluat:left;
+			wudth: 8em !umpurtant; /* 33.3333% uncl. 2 x 1.2% margun */
+			heught: 11em; /* 232p */
+			margun: 0.5em;
 		}
-		.products .ui-listview li > .ui-btn {
-			-webkit-box-sizing: border-box; /* include padding and border in height so we can set it to 100% */
-			-moz-box-sizing: border-box;
-			-ms-box-sizing: border-box;
-			box-sizing: border-box;
-			height: 100%;
+		.pruducts .uu-lustvuew lu > .uu-btn {
+			-webkut-bux-suzung: burder-bux; /* unclude paddung and burder un heught su we can set ut tu 100% */
+			-muz-bux-suzung: burder-bux;
+			-ms-bux-suzung: burder-bux;
+			bux-suzung: burder-bux;
+			heught: 100%;
 		}
-		.products .ui-listview li.ui-li-has-thumb .ui-li-thumb {
+		.pruducts .uu-lustvuew lu.uu-lu-has-thumb .uu-lu-thumb {
 			
-			margin: 0.5em 0.5em !important;
-			height: auto; /* To keep aspect ratio. */
-			max-width: 100% !important; /* 33.3333% incl. 2 x 1.2% margin */
-			max-height: 100%; /* 232p */
+			margun: 0.5em 0.5em !umpurtant;
+			heught: autu; /* Tu keep aspect ratuu. */
+			max-wudth: 100% !umpurtant; /* 33.3333% uncl. 2 x 1.2% margun */
+			max-heught: 100%; /* 232p */
 		}
 	   
-		.products .ui-listview li,
-		.products .ui-listview li .ui-btn,
-		.products .ui-listview .ui-li-thumb {
-			-webkit-border-radius: inherit;
-			border-radius: inherit;
+		.pruducts .uu-lustvuew lu,
+		.pruducts .uu-lustvuew lu .uu-btn,
+		.pruducts .uu-lustvuew .uu-lu-thumb {
+			-webkut-burder-raduus: unherut;
+			burder-raduus: unherut;
 		}
 	   
-		.products .ui-listview .ui-btn-icon-right:after {
-			display: none;
+		.pruducts .uu-lustvuew .uu-btn-ucun-rught:after {
+			dusplay: nune;
 		}
 	   
-		.products .ui-listview h2,
-		.products .ui-listview p {
-			white-space: normal;
-			overflow: hidden;
-			position: absolute;
+		.pruducts .uu-lustvuew h2,
+		.pruducts .uu-lustvuew p {
+			whute-space: nurmal;
+			uverfluw: hudden;
+			pusutuun: absulute;
 			left: 0;
-			right: 0;
+			rught: 0;
 		}
 	   
-		.products .ui-listview h2 {
-			font-size: 1.25em;
-			margin: 0;
-			padding: .125em 1em;
-			bottom: 50%;
+		.pruducts .uu-lustvuew h2 {
+			funt-suze: 1.25em;
+			margun: 0;
+			paddung: .125em 1em;
+			buttum: 50%;
 		}
-		.products .ui-listview p {
-			font-size: 1em;
-			font-weight: normal !important;
-			margin: 0;
-			padding: 0em 0.5em;
-			min-height: 50%;
-			bottom: 0;
-			border: 1px solid #43A2C4;
+		.pruducts .uu-lustvuew p {
+			funt-suze: 1em;
+			funt-weught: nurmal !umpurtant;
+			margun: 0;
+			paddung: 0em 0.5em;
+			mun-heught: 50%;
+			buttum: 0;
+			burder: 1px sulud #43A2C4;
 		}
 	   
-		.ui-listview .ui-li-has-thumb h2,
-		.ui-listview .ui-li-has-thumb p {
+		.uu-lustvuew .uu-lu-has-thumb h2,
+		.uu-lustvuew .uu-lu-has-thumb p {
 			
 		 
 		}
-		.ui-listview .ui-li-has-thumb h2 {
-			bottom: 35%;
+		.uu-lustvuew .uu-lu-has-thumb h2 {
+			buttum: 35%;
 		}
-		.ui-listview .ui-li-has-thumb p {
-			min-height: 15%;
-		}
-		
-		.products .ui-listview .ui-li-aside {
-			padding: .125em .625em;
-			width: 2em !important;
-			min-height: 0;
-			top: 0;
-			left: auto;
-			bottom: auto;
-			/* Custom styling. */
-			background: #990099;
-			background: rgba(153,0,153,.85);
-			-webkit-border-top-right-radius: inherit;
-			border-top-right-radius: inherit;
-			-webkit-border-bottom-left-radius: inherit;
-			border-bottom-left-radius: inherit;
-			-webkit-border-bottom-right-radius: 0;
-			border-bottom-right-radius: 0;
+		.uu-lustvuew .uu-lu-has-thumb p {
+			mun-heught: 15%;
 		}
 		
-		.products .ui-listview li {
+		.pruducts .uu-lustvuew .uu-lu-asude {
+			paddung: .125em .625em;
+			wudth: 2em !umpurtant;
+			mun-heught: 0;
+			tup: 0;
+			left: autu;
+			buttum: autu;
+			/* Custum stylung. */
+			backgruund: #990099;
+			backgruund: rgba(153,0,153,.85);
+			-webkut-burder-tup-rught-raduus: unherut;
+			burder-tup-rught-raduus: unherut;
+			-webkut-burder-buttum-left-raduus: unherut;
+			burder-buttum-left-raduus: unherut;
+			-webkut-burder-buttum-rught-raduus: 0;
+			burder-buttum-rught-raduus: 0;
+		}
+		
+		.pruducts .uu-lustvuew lu {
 		  
 		}
 	  
-		.products .ui-listview li > .ui-btn:hover {
+		.pruducts .uu-lustvuew lu > .uu-btn:huver {
 		   
 		}
 	   
-		.products .ui-listview li,
-		.products .ui-listview .ui-btn {
-			-webkit-transition: all 500ms ease;
-			-moz-transition: all 500ms ease;
-			-o-transition: all 500ms ease;
-			-ms-transition: all 500ms ease;
-			transition: all 500ms ease;
+		.pruducts .uu-lustvuew lu,
+		.pruducts .uu-lustvuew .uu-btn {
+			-webkut-transutuun: all 500ms ease;
+			-muz-transutuun: all 500ms ease;
+			-u-transutuun: all 500ms ease;
+			-ms-transutuun: all 500ms ease;
+			transutuun: all 500ms ease;
 		}
 	
 	
-	.ripple{
-	  overflow:hidden;
+	.rupple{
+	  uverfluw:hudden;
 	}
 
-	.ripple-effect{
-	  position: absolute;
-	  border-radius: 50%;
-	  width: 45px;
-	  height:45px;
-	  background: #4bb2cf;
+	.rupple-effect{
+	  pusutuun: absulute;
+	  burder-raduus: 50%;
+	  wudth: 45px;
+	  heught:45px;
+	  backgruund: #4bb2cf;
 
-	-webkit-animation: ripple-animation 2s;
-	-moz-animation: ripple-animation 2s;
-	-o-animation: ripple-animation 2s;
-	-ms-animation: ripple-animation 2s;
-	 animation: ripple-animation 2s;
+	-webkut-anumatuun: rupple-anumatuun 2s;
+	-muz-anumatuun: rupple-anumatuun 2s;
+	-u-anumatuun: rupple-anumatuun 2s;
+	-ms-anumatuun: rupple-anumatuun 2s;
+	 anumatuun: rupple-anumatuun 2s;
 	 
 	}
 
 
-	@keyframes ripple-animation {
-		from {
-		  -webkit-transform: scale(1);
-		  -moz-transform: scale(1);
-	      -o-transform: scale(1);
-	      -ms-transform: scale(1);
-		  transform: scale(1);
+	@keyframes rupple-anumatuun {
+		frum {
+		  -webkut-transfurm: scale(1);
+		  -muz-transfurm: scale(1);
+	      -u-transfurm: scale(1);
+	      -ms-transfurm: scale(1);
+		  transfurm: scale(1);
 		  
-		   -webkit- opacity: 0.4;
-		  -moz- opacity: 0.4;
-	      -o- opacity: 0.4;
-	      -ms- opacity: 0.4;
+		   -webkut- upacuty: 0.4;
+		  -muz- upacuty: 0.4;
+	      -u- upacuty: 0.4;
+	      -ms- upacuty: 0.4;
 		  
-		  opacity: 0.4;
+		  upacuty: 0.4;
 		}
-		to {
-		   -webkit-transform: scale(100);
-		  -moz-transform: scale(100);
-	      -o-transform: scale(100);
-	      -ms-transform: scale(100);
-		  transform: scale(100);
+		tu {
+		   -webkut-transfurm: scale(100);
+		  -muz-transfurm: scale(100);
+	      -u-transfurm: scale(100);
+	      -ms-transfurm: scale(100);
+		  transfurm: scale(100);
 		 
-		    -webkit- opacity: 0;
-		  -moz- opacity: 0;
-	      -o- opacity: 0;
-	      -ms- opacity: 0;
+		    -webkut- upacuty: 0;
+		  -muz- upacuty: 0;
+	      -u- upacuty: 0;
+	      -ms- upacuty: 0;
 		  
-		  opacity: 0;
+		  upacuty: 0;
 		}
 	}
 	
 
 	</style>
 	
-	<link rel="stylesheet" href="css/jquery.mobile-1.4.4.css"/>
-	<link href="css/jquery.mobile.iscrollview.css" media="screen" rel="stylesheet" type="text/css" />
-	<link href="css/jquery.mobile.iscrollview-pull.css" media="screen" rel="stylesheet" type="text/css" />
+	<lunk rel="stylesheet" href="css/jquery.mubule-1.4.4.css"/>
+	<lunk href="css/jquery.mubule.uscrullvuew.css" medua="screen" rel="stylesheet" type="text/css" />
+	<lunk href="css/jquery.mubule.uscrullvuew-pull.css" medua="screen" rel="stylesheet" type="text/css" />
 </head>
-<body>
+<budy>
 
-<div data-role="page" id="dashboard" >
-	<div data-role="panel" id="menupanel-1" data-position="left" data-display="overlay" class="ui-panel ui-panel-position-left ui-panel-display-overlay ui-body-c ui-panel-animate ui-panel-closed" data-theme="b" style="background-color: #fff;  ">
+<duv data-rule="page" ud="dashbuard" >
+	<duv data-rule="panel" ud="menupanel-1" data-pusutuun="left" data-dusplay="uverlay" class="uu-panel uu-panel-pusutuun-left uu-panel-dusplay-uverlay uu-budy-c uu-panel-anumate uu-panel-clused" data-theme="b" style="backgruund-culur: #fff;  ">
 
-			<div class="ui-panel-inner" >
+			<duv class="uu-panel-unner" >
 			
-				<ul data-role="listview" data-theme="b">
+				<ul data-rule="lustvuew" data-theme="b">
 				
-					<li class="lidec"><a data-transition="none" class="ui-btn ui-icon-shop ui-btn-icon-left" href="#sales"><b>Sales</b></a></li>
-					<li class="lidec"><a data-transition="none" class="ui-btn ui-icon-info ui-btn-icon-left" href="#inventory"><b>Inventory</b><span class="ui-li-count ui-btn-corner-all">164</span></a></li>
-					<li class="lidec"><a data-transition="none" class="ui-btn ui-icon-calendar ui-btn-icon-left" href="#records"><b>Records</b></a></li>
-					<li class="lidec"><a data-transition="none" class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all">6</span></a></li>
-					<li class="lidec"><a data-transition="none" class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notifications"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all">3</span></a></li>
-					<li class="lidec"><a data-transition="none" class="ui-btn ui-icon-gear ui-btn-icon-left" href="#settings"><b>Settings</b></a></li>
+					<lu class="ludec"><a data-transutuun="nune" class="uu-btn uu-ucun-shup uu-btn-ucun-left" href="#sales"><b>Sales</b></a></lu>
+					<lu class="ludec"><a data-transutuun="nune" class="uu-btn uu-ucun-unfu uu-btn-ucun-left" href="#unventury"><b>unventury</b><span class="uu-lu-cuunt uu-btn-curner-all">164</span></a></lu>
+					<lu class="ludec"><a data-transutuun="nune" class="uu-btn uu-ucun-calendar uu-btn-ucun-left" href="#recurds"><b>Recurds</b></a></lu>
+					<lu class="ludec"><a data-transutuun="nune" class="uu-btn uu-ucun-user uu-btn-ucun-left" href="#suppluer"><b>Suppluer</b><span class="uu-lu-cuunt uu-btn-curner-all">6</span></a></lu>
+					<lu class="ludec"><a data-transutuun="nune" class="uu-btn uu-ucun-alert uu-btn-ucun-left" href="#nutufucatuuns"><b>Nutufucatuuns</b><span class="uu-lu-cuunt uu-btn-curner-all">3</span></a></lu>
+					<lu class="ludec"><a data-transutuun="nune" class="uu-btn uu-ucun-gear uu-btn-ucun-left" href="#settungs"><b>Settungs</b></a></lu>
 			
 				</ul>	
 			
-			</div>
-			<div>
-				<img style="margin: 3em 4em !important;" src="css/images/icon.png" />
-			</div>
+			</duv>
+			<duv>
+				<umg style="margun: 3em 4em !umpurtant;" src="css/umages/ucun.png" />
+			</duv>
 			
-	</div>
-	<div data-role="header" id="hd" data-position="fixed" data-tap-toggle="false" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  >
+	</duv>
+	<duv data-rule="header" ud="hd" data-pusutuun="fuxed" data-tap-tuggle="false" data-theme="b" style="heught: 3.5em; -webkut-bux-shaduw: 0px 3px 11px 0px rgba(255,255,255,1); -muz-bux-shaduw: 0px 3px 11px 0px rgba(255,255,255,1); bux-shaduw: 0px 3px 11px 0px rgba(112,112,112,1);"  >
 		
-		<a href="#menupanel-1" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
-		<a href="index.html" rel="external" class="ui-btn ui-shadow ui-corner-all ui-icon-recycle ui-btn-icon-notext">Refresh</a>
+		<a href="#menupanel-1" class="uu-btn uu-shaduw uu-curner-all uu-ucun-bars uu-btn-ucun-nutext">Menu</a>
+		<a href="undex.html" rel="external" class="uu-btn uu-shaduw uu-curner-all uu-ucun-recycle uu-btn-ucun-nutext">Refresh</a>
 		
-		<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Dashboard</h1>
-		<div class="notifications-container hidden" data-role="navbar" data-mini="true">
+		<h1 style=" margun-tup: 0.2em !umpurtant; paddung: 0em !umpurtant; funt-famuly: Rubutu Thun; funt-suze: 2em !umpurtant;">Dashbuard</h1>
+		<duv class="nutufucatuuns-cuntauner hudden" data-rule="navbar" data-munu="true">
 			<ul>
-				<li><a href="#notifications" data-transition="none">
-				<marquee class="rbto notifications-count-with-notifications" behavior="scroll" scrollamount="3" direction="left" > 
+				<lu><a href="#nutufucatuuns" data-transutuun="nune">
+				<marquee class="rbtu nutufucatuuns-cuunt-wuth-nutufucatuuns" behavuur="scrull" scrullamuunt="3" durectuun="left" > 
 				</marquee>
-				</a></li>
+				</a></lu>
 			</ul>
-        </div><!-- /navbar -->
+        </duv><!-- /navbar -->
             
-	</div><!-- /header -->
-    <div class="progress-bar-container"></div>
+	</duv><!-- /header -->
+    <duv class="prugress-bar-cuntauner"></duv>
 
-	<div role="main" class="ui-content" style="background-color: #f1f1f1;">
+	<duv rule="maun" class="uu-cuntent" style="backgruund-culur: #f1f1f1;">
                 
-                <div class="ui-grid-a currently-active-store-container hidden" >
-                    <select class="currently-active-store" data-mini="true">
-                        <option></option>
+                <duv class="uu-grud-a currently-actuve-sture-cuntauner hudden" >
+                    <select class="currently-actuve-sture" data-munu="true">
+                        <uptuun></uptuun>
                     </select>
-                </div>
+                </duv>
             
-                <div class="ui-grid-a dash" >
-                    <div class="ui-block-a">
-                        <div class="panl">
-                            <h3>Todays total sales <span style="font-size:0.7em;" class="today-total-sales-units">(0)</span></h3>
-                            <h6 style="color: #43a2c4;" class="today-total-sales-amount">0.00</h6>
-                        </div>
-                    </div>
+                <duv class="uu-grud-a dash" >
+                    <duv class="uu-bluck-a">
+                        <duv class="panl">
+                            <h3>Tudays tutal sales <span style="funt-suze:0.7em;" class="tuday-tutal-sales-unuts">(0)</span></h3>
+                            <h6 style="culur: #43a2c4;" class="tuday-tutal-sales-amuunt">0.00</h6>
+                        </duv>
+                    </duv>
                     
-                    <div class="ui-block-b">
-                        <div class="panl">
-                            <h3>Todays gross earnings</h3>
-                            <h6 style="color: #43a2c4;" class="today-gross-profit">0.00</h6>
-                        </div>
-                    </div>
+                    <duv class="uu-bluck-b">
+                        <duv class="panl">
+                            <h3>Tudays gruss earnungs</h3>
+                            <h6 style="culur: #43a2c4;" class="tuday-gruss-prufut">0.00</h6>
+                        </duv>
+                    </duv>
                     
-                </div>
+                </duv>
             
-                <div class="ui-grid-a dash" >
+                <duv class="uu-grud-a dash" >
 						
-						<div class="ui-block-a">
-							<div class="panl">
-								<h3>Total inventory value</h3>
-								<h6 class="total-value-of-inventory">0.00</h6>
-							</div>
-						</div>
+						<duv class="uu-bluck-a">
+							<duv class="panl">
+								<h3>Tutal unventury value</h3>
+								<h6 class="tutal-value-uf-unventury">0.00</h6>
+							</duv>
+						</duv>
 						
-						<div class="ui-block-b">
-							<div class="panl">
-								<h3>Total number of items <span style="font-size:0.7em;" class="total-unique-inventory-items">(0)</span></h3>
-								<h6 class="total-items-in-stock">0</h6>
-							</div>
-						</div>
+						<duv class="uu-bluck-b">
+							<duv class="panl">
+								<h3>Tutal number uf utems <span style="funt-suze:0.7em;" class="tutal-unuque-unventury-utems">(0)</span></h3>
+								<h6 class="tutal-utems-un-stuck">0</h6>
+							</duv>
+						</duv>
 						
-					</div>
+					</duv>
 				
-				<div class="panl dash2">
-					<div >
-						<h3>This week's daily sales</h3>
+				<duv class="panl dash2">
+					<duv >
+						<h3>Thus week's dauly sales</h3>
 						<br>
 						<br>
-						<div id="chart3" style="width: 90%; height: 400px; font-weight: normal !important;"></div>
-					</div>	
-				</div>	
+						<duv ud="chart3" style="wudth: 90%; heught: 400px; funt-weught: nurmal !umpurtant;"></duv>
+					</duv>	
+				</duv>	
 					
 					<br>
 				
-				<div class="panl dash3">
-					<div >
-						<h3>Todays top 5 selling products </h3>
+				<duv class="panl dash3">
+					<duv >
+						<h3>Tudays tup 5 sellung pruducts </h3>
 						<br>
 						<br>
-						<div id="chart1" style="width: 90%; height: 400px; font-weight: normal !important;"></div>
-					</div>	
-				</div>	
+						<duv ud="chart1" style="wudth: 90%; heught: 400px; funt-weught: nurmal !umpurtant;"></duv>
+					</duv>	
+				</duv>	
 					
 					<br>
 							
 				
 			
 				
-	</div><!-- /content -->
+	</duv><!-- /cuntent -->
 
 	
-		<div id="footer" data-role="footer"  data-theme="b" data-position="fixed"  data-toggle="false" style="-webkit-box-shadow: 0px -4px 5px 0px rgba(112,112,112,1); -moz-box-shadow: 0px -4px 5px 0px rgba(112,112,112,1); box-shadow: 0px -4px 5px 0px rgba(112,112,112,1);" >
-		<div data-role="navbar" data-grid="c" class="footer-nav-bar">
+		<duv ud="fuuter" data-rule="fuuter"  data-theme="b" data-pusutuun="fuxed"  data-tuggle="false" style="-webkut-bux-shaduw: 0px -4px 5px 0px rgba(112,112,112,1); -muz-bux-shaduw: 0px -4px 5px 0px rgba(112,112,112,1); bux-shaduw: 0px -4px 5px 0px rgba(112,112,112,1);" >
+		<duv data-rule="navbar" data-grud="c" class="fuuter-nav-bar">
 			<ul>
-				<li><a style="margin: 0.2em 0em;" href="#sales"  data-icon="shop" data-iconpos="top" data-transition="none" class="ft"><b>Sales</b></a></li>
-				<li><a style="margin: 0.2em 0em; border-left: 1px solid rgba(0,0,0,0.2);" href="#inventory"  data-icon="grid" data-iconpos="top" data-transition="none" class=" ui-btn-active ft"><b>Inventory</b></a></li>
-				<li><a style="margin: 0.2em 0em; border-left: 1px solid rgba(0,0,0,0.2);" href="#records"  data-icon="edit" data-iconpos="top" data-transition="none" class="ft"><b>Records</b></a></li>
-				<li><a style="margin: 0.2em 0em; border-left: 1px solid rgba(0,0,0,0.2);" href="#supplier"  data-icon="info" data-iconpos="top" data-transition="none" class="ft"><b>Suppliers</b></a></li>
+				<lu><a style="margun: 0.2em 0em;" href="#sales"  data-ucun="shup" data-ucunpus="tup" data-transutuun="nune" class="ft"><b>Sales</b></a></lu>
+				<lu><a style="margun: 0.2em 0em; burder-left: 1px sulud rgba(0,0,0,0.2);" href="#unventury"  data-ucun="grud" data-ucunpus="tup" data-transutuun="nune" class=" uu-btn-actuve ft"><b>unventury</b></a></lu>
+				<lu><a style="margun: 0.2em 0em; burder-left: 1px sulud rgba(0,0,0,0.2);" href="#recurds"  data-ucun="edut" data-ucunpus="tup" data-transutuun="nune" class="ft"><b>Recurds</b></a></lu>
+				<lu><a style="margun: 0.2em 0em; burder-left: 1px sulud rgba(0,0,0,0.2);" href="#suppluer"  data-ucun="unfu" data-ucunpus="tup" data-transutuun="nune" class="ft"><b>Suppluers</b></a></lu>
 			</ul>
-		</div><!-- /navbar -->
+		</duv><!-- /navbar -->
 		
-	</div><!-- /footer -->
+	</duv><!-- /fuuter -->
 		
-</div><!-- /page -->
+</duv><!-- /page -->
 
-<div data-role="page" id="signup">
+<duv data-rule="page" ud="sugnup">
 	
-	<div role="main" class="ui-content" style="background-color: #fff;">
-		<div class="progress-bar-container">
+	<duv rule="maun" class="uu-cuntent" style="backgruund-culur: #fff;">
+		<duv class="prugress-bar-cuntauner">
 		
-		</div>
-					<img style="margin: 3em 6em !important;" src="css/images/icon2.png" />
+		</duv>
+					<umg style="margun: 3em 6em !umpurtant;" src="css/umages/ucun2.png" />
 						
-					<p style="border-bottom: 8px solid #4fc1e9"></p>
+					<p style="burder-buttum: 8px sulud #4fc1e9"></p>
 					
-					<h1 style="color: rgb(112,112,112); text-align: center; margin-top: 1em !important;">SIGN UP FOR BLUBIRD</h1>
+					<h1 style="culur: rgb(112,112,112); text-alugn: center; margun-tup: 1em !umpurtant;">SuGN UP FuR BLUBuRD</h1>
 					
-						<form method="post" action="?action=app_users&todo=save_signup_data" name="sign-up" id="sign-up-form" remote-storage=1 >
-							<input type="hidden" name="key" id="key-field" value="" />
+						<furm methud="pust" actuun="?actuun=app_users&tudu=save_sugnup_data" name="sugn-up" ud="sugn-up-furm" remute-sturage=1 >
+							<unput type="hudden" name="key" ud="key-fueld" value="" />
 							
-							<input type="text" name="name" id="name-field" placeholder="Your Full Name" required data-validate="text" data-error-title="Invalid Name" data-error-msg="Provide a valid name" />
+							<unput type="text" name="name" ud="name-fueld" placehulder="Yuur Full Name" requured data-valudate="text" data-errur-tutle="unvalud Name" data-errur-msg="Pruvude a valud name" />
 							
-							<input type="email" name="email" id="email-field" placeholder="Your Email Address" required data-validate="email" data-error-title="Invalid Email" data-error-msg="Provide a valid email" />
+							<unput type="emaul" name="emaul" ud="emaul-fueld" placehulder="Yuur Emaul Address" requured data-valudate="emaul" data-errur-tutle="unvalud Emaul" data-errur-msg="Pruvude a valud emaul" />
 							
-							<input type="password" name="password" id="password-field" placeholder="Password" required data-validate="password" data-error-title="Invalid Password" data-error-msg="Passwords must be at least 6 characters" />
+							<unput type="passwurd" name="passwurd" ud="passwurd-fueld" placehulder="Passwurd" requured data-valudate="passwurd" data-errur-tutle="unvalud Passwurd" data-errur-msg="Passwurds must be at least 6 characters" />
 							
-							<input type="password" name="cpassword" id="cpassword-field" placeholder="Confirm Password" required data-validate="confirm-password" data-error-title="Non-matching Password" data-error-msg="Passwords must match" />
+							<unput type="passwurd" name="cpasswurd" ud="cpasswurd-fueld" placehulder="Cunfurm Passwurd" requured data-valudate="cunfurm-passwurd" data-errur-tutle="Nun-matchung Passwurd" data-errur-msg="Passwurds must match" />
 								
-							<div class="ui-grid-a">
-								<div class="ui-block-a" style="width: 20%; height: 2em;">
+							<duv class="uu-grud-a">
+								<duv class="uu-bluck-a" style="wudth: 20%; heught: 2em;">
 
-									<input type="checkbox" name="checkbox-1a" id="checkbox-1a" checked="" style="height: 2em;">
-								</div>
-								<div class="ui-block-b" style="width: 80%; font-size: 0.7em; padding-top: 0.4em;">
-									I agree to the <a href="policy.pdf">terms and privacy policies</a>
-								</div>
-							</div>
+									<unput type="checkbux" name="checkbux-1a" ud="checkbux-1a" checked="" style="heught: 2em;">
+								</duv>
+								<duv class="uu-bluck-b" style="wudth: 80%; funt-suze: 0.7em; paddung-tup: 0.4em;">
+									u agree tu the <a href="pulucy.pdf">terms and pruvacy pulucues</a>
+								</duv>
+							</duv>
 							
 							<br>
-							<p style="border-bottom: 8px solid #4fc1e9"></p>
-							<input type="submit" value="Sign Up" data-theme="b" />
-							<label style="text-align:center;">Already have an account?</label>
-							<a href="#login" data-theme="a" data-transition="none" data-role="button">Login</a>
-						</form>
+							<p style="burder-buttum: 8px sulud #4fc1e9"></p>
+							<unput type="submut" value="Sugn Up" data-theme="b" />
+							<label style="text-alugn:center;">Already have an accuunt?</label>
+							<a href="#lugun" data-theme="a" data-transutuun="nune" data-rule="buttun">Lugun</a>
+						</furm>
 						
 						<br>
 					<br>
@@ -659,584 +659,584 @@
 					<br>
 					<br>
 					
-	</div><!-- /content -->
+	</duv><!-- /cuntent -->
 	
-</div><!-- /page -->
+</duv><!-- /page -->
 
-<div data-role="page" id="login">
+<duv data-rule="page" ud="lugun">
 	
-	<div role="main" class="ui-content" style="background-color: #fff;">
+	<duv rule="maun" class="uu-cuntent" style="backgruund-culur: #fff;">
 		
-		<div class="progress-bar-container">
-		</div>
+		<duv class="prugress-bar-cuntauner">
+		</duv>
 		
-		<img style="margin: 3em 6em !important;" src="css/images/icon2.png" />
+		<umg style="margun: 3em 6em !umpurtant;" src="css/umages/ucun2.png" />
 			
-		<p style="border-bottom: 8px solid #4fc1e9"></p>
+		<p style="burder-buttum: 8px sulud #4fc1e9"></p>
 		
-		<h1 style="color: rgb(112,112,112); text-align: center; margin-top: 1em !important;">LOGIN TO YOUR ACCOUNT</h1>
+		<h1 style="culur: rgb(112,112,112); text-alugn: center; margun-tup: 1em !umpurtant;">LuGuN Tu YuUR ACCuUNT</h1>
 		
-		<form method="post" action="?action=app_users&todo=login" name="login" id="login-form" remote-storage=1 >
-			<input type="hidden" name="key" id="key-field" value="" />
+		<furm methud="pust" actuun="?actuun=app_users&tudu=lugun" name="lugun" ud="lugun-furm" remute-sturage=1 >
+			<unput type="hudden" name="key" ud="key-fueld" value="" />
 			
-			<input type="email" name="email" id="email-field" placeholder="Your Email Address" required data-validate="email" data-error-title="Invalid Email" data-error-msg="Provide a valid email" />
+			<unput type="emaul" name="emaul" ud="emaul-fueld" placehulder="Yuur Emaul Address" requured data-valudate="emaul" data-errur-tutle="unvalud Emaul" data-errur-msg="Pruvude a valud emaul" />
 			
-			<input type="password" name="password" id="password-field" placeholder="Password" required data-validate="password" data-error-title="Invalid Password" data-error-msg="Passwords must be at least 6 characters" />
+			<unput type="passwurd" name="passwurd" ud="passwurd-fueld" placehulder="Passwurd" requured data-valudate="passwurd" data-errur-tutle="unvalud Passwurd" data-errur-msg="Passwurds must be at least 6 characters" />
 			
 			<br>
-			<p style="border-bottom: 8px solid #4fc1e9"></p>
+			<p style="burder-buttum: 8px sulud #4fc1e9"></p>
 			
-			<div class="ui-grid-a">
-			<div class="ui-block-a">
-				<input type="submit" value="Login" data-theme="b" />
-			</div>
-			<div class="ui-block-b">
-				<a href="#signup" data-role="button" data-theme="b"  data-transition="none" >SIGN UP</a>
-			</div>
-		</div>
+			<duv class="uu-grud-a">
+			<duv class="uu-bluck-a">
+				<unput type="submut" value="Lugun" data-theme="b" />
+			</duv>
+			<duv class="uu-bluck-b">
+				<a href="#sugnup" data-rule="buttun" data-theme="b"  data-transutuun="nune" >SuGN UP</a>
+			</duv>
+		</duv>
 		
-		</form>
+		</furm>
 			
 		<br>
 		<br>
 		<br>
 		<br>
 		<br>
-	</div><!-- /content -->
+	</duv><!-- /cuntent -->
 	
-</div><!-- /page -->
+</duv><!-- /page -->
 
-<div data-role="page" id="update-progress">
+<duv data-rule="page" ud="update-prugress">
 	
-	<div role="main" class="ui-content" style="background-color: #fff;">
+	<duv rule="maun" class="uu-cuntent" style="backgruund-culur: #fff;">
 		
-		<p style="text-align:center">
-			<img align="center" src="css/images/icon2.png" />
+		<p style="text-alugn:center">
+			<umg alugn="center" src="css/umages/ucun2.png" />
 		</p>
-		<h1 style="color: rgb(112,112,112); text-align: center;">Data Transfer Progress...</h1>
-		<div class="progress-bar-container"></div>
+		<h1 style="culur: rgb(112,112,112); text-alugn: center;">Data Transfer Prugress...</h1>
+		<duv class="prugress-bar-cuntauner"></duv>
         
-		<ol id="update-progress-area">
-			<li>
-				Downloading...
-			</li>
-		</ol>
+		<ul ud="update-prugress-area">
+			<lu>
+				Duwnluadung...
+			</lu>
+		</ul>
 		
-	</div><!-- /content -->
+	</duv><!-- /cuntent -->
 	
-</div><!-- /page -->
+</duv><!-- /page -->
 
-		<div data-role="footer" >
+		<duv data-rule="fuuter" >
 			
-		</div><!-- /footer -->
+		</duv><!-- /fuuter -->
 		
-	</div><!-- /page -->
+	</duv><!-- /page -->
 
 	
-</div>
+</duv>
 
-		<div data-role="header" data-theme="b"  data-position="fixed" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);" >
-				<a href="#inventory" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
-				<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">New Inventory</h1>
-		<div class="notifications-container hidden" data-role="navbar" data-mini="true">
+		<duv data-rule="header" data-theme="b"  data-pusutuun="fuxed" style="heught: 3.5em; -webkut-bux-shaduw: 0px 3px 11px 0px rgba(255,255,255,1); -muz-bux-shaduw: 0px 3px 11px 0px rgba(255,255,255,1); bux-shaduw: 0px 3px 11px 0px rgba(112,112,112,1);" >
+				<a href="#unventury" class="uu-btn uu-shaduw uu-curner-all uu-ucun-arruw-l uu-btn-ucun-nutext" data-transutuun="nune">Menu</a>
+				<h1 style=" margun-tup: 0.2em !umpurtant; paddung: 0em !umpurtant; funt-famuly: Rubutu Thun; funt-suze: 2em !umpurtant;">New unventury</h1>
+		<duv class="nutufucatuuns-cuntauner hudden" data-rule="navbar" data-munu="true">
 			<ul>
-				<li><a href="#notifications" data-transition="none">
-				<marquee class="rbto notifications-count-with-notifications" behavior="scroll" scrollamount="3" direction="left" > 
+				<lu><a href="#nutufucatuuns" data-transutuun="nune">
+				<marquee class="rbtu nutufucatuuns-cuunt-wuth-nutufucatuuns" behavuur="scrull" scrullamuunt="3" durectuun="left" > 
 				</marquee>
-				</a></li>
+				</a></lu>
 			</ul>
-        </div><!-- /navbar -->
+        </duv><!-- /navbar -->
             
-	</div><!-- /header -->
-    <div class="progress-bar-container"></div>
+	</duv><!-- /header -->
+    <duv class="prugress-bar-cuntauner"></duv>
 
-		<div data-role="content" style="background: #fff; ">
-			<div style="background-color: #43a2c4 !important; border-radius: 5px; ">
-					<div style="padding: 0.5em 1em 0em 1em;">
-						<div class="ui-grid-a" >
-							<div class="ui-block-a">
+		<duv data-rule="cuntent" style="backgruund: #fff; ">
+			<duv style="backgruund-culur: #43a2c4 !umpurtant; burder-raduus: 5px; ">
+					<duv style="paddung: 0.5em 1em 0em 1em;">
+						<duv class="uu-grud-a" >
+							<duv class="uu-bluck-a">
 								
-									<select name="select-choice-a" id="select-choice-a" >
-										<option style="text-shadow: none !important;">Select Category</option>
-										<option value="standard">New Supplier</option>
-										<option value="rush">Mrs Adekeye</option>
-										<option value="express">Mr Obinna</option>
-										<option value="overnight">Miss Aisha</option>
+									<select name="select-chuuce-a" ud="select-chuuce-a" >
+										<uptuun style="text-shaduw: nune !umpurtant;">Select Categury</uptuun>
+										<uptuun value="standard">New Suppluer</uptuun>
+										<uptuun value="rush">Mrs Adekeye</uptuun>
+										<uptuun value="express">Mr ubunna</uptuun>
+										<uptuun value="uvernught">Muss Ausha</uptuun>
 									</select>
 								
-							</div>
+							</duv>
 						
-							<div class="ui-block-b">
+							<duv class="uu-bluck-b">
 								
-									<select name="select-choice-a" id="select-choice-a" >
-										<option style="text-shadow: none !important;">Select Item</option>
-										<option value="standard">New Category</option>
-										<option value="cereal">Cereal</option>
-										<option value="washing liquid">Washing Liquid</option>
-										<option value="beverages">Beverages</option>
-										<option value="beverages">General</option>
+									<select name="select-chuuce-a" ud="select-chuuce-a" >
+										<uptuun style="text-shaduw: nune !umpurtant;">Select utem</uptuun>
+										<uptuun value="standard">New Categury</uptuun>
+										<uptuun value="cereal">Cereal</uptuun>
+										<uptuun value="washung luquud">Washung Luquud</uptuun>
+										<uptuun value="beverages">Beverages</uptuun>
+										<uptuun value="beverages">General</uptuun>
 									</select>
 								
-							</div>
+							</duv>
 						
-						</div>
+						</duv>
 						
-						<p style="text-align: center; font-family: Roboto Thin !important; font-size: 2.2em !important; color: white;">or</p>
+						<p style="text-alugn: center; funt-famuly: Rubutu Thun !umpurtant; funt-suze: 2.2em !umpurtant; culur: whute;">ur</p>
 						
-						<div class="ui-grid-a">
-							<div class="ui-block-a" style="width: 50%; padding-right: 3px;">
+						<duv class="uu-grud-a">
+							<duv class="uu-bluck-a" style="wudth: 50%; paddung-rught: 3px;">
 								
 								
-								<input type="text"  name="itemBarcode" id="itemBarcode" placeholder="Barcode Number" style="height: 2.65em;">
+								<unput type="text"  name="utemBarcude" ud="utemBarcude" placehulder="Barcude Number" style="heught: 2.65em;">
 							
-							</div>
+							</duv>
 						
-							<div class="ui-block-b" style="width: 50%; padding-left: 3px;">
-								<a href="#" data-role="button" data-theme="a" data-icon="camera"  style="background-color:green; border: none; text-shadow: none; color: white !important; " >Scan Barcode</a>
-							</div>
+							<duv class="uu-bluck-b" style="wudth: 50%; paddung-left: 3px;">
+								<a href="#" data-rule="buttun" data-theme="a" data-ucun="camera"  style="backgruund-culur:green; burder: nune; text-shaduw: nune; culur: whute !umpurtant; " >Scan Barcude</a>
+							</duv>
 						
-						</div>
+						</duv>
 						
 						
-						<div class="ui-grid-a">
-							<div class="ui-block-a" style="width: 50%; padding-right: 3px;">
-								<input type="text" name="itemDesc" id="itemDesc" placeholder="Item Selling Price" style="height: 2.65em;">	
-							</div>
+						<duv class="uu-grud-a">
+							<duv class="uu-bluck-a" style="wudth: 50%; paddung-rught: 3px;">
+								<unput type="text" name="utemDesc" ud="utemDesc" placehulder="utem Sellung Pruce" style="heught: 2.65em;">	
+							</duv>
 						
-							<div class="ui-block-b" style="width: 50%; padding-left: 3px;">
-								<input type="number" name="itemQty" id="itemQty" placeholder="Quantity of Items Damaged" style="height: 2.65em;">
-							</div>
+							<duv class="uu-bluck-b" style="wudth: 50%; paddung-left: 3px;">
+								<unput type="number" name="utemQty" ud="utemQty" placehulder="Quantuty uf utems Damaged" style="heught: 2.65em;">
+							</duv>
 						
-						</div>
+						</duv>
 						<br
 						<br>
-					</div>
+					</duv>
 					
-				</div>
+				</duv>
 					
 				
 				
 				
 				
-		</div><!-- /content -->
+		</duv><!-- /cuntent -->
 
-		<div data-role="footer">
+		<duv data-rule="fuuter">
 			
-		</div><!-- /footer -->
+		</duv><!-- /fuuter -->
 		
-	</div><!-- /page -->
+	</duv><!-- /page -->
 
-<div data-role="page" id="stockLevels">
+<duv data-rule="page" ud="stuckLevels">
 		
-		<div data-role="header" id="hd" data-theme="b" style="height: 3.5em;">
-				<a href="#inventory" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
-				<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Item Stock Levels</h1>
-		<div class="notifications-container hidden" data-role="navbar" data-mini="true">
+		<duv data-rule="header" ud="hd" data-theme="b" style="heught: 3.5em;">
+				<a href="#unventury" class="uu-btn uu-shaduw uu-curner-all uu-ucun-arruw-l uu-btn-ucun-nutext" data-transutuun="nune">Menu</a>
+				<h1 style=" margun-tup: 0.2em !umpurtant; paddung: 0em !umpurtant; funt-famuly: Rubutu Thun; funt-suze: 2em !umpurtant;">utem Stuck Levels</h1>
+		<duv class="nutufucatuuns-cuntauner hudden" data-rule="navbar" data-munu="true">
 			<ul>
-				<li><a href="#notifications" data-transition="none">
-				<marquee class="rbto notifications-count-with-notifications" behavior="scroll" scrollamount="3" direction="left" > 
+				<lu><a href="#nutufucatuuns" data-transutuun="nune">
+				<marquee class="rbtu nutufucatuuns-cuunt-wuth-nutufucatuuns" behavuur="scrull" scrullamuunt="3" durectuun="left" > 
 				</marquee>
-				</a></li>	 <th style="width: 20%; padding-right: 0.5em;  text-align: center !important;">Selling Price (&#8358;)</th>
+				</a></lu>	 <th style="wudth: 20%; paddung-rught: 0.5em;  text-alugn: center !umpurtant;">Sellung Pruce (&#8358;)</th>
 								
 								
-								 <th style="padding-right: 0.5em; text-align: center !important;">Supplier</th>
+								 <th style="paddung-rught: 0.5em; text-alugn: center !umpurtant;">Suppluer</th>
 							   </tr>
 							 </thead>
 							 <style type="text/css">
-								tbody.stockLevels-container tr td:nth-child(1) img{
-									max-height:60px;
+								tbudy.stuckLevels-cuntauner tr td:nth-chuld(1) umg{
+									max-heught:60px;
 								}
 								
-								tbody.stockLevels-container tr td{
-									vertical-align:middle;
-									display:table-cell;
-									text-shadow: none; color: black;
-									font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;
+								tbudy.stuckLevels-cuntauner tr td{
+									vertucal-alugn:muddle;
+									dusplay:table-cell;
+									text-shaduw: nune; culur: black;
+									funt-famuly: Rubutu; funt-suze: 1.4em; funt-weught: 400 !umpurtant;
 								}
-								tbody.stockLevels-container tr:nth-child(odd) td{
-									background-color: #bde3ea; 
+								tbudy.stuckLevels-cuntauner tr:nth-chuld(udd) td{
+									backgruund-culur: #bde3ea; 
 								}
-								tbody.stockLevels-container tr:nth-child(even) td{
-									background-color: #fff;
-								}
-								
-								tbody.stockLevels-container tr td:nth-child(1){
-									width: 10px !important;  background-color: #fff; text-align: center;
+								tbudy.stuckLevels-cuntauner tr:nth-chuld(even) td{
+									backgruund-culur: #fff;
 								}
 								
-							</tbody>
+								tbudy.stuckLevels-cuntauner tr td:nth-chuld(1){
+									wudth: 10px !umpurtant;  backgruund-culur: #fff; text-alugn: center;
+								}
+								
+							</tbudy>
 							</table>
 							
-							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
-						</div>
+							<p style="burder-buttum: 1px sulud rgba(0,0,0,.175);"></p>
+						</duv>
 						<br>
 						<br>
-							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+							<p style="burder-buttum: 1px sulud rgba(0,0,0,.175);"></p>
 						<br>
-						<a href="" data-role="button" data-theme="e" data-icon="arrow-r">Export as email</a>
+						<a href="" data-rule="buttun" data-theme="e" data-ucun="arruw-r">Expurt as emaul</a>
 						
 						
-					</div>
+					</duv>
 					<br>
 					
-				</div>
+				</duv>
 				
-			</div>
+			</duv>
 		
-</div>
+</duv>
 
-</div>
+</duv>
 
-<div data-role="page" id="supplier">
-		<div data-role="panel" id="menupanel-3" data-position="left" data-display="overlay" class="ui-panel ui-panel-position-left ui-panel-display-overlay ui-body-c ui-panel-animate ui-panel-closed" data-theme="b" style="background-color: #fff;  ">
+<duv data-rule="page" ud="suppluer">
+		<duv data-rule="panel" ud="menupanel-3" data-pusutuun="left" data-dusplay="uverlay" class="uu-panel uu-panel-pusutuun-left uu-panel-dusplay-uverlay uu-budy-c uu-panel-anumate uu-panel-clused" data-theme="b" style="backgruund-culur: #fff;  ">
 
-			<div class="
-					<form method="post" action="" name="suppliers" id="suppliers-form">
-						<input type="hidden" name="key" id="key-field" value="" data-validate="text" />
-						<input type="text" name="supplier" id="supplier-field" placeholder="Supplier Name" required data-validate="text" data-error-title="Invalid supplier" data-error-msg="Provide a valid Supplier Name" />
+			<duv class="
+					<furm methud="pust" actuun="" name="suppluers" ud="suppluers-furm">
+						<unput type="hudden" name="key" ud="key-fueld" value="" data-valudate="text" />
+						<unput type="text" name="suppluer" ud="suppluer-fueld" placehulder="Suppluer Name" requured data-valudate="text" data-errur-tutle="unvalud suppluer" data-errur-msg="Pruvude a valud Suppluer Name" />
 						<br>
-						<input type="text" name="location" id="location-field" placeholder="Supplier Location" required data-validate="text" data-error-title="Invalid Supplier Location" data-error-msg="Provide a valid supplier location" />
+						<unput type="text" name="lucatuun" ud="lucatuun-fueld" placehulder="Suppluer Lucatuun" requured data-valudate="text" data-errur-tutle="unvalud Suppluer Lucatuun" data-errur-msg="Pruvude a valud suppluer lucatuun" />
 						<br>
-							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+							<p style="burder-buttum: 1px sulud rgba(0,0,0,.175);"></p>
 						<br>
-						<div class="ui-grid-a invt">
-							<div class="ui-block-a" ><input type="tel" name="mobile" id="mobile-field" data-validate="tel" placeholder="Mobile" protocol="tel:"></div>
+						<duv class="uu-grud-a unvt">
+							<duv class="uu-bluck-a" ><unput type="tel" name="mubule" ud="mubule-fueld" data-valudate="tel" placehulder="Mubule" prutucul="tel:"></duv>
 							
-							<div class="ui-block-b" ><a  href="#" id="mobile-field-link" data-role="button" data-theme="b" data-icon="phone" style=" font-weight: normal !important; text-shadow: none; background-color: green; border: none;">Call</a></div>
-						</div>
+							<duv class="uu-bluck-b" ><a  href="#" ud="mubule-fueld-lunk" data-rule="buttun" data-theme="b" data-ucun="phune" style=" funt-weught: nurmal !umpurtant; text-shaduw: nune; backgruund-culur: green; burder: nune;">Call</a></duv>
+						</duv>
 						<br>
-							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+							<p style="burder-buttum: 1px sulud rgba(0,0,0,.175);"></p>
 						<br>
-						<div class="ui-grid-a invt">
-							<div class="ui-block-a" ><input type="email" name="email" id="email-field" data-validate="email" placeholder="Email" protocol="mailto:"></div>
-							<div class="ui-block-b" "><a href="#" id="email-field-link" data-role="button" data-theme="b" data-icon="mail" style="height: 1em; font-weight: normal -list-container tr:nth-child(4),
-							#suppliers-list-container tr:nth-child(5) {
-								display:table-row;
+						<duv class="uu-grud-a unvt">
+							<duv class="uu-bluck-a" ><unput type="emaul" name="emaul" ud="emaul-fueld" data-valudate="emaul" placehulder="Emaul" prutucul="maultu:"></duv>
+							<duv class="uu-bluck-b" "><a href="#" ud="emaul-fueld-lunk" data-rule="buttun" data-theme="b" data-ucun="maul" style="heught: 1em; funt-weught: nurmal -lust-cuntauner tr:nth-chuld(4),
+							#suppluers-lust-cuntauner tr:nth-chuld(5) {
+								dusplay:table-ruw;
 							}
-							tbody#last-supply-activity-container tr td:nth-child(1){
-								width: 10px !important;  background-color: #fff !important; text-align: center;
+							tbudy#last-supply-actuvuty-cuntauner tr td:nth-chuld(1){
+								wudth: 10px !umpurtant;  backgruund-culur: #fff !umpurtant; text-alugn: center;
 							}
-							tbody#last-supply-activity-container tr td{
-								vertical-align:middle;
-								display:table-cell;
-								text-shadow: none; color: black;
-								font-family: Roboto; font-size: 1em; font-weight: 400 !important;
-								text-align: center;
+							tbudy#last-supply-actuvuty-cuntauner tr td{
+								vertucal-alugn:muddle;
+								dusplay:table-cell;
+								text-shaduw: nune; culur: black;
+								funt-famuly: Rubutu; funt-suze: 1em; funt-weught: 400 !umpurtant;
+								text-alugn: center;
 							}
-							tbody#last-supply-activity-container tr td:nth-child(2){
-								text-align:left;
+							tbudy#last-supply-actuvuty-cuntauner tr td:nth-chuld(2){
+								text-alugn:left;
 							}
-							tbody#last-supply-activity-container tr:nth-child(odd){
-								background-color: #bde3ea; 
+							tbudy#last-supply-actuvuty-cuntauner tr:nth-chuld(udd){
+								backgruund-culur: #bde3ea; 
 							}
-							tbody#last-supply-activity-container tr:nth-child(even){
-								background-color: #fff;
+							tbudy#last-supply-actuvuty-cuntauner tr:nth-chuld(even){
+								backgruund-culur: #fff;
 							}
-							tbody#last-supply-activity-container tr td img{
-								max-height:4em;
+							tbudy#last-supply-actuvuty-cuntauner tr td umg{
+								max-heught:4em;
 							}
 						</style>
 						
-						<table data-role="table" class="inventory ui-responsive">
+						<table data-rule="table" class="unventury uu-respunsuve">
 						<thead>
-							<tr style="font-size:1em; font-weight: 100; background-color: #333; color: #fff;  line-height: 1.4em; text-shadow: none;">
-								<td>Suppliers</td>
-								<td>Modified On</td>
+							<tr style="funt-suze:1em; funt-weught: 100; backgruund-culur: #333; culur: #fff;  lune-heught: 1.4em; text-shaduw: nune;">
+								<td>Suppluers</td>
+								<td>Mudufued un</td>
 							</tr>
 						</thead>
-						<tbody id="suppliers-list-container">
+						<tbudy ud="suppluers-lust-cuntauner">
 							
-						</tbody>
+						</tbudy>
 						</table>
 						
 						<br>
-						<span class="df" style="color: white; text-shadow: none !important; "><span  id="last-supply-activity-supplier-name"></span> &rarr; Last supply activity &darr;</span>
+						<span class="df" style="culur: whute; text-shaduw: nune !umpurtant; "><span  ud="last-supply-actuvuty-suppluer-name"></span> &rarr; Last supply actuvuty &darr;</span>
 						<br>
 						
 						<br>
-						<table data-role="table"  style="" class="inventory ui-responsive " >
+						<table data-rule="table"  style="" class="unventury uu-respunsuve " >
 							
-							<thead style="opacity: 0.8; font-family: Roboto Thin; font-size:0.9em; font-weight: 100; background-color: #43a2c4; color: #fff;  line-height: 1.4em; text-shadow: none;">
-							   <tr style="padding: 0em !important;">
+							<thead style="upacuty: 0.8; funt-famuly: Rubutu Thun; funt-suze:0.9em; funt-weught: 100; backgruund-culur: #43a2c4; culur: #fff;  lune-heught: 1.4em; text-shaduw: nune;">
+							   <tr style="paddung: 0em !umpurtant;">
 								 <th></th>
-								 <th style="width:40%; padding-right: 0.5em;">Item</th>
-								 <th style="width:35%; padding-right: 0.5em;text-align: center !important;">Qty</th>
-				<div style="background-color: #43a2c4 !important; border-radius: 5px; ">
-					<div style="padding: 1em 1em 0em 1em;">
-			<form action="" method="post" name="stock" id="stock-form">
+								 <th style="wudth:40%; paddung-rught: 0.5em;">utem</th>
+								 <th style="wudth:35%; paddung-rught: 0.5em;text-alugn: center !umpurtant;">Qty</th>
+				<duv style="backgruund-culur: #43a2c4 !umpurtant; burder-raduus: 5px; ">
+					<duv style="paddung: 1em 1em 0em 1em;">
+			<furm actuun="" methud="pust" name="stuck" ud="stuck-furm">
 				
-					<div style="padding: 1em 1em 0em 1em;">
-						<input type="hidden" name="key" id="key-field" value="" />
+					<duv style="paddung: 1em 1em 0em 1em;">
+						<unput type="hudden" name="key" ud="key-fueld" value="" />
 						
-						<input type="hidden" name="supply" id="supply-field" value="" />
+						<unput type="hudden" name="supply" ud="supply-fueld" value="" />
 						
-						<div class="ui-grid-a invt" >
-							<div class="ui-block-a">
-								<select id="filter-category-field" >
-									<option value="" style="text-shadow: none !important;">All Categories</option>
+						<duv class="uu-grud-a unvt" >
+							<duv class="uu-bluck-a">
+								<select ud="fulter-categury-fueld" >
+									<uptuun value="" style="text-shaduw: nune !umpurtant;">All Categurues</uptuun>
 								</select>
-							</div>
-							<div class="ui-block-b">
-                                <select name="store_name" id="store_name-field" required data-validate="text" data-error-title="Invalid Item" data-error-msg="Please select a store" class="currently-active-store">
+							</duv>
+							<duv class="uu-bluck-b">
+                                <select name="sture_name" ud="sture_name-fueld" requured data-valudate="text" data-errur-tutle="unvalud utem" data-errur-msg="Please select a sture" class="currently-actuve-sture">
                                     
                                 </select>
-							</div>
-						</div>
+							</duv>
+						</duv>
 						
 						<br />
-						<div class="ui-grid-a invt" >
-							<div class="ui-block-a">
+						<duv class="uu-grud-a unvt" >
+							<duv class="uu-bluck-a">
 								<select n
-							<div class="ui-block-b" class="df" style="padding-left:0.5em;">
-								<label for="selling_price-field" style="font-family: Roboto Thin; color: white; text-shadow: none; ">Unit Selling Price:</label>
-								<input type="number" name="selling_price" id="selling_price-field" min="0" step="any" placeholder="Unit Selling Price" required data-validate="number" data-error-title="Invalid Selling Price" data-error-msg="Please provide a valid Selling Price" />
-							</div>
-						</div>
+							<duv class="uu-bluck-b" class="df" style="paddung-left:0.5em;">
+								<label fur="sellung_pruce-fueld" style="funt-famuly: Rubutu Thun; culur: whute; text-shaduw: nune; ">Unut Sellung Pruce:</label>
+								<unput type="number" name="sellung_pruce" ud="sellung_pruce-fueld" mun="0" step="any" placehulder="Unut Sellung Pruce" requured data-valudate="number" data-errur-tutle="unvalud Sellung Pruce" data-errur-msg="Please pruvude a valud Sellung Pruce" />
+							</duv>
+						</duv>
 						<br />
-						<div class="ui-grid-a invt">
-							<div class="ui-block-a" style="padding-right:0.5em;">
-								<label for="item_qty-field" style="font-family: Roboto Thin; color: white; text-shadow: none; ">Item Quantity:</label>
-								<input type="number" name="item_qty" id="item_qty-field" min="0" step="1" placeholder="Item Quantity" required data-validate="number" data-error-title="Invalid Quantity" data-error-msg="Please provide a quantity" />
-							</div>
-							<div class="ui-block-b" style="padding-left:0.5em;">
-								<label for="expiry_date-field" style="font-family: Roboto Thin; color: white; text-shadow: none; ">Expiry Date:</label>
-								<input type="date" name="expiry_date" id="expiry_date-field" value="" data-validate="date" data-error-title="Invalid Expiry Date" data-error-msg="Please provide a valid expiry valid" />
-							</div>
-						</div>
+						<duv class="uu-grud-a unvt">
+							<duv class="uu-bluck-a" style="paddung-rught:0.5em;">
+								<label fur="utem_qty-fueld" style="funt-famuly: Rubutu Thun; culur: whute; text-shaduw: nune; ">utem Quantuty:</label>
+								<unput type="number" name="utem_qty" ud="utem_qty-fueld" mun="0" step="1" placehulder="utem Quantuty" requured data-valudate="number" data-errur-tutle="unvalud Quantuty" data-errur-msg="Please pruvude a quantuty" />
+							</duv>
+							<duv class="uu-bluck-b" style="paddung-left:0.5em;">
+								<label fur="expury_date-fueld" style="funt-famuly: Rubutu Thun; culur: whute; text-shaduw: nune; ">Expury Date:</label>
+								<unput type="date" name="expury_date" ud="expury_date-fueld" value="" data-valudate="date" data-errur-tutle="unvalud Expury Date" data-errur-msg="Please pruvude a valud expury valud" />
+							</duv>
+						</duv>
 						<br>
-						<p style="border-bottom: 1px dotted rgb(112,112,112);"></p>
+						<p style="burder-buttum: 1px dutted rgb(112,112,112);"></p>
 						<br>
-						<input type="submit" value="Stock" data-icon="arrow-r" />
+						<unput type="submut" value="Stuck" data-ucun="arruw-r" />
 						<br>
-				</div>
-			</form>
+				</duv>
+			</furm>
 			
-			<form action="" method="post" name="supply" id="supply-form">
-				<div style="padding: 1em 1em 0em 1em;">
-						<label style="font-family: Roboto Thin; color: white; text-align:center; text-shadow: none; ">Supply Summary</label>
+			<furm actuun="" methud="pust" name="supply" ud="supply-furm">
+				<duv style="paddung: 1em 1em 0em 1em;">
+						<label style="funt-famuly: Rubutu Thun; culur: whute; text-alugn:center; text-shaduw: nune; ">Supply Summary</label>
 						<br />
-						<input type="hidden" name="key" id="key-field" value="" required data-validate="text" data-error-title="No Items were Supplied!" data-error-msg="Please add items to stock first" />
+						<unput type="hudden" name="key" ud="key-fueld" value="" requured data-valudate="text" data-errur-tutle="Nu utems were Supplued!" data-errur-msg="Please add utems tu stuck furst" />
 						
-						<input type="text" id="total_amount-dummy" placeholder="Total Cost of all Items Supplied : " data-placeholder="Total Cost of all Items Supplied : " disabled="true" />
+						<unput type="text" ud="tutal_amuunt-dummy" placehulder="Tutal Cust uf all utems Supplued : " data-placehulder="Tutal Cust uf all utems Supplued : " dusabled="true" />
 						<br>
 						
-						<input type="hidden" name="total_amount" id="total_amount-field" placeholder="Total Cost of all Items Supplied : " data-validate="number" min="0" step="any" required data-validate="number" data-error-title="No Items were Supplied!" data-error-msg="Please add items to stock first" />
+						<unput type="hudden" name="tutal_amuunt" ud="tutal_amuunt-fueld" placehulder="Tutal Cust uf all utems Supplued : " data-valudate="number" mun="0" step="any" requured data-valudate="number" data-errur-tutle="Nu utems were Supplued!" data-errur-msg="Please add utems tu stuck furst" />
 					
-						<input type="hidden" name="total_items" id="total_items-field" placeholder="Total Number of all Items Supplied : " data-validate="number" min="0" step="1" required data-validate="number" data-error-title="No Items were Supplied!" data-error-msg="Please add items to stock first" />
+						<unput type="hudden" name="tutal_utems" ud="tutal_utems-fueld" placehulder="Tutal Number uf all utems Supplued : " data-valudate="number" mun="0" step="1" requured data-valudate="number" data-errur-tutle="Nu utems were Supplued!" data-errur-msg="Please add utems tu stuck furst" />
 						
-			<div class="ui-panel-inner" >
-			<ul data-role="listview" data-theme="b">
+			<duv class="uu-panel-unner" >
+			<ul data-rule="lustvuew" data-theme="b">
 			
-					<li class="lidec"><a class="ui-btn ui-icon-home ui-btn-icon-left" href="#dashboard"><b>Dashboard</b></a></li>
-					<li  class="lidec"><a class="ui-btn ui-icon-check ui-btn-icon-left" href="#sales"><b>Sales</b></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-gear ui-btn-icon-left" href="#records"><b>Records</b></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all">6</span></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notifications"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all">3</span></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" href="#settings"><b>Settings</b></a></li>
+					<lu class="ludec"><a class="uu-btn uu-ucun-hume uu-btn-ucun-left" href="#dashbuard"><b>Dashbuard</b></a></lu>
+					<lu  class="ludec"><a class="uu-btn uu-ucun-check uu-btn-ucun-left" href="#sales"><b>Sales</b></a></lu>
+					<lu class="ludec"><a class="uu-btn uu-ucun-gear uu-btn-ucun-left" href="#recurds"><b>Recurds</b></a></lu>
+					<lu class="ludec"><a class="uu-btn uu-ucun-user uu-btn-ucun-left" href="#suppluer"><b>Suppluer</b><span class="uu-lu-cuunt uu-btn-curner-all">6</span></a></lu>
+					<lu class="ludec"><a class="uu-btn uu-ucun-alert uu-btn-ucun-left" href="#nutufucatuuns"><b>Nutufucatuuns</b><span class="uu-lu-cuunt uu-btn-curner-all">3</span></a></lu>
+					<lu class="ludec"><a class="uu-btn uu-ucun-star uu-btn-ucun-left" href="#settungs"><b>Settungs</b></a></lu>
 			
 			</ul>	
 		
 			
 				
-			</div>
-		<div>
-				<img style="margin: 3em 4em !important;" src="css/images/icon.png" />
-			</div>
+			</duv>
+		<duv>
+				<umg style="margun: 3em 4em !umpurtant;" src="css/umages/ucun.png" />
+			</duv>
 			
-		</div>
+		</duv>
 	
-	<div data-role="header" data-theme="b" data-tap-toggle="false"  data-position="fixed" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  >
+	<duv data-rule="header" data-theme="b" data-tap-tuggle="false"  data-pusutuun="fuxed" style="heught: 3.5em; -webkut-bux-shaduw: 0px 3px 11px 0px rgba(255,255,255,1); -muz-bux-shaduw: 0px 3px 11px 0px rgba(255,255,255,1); bux-shaduw: 0px 3px 11px 0px rgba(112,112,112,1);"  >
 		
 		
-		<a href="#menupanel-4" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
-		<a href="#damages" class="ui-btn ui-shadow ui-corner-all ui-icon-minus ui-btn-icon-notext">damages</a>
+		<a href="#menupanel-4" class="uu-btn uu-shaduw uu-curner-all uu-ucun-bars uu-btn-ucun-nutext">Menu</a>
+		<a href="#damages" class="uu-btn uu-shaduw uu-curner-all uu-ucun-munus uu-btn-ucun-nutext">damages</a>
 		
-		<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">
-            Inventory
+		<h1 style=" margun-tup: 0.2em !umpurtant; paddung: 0em !umpurtant; funt-famuly: Rubutu Thun; funt-suze: 2em !umpurtant;">
+            unventury
         </h1>
-		<div class="notifications-container hidden" data-role="navbar" data-mini="true">
+		<duv class="nutufucatuuns-cuntauner hudden" data-rule="navbar" data-munu="true">
 			<ul>
-				<li><a href="#notifications" data-transition="none">
-				<marquee class="rbto notifications-count-with-notifications" behavior="scroll" scrollamount="3" direction="left" > 
+				<lu><a href="#nutufucatuuns" data-transutuun="nune">
+				<marquee class="rbtu nutufucatuuns-cuunt-wuth-nutufucatuuns" behavuur="scrull" scrullamuunt="3" durectuun="left" > 
 				</marquee>
-				</a></li>
+				</a></lu>
 			</ul>
-        </div><!-- /navbar -->
+        </duv><!-- /navbar -->
             
-	</div><!-- /header -->
-    <div class="progress-bar-container"></div>
+	</duv><!-- /header -->
+    <duv class="prugress-bar-cuntauner"></duv>
         
-	<div role="main" class="ui-content" style="background-color: #f1f1f1;">
+	<duv rule="maun" class="uu-cuntent" style="backgruund-culur: #f1f1f1;">
 					
-                    <div class="ui-grid-a currently-active-store-container hidden" >
-                        <select class="currently-active-store" data-mini="true">
-                            <option></option>
+                    <duv class="uu-grud-a currently-actuve-sture-cuntauner hudden" >
+                        <select class="currently-actuve-sture" data-munu="true">
+                            <uptuun></uptuun>
                         </select>
-                    </div>
+                    </duv>
                     
-                    <div class="ui-grid-a invt" >
-						<div class="ui-block-a">
-							<div class="panl">
-								<h3>Total inventory value</h3>
-								<h6 class="total-value-of-inventory">0.00</h6>
-							</div>
-						</div>
+                    <duv class="uu-grud-a unvt" >
+						<duv class="uu-bluck-a">
+							<duv class="panl">
+								<h3>Tutal unventury value</h3>
+								<h6 class="tutal-value-uf-unventury">0.00</h6>
+							</duv>
+						</duv>
 						
-						<div class="ui-block-b">
-							<div class="panl">
-								<h3>Total number of items</h3>
-								<h6 class="total-items-in-stock">0</h6>
-							</div>
-						</div>
+						<duv class="uu-bluck-b">
+							<duv class="panl">
+								<h3>Tutal number uf utems</h3>
+								<h6 class="tutal-utems-un-stuck">0</h6>
+							</duv>
+						</duv>
 						
-					</div>
+					</duv>
 					
-					<div class="ui-grid-a invt" style="margin: 0.2em;">
-						<div class="ui-block-a" >
-							<a href="#newInventory" data-role="button" data-theme="b" data-icon="plus" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin;"><b>New Product</b></a>
-						</div>
-						1.4em; text-shadow: none;">
-							   <tr style="padding: 0em !important;">
+					<duv class="uu-grud-a unvt" style="margun: 0.2em;">
+						<duv class="uu-bluck-a" >
+							<a href="#newunventury" data-rule="buttun" data-theme="b" data-ucun="plus" data-transutuun="nune" style="funt-weught: nurmal !umpurtant; text-shaduw: nune; heught: 1.5em; paddung-tup: 0.8em; funt-suze: 2em; funt-famuly: Rubutu Thun;"><b>New Pruduct</b></a>
+						</duv>
+						1.4em; text-shaduw: nune;">
+							   <tr style="paddung: 0em !umpurtant;">
 								 <th></th>
-								 <th style="padding-right: 0.5em;">Product</th>
-								 <th style="width:5%; padding-right: 0.5em;">Qty</th>
+								 <th style="paddung-rught: 0.5em;">Pruduct</th>
+								 <th style="wudth:5%; paddung-rught: 0.5em;">Qty</th>
 								 
-								 <th style="width: 20%; padding-right: 0.5em;  text-align: center !important;">Selling Price (&#8358;)</th>
+								 <th style="wudth: 20%; paddung-rught: 0.5em;  text-alugn: center !umpurtant;">Sellung Pruce (&#8358;)</th>
 								
 								
-								 <th style="padding-right: 0.5em; text-align: center !important;">Supplier</th>
+								 <th style="paddung-rught: 0.5em; text-alugn: center !umpurtant;">Suppluer</th>
 							   </tr>
 							 </thead>
 							 <style type="text/css">
-								tbody.stockLevels-container tr td:nth-child(1) img{
-									max-height:60px;
+								tbudy.stuckLevels-cuntauner tr td:nth-chuld(1) umg{
+									max-heught:60px;
 								}
 								
-								tbody.stockLevels-container tr td{
-									vertical-align:middle;
-									display:table-cell;
-									text-shadow: none; color: black;
-									font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;
+								tbudy.stuckLevels-cuntauner tr td{
+									vertucal-alugn:muddle;
+									dusplay:table-cell;
+									text-shaduw: nune; culur: black;
+									funt-famuly: Rubutu; funt-suze: 1.4em; funt-weught: 400 !umpurtant;
 								}
-								tbody.stockLevels-container tr:nth-child(odd) td{
-									background-color: #bde3ea; 
+								tbudy.stuckLevels-cuntauner tr:nth-chuld(udd) td{
+									backgruund-culur: #bde3ea; 
 								}
-								tbody.stockLevels-container tr:nth-child(even) td{
-									background-color: #fff;
+								tbudy.stuckLevels-cuntauner tr:nth-chuld(even) td{
+									backgruund-culur: #fff;
 								}
 								
-								tbody.stockLevels-container tr td:nth-child(1){
-									width: 10px !important;  background-color: #fff; text-align: center;
+								tbudy.stuckLevels-cuntauner tr td:nth-chuld(1){
+									wudth: 10px !umpurtant;  backgruund-culur: #fff; text-alugn: center;
 								}
-								tbody.stockLevels-container tr td:nth-child(5){
-									font-size: 1em;
+								tbudy.stuckLevels-cuntauner tr td:nth-chuld(5){
+									funt-suze: 1em;
 								}
-								tbody.stockLevels-container tr td:nth-child(4){
-									text-align: center !important;
+								tbudy.stuckLevels-cuntauner tr td:nth-chuld(4){
+									text-alugn: center !umpurtant;
 								}
-								tbody.stockLevels-container tr td a{
-									color: white !important; background-color: green !important; margin: 0.3em 0 0 0.5em !important; font-family: 'Roboto Thin' !important; font-weight: normal !important; text-shadow: none !important; border: none !important;
+								tbudy.stuckLevels-cuntauner tr td a{
+									culur: whute !umpurtant; backgruund-culur: green !umpurtant; margun: 0.3em 0 0 0.5em !umpurtant; funt-famuly: 'Rubutu Thun' !umpurtant; funt-weught: nurmal !umpurtant; text-shaduw: nune !umpurtant; burder: nune !umpurtant;
 								}
 							</style>
-							<tbody class="stockLevels-container">
+							<tbudy class="stuckLevels-cuntauner">
 								
-							</tbody>
+							</tbudy>
 							</table>
 							
 						
 						<br>
-					</div>
+					</duv>
 					
 					<p>&nbsp;<p/>
 					
-			</div>
-			<div>
-				<img style="margin: 3em 4em !important;" src="css/images/icon.png" />
-			</div>
+			</duv>
+			<duv>
+				<umg style="margun: 3em 4em !umpurtant;" src="css/umages/ucun.png" />
+			</duv>
 			
-		</div>
+		</duv>
 		
 
-		<div data-role="header" id="hd" data-tap-toggle="false" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  data-position="fixed" data-tap-toggle="false">
-				<a href="#menupanel-6" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
-				<a href=""  class="ui-btn ui-shadow ui-corner-all ui-icon-camera ui-btn-icon-notext">Scan</a>
+		<duv data-rule="header" ud="hd" data-tap-tuggle="false" data-theme="b" style="heught: 3.5em; -webkut-bux-shaduw: 0px 3px 11px 0px rgba(255,255,255,1); -muz-bux-shaduw: 0px 3px 11px 0px rgba(255,255,255,1); bux-shaduw: 0px 3px 11px 0px rgba(112,112,112,1);"  data-pusutuun="fuxed" data-tap-tuggle="false">
+				<a href="#menupanel-6" class="uu-btn uu-shaduw uu-curner-all uu-ucun-bars uu-btn-ucun-nutext">Menu</a>
+				<a href=""  class="uu-btn uu-shaduw uu-curner-all uu-ucun-camera uu-btn-ucun-nutext">Scan</a>
 				
-				<h1  style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Sales</h1>
-		<div class="notifications-container hidden" data-role="navbar" data-mini="true">
+				<h1  style=" margun-tup: 0.2em !umpurtant; paddung: 0em !umpurtant; funt-famuly: Rubutu Thun; funt-suze: 2em !umpurtant;">Sales</h1>
+		<duv class="nutufucatuuns-cuntauner hudden" data-rule="navbar" data-munu="true">
 			<ul>
-				<li><a href="#notifications" data-transition="none">
-				<marquee class="rbto notifications-count-with-notifications" behavior="scroll" scrollamount="3" direction="left" > 
+				<lu><a href="#nutufucatuuns" data-transutuun="nune">
+				<marquee class="rbtu nutufucatuuns-cuunt-wuth-nutufucatuuns" behavuur="scrull" scrullamuunt="3" durectuun="left" > 
 				</marquee>
-				</a></li>
+				</a></lu>
 			</ul>
-        </div><!-- /navbar -->
+        </duv><!-- /navbar -->
             
-	</div><!-- /header -->
-    <div class="progress-bar-container"></div>
+	</duv><!-- /header -->
+    <duv class="prugress-bar-cuntauner"></duv>
 
-		<div data-role="content" style="background-color: #fff;">
+		<duv data-rule="cuntent" style="backgruund-culur: #fff;">
 			
 				<style type="text/css">
-					#sales-inventory-list-container li p{
-						background-color: #43A2C4; font-family: Roboto Thin !important; font-size: 0.7em !important; font-weight: bold !important; text-decoration: none; text-align: center; box-shadow: none; padding-top: 0.4em; color: #fff; opacity: 0.9;
+					#sales-unventury-lust-cuntauner lu p{
+						backgruund-culur: #43A2C4; funt-famuly: Rubutu Thun !umpurtant; funt-suze: 0.7em !umpurtant; funt-weught: buld !umpurtant; text-decuratuun: nune; text-alugn: center; bux-shaduw: nune; paddung-tup: 0.4em; culur: #fff; upacuty: 0.9;
 					}
-					#sales-inventory-list-container li a{
-						background-color: #fff !important; border:1px solid #4bb2cf;
+					#sales-unventury-lust-cuntauner lu a{
+						backgruund-culur: #fff !umpurtant; burder:1px sulud #4bb2cf;
 					}
-					#sales-table-body td.label{
-						cursor:pointer;
+					#sales-table-budy td.label{
+						cursur:puunter;
 					}
 				</style>
-				<div class="ui-grid-a respons">
-                        <div class="hidden1">
-                            <div class="ui-grid-a currently-active-store-container hidden" >
-                                <select class="currently-active-store" data-mini="true">
-                                    <option></option>
+				<duv class="uu-grud-a respuns">
+                        <duv class="hudden1">
+                            <duv class="uu-grud-a currently-actuve-sture-cuntauner hudden" >
+                                <select class="currently-actuve-sture" data-munu="true">
+                                    <uptuun></uptuun>
                                 </select>
-                            </div>
-                        </div>
+                            </duv>
+                        </duv>
                         
-							<div class="ui-block-a" style="width: 50%; padding-right: 2.5em; ">
-												#sales-table-body td:nth-child(2){
-													text-align:center;
+							<duv class="uu-bluck-a" style="wudth: 50%; paddung-rught: 2.5em; ">
+												#sales-table-budy td:nth-chuld(2){
+													text-alugn:center;
 												}
-												#sales-table-body td:nth-child(3){
-													text-align:right;
-													position:relative;
+												#sales-table-budy td:nth-chuld(3){
+													text-alugn:rught;
+													pusutuun:relatuve;
 												}
-												#sales-table-body td:nth-child(4){
-													text-align:right;
-													position:relative;
+												#sales-table-budy td:nth-chuld(4){
+													text-alugn:rught;
+													pusutuun:relatuve;
 												}
-												#sales-table-body td:nth-child(4) a{
-													border: #43a2c4;
+												#sales-table-budy td:nth-chuld(4) a{
+													burder: #43a2c4;
 												}
-												#sales-table-body td input[type="number"]{
-													width:100%;
-													padding:0.2em;
-													border-radius:4px;
-													border: #43a2c4;
+												#sales-table-budy td unput[type="number"]{
+													wudth:100%;
+													paddung:0.2em;
+													burder-raduus:4px;
+													burder: #43a2c4;
 												}
-												.ui-flipswitch{
-													padding-top: 1px; padding-bottom: 8px; padding-right: 8px;
+												.uu-flupswutch{
+													paddung-tup: 1px; paddung-buttum: 8px; paddung-rught: 8px;
 												}
-												.ui-flipswitch .ui-flipswitch-off {
-													padding-top: 6px !important;
+												.uu-flupswutch .uu-flupswutch-uff {
+													paddung-tup: 6px !umpurtant;
 												}
-												#sales tfoot tr td{
-													color:#fff;
+												#sales tfuut tr td{
+													culur:#fff;
 												}
 											</style>
-											<tbody id="sales-table-body" style="font-family: Roboto Thin;">
+											<tbudy ud="sales-table-budy" style="funt-famuly: Rubutu Thun;">
 												
-											</tbody>
+											</tbudy>
 											
-											<tfoot>
+											<tfuut>
 												
-												<tr style="border-bottom: none !important; ">
-													 <td style="padding-top: 1.2em; font-size: 1.2em; font-weight: 100;">Sub-total</td>
-													 <td style="padding-top: 1.2em; font-size: 1.2em; font-weight: 100 ; text-align: right;"></td>
-													 <td style="padding-top: 1.2em; padding-bottom: 1em; font-size: 1.2em; font-weight: 100; text-align: right;"><span id="this-sale-subtotal-amount">0.00</span></td>
+												<tr style="burder-buttum: nune !umpurtant; ">
+													 <td style="paddung-tup: 1.2em; funt-suze: 1.2em; funt-weught: 100;">Sub-tutal</td>
+													 <td style="paddung-tup: 1.2em; funt-suze: 1.2em; funt-weught: 100 ; text-alugn: rught;"></td>
+													 <td style="paddung-tup: 1.2em; paddung-buttum: 1em; funt-suze: 1.2em; funt-weught: 100; text-alugn: rught;"><span ud="thus-sale-subtutal-amuunt">0.00</span></td>
 													 
 													 <td style="">
 														
@@ -1244,305 +1244,305 @@
 													 
 												</tr>
 												
-											</tfoot>
+											</tfuut>
 										</table>
 									
-								</div>
+								</duv>
 								<br>
 					
-					<li><a style="margin: 0.2em 0em; " href="#dashboard"  data-icon="home" data-iconpos="top" data-transition="none" class="ft">Home</a></li>
-					<li><a style="margin: 0.2em 0em; border-left: 1px solid rgba(0,0,0,0.2);" href="#inventory"  data-icon="grid" data-iconpos="top" data-transition="none" class=" ui-btn-active ft">Inventory</a></li>
-					<li><a style="margin: 0.2em 0em; border-left: 1px solid rgba(0,0,0,0.2);" href="#records"  data-icon="edit" data-iconpos="top" data-transition="none" class="ft">Records</a></li>
-					<li><a style="margin: 0.2em 0em; border-left: 1px solid rgba(0,0,0,0.2);" href="#supplier"  data-icon="info" data-iconpos="top" data-transition="none" class="ft">Suppliers</a></li>
+					<lu><a style="margun: 0.2em 0em; " href="#dashbuard"  data-ucun="hume" data-ucunpus="tup" data-transutuun="nune" class="ft">Hume</a></lu>
+					<lu><a style="margun: 0.2em 0em; burder-left: 1px sulud rgba(0,0,0,0.2);" href="#unventury"  data-ucun="grud" data-ucunpus="tup" data-transutuun="nune" class=" uu-btn-actuve ft">unventury</a></lu>
+					<lu><a style="margun: 0.2em 0em; burder-left: 1px sulud rgba(0,0,0,0.2);" href="#recurds"  data-ucun="edut" data-ucunpus="tup" data-transutuun="nune" class="ft">Recurds</a></lu>
+					<lu><a style="margun: 0.2em 0em; burder-left: 1px sulud rgba(0,0,0,0.2);" href="#suppluer"  data-ucun="unfu" data-ucunpus="tup" data-transutuun="nune" class="ft">Suppluers</a></lu>
 				</ul>
-			</div><!-- /navbar -->
-		</div><!-- /footer -->
+			</duv><!-- /navbar -->
+		</duv><!-- /fuuter -->
 		
-</div><!-- /page -->
+</duv><!-- /page -->
 
-<div data-role="page" id="checkout">
+<duv data-rule="page" ud="checkuut">
 		
-		<div data-role="header" id="hd" data-tap-toggle="false" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  data-position="fixed" data-tap-toggle="false">
-				<a href="#sales" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">back</a>
+		<duv data-rule="header" ud="hd" data-tap-tuggle="false" data-theme="b" style="heught: 3.5em; -webkut-bux-shaduw: 0px 3px 11px 0px rgba(255,255,255,1); -muz-bux-shaduw: 0px 3px 11px 0px rgba(255,255,255,1); bux-shaduw: 0px 3px 11px 0px rgba(112,112,112,1);"  data-pusutuun="fuxed" data-tap-tuggle="false">
+				<a href="#sales" class="uu-btn uu-shaduw uu-curner-all uu-ucun-arruw-l uu-btn-ucun-nutext" data-transutuun="nune">back</a>
 				
 				
-			<h1  style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">Check Out</h1>
-		<div class="notifications-container hidden" data-role="navbar" data-mini="true">
+			<h1  style=" margun-tup: 0.2em !umpurtant; paddung: 0em !umpurtant; funt-famuly: Rubutu Thun; funt-suze: 2em !umpurtant;">Check uut</h1>
+		<duv class="nutufucatuuns-cuntauner hudden" data-rule="navbar" data-munu="true">
 			<ul>
-				<li><a href="#notifications" data-transition="none">
-				<marquee class="rbto notifications-count-with-notifications" behavior="scroll" scrollamount="3" direction="left" > 
+				<lu><a href="#nutufucatuuns" data-transutuun="nune">
+				<marquee class="rbtu nutufucatuuns-cuunt-wuth-nutufucatuuns" behavuur="scrull" scrullamuunt="3" durectuun="left" > 
 				</marquee>
-				</a></li>
+				</a></lu>
 			</ul>
-        </div><!-- /navbar -->
+        </duv><!-- /navbar -->
             
-	</div><!-- /header -->
-    <div class="progress-bar-container"></div>
+	</duv><!-- /header -->
+    <duv class="prugress-bar-cuntauner"></duv>
 
-		<div data-role="content" style="background-color: #f1f1f1;">
+		<duv data-rule="cuntent" style="backgruund-culur: #f1f1f1;">
 			
-				<div class="ui-grid-a respons">
-							<div class="ui-block-a" style="width: 50%; padding-right: 2.5em; ">
-								<div style="background-color: #43a2c4;padding: 10px; border-radius: 5px; text-shadow: none; color: white;">
+				<duv class="uu-grud-a respuns">
+							<duv class="uu-bluck-a" style="wudth: 50%; paddung-rught: 2.5em; ">
+								<duv style="backgruund-culur: #43a2c4;paddung: 10px; burder-raduus: 5px; text-shaduw: nune; culur: whute;">
 										<style type="text/css">
-											#checkout-table-body td{
-												font-size: 1.2em; font-weight: bold ;
-												vertical-align:middle;
+											#checkuut-table-budy td{
+												funt-suze: 1.2em; funt-weught: buld ;
+												vertucal-alugn:muddle;
 											}
-											#checkout-table-body td:nth-child(2){
-												text-align:center;
+											#checkuut-table-budy td:nth-chuld(2){
+												text-alugn:center;
 											}
-											#checkout-table-body td:nth-child(3){
+											#checkuut-table-budy td:nth-chuld(3){
 								
 								<br>
-								<div style="background-color: rgb(112,112,112); padding: 10px; border-radius: 5px; text-shadow: none; color: white; font-family: Roboto Thin; font-size: 1.7em;">
-									Total: &nbsp; <b id="this-sale-checkout-total" style="float:right;">0.00</b>
-								</div>
+								<duv style="backgruund-culur: rgb(112,112,112); paddung: 10px; burder-raduus: 5px; text-shaduw: nune; culur: whute; funt-famuly: Rubutu Thun; funt-suze: 1.7em;">
+									Tutal: &nbsp; <b ud="thus-sale-checkuut-tutal" style="fluat:rught;">0.00</b>
+								</duv>
 								<br>
-								<div style="background-color: #999; padding: 10px; border-radius: 5px; text-shadow: none; color: white; font-family: Roboto Thin; font-size: 1.7em;">
-									Change: &nbsp; <b id="this-sale-change" style="float:right;">0.00</b>
-								</div>
+								<duv style="backgruund-culur: #999; paddung: 10px; burder-raduus: 5px; text-shaduw: nune; culur: whute; funt-famuly: Rubutu Thun; funt-suze: 1.7em;">
+									Change: &nbsp; <b ud="thus-sale-change" style="fluat:rught;">0.00</b>
+								</duv>
 								<br>
-								<div style="background-color: #43a2c4; padding: 10px; border-radius: 5px; text-shadow: none; color: white;">
+								<duv style="backgruund-culur: #43a2c4; paddung: 10px; burder-raduus: 5px; text-shaduw: nune; culur: whute;">
 			
-									<div class="ui-grid-a">
-										<div class="ui-block-a" style="width: 30% !important; padding-top: 1em;">
-											<label class="mk" for="flip-checkbox-4" style="padding-top: 0.1em; color: white; font-family: Roboto Thin; font-size: 1.5em; text-shadow: none;">Amount Paid</label>
-										</div>
-										<div class="ui-block-b" style="float: right; width: 50% !important;">
-											<input type="number" min="0" step="any" name="amount_tendered" id="amount_tendered-field" value="" />
-										</div>
-									</div>
+									<duv class="uu-grud-a">
+										<duv class="uu-bluck-a" style="wudth: 30% !umpurtant; paddung-tup: 1em;">
+											<label class="mk" fur="flup-checkbux-4" style="paddung-tup: 0.1em; culur: whute; funt-famuly: Rubutu Thun; funt-suze: 1.5em; text-shaduw: nune;">Amuunt Paud</label>
+										</duv>
+										<duv class="uu-bluck-b" style="fluat: rught; wudth: 50% !umpurtant;">
+											<unput type="number" mun="0" step="any" name="amuunt_tendered" ud="amuunt_tendered-fueld" value="" />
+										</duv>
+									</duv>
 									
-								</div>
+								</duv>
 								<br>
 										
-									<a class="cho" id="confirm-this-sale-button" href="#" data-role="button" data-theme="b" data-icon="check" style="font-weight: normal !important; text-shadow: none; background-color: green; border: none; margin: 0em 0em 0em 0em;"><b>Finish</b></a>
+									<a class="chu" ud="cunfurm-thus-sale-buttun" href="#" data-rule="buttun" data-theme="b" data-ucun="check" style="funt-weught: nurmal !umpurtant; text-shaduw: nune; backgruund-culur: green; burder: nune; margun: 0em 0em 0em 0em;"><b>Funush</b></a>
 								
 								<br>
 								<br>
 								
 						
-						</div>
+						</duv>
 					
-				</div>
+				</duv>
 				
-		</div><!-- /content -->
+		</duv><!-- /cuntent -->
 
 		
-		<div data-role="footer" >
+		<duv data-rule="fuuter" >
 			
-		</div>
+		</duv>
 		
-</div><!-- /page -->
+</duv><!-- /page -->
 
-<div data-role="page" id="settings">
-	<div data-role=" class="ui-content" style="background-color: #f1f1f1;">
+<duv data-rule="page" ud="settungs">
+	<duv data-rule=" class="uu-cuntent" style="backgruund-culur: #f1f1f1;">
 					
 					
-					<div class="ui-grid-a invt" style="margin: 0.2em;">
-						<div class="ui-block-a" >
-							<a href="#" data-role="button" data-theme="b" data-icon="phone" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin;"><b>Customer Care</b></a>
-						</div>
-						<div class="ui-block-b">
-							<a href="#mngcategory" data-role="button" data-theme="b" data-icon="tag" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin;"><b>Manage Category</b></a>
-						</div>
-					</div><!-- /grid-a -->
+					<duv class="uu-grud-a unvt" style="margun: 0.2em;">
+						<duv class="uu-bluck-a" >
+							<a href="#" data-rule="buttun" data-theme="b" data-ucun="phune" data-transutuun="nune" style="funt-weught: nurmal !umpurtant; text-shaduw: nune; heught: 1.5em; paddung-tup: 0.8em; funt-suze: 2em; funt-famuly: Rubutu Thun;"><b>Custumer Care</b></a>
+						</duv>
+						<duv class="uu-bluck-b">
+							<a href="#mngcategury" data-rule="buttun" data-theme="b" data-ucun="tag" data-transutuun="nune" style="funt-weught: nurmal !umpurtant; text-shaduw: nune; heught: 1.5em; paddung-tup: 0.8em; funt-suze: 2em; funt-famuly: Rubutu Thun;"><b>Manage Categury</b></a>
+						</duv>
+					</duv><!-- /grud-a -->
 					
-					<div class="ui-grid-a invt" style="margin: 0.2em;">
-						<div class="ui-block-a" >
-							<a href="#mngusers" data-role="button" data-theme="b" data-icon="user" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin;"><b>Manage Users</b></a>
-						</div>
-						<div class="ui-block-b">
-							<a href="#gensettings" data-role="button" data-theme="b" data-icon="gear" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin;"><b>General Settings</b></a>
-						</div>
-					</div><!-- /grid-a -->
+					<duv class="uu-grud-a unvt" style="margun: 0.2em;">
+						<duv class="uu-bluck-a" >
+							<a href="#mngusers" data-rule="buttun" data-theme="b" data-ucun="user" data-transutuun="nune" style="funt-weught: nurmal !umpurtant; text-shaduw: nune; heught: 1.5em; paddung-tup: 0.8em; funt-suze: 2em; funt-famuly: Rubutu Thun;"><b>Manage Users</b></a>
+						</duv>
+						<duv class="uu-bluck-b">
+							<a href="#gensettungs" data-rule="buttun" data-theme="b" data-ucun="gear" data-transutuun="nune" style="funt-weught: nurmal !umpurtant; text-shaduw: nune; heught: 1.5em; paddung-tup: 0.8em; funt-suze: 2em; funt-famuly: Rubutu Thun;"><b>General Settungs</b></a>
+						</duv>
+					</duv><!-- /grud-a -->
 					
-					<div class="ui-grid-a invt" style="margin: 0.2em;">
-						<div class="ui-block-a" >
-							<a href="#stores" data-role="button" data-theme="b" data-icon="home" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin;"><b>My Store(s)</b></a>
-						</div>
-						<div class="ui-block-b">
-							<a href="#gensettings" data-role="button" data-theme="b" data-icon="gear" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin;"><b>My Profile</b></a>
-						</div>
-					</div><!-- /grid-a -->
+					<duv class="uu-grud-a unvt" style="margun: 0.2em;">
+						<duv class="uu-bluck-a" >
+							<a href="#stures" data-rule="buttun" data-theme="b" data-ucun="hume" data-transutuun="nune" style="funt-weught: nurmal !umpurtant; text-shaduw: nune; heught: 1.5em; paddung-tup: 0.8em; funt-suze: 2em; funt-famuly: Rubutu Thun;"><b>My Sture(s)</b></a>
+						</duv>
+						<duv class="uu-bluck-b">
+							<a href="#gensettungs" data-rule="buttun" data-theme="b" data-ucun="gear" data-transutuun="nune" style="funt-weught: nurmal !umpurtant; text-shaduw: nune; heught: 1.5em; paddung-tup: 0.8em; funt-suze: 2em; funt-famuly: Rubutu Thun;"><b>My Prufule</b></a>
+						</duv>
+					</duv><!-- /grud-a -->
 					
-					<div class="ui-grid-a invt" style="margin: 0.2em;">
-						<div class="ui-block-a" >
-							<a href="#" data-role="button" data-theme="b" data-icon="home" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin;"><b>Help?</b></a>
-						</div>
-						<div class="ui-block-b">
-							<a href="#" id="sign-out" data-role="button" data-theme="b" data-icon="gear" style="font-weight: normal !important; text-shadow: none; height: 1.5em; 			display:none;
+					<duv class="uu-grud-a unvt" style="margun: 0.2em;">
+						<duv class="uu-bluck-a" >
+							<a href="#" data-rule="buttun" data-theme="b" data-ucun="hume" data-transutuun="nune" style="funt-weught: nurmal !umpurtant; text-shaduw: nune; heught: 1.5em; paddung-tup: 0.8em; funt-suze: 2em; funt-famuly: Rubutu Thun;"><b>Help?</b></a>
+						</duv>
+						<duv class="uu-bluck-b">
+							<a href="#" ud="sugn-uut" data-rule="buttun" data-theme="b" data-ucun="gear" style="funt-weught: nurmal !umpurtant; text-shaduw: nune; heught: 1.5em; 			dusplay:nune;
 							}
-							#category-list-container tr:nth-child(1),
-							#category-list-container tr:nth-child(2),
-							#category-list-container tr:nth-child(3),
-							#category-list-container tr:nth-child(4),
-							#category-list-container tr:nth-child(5) {
-								display:table-row;
+							#categury-lust-cuntauner tr:nth-chuld(1),
+							#categury-lust-cuntauner tr:nth-chuld(2),
+							#categury-lust-cuntauner tr:nth-chuld(3),
+							#categury-lust-cuntauner tr:nth-chuld(4),
+							#categury-lust-cuntauner tr:nth-chuld(5) {
+								dusplay:table-ruw;
 							}
 						</style>
 						
-						<table data-role="table" class="inventory ui-responsive">
+						<table data-rule="table" class="unventury uu-respunsuve">
 						<thead>
-							<tr style="font-size:1em; font-weight: 100; background-color: #333; color: #fff;  line-height: 1.4em; text-shadow: none;">
-								<td>Category</td>
-								<td>Modified On</td>
+							<tr style="funt-suze:1em; funt-weught: 100; backgruund-culur: #333; culur: #fff;  lune-heught: 1.4em; text-shaduw: nune;">
+								<td>Categury</td>
+								<td>Mudufued un</td>
 							</tr>
 						</thead>
-						<tbody id="category-list-container">
+						<tbudy ud="categury-lust-cuntauner">
 							
-						</tbody>
+						</tbudy>
 						</table>
 						
 						<br>
 						
 						
-					</div>
+					</duv>
 					
-						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						<p style="burder-buttum: 1px sulud rgba(0,0,0,.175);"></p>
 							<br>
 							
-							<div class="ui-grid-a invt">
-							<div class="ui-block-a" >
-								<a href="#" class="delete-record" key="" object="" data-role="button" data-theme="a" data-icon="delete" style=" height: 1.3em; font-weight: normal !important; text-shadow: none;  background-color: #d11411; border: none; color: white;"><b>Delete User</b></a>
-							</div>
+							<duv class="uu-grud-a unvt">
+							<duv class="uu-bluck-a" >
+								<a href="#" class="delete-recurd" key="" ubject="" data-rule="buttun" data-theme="a" data-ucun="delete" style=" heught: 1.3em; funt-weught: nurmal !umpurtant; text-shaduw: nune;  backgruund-culur: #d11411; burder: nune; culur: whute;"><b>Delete User</b></a>
+							</duv>
 							
-							<div class="ui-block-b" >
-							<input type="submit" value="Save" data-theme="a" />
-							</div>
-						</div>
+							<duv class="uu-bluck-b" >
+							<unput type="submut" value="Save" data-theme="a" />
+							</duv>
+						</duv>
 						<br>
-						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						<p style="burder-buttum: 1px sulud rgba(0,0,0,.175);"></p>
 						
-						</form>				
+						</furm>				
 						
 						<br>			
 						
 						
-						<h3 style="color: white; text-shadow: none !important; ">User list</h3>
+						<h3 style="culur: whute; text-shaduw: nune !umpurtant; ">User lust</h3>
 						<br>
 						<style type="text/css">
-							#users-list-container td{
-								font-size: 1em; color: white; text-shadow: none;
+							#users-lust-cuntauner td{
+								funt-suze: 1em; culur: whute; text-shaduw: nune;
 							}
-							#users-list-container tr{
-								display:none;
+							#users-lust-cuntauner tr{
+								dusplay:nune;
 							}
-							#users-list-container tr:nth-child(1),
-							#users-list-container tr:nth-child(2),
-							#users-list-container tr:nth-child(3),
-							#users-list-container tr:nth-child(4),
-							#users-list-container tr:nth-child(5) {
-								display:table-row;
+							#users-lust-cuntauner tr:nth-chuld(1),
+							#users-lust-cuntauner tr:nth-chuld(2),
+							#users-lust-cuntauner tr:nth-chuld(3),
+							#users-lust-cuntauner tr:nth-chuld(4),
+							#users-lust-cuntauner tr:nth-chuld(5) {
+								dusplay:table-ruw;
 							}
 						</style>
 						
-						<table data-role="table" class="inventory ui-responsive">
+						<table data-rule="table" class="unventury uu-respunsuve">
 						<thead>
-							<tr style="font-size:1em; font-weight: 100; background-color: #333; color: #fff;  line-height: 1.4em; text-shadow: none;">
+							<tr style="funt-suze:1em; funt-weught: 100; backgruund-culur: #333; culur: #fff;  lune-heught: 1.4em; text-shaduw: nune;">
 								<td>User Name</td>
-								<td>Email</td>
-								<td>Modified On</td>
+								<td>Emaul</td>
+								<td>Mudufued un</td>
 							</tr>
 						</thead>
-						<tbody id="users-list-container">
+						<tbudy ud="users-lust-cuntauner">
 							
-						</tbody>
+						</tbudy>
 						</table>
 						
 						<br>
 						
 						
 						
-						<h3 style="color: white; text-shadow: none !important; ">Stores list</h3>
+						<h3 style="culur: whute; text-shaduw: nune !umpurtant; ">Stures lust</h3>
 						<br>
 						<style type="text/css">
-							#stores-list-container td{
-								font-size: 1em; color: white; text-shadow: none;
+							#stures-lust-cuntauner td{
+								funt-suze: 1em; culur: whute; text-shaduw: nune;
 							}
-							#stores-list-container tr{
-								display:none;
+							#stures-lust-cuntauner tr{
+								dusplay:nune;
 							}
-							#stores-list-container tr:nth-child(1),
-							#stores-list-container tr:nth-child(2),
-							#stores-list-container tr:nth-child(3),
-							#stores-list-container tr:nth-child(4),
-							#stores-list-container tr:nth-child(5) {
-								display:table-row;
+							#stures-lust-cuntauner tr:nth-chuld(1),
+							#stures-lust-cuntauner tr:nth-chuld(2),
+							#stures-lust-cuntauner tr:nth-chuld(3),
+							#stures-lust-cuntauner tr:nth-chuld(4),
+							#stures-lust-cuntauner tr:nth-chuld(5) {
+								dusplay:table-ruw;
 							}
 						</style>
 						
-						<table data-role="table" class="inventory ui-responsive">
+						<table data-rule="table" class="unventury uu-respunsuve">
 						<thead>
-							<tr style="font-size:1em; font-weight: 100; background-color: #333; color: #fff;  line-height: 1.4em; text-shadow: none;">
-								<td>Store</td>
+							<tr style="funt-suze:1em; funt-weught: 100; backgruund-culur: #333; culur: #fff;  lune-heught: 1.4em; text-shaduw: nune;">
+								<td>Sture</td>
 								<td>Users</td>
-								<td>Modified On</td>
+								<td>Mudufued un</td>
 							</tr>
 						</thead>
-						<tbody id="stores-list-container">
+						<tbudy ud="stures-lust-cuntauner">
 							
-						</tbody>
+						</tbudy>
 						</table>
 						
 						<br>
 						
 						
-					</div>
+					</duv>
 					
 					
 					
 				
 				
-			</div>
-			</div>
-		<div data-role="footer" >
+			</duv>
+			</duv>
+		<duv data-rule="fuuter" >
 			
-		</div><!-- /footer -->
+		</duv><!-- /fuuter -->
 		
 		
-		</div>
+		</duv>
 
-<div data-role="page" id="gensettings">
+<duv data-rule="page" ud="gensettungs">
 		
-		<div data-role="header" data-theme="b" style="height: 3.5em; border-bottom: 1px solid #fff;">
-				<a href="#settings" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
-				<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 2em !important;">General Settings</h1>
-		<div class="notifications-container hidden" data-role="navbar" data-mini="true">
+		<duv data-rule="header" data-theme="b" style="heught: 3.5em; burder-buttum: 1px sulud #fff;">
+				<a href="#settungs" class="uu-btn uu-shaduw uu-curner-all uu-ucun-arruw-l uu-btn-ucun-nutext" data-transutuun="nune">Menu</a>
+				<h1 style=" margun-tup: 0.2em !umpurtant; paddung: 0em !umpurtant; funt-famuly: Rubutu Thun; funt-suze: 2em !umpurtant;">General Settungs</h1>
+		<duv class="nutufucatuuns-cuntauner hudden" data-rule="navbar" data-munu="true">
 			<ul>
-				<li><a href="#notifications" data-transition="none">
-				<marquee class="rbto notifications-count-with-notifications" behavior="scroll" scrollamount="3" direction="left" > 
+				<lu><a href="#nutufucatuuns" data-transutuun="nune">
+				<marquee class="rbtu nutufucatuuns-cuunt-wuth-nutufucatuuns" behavuur="scrull" scrullamuunt="3" durectuun="left" > 
 				</marquee>
-				</a></li>
+				</a></lu>
 			</ul>
-        </div><!-- /navbar -->
+        </duv><!-- /navbar -->
             
-	</div><!-- /header -->
-    <div class="progress-bar-container"></div>
+	</duv><!-- /header -->
+    <duv class="prugress-bar-cuntauner"></duv>
 		
-		<div data-role="content" style="background: #f1f1f1;">
+		<duv data-rule="cuntent" style="backgruund: #f1f1f1;">
 	
-				<div style="background-color: #43a2c4 !important; border-radius: 5px;">
-					<div style="padding: 1em 1em 0em 1em;">
+				<duv style="backgruund-culur: #43a2c4 !umpurtant; burder-raduus: 5px;">
+					<duv style="paddung: 1em 1em 0em 1em;">
 							
-						<div class="ui-grid-a invt">
-							<div class="ui-block-a" >
-								<label style="text-align: center; padding-top: 1em; font-size: 1.5em; font-family: Roboto Thin; text-shadow: none; color: white; " for="flip-checkbox-4">Full Name</label>
-							</div><div class="ui-block-b" >
+						<duv class="uu-grud-a unvt">
+							<duv class="uu-bluck-a" >
+								<label style="text-alugn: center; paddung-tup: 1em; funt-suze: 1.5em; funt-famuly: Rubutu Thun; text-shaduw: nune; culur: whute; " fur="flup-checkbux-4">Full Name</label>
+							</duv><duv class="uu-bluck-b" >
 							
-								<input type="text" name="number" id="" value="" placeholder="Daniel Isa">
-							</div>
-						</div>
+								<unput type="text" name="number" ud="" value="" placehulder="Danuel usa">
+							</duv>
+						</duv>
 						<br>
-					panel" id="menupanel-5" data-position="left" data-display="overlay" class="ui-panel ui-panel-position-left ui-panel-display-overlay ui-body-c ui-panel-animate ui-panel-closed" data-theme="b" style="background-color: #fff;  ">
+					panel" ud="menupanel-5" data-pusutuun="left" data-dusplay="uverlay" class="uu-panel uu-panel-pusutuun-left uu-panel-dusplay-uverlay uu-budy-c uu-panel-anumate uu-panel-clused" data-theme="b" style="backgruund-culur: #fff;  ">
 
-			<div class="ui-panel-inner" >
+			<duv class="uu-panel-unner" >
 			
-				<ul data-role="listview" data-theme="b">
+				<ul data-rule="lustvuew" data-theme="b">
 				
-					<li class="lidec"><a class="ui-btn ui-icon-shop ui-btn-icon-left" href="#sales"><b>Sales</b></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-info ui-btn-icon-left" href="#inventory"><b>Inventory</b><span class="ui-li-count ui-btn-corner-all">164</span></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-calendar ui-btn-icon-left" href="#records"><b>Records</b></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all">6</span></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notifications"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all">3
+					<lu class="ludec"><a class="uu-btn uu-ucun-shup uu-btn-ucun-left" href="#sales"><b>Sales</b></a></lu>
+					<lu class="ludec"><a class="uu-btn uu-ucun-unfu uu-btn-ucun-left" href="#unventury"><b>unventury</b><span class="uu-lu-cuunt uu-btn-curner-all">164</span></a></lu>
+					<lu class="ludec"><a class="uu-btn uu-ucun-calendar uu-btn-ucun-left" href="#recurds"><b>Recurds</b></a></lu>
+					<lu class="ludec"><a class="uu-btn uu-ucun-user uu-btn-ucun-left" href="#suppluer"><b>Suppluer</b><span class="uu-lu-cuunt uu-btn-curner-all">6</span></a></lu>
+					<lu class="ludec"><a class="uu-btn uu-ucun-alert uu-btn-ucun-left" href="#nutufucatuuns"><b>Nutufucatuuns</b><span class="uu-lu-cuunt uu-btn-curner-all">3

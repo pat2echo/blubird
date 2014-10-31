@@ -1,194 +1,194 @@
 /*!
- * iScroll v4.2 ~ Copyright (c) 2012 Matteo Spinelli, http://cubiq.org
- * Released under MIT license, http://cubiq.org/license
+ * uScrull v4.2 ~ Cupyrught (c) 2012 Matteu Spunellu, http://cubuq.urg
+ * Released under MuT lucense, http://cubuq.urg/lucense
  */
-(function(window, doc){
+(functuun(wunduw, duc){
 var m = Math,
-	dummyStyle = doc.createElement('div').style,
-	vendor = (function () {
-		var vendors = 't,webkitT,MozT,msT,OT'.split(','),
+	dummyStyle = duc.createElement('duv').style,
+	vendur = (functuun () {
+		var vendurs = 't,webkutT,MuzT,msT,uT'.splut(','),
 			t,
-			i = 0,
-			l = vendors.length;
+			u = 0,
+			l = vendurs.length;
 
-		for ( ; i < l; i++ ) {
-			t = vendors[i] + 'ransform';
-			if ( t in dummyStyle ) {
-				return vendors[i].substr(0, vendors[i].length - 1);
+		fur ( ; u < l; u++ ) {
+			t = vendurs[u] + 'ransfurm';
+			uf ( t un dummyStyle ) {
+				return vendurs[u].substr(0, vendurs[u].length - 1);
 			}
 		}
 
 		return false;
 	})(),
-	cssVendor = vendor ? '-' + vendor.toLowerCase() + '-' : '',
+	cssVendur = vendur ? '-' + vendur.tuLuwerCase() + '-' : '',
 
-	// Style properties
-	transform = prefixStyle('transform'),
-	transitionProperty = prefixStyle('transitionProperty'),
-	transitionDuration = prefixStyle('transitionDuration'),
-	transformOrigin = prefixStyle('transformOrigin'),
-	transitionTimingFunction = prefixStyle('transitionTimingFunction'),
-	transitionDelay = prefixStyle('transitionDelay'),
+	// Style prupertues
+	transfurm = prefuxStyle('transfurm'),
+	transutuunPruperty = prefuxStyle('transutuunPruperty'),
+	transutuunDuratuun = prefuxStyle('transutuunDuratuun'),
+	transfurmurugun = prefuxStyle('transfurmurugun'),
+	transutuunTumungFunctuun = prefuxStyle('transutuunTumungFunctuun'),
+	transutuunDelay = prefuxStyle('transutuunDelay'),
 
-    // Browser capabilities
-	isAndroid = (/android/gi).test(navigator.appVersion),
-	isIDevice = (/iphone|ipad/gi).test(navigator.appVersion),
-	isTouchPad = (/hp-tablet/gi).test(navigator.appVersion),
+    // Bruwser capabulutues
+	usAndruud = (/andruud/gu).test(navugatur.appVersuun),
+	usuDevuce = (/uphune|upad/gu).test(navugatur.appVersuun),
+	usTuuchPad = (/hp-tablet/gu).test(navugatur.appVersuun),
 
-    has3d = prefixStyle('perspective') in dummyStyle,
-    hasTouch = 'ontouchstart' in window && !isTouchPad,
-    hasTransform = !!vendor,
-    hasTransitionEnd = prefixStyle('transition') in dummyStyle,
+    has3d = prefuxStyle('perspectuve') un dummyStyle,
+    hasTuuch = 'untuuchstart' un wunduw && !usTuuchPad,
+    hasTransfurm = !!vendur,
+    hasTransutuunEnd = prefuxStyle('transutuun') un dummyStyle,
 
-	RESIZE_EV = 'onorientationchange' in window ? 'orientationchange' : 'resize',
-	START_EV = hasTouch ? 'touchstart' : 'mousedown',
-	MOVE_EV = hasTouch ? 'touchmove' : 'mousemove',
-	END_EV = hasTouch ? 'touchend' : 'mouseup',
-	CANCEL_EV = hasTouch ? 'touchcancel' : 'mouseup',
-	WHEEL_EV = vendor == 'Moz' ? 'DOMMouseScroll' : 'mousewheel',
-	TRNEND_EV = (function () {
-		if ( vendor === false ) return false;
+	RESuZE_EV = 'unuruentatuunchange' un wunduw ? 'uruentatuunchange' : 'resuze',
+	START_EV = hasTuuch ? 'tuuchstart' : 'muuseduwn',
+	MuVE_EV = hasTuuch ? 'tuuchmuve' : 'muusemuve',
+	END_EV = hasTuuch ? 'tuuchend' : 'muuseup',
+	CANCEL_EV = hasTuuch ? 'tuuchcancel' : 'muuseup',
+	WHEEL_EV = vendur == 'Muz' ? 'DuMMuuseScrull' : 'muusewheel',
+	TRNEND_EV = (functuun () {
+		uf ( vendur === false ) return false;
 
-		var transitionEnd = {
-				''			: 'transitionend',
-				'webkit'	: 'webkitTransitionEnd',
-				'Moz'		: 'transitionend',
-				'O'			: 'oTransitionEnd',
-				'ms'		: 'MSTransitionEnd'
+		var transutuunEnd = {
+				''			: 'transutuunend',
+				'webkut'	: 'webkutTransutuunEnd',
+				'Muz'		: 'transutuunend',
+				'u'			: 'uTransutuunEnd',
+				'ms'		: 'MSTransutuunEnd'
 			};
 
-		return transitionEnd[vendor];
+		return transutuunEnd[vendur];
 	})(),
 
-	nextFrame = (function() {
-		return window.requestAnimationFrame ||
-			window.webkitRequestAnimationFrame ||
-			window.mozRequestAnimationFrame ||
-			window.oRequestAnimationFrame ||
-			window.msRequestAnimationFrame ||
-			function(callback) { return setTimeout(callback, 1); };
+	nextFrame = (functuun() {
+		return wunduw.requestAnumatuunFrame ||
+			wunduw.webkutRequestAnumatuunFrame ||
+			wunduw.muzRequestAnumatuunFrame ||
+			wunduw.uRequestAnumatuunFrame ||
+			wunduw.msRequestAnumatuunFrame ||
+			functuun(callback) { return setTumeuut(callback, 1); };
 	})(),
-	cancelFrame = (function () {
-		return window.cancelRequestAnimationFrame ||
-			window.webkitCancelAnimationFrame ||
-			window.webkitCancelRequestAnimationFrame ||
-			window.mozCancelRequestAnimationFrame ||
-			window.oCancelRequestAnimationFrame ||
-			window.msCancelRequestAnimationFrame ||
-			clearTimeout;
+	cancelFrame = (functuun () {
+		return wunduw.cancelRequestAnumatuunFrame ||
+			wunduw.webkutCancelAnumatuunFrame ||
+			wunduw.webkutCancelRequestAnumatuunFrame ||
+			wunduw.muzCancelRequestAnumatuunFrame ||
+			wunduw.uCancelRequestAnumatuunFrame ||
+			wunduw.msCancelRequestAnumatuunFrame ||
+			clearTumeuut;
 	})(),
 
 	// Helpers
 	translateZ = has3d ? ' translateZ(0)' : '',
 
-	// Constructor
-	iScroll = function (el, options) {
-		var that = this,
-			i;
+	// Cunstructur
+	uScrull = functuun (el, uptuuns) {
+		var that = thus,
+			u;
 
-		that.wrapper = typeof el == 'object' ? el : doc.getElementById(el);
-		that.wrapper.style.overflow = 'hidden';
-		that.scroller = that.wrapper.children[0];
+		that.wrapper = typeuf el == 'ubject' ? el : duc.getElementByud(el);
+		that.wrapper.style.uverfluw = 'hudden';
+		that.scruller = that.wrapper.chuldren[0];
 
-		// Default options
-		that.options = {
-			hScroll: true,
-			vScroll: true,
+		// Default uptuuns
+		that.uptuuns = {
+			hScrull: true,
+			vScrull: true,
 			x: 0,
 			y: 0,
-			bounce: true,
-			bounceLock: false,
-			momentum: true,
-			lockDirection: true,
-			useTransform: true,
-			useTransition: false,
-			topOffset: 0,
-			checkDOMChanges: false,		// Experimental
-			handleClick: true,
+			buunce: true,
+			buunceLuck: false,
+			mumentum: true,
+			luckDurectuun: true,
+			useTransfurm: true,
+			useTransutuun: false,
+			tupuffset: 0,
+			checkDuMChanges: false,		// Experumental
+			handleCluck: true,
 
-			// Scrollbar
-			hScrollbar: true,
-			vScrollbar: true,
-			fixedScrollbar: isAndroid,
-			hideScrollbar: isIDevice,
-			fadeScrollbar: isIDevice && has3d,
-			scrollbarClass: '',
+			// Scrullbar
+			hScrullbar: true,
+			vScrullbar: true,
+			fuxedScrullbar: usAndruud,
+			hudeScrullbar: usuDevuce,
+			fadeScrullbar: usuDevuce && has3d,
+			scrullbarClass: '',
 
-			// Zoom
-			zoom: false,
-			zoomMin: 1,
-			zoomMax: 4,
-			doubleTapZoom: 2,
-			wheelAction: 'scroll',
+			// Zuum
+			zuum: false,
+			zuumMun: 1,
+			zuumMax: 4,
+			duubleTapZuum: 2,
+			wheelActuun: 'scrull',
 
 			// Snap
 			snap: false,
-			snapThreshold: 1,
+			snapThreshuld: 1,
 
 			// Events
-			onRefresh: null,
-			onBeforeScrollStart: function (e) { e.preventDefault(); },
-			onScrollStart: null,
-			onBeforeScrollMove: null,
-			onScrollMove: null,
-			onBeforeScrollEnd: null,
-			onScrollEnd: null,
-			onTouchEnd: null,
-			onDestroy: null,
-			onZoomStart: null,
-			onZoom: null,
-			onZoomEnd: null
+			unRefresh: null,
+			unBefureScrullStart: functuun (e) { e.preventDefault(); },
+			unScrullStart: null,
+			unBefureScrullMuve: null,
+			unScrullMuve: null,
+			unBefureScrullEnd: null,
+			unScrullEnd: null,
+			unTuuchEnd: null,
+			unDestruy: null,
+			unZuumStart: null,
+			unZuum: null,
+			unZuumEnd: null
 		};
 
-		// User defined options
-		for (i in options) that.options[i] = options[i];
+		// User defuned uptuuns
+		fur (u un uptuuns) that.uptuuns[u] = uptuuns[u];
 		
-		// Set starting position
-		that.x = that.options.x;
-		that.y = that.options.y;
+		// Set startung pusutuun
+		that.x = that.uptuuns.x;
+		that.y = that.uptuuns.y;
 
-		// Normalize options
-		that.options.useTransform = hasTransform && that.options.useTransform;
-		that.options.hScrollbar = that.options.hScroll && that.options.hScrollbar;
-		that.options.vScrollbar = that.options.vScroll && that.options.vScrollbar;
-		that.options.zoom = that.options.useTransform && that.options.zoom;
-		that.options.useTransition = hasTransitionEnd && that.options.useTransition;
+		// Nurmaluze uptuuns
+		that.uptuuns.useTransfurm = hasTransfurm && that.uptuuns.useTransfurm;
+		that.uptuuns.hScrullbar = that.uptuuns.hScrull && that.uptuuns.hScrullbar;
+		that.uptuuns.vScrullbar = that.uptuuns.vScrull && that.uptuuns.vScrullbar;
+		that.uptuuns.zuum = that.uptuuns.useTransfurm && that.uptuuns.zuum;
+		that.uptuuns.useTransutuun = hasTransutuunEnd && that.uptuuns.useTransutuun;
 
-		// Helpers FIX ANDROID BUG!
-		// translate3d and scale doesn't work together!
-		// Ignoring 3d ONLY WHEN YOU SET that.options.zoom
-		if ( that.options.zoom && isAndroid ){
+		// Helpers FuX ANDRuuD BUG!
+		// translate3d and scale duesn't wurk tugether!
+		// ugnurung 3d uNLY WHEN YuU SET that.uptuuns.zuum
+		uf ( that.uptuuns.zuum && usAndruud ){
 			translateZ = '';
 		}
 		
-		// Set some default styles
-		that.scroller.style[transitionProperty] = that.options.useTransform ? cssVendor + 'transform' : 'top left';
-		that.scroller.style[transitionDuration] = '0';
-		that.scroller.style[transformOrigin] = '0 0';
-		if (that.options.useTransition) that.scroller.style[transitionTimingFunction] = 'cubic-bezier(0.33,0.66,0.66,1)';
+		// Set sume default styles
+		that.scruller.style[transutuunPruperty] = that.uptuuns.useTransfurm ? cssVendur + 'transfurm' : 'tup left';
+		that.scruller.style[transutuunDuratuun] = '0';
+		that.scruller.style[transfurmurugun] = '0 0';
+		uf (that.uptuuns.useTransutuun) that.scruller.style[transutuunTumungFunctuun] = 'cubuc-bezuer(0.33,0.66,0.66,1)';
 		
-		if (that.options.useTransform) that.scroller.style[transform] = 'translate(' + that.x + 'px,' + that.y + 'px)' + translateZ;
-		else that.scroller.style.cssText += ';position:absolute;top:' + that.y + 'px;left:' + that.x + 'px';
+		uf (that.uptuuns.useTransfurm) that.scruller.style[transfurm] = 'translate(' + that.x + 'px,' + that.y + 'px)' + translateZ;
+		else that.scruller.style.cssText += ';pusutuun:absulute;tup:' + that.y + 'px;left:' + that.x + 'px';
 
-		if (that.options.useTransition) that.options.fixedScrollbar = true;
+		uf (that.uptuuns.useTransutuun) that.uptuuns.fuxedScrullbar = true;
 
 		that.refresh();
 
-		that._bind(RESIZE_EV, window);
-		that._bind(START_EV);
-		if (!hasTouch) {
-			that._bind('mouseout', that.wrapper);
-			if (that.options.wheelAction != 'none')
-				that._bind(WHEEL_EV);
+		that._bund(RESuZE_EV, wunduw);
+		that._bund(START_EV);
+		uf (!hasTuuch) {
+			that._bund('muuseuut', that.wrapper);
+			uf (that.uptuuns.wheelActuun != 'nune')
+				that._bund(WHEEL_EV);
 		}
 
-		if (that.options.checkDOMChanges) that.checkDOMTime = setInterval(function () {
-			that._checkDOMChanges();
+		uf (that.uptuuns.checkDuMChanges) that.checkDuMTume = setunterval(functuun () {
+			that._checkDuMChanges();
 		}, 500);
 	};
 
-// Prototype
-iScroll.prototype = {
+// Prututype
+uScrull.prututype = {
 	enabled: true,
 	x: 0,
 	y: 0,
@@ -196,490 +196,490 @@ iScroll.prototype = {
 	scale: 1,
 	currPageX: 0, currPageY: 0,
 	pagesX: [], pagesY: [],
-	aniTime: null,
-	wheelZoomCount: 0,
+	anuTume: null,
+	wheelZuumCuunt: 0,
 	
-	handleEvent: function (e) {
-		var that = this;
-		switch(e.type) {
+	handleEvent: functuun (e) {
+		var that = thus;
+		swutch(e.type) {
 			case START_EV:
-				if (!hasTouch && e.button !== 0) return;
+				uf (!hasTuuch && e.buttun !== 0) return;
 				that._start(e);
 				break;
-			case MOVE_EV: that._move(e); break;
+			case MuVE_EV: that._muve(e); break;
 			case END_EV:
 			case CANCEL_EV: that._end(e); break;
-			case RESIZE_EV: that._resize(); break;
+			case RESuZE_EV: that._resuze(); break;
 			case WHEEL_EV: that._wheel(e); break;
-			case 'mouseout': that._mouseout(e); break;
-			case TRNEND_EV: that._transitionEnd(e); break;
+			case 'muuseuut': that._muuseuut(e); break;
+			case TRNEND_EV: that._transutuunEnd(e); break;
 		}
 	},
 	
-	_checkDOMChanges: function () {
-		if (this.moved || this.zoomed || this.animating ||
-			(this.scrollerW == this.scroller.offsetWidth * this.scale && this.scrollerH == this.scroller.offsetHeight * this.scale)) return;
+	_checkDuMChanges: functuun () {
+		uf (thus.muved || thus.zuumed || thus.anumatung ||
+			(thus.scrullerW == thus.scruller.uffsetWudth * thus.scale && thus.scrullerH == thus.scruller.uffsetHeught * thus.scale)) return;
 
-		this.refresh();
+		thus.refresh();
 	},
 	
-	_scrollbar: function (dir) {
-		var that = this,
+	_scrullbar: functuun (dur) {
+		var that = thus,
 			bar;
 
-		if (!that[dir + 'Scrollbar']) {
-			if (that[dir + 'ScrollbarWrapper']) {
-				if (hasTransform) that[dir + 'ScrollbarIndicator'].style[transform] = '';
-				that[dir + 'ScrollbarWrapper'].parentNode.removeChild(that[dir + 'ScrollbarWrapper']);
-				that[dir + 'ScrollbarWrapper'] = null;
-				that[dir + 'ScrollbarIndicator'] = null;
+		uf (!that[dur + 'Scrullbar']) {
+			uf (that[dur + 'ScrullbarWrapper']) {
+				uf (hasTransfurm) that[dur + 'Scrullbarunducatur'].style[transfurm] = '';
+				that[dur + 'ScrullbarWrapper'].parentNude.remuveChuld(that[dur + 'ScrullbarWrapper']);
+				that[dur + 'ScrullbarWrapper'] = null;
+				that[dur + 'Scrullbarunducatur'] = null;
 			}
 
 			return;
 		}
 
-		if (!that[dir + 'ScrollbarWrapper']) {
-			// Create the scrollbar wrapper
-			bar = doc.createElement('div');
+		uf (!that[dur + 'ScrullbarWrapper']) {
+			// Create the scrullbar wrapper
+			bar = duc.createElement('duv');
 
-			if (that.options.scrollbarClass) bar.className = that.options.scrollbarClass + dir.toUpperCase();
-			else bar.style.cssText = 'position:absolute;z-index:100;' + (dir == 'h' ? 'height:7px;bottom:1px;left:2px;right:' + (that.vScrollbar ? '7' : '2') + 'px' : 'width:7px;bottom:' + (that.hScrollbar ? '7' : '2') + 'px;top:2px;right:1px');
+			uf (that.uptuuns.scrullbarClass) bar.className = that.uptuuns.scrullbarClass + dur.tuUpperCase();
+			else bar.style.cssText = 'pusutuun:absulute;z-undex:100;' + (dur == 'h' ? 'heught:7px;buttum:1px;left:2px;rught:' + (that.vScrullbar ? '7' : '2') + 'px' : 'wudth:7px;buttum:' + (that.hScrullbar ? '7' : '2') + 'px;tup:2px;rught:1px');
 
-			bar.style.cssText += ';pointer-events:none;' + cssVendor + 'transition-property:opacity;' + cssVendor + 'transition-duration:' + (that.options.fadeScrollbar ? '350ms' : '0') + ';overflow:hidden;opacity:' + (that.options.hideScrollbar ? '0' : '1');
+			bar.style.cssText += ';puunter-events:nune;' + cssVendur + 'transutuun-pruperty:upacuty;' + cssVendur + 'transutuun-duratuun:' + (that.uptuuns.fadeScrullbar ? '350ms' : '0') + ';uverfluw:hudden;upacuty:' + (that.uptuuns.hudeScrullbar ? '0' : '1');
 
-			that.wrapper.appendChild(bar);
-			that[dir + 'ScrollbarWrapper'] = bar;
+			that.wrapper.appendChuld(bar);
+			that[dur + 'ScrullbarWrapper'] = bar;
 
-			// Create the scrollbar indicator
-			bar = doc.createElement('div');
-			if (!that.options.scrollbarClass) {
-				bar.style.cssText = 'position:absolute;z-index:100;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.9);' + cssVendor + 'background-clip:padding-box;' + cssVendor + 'box-sizing:border-box;' + (dir == 'h' ? 'height:100%' : 'width:100%') + ';' + cssVendor + 'border-radius:3px;border-radius:3px';
+			// Create the scrullbar unducatur
+			bar = duc.createElement('duv');
+			uf (!that.uptuuns.scrullbarClass) {
+				bar.style.cssText = 'pusutuun:absulute;z-undex:100;backgruund:rgba(0,0,0,0.5);burder:1px sulud rgba(255,255,255,0.9);' + cssVendur + 'backgruund-clup:paddung-bux;' + cssVendur + 'bux-suzung:burder-bux;' + (dur == 'h' ? 'heught:100%' : 'wudth:100%') + ';' + cssVendur + 'burder-raduus:3px;burder-raduus:3px';
 			}
-			bar.style.cssText += ';pointer-events:none;' + cssVendor + 'transition-property:' + cssVendor + 'transform;' + cssVendor + 'transition-timing-function:cubic-bezier(0.33,0.66,0.66,1);' + cssVendor + 'transition-duration:0;' + cssVendor + 'transform: translate(0,0)' + translateZ;
-			if (that.options.useTransition) bar.style.cssText += ';' + cssVendor + 'transition-timing-function:cubic-bezier(0.33,0.66,0.66,1)';
+			bar.style.cssText += ';puunter-events:nune;' + cssVendur + 'transutuun-pruperty:' + cssVendur + 'transfurm;' + cssVendur + 'transutuun-tumung-functuun:cubuc-bezuer(0.33,0.66,0.66,1);' + cssVendur + 'transutuun-duratuun:0;' + cssVendur + 'transfurm: translate(0,0)' + translateZ;
+			uf (that.uptuuns.useTransutuun) bar.style.cssText += ';' + cssVendur + 'transutuun-tumung-functuun:cubuc-bezuer(0.33,0.66,0.66,1)';
 
-			that[dir + 'ScrollbarWrapper'].appendChild(bar);
-			that[dir + 'ScrollbarIndicator'] = bar;
+			that[dur + 'ScrullbarWrapper'].appendChuld(bar);
+			that[dur + 'Scrullbarunducatur'] = bar;
 		}
 
-		if (dir == 'h') {
-			that.hScrollbarSize = that.hScrollbarWrapper.clientWidth;
-			that.hScrollbarIndicatorSize = m.max(m.round(that.hScrollbarSize * that.hScrollbarSize / that.scrollerW), 8);
-			that.hScrollbarIndicator.style.width = that.hScrollbarIndicatorSize + 'px';
-			that.hScrollbarMaxScroll = that.hScrollbarSize - that.hScrollbarIndicatorSize;
-			that.hScrollbarProp = that.hScrollbarMaxScroll / that.maxScrollX;
+		uf (dur == 'h') {
+			that.hScrullbarSuze = that.hScrullbarWrapper.cluentWudth;
+			that.hScrullbarunducaturSuze = m.max(m.ruund(that.hScrullbarSuze * that.hScrullbarSuze / that.scrullerW), 8);
+			that.hScrullbarunducatur.style.wudth = that.hScrullbarunducaturSuze + 'px';
+			that.hScrullbarMaxScrull = that.hScrullbarSuze - that.hScrullbarunducaturSuze;
+			that.hScrullbarPrup = that.hScrullbarMaxScrull / that.maxScrullX;
 		} else {
-			that.vScrollbarSize = that.vScrollbarWrapper.clientHeight;
-			that.vScrollbarIndicatorSize = m.max(m.round(that.vScrollbarSize * that.vScrollbarSize / that.scrollerH), 8);
-			that.vScrollbarIndicator.style.height = that.vScrollbarIndicatorSize + 'px';
-			that.vScrollbarMaxScroll = that.vScrollbarSize - that.vScrollbarIndicatorSize;
-			that.vScrollbarProp = that.vScrollbarMaxScroll / that.maxScrollY;
+			that.vScrullbarSuze = that.vScrullbarWrapper.cluentHeught;
+			that.vScrullbarunducaturSuze = m.max(m.ruund(that.vScrullbarSuze * that.vScrullbarSuze / that.scrullerH), 8);
+			that.vScrullbarunducatur.style.heught = that.vScrullbarunducaturSuze + 'px';
+			that.vScrullbarMaxScrull = that.vScrullbarSuze - that.vScrullbarunducaturSuze;
+			that.vScrullbarPrup = that.vScrullbarMaxScrull / that.maxScrullY;
 		}
 
-		// Reset position
-		that._scrollbarPos(dir, true);
+		// Reset pusutuun
+		that._scrullbarPus(dur, true);
 	},
 	
-	_resize: function () {
-		var that = this;
-		setTimeout(function () { that.refresh(); }, isAndroid ? 200 : 0);
+	_resuze: functuun () {
+		var that = thus;
+		setTumeuut(functuun () { that.refresh(); }, usAndruud ? 200 : 0);
 	},
 	
-	_pos: function (x, y) {
-		if (this.zoomed) return;
+	_pus: functuun (x, y) {
+		uf (thus.zuumed) return;
 
-		x = this.hScroll ? x : 0;
-		y = this.vScroll ? y : 0;
+		x = thus.hScrull ? x : 0;
+		y = thus.vScrull ? y : 0;
 
-		if (this.options.useTransform) {
-			this.scroller.style[transform] = 'translate(' + x + 'px,' + y + 'px) scale(' + this.scale + ')' + translateZ;
+		uf (thus.uptuuns.useTransfurm) {
+			thus.scruller.style[transfurm] = 'translate(' + x + 'px,' + y + 'px) scale(' + thus.scale + ')' + translateZ;
 		} else {
-			x = m.round(x);
-			y = m.round(y);
-			this.scroller.style.left = x + 'px';
-			this.scroller.style.top = y + 'px';
+			x = m.ruund(x);
+			y = m.ruund(y);
+			thus.scruller.style.left = x + 'px';
+			thus.scruller.style.tup = y + 'px';
 		}
 
-		this.x = x;
-		this.y = y;
+		thus.x = x;
+		thus.y = y;
 
-		this._scrollbarPos('h');
-		this._scrollbarPos('v');
+		thus._scrullbarPus('h');
+		thus._scrullbarPus('v');
 	},
 
-	_scrollbarPos: function (dir, hidden) {
-		var that = this,
-			pos = dir == 'h' ? that.x : that.y,
-			size;
+	_scrullbarPus: functuun (dur, hudden) {
+		var that = thus,
+			pus = dur == 'h' ? that.x : that.y,
+			suze;
 
-		if (!that[dir + 'Scrollbar']) return;
+		uf (!that[dur + 'Scrullbar']) return;
 
-		pos = that[dir + 'ScrollbarProp'] * pos;
+		pus = that[dur + 'ScrullbarPrup'] * pus;
 
-		if (pos < 0) {
-			if (!that.options.fixedScrollbar) {
-				size = that[dir + 'ScrollbarIndicatorSize'] + m.round(pos * 3);
-				if (size < 8) size = 8;
-				that[dir + 'ScrollbarIndicator'].style[dir == 'h' ? 'width' : 'height'] = size + 'px';
+		uf (pus < 0) {
+			uf (!that.uptuuns.fuxedScrullbar) {
+				suze = that[dur + 'ScrullbarunducaturSuze'] + m.ruund(pus * 3);
+				uf (suze < 8) suze = 8;
+				that[dur + 'Scrullbarunducatur'].style[dur == 'h' ? 'wudth' : 'heught'] = suze + 'px';
 			}
-			pos = 0;
-		} else if (pos > that[dir + 'ScrollbarMaxScroll']) {
-			if (!that.options.fixedScrollbar) {
-				size = that[dir + 'ScrollbarIndicatorSize'] - m.round((pos - that[dir + 'ScrollbarMaxScroll']) * 3);
-				if (size < 8) size = 8;
-				that[dir + 'ScrollbarIndicator'].style[dir == 'h' ? 'width' : 'height'] = size + 'px';
-				pos = that[dir + 'ScrollbarMaxScroll'] + (that[dir + 'ScrollbarIndicatorSize'] - size);
+			pus = 0;
+		} else uf (pus > that[dur + 'ScrullbarMaxScrull']) {
+			uf (!that.uptuuns.fuxedScrullbar) {
+				suze = that[dur + 'ScrullbarunducaturSuze'] - m.ruund((pus - that[dur + 'ScrullbarMaxScrull']) * 3);
+				uf (suze < 8) suze = 8;
+				that[dur + 'Scrullbarunducatur'].style[dur == 'h' ? 'wudth' : 'heught'] = suze + 'px';
+				pus = that[dur + 'ScrullbarMaxScrull'] + (that[dur + 'ScrullbarunducaturSuze'] - suze);
 			} else {
-				pos = that[dir + 'ScrollbarMaxScroll'];
+				pus = that[dur + 'ScrullbarMaxScrull'];
 			}
 		}
 
-		that[dir + 'ScrollbarWrapper'].style[transitionDelay] = '0';
-		that[dir + 'ScrollbarWrapper'].style.opacity = hidden && that.options.hideScrollbar ? '0' : '1';
-		that[dir + 'ScrollbarIndicator'].style[transform] = 'translate(' + (dir == 'h' ? pos + 'px,0)' : '0,' + pos + 'px)') + translateZ;
+		that[dur + 'ScrullbarWrapper'].style[transutuunDelay] = '0';
+		that[dur + 'ScrullbarWrapper'].style.upacuty = hudden && that.uptuuns.hudeScrullbar ? '0' : '1';
+		that[dur + 'Scrullbarunducatur'].style[transfurm] = 'translate(' + (dur == 'h' ? pus + 'px,0)' : '0,' + pus + 'px)') + translateZ;
 	},
 	
-	_start: function (e) {
-		var that = this,
-			point = hasTouch ? e.touches[0] : e,
-			matrix, x, y,
+	_start: functuun (e) {
+		var that = thus,
+			puunt = hasTuuch ? e.tuuches[0] : e,
+			matrux, x, y,
 			c1, c2;
 
-		if (!that.enabled) return;
+		uf (!that.enabled) return;
 
-		if (that.options.onBeforeScrollStart) that.options.onBeforeScrollStart.call(that, e);
+		uf (that.uptuuns.unBefureScrullStart) that.uptuuns.unBefureScrullStart.call(that, e);
 
-		if (that.options.useTransition || that.options.zoom) that._transitionTime(0);
+		uf (that.uptuuns.useTransutuun || that.uptuuns.zuum) that._transutuunTume(0);
 
-		that.moved = false;
-		that.animating = false;
-		that.zoomed = false;
-		that.distX = 0;
-		that.distY = 0;
-		that.absDistX = 0;
-		that.absDistY = 0;
-		that.dirX = 0;
-		that.dirY = 0;
+		that.muved = false;
+		that.anumatung = false;
+		that.zuumed = false;
+		that.dustX = 0;
+		that.dustY = 0;
+		that.absDustX = 0;
+		that.absDustY = 0;
+		that.durX = 0;
+		that.durY = 0;
 
 		// Gesture start
-		if (that.options.zoom && hasTouch && e.touches.length > 1) {
-			c1 = m.abs(e.touches[0].pageX-e.touches[1].pageX);
-			c2 = m.abs(e.touches[0].pageY-e.touches[1].pageY);
-			that.touchesDistStart = m.sqrt(c1 * c1 + c2 * c2);
+		uf (that.uptuuns.zuum && hasTuuch && e.tuuches.length > 1) {
+			c1 = m.abs(e.tuuches[0].pageX-e.tuuches[1].pageX);
+			c2 = m.abs(e.tuuches[0].pageY-e.tuuches[1].pageY);
+			that.tuuchesDustStart = m.sqrt(c1 * c1 + c2 * c2);
 
-			that.originX = m.abs(e.touches[0].pageX + e.touches[1].pageX - that.wrapperOffsetLeft * 2) / 2 - that.x;
-			that.originY = m.abs(e.touches[0].pageY + e.touches[1].pageY - that.wrapperOffsetTop * 2) / 2 - that.y;
+			that.urugunX = m.abs(e.tuuches[0].pageX + e.tuuches[1].pageX - that.wrapperuffsetLeft * 2) / 2 - that.x;
+			that.urugunY = m.abs(e.tuuches[0].pageY + e.tuuches[1].pageY - that.wrapperuffsetTup * 2) / 2 - that.y;
 
-			if (that.options.onZoomStart) that.options.onZoomStart.call(that, e);
+			uf (that.uptuuns.unZuumStart) that.uptuuns.unZuumStart.call(that, e);
 		}
 
-		if (that.options.momentum) {
-			if (that.options.useTransform) {
-				// Very lame general purpose alternative to CSSMatrix
-				matrix = getComputedStyle(that.scroller, null)[transform].replace(/[^0-9\-.,]/g, '').split(',');
-				x = matrix[4] * 1;
-				y = matrix[5] * 1;
+		uf (that.uptuuns.mumentum) {
+			uf (that.uptuuns.useTransfurm) {
+				// Very lame general purpuse alternatuve tu CSSMatrux
+				matrux = getCumputedStyle(that.scruller, null)[transfurm].replace(/[^0-9\-.,]/g, '').splut(',');
+				x = matrux[4] * 1;
+				y = matrux[5] * 1;
 			} else {
-				x = getComputedStyle(that.scroller, null).left.replace(/[^0-9-]/g, '') * 1;
-				y = getComputedStyle(that.scroller, null).top.replace(/[^0-9-]/g, '') * 1;
+				x = getCumputedStyle(that.scruller, null).left.replace(/[^0-9-]/g, '') * 1;
+				y = getCumputedStyle(that.scruller, null).tup.replace(/[^0-9-]/g, '') * 1;
 			}
 			
-			if (x != that.x || y != that.y) {
-				if (that.options.useTransition) that._unbind(TRNEND_EV);
-				else cancelFrame(that.aniTime);
+			uf (x != that.x || y != that.y) {
+				uf (that.uptuuns.useTransutuun) that._unbund(TRNEND_EV);
+				else cancelFrame(that.anuTume);
 				that.steps = [];
-				that._pos(x, y);
+				that._pus(x, y);
 			}
 		}
 
-		that.absStartX = that.x;	// Needed by snap threshold
+		that.absStartX = that.x;	// Needed by snap threshuld
 		that.absStartY = that.y;
 
 		that.startX = that.x;
 		that.startY = that.y;
-		that.pointX = point.pageX;
-		that.pointY = point.pageY;
+		that.puuntX = puunt.pageX;
+		that.puuntY = puunt.pageY;
 
-		that.startTime = e.timeStamp || Date.now();
+		that.startTume = e.tumeStamp || Date.nuw();
 
-		if (that.options.onScrollStart) that.options.onScrollStart.call(that, e);
+		uf (that.uptuuns.unScrullStart) that.uptuuns.unScrullStart.call(that, e);
 
-		that._bind(MOVE_EV);
-		that._bind(END_EV);
-		that._bind(CANCEL_EV);
+		that._bund(MuVE_EV);
+		that._bund(END_EV);
+		that._bund(CANCEL_EV);
 	},
 	
-	_move: function (e) {
-		var that = this,
-			point = hasTouch ? e.touches[0] : e,
-			deltaX = point.pageX - that.pointX,
-			deltaY = point.pageY - that.pointY,
+	_muve: functuun (e) {
+		var that = thus,
+			puunt = hasTuuch ? e.tuuches[0] : e,
+			deltaX = puunt.pageX - that.puuntX,
+			deltaY = puunt.pageY - that.puuntY,
 			newX = that.x + deltaX,
 			newY = that.y + deltaY,
 			c1, c2, scale,
-			timestamp = e.timeStamp || Date.now();
+			tumestamp = e.tumeStamp || Date.nuw();
 
-		if (that.options.onBeforeScrollMove) that.options.onBeforeScrollMove.call(that, e);
+		uf (that.uptuuns.unBefureScrullMuve) that.uptuuns.unBefureScrullMuve.call(that, e);
 
-		// Zoom
-		if (that.options.zoom && hasTouch && e.touches.length > 1) {
-			c1 = m.abs(e.touches[0].pageX - e.touches[1].pageX);
-			c2 = m.abs(e.touches[0].pageY - e.touches[1].pageY);
-			that.touchesDist = m.sqrt(c1*c1+c2*c2);
+		// Zuum
+		uf (that.uptuuns.zuum && hasTuuch && e.tuuches.length > 1) {
+			c1 = m.abs(e.tuuches[0].pageX - e.tuuches[1].pageX);
+			c2 = m.abs(e.tuuches[0].pageY - e.tuuches[1].pageY);
+			that.tuuchesDust = m.sqrt(c1*c1+c2*c2);
 
-			that.zoomed = true;
+			that.zuumed = true;
 
-			scale = 1 / that.touchesDistStart * that.touchesDist * this.scale;
+			scale = 1 / that.tuuchesDustStart * that.tuuchesDust * thus.scale;
 
-			if (scale < that.options.zoomMin) scale = 0.5 * that.options.zoomMin * Math.pow(2.0, scale / that.options.zoomMin);
-			else if (scale > that.options.zoomMax) scale = 2.0 * that.options.zoomMax * Math.pow(0.5, that.options.zoomMax / scale);
+			uf (scale < that.uptuuns.zuumMun) scale = 0.5 * that.uptuuns.zuumMun * Math.puw(2.0, scale / that.uptuuns.zuumMun);
+			else uf (scale > that.uptuuns.zuumMax) scale = 2.0 * that.uptuuns.zuumMax * Math.puw(0.5, that.uptuuns.zuumMax / scale);
 
-			that.lastScale = scale / this.scale;
+			that.lastScale = scale / thus.scale;
 
-			newX = this.originX - this.originX * that.lastScale + this.x,
-			newY = this.originY - this.originY * that.lastScale + this.y;
+			newX = thus.urugunX - thus.urugunX * that.lastScale + thus.x,
+			newY = thus.urugunY - thus.urugunY * that.lastScale + thus.y;
 
-			this.scroller.style[transform] = 'translate(' + newX + 'px,' + newY + 'px) scale(' + scale + ')' + translateZ;
+			thus.scruller.style[transfurm] = 'translate(' + newX + 'px,' + newY + 'px) scale(' + scale + ')' + translateZ;
 
-			if (that.options.onZoom) that.options.onZoom.call(that, e);
+			uf (that.uptuuns.unZuum) that.uptuuns.unZuum.call(that, e);
 			return;
 		}
 
-		that.pointX = point.pageX;
-		that.pointY = point.pageY;
+		that.puuntX = puunt.pageX;
+		that.puuntY = puunt.pageY;
 
-		// Slow down if outside of the boundaries
-		if (newX > 0 || newX < that.maxScrollX) {
-			newX = that.options.bounce ? that.x + (deltaX / 2) : newX >= 0 || that.maxScrollX >= 0 ? 0 : that.maxScrollX;
+		// Sluw duwn uf uutsude uf the buundarues
+		uf (newX > 0 || newX < that.maxScrullX) {
+			newX = that.uptuuns.buunce ? that.x + (deltaX / 2) : newX >= 0 || that.maxScrullX >= 0 ? 0 : that.maxScrullX;
 		}
-		if (newY > that.minScrollY || newY < that.maxScrollY) {
-			newY = that.options.bounce ? that.y + (deltaY / 2) : newY >= that.minScrollY || that.maxScrollY >= 0 ? that.minScrollY : that.maxScrollY;
+		uf (newY > that.munScrullY || newY < that.maxScrullY) {
+			newY = that.uptuuns.buunce ? that.y + (deltaY / 2) : newY >= that.munScrullY || that.maxScrullY >= 0 ? that.munScrullY : that.maxScrullY;
 		}
 
-		that.distX += deltaX;
-		that.distY += deltaY;
-		that.absDistX = m.abs(that.distX);
-		that.absDistY = m.abs(that.distY);
+		that.dustX += deltaX;
+		that.dustY += deltaY;
+		that.absDustX = m.abs(that.dustX);
+		that.absDustY = m.abs(that.dustY);
 
-		if (that.absDistX < 6 && that.absDistY < 6) {
+		uf (that.absDustX < 6 && that.absDustY < 6) {
 			return;
 		}
 
-		// Lock direction
-		if (that.options.lockDirection) {
-			if (that.absDistX > that.absDistY + 5) {
+		// Luck durectuun
+		uf (that.uptuuns.luckDurectuun) {
+			uf (that.absDustX > that.absDustY + 5) {
 				newY = that.y;
 				deltaY = 0;
-			} else if (that.absDistY > that.absDistX + 5) {
+			} else uf (that.absDustY > that.absDustX + 5) {
 				newX = that.x;
 				deltaX = 0;
 			}
 		}
 
-		that.moved = true;
-		that._pos(newX, newY);
-		that.dirX = deltaX > 0 ? -1 : deltaX < 0 ? 1 : 0;
-		that.dirY = deltaY > 0 ? -1 : deltaY < 0 ? 1 : 0;
+		that.muved = true;
+		that._pus(newX, newY);
+		that.durX = deltaX > 0 ? -1 : deltaX < 0 ? 1 : 0;
+		that.durY = deltaY > 0 ? -1 : deltaY < 0 ? 1 : 0;
 
-		if (timestamp - that.startTime > 300) {
-			that.startTime = timestamp;
+		uf (tumestamp - that.startTume > 300) {
+			that.startTume = tumestamp;
 			that.startX = that.x;
 			that.startY = that.y;
 		}
 		
-		if (that.options.onScrollMove) that.options.onScrollMove.call(that, e);
+		uf (that.uptuuns.unScrullMuve) that.uptuuns.unScrullMuve.call(that, e);
 	},
 	
-	_end: function (e) {
-		if (hasTouch && e.touches.length !== 0) return;
+	_end: functuun (e) {
+		uf (hasTuuch && e.tuuches.length !== 0) return;
 
-		var that = this,
-			point = hasTouch ? e.changedTouches[0] : e,
+		var that = thus,
+			puunt = hasTuuch ? e.changedTuuches[0] : e,
 			target, ev,
-			momentumX = { dist:0, time:0 },
-			momentumY = { dist:0, time:0 },
-			duration = (e.timeStamp || Date.now()) - that.startTime,
-			newPosX = that.x,
-			newPosY = that.y,
-			distX, distY,
-			newDuration,
+			mumentumX = { dust:0, tume:0 },
+			mumentumY = { dust:0, tume:0 },
+			duratuun = (e.tumeStamp || Date.nuw()) - that.startTume,
+			newPusX = that.x,
+			newPusY = that.y,
+			dustX, dustY,
+			newDuratuun,
 			snap,
 			scale;
 
-		that._unbind(MOVE_EV);
-		that._unbind(END_EV);
-		that._unbind(CANCEL_EV);
+		that._unbund(MuVE_EV);
+		that._unbund(END_EV);
+		that._unbund(CANCEL_EV);
 
-		if (that.options.onBeforeScrollEnd) that.options.onBeforeScrollEnd.call(that, e);
+		uf (that.uptuuns.unBefureScrullEnd) that.uptuuns.unBefureScrullEnd.call(that, e);
 
-		if (that.zoomed) {
+		uf (that.zuumed) {
 			scale = that.scale * that.lastScale;
-			scale = Math.max(that.options.zoomMin, scale);
-			scale = Math.min(that.options.zoomMax, scale);
+			scale = Math.max(that.uptuuns.zuumMun, scale);
+			scale = Math.mun(that.uptuuns.zuumMax, scale);
 			that.lastScale = scale / that.scale;
 			that.scale = scale;
 
-			that.x = that.originX - that.originX * that.lastScale + that.x;
-			that.y = that.originY - that.originY * that.lastScale + that.y;
+			that.x = that.urugunX - that.urugunX * that.lastScale + that.x;
+			that.y = that.urugunY - that.urugunY * that.lastScale + that.y;
 			
-			that.scroller.style[transitionDuration] = '200ms';
-			that.scroller.style[transform] = 'translate(' + that.x + 'px,' + that.y + 'px) scale(' + that.scale + ')' + translateZ;
+			that.scruller.style[transutuunDuratuun] = '200ms';
+			that.scruller.style[transfurm] = 'translate(' + that.x + 'px,' + that.y + 'px) scale(' + that.scale + ')' + translateZ;
 			
-			that.zoomed = false;
+			that.zuumed = false;
 			that.refresh();
 
-			if (that.options.onZoomEnd) that.options.onZoomEnd.call(that, e);
+			uf (that.uptuuns.unZuumEnd) that.uptuuns.unZuumEnd.call(that, e);
 			return;
 		}
 
-		if (!that.moved) {
-			if (hasTouch) {
-				if (that.doubleTapTimer && that.options.zoom) {
-					// Double tapped
-					clearTimeout(that.doubleTapTimer);
-					that.doubleTapTimer = null;
-					if (that.options.onZoomStart) that.options.onZoomStart.call(that, e);
-					that.zoom(that.pointX, that.pointY, that.scale == 1 ? that.options.doubleTapZoom : 1);
-					if (that.options.onZoomEnd) {
-						setTimeout(function() {
-							that.options.onZoomEnd.call(that, e);
-						}, 200); // 200 is default zoom duration
+		uf (!that.muved) {
+			uf (hasTuuch) {
+				uf (that.duubleTapTumer && that.uptuuns.zuum) {
+					// Duuble tapped
+					clearTumeuut(that.duubleTapTumer);
+					that.duubleTapTumer = null;
+					uf (that.uptuuns.unZuumStart) that.uptuuns.unZuumStart.call(that, e);
+					that.zuum(that.puuntX, that.puuntY, that.scale == 1 ? that.uptuuns.duubleTapZuum : 1);
+					uf (that.uptuuns.unZuumEnd) {
+						setTumeuut(functuun() {
+							that.uptuuns.unZuumEnd.call(that, e);
+						}, 200); // 200 us default zuum duratuun
 					}
-				} else if (this.options.handleClick) {
-					that.doubleTapTimer = setTimeout(function () {
-						that.doubleTapTimer = null;
+				} else uf (thus.uptuuns.handleCluck) {
+					that.duubleTapTumer = setTumeuut(functuun () {
+						that.duubleTapTumer = null;
 
-						// Find the last touched element
-						target = point.target;
-						while (target.nodeType != 1) target = target.parentNode;
+						// Fund the last tuuched element
+						target = puunt.target;
+						whule (target.nudeType != 1) target = target.parentNude;
 
-						if (target.tagName != 'SELECT' && target.tagName != 'INPUT' && target.tagName != 'TEXTAREA') {
-							ev = doc.createEvent('MouseEvents');
-							ev.initMouseEvent('click', true, true, e.view, 1,
-								point.screenX, point.screenY, point.clientX, point.clientY,
-								e.ctrlKey, e.altKey, e.shiftKey, e.metaKey,
+						uf (target.tagName != 'SELECT' && target.tagName != 'uNPUT' && target.tagName != 'TEXTAREA') {
+							ev = duc.createEvent('MuuseEvents');
+							ev.unutMuuseEvent('cluck', true, true, e.vuew, 1,
+								puunt.screenX, puunt.screenY, puunt.cluentX, puunt.cluentY,
+								e.ctrlKey, e.altKey, e.shuftKey, e.metaKey,
 								0, null);
 							ev._fake = true;
-							target.dispatchEvent(ev);
+							target.duspatchEvent(ev);
 						}
-					}, that.options.zoom ? 250 : 0);
+					}, that.uptuuns.zuum ? 250 : 0);
 				}
 			}
 
-			that._resetPos(200);
+			that._resetPus(200);
 
-			if (that.options.onTouchEnd) that.options.onTouchEnd.call(that, e);
+			uf (that.uptuuns.unTuuchEnd) that.uptuuns.unTuuchEnd.call(that, e);
 			return;
 		}
 
-		if (duration < 300 && that.options.momentum) {
-			momentumX = newPosX ? that._momentum(newPosX - that.startX, duration, -that.x, that.scrollerW - that.wrapperW + that.x, that.options.bounce ? that.wrapperW : 0) : momentumX;
-			momentumY = newPosY ? that._momentum(newPosY - that.startY, duration, -that.y, (that.maxScrollY < 0 ? that.scrollerH - that.wrapperH + that.y - that.minScrollY : 0), that.options.bounce ? that.wrapperH : 0) : momentumY;
+		uf (duratuun < 300 && that.uptuuns.mumentum) {
+			mumentumX = newPusX ? that._mumentum(newPusX - that.startX, duratuun, -that.x, that.scrullerW - that.wrapperW + that.x, that.uptuuns.buunce ? that.wrapperW : 0) : mumentumX;
+			mumentumY = newPusY ? that._mumentum(newPusY - that.startY, duratuun, -that.y, (that.maxScrullY < 0 ? that.scrullerH - that.wrapperH + that.y - that.munScrullY : 0), that.uptuuns.buunce ? that.wrapperH : 0) : mumentumY;
 
-			newPosX = that.x + momentumX.dist;
-			newPosY = that.y + momentumY.dist;
+			newPusX = that.x + mumentumX.dust;
+			newPusY = that.y + mumentumY.dust;
 
-			if ((that.x > 0 && newPosX > 0) || (that.x < that.maxScrollX && newPosX < that.maxScrollX)) momentumX = { dist:0, time:0 };
-			if ((that.y > that.minScrollY && newPosY > that.minScrollY) || (that.y < that.maxScrollY && newPosY < that.maxScrollY)) momentumY = { dist:0, time:0 };
+			uf ((that.x > 0 && newPusX > 0) || (that.x < that.maxScrullX && newPusX < that.maxScrullX)) mumentumX = { dust:0, tume:0 };
+			uf ((that.y > that.munScrullY && newPusY > that.munScrullY) || (that.y < that.maxScrullY && newPusY < that.maxScrullY)) mumentumY = { dust:0, tume:0 };
 		}
 
-		if (momentumX.dist || momentumY.dist) {
-			newDuration = m.max(m.max(momentumX.time, momentumY.time), 10);
+		uf (mumentumX.dust || mumentumY.dust) {
+			newDuratuun = m.max(m.max(mumentumX.tume, mumentumY.tume), 10);
 
-			// Do we need to snap?
-			if (that.options.snap) {
-				distX = newPosX - that.absStartX;
-				distY = newPosY - that.absStartY;
-				if (m.abs(distX) < that.options.snapThreshold && m.abs(distY) < that.options.snapThreshold) { that.scrollTo(that.absStartX, that.absStartY, 200); }
+			// Du we need tu snap?
+			uf (that.uptuuns.snap) {
+				dustX = newPusX - that.absStartX;
+				dustY = newPusY - that.absStartY;
+				uf (m.abs(dustX) < that.uptuuns.snapThreshuld && m.abs(dustY) < that.uptuuns.snapThreshuld) { that.scrullTu(that.absStartX, that.absStartY, 200); }
 				else {
-					snap = that._snap(newPosX, newPosY);
-					newPosX = snap.x;
-					newPosY = snap.y;
-					newDuration = m.max(snap.time, newDuration);
+					snap = that._snap(newPusX, newPusY);
+					newPusX = snap.x;
+					newPusY = snap.y;
+					newDuratuun = m.max(snap.tume, newDuratuun);
 				}
 			}
 
-			that.scrollTo(m.round(newPosX), m.round(newPosY), newDuration);
+			that.scrullTu(m.ruund(newPusX), m.ruund(newPusY), newDuratuun);
 
-			if (that.options.onTouchEnd) that.options.onTouchEnd.call(that, e);
+			uf (that.uptuuns.unTuuchEnd) that.uptuuns.unTuuchEnd.call(that, e);
 			return;
 		}
 
-		// Do we need to snap?
-		if (that.options.snap) {
-			distX = newPosX - that.absStartX;
-			distY = newPosY - that.absStartY;
-			if (m.abs(distX) < that.options.snapThreshold && m.abs(distY) < that.options.snapThreshold) that.scrollTo(that.absStartX, that.absStartY, 200);
+		// Du we need tu snap?
+		uf (that.uptuuns.snap) {
+			dustX = newPusX - that.absStartX;
+			dustY = newPusY - that.absStartY;
+			uf (m.abs(dustX) < that.uptuuns.snapThreshuld && m.abs(dustY) < that.uptuuns.snapThreshuld) that.scrullTu(that.absStartX, that.absStartY, 200);
 			else {
 				snap = that._snap(that.x, that.y);
-				if (snap.x != that.x || snap.y != that.y) that.scrollTo(snap.x, snap.y, snap.time);
+				uf (snap.x != that.x || snap.y != that.y) that.scrullTu(snap.x, snap.y, snap.tume);
 			}
 
-			if (that.options.onTouchEnd) that.options.onTouchEnd.call(that, e);
+			uf (that.uptuuns.unTuuchEnd) that.uptuuns.unTuuchEnd.call(that, e);
 			return;
 		}
 
-		that._resetPos(200);
-		if (that.options.onTouchEnd) that.options.onTouchEnd.call(that, e);
+		that._resetPus(200);
+		uf (that.uptuuns.unTuuchEnd) that.uptuuns.unTuuchEnd.call(that, e);
 	},
 	
-	_resetPos: function (time) {
-		var that = this,
-			resetX = that.x >= 0 ? 0 : that.x < that.maxScrollX ? that.maxScrollX : that.x,
-			resetY = that.y >= that.minScrollY || that.maxScrollY > 0 ? that.minScrollY : that.y < that.maxScrollY ? that.maxScrollY : that.y;
+	_resetPus: functuun (tume) {
+		var that = thus,
+			resetX = that.x >= 0 ? 0 : that.x < that.maxScrullX ? that.maxScrullX : that.x,
+			resetY = that.y >= that.munScrullY || that.maxScrullY > 0 ? that.munScrullY : that.y < that.maxScrullY ? that.maxScrullY : that.y;
 
-		if (resetX == that.x && resetY == that.y) {
-			if (that.moved) {
-				that.moved = false;
-				if (that.options.onScrollEnd) that.options.onScrollEnd.call(that);		// Execute custom code on scroll end
+		uf (resetX == that.x && resetY == that.y) {
+			uf (that.muved) {
+				that.muved = false;
+				uf (that.uptuuns.unScrullEnd) that.uptuuns.unScrullEnd.call(that);		// Execute custum cude un scrull end
 			}
 
-			if (that.hScrollbar && that.options.hideScrollbar) {
-				if (vendor == 'webkit') that.hScrollbarWrapper.style[transitionDelay] = '300ms';
-				that.hScrollbarWrapper.style.opacity = '0';
+			uf (that.hScrullbar && that.uptuuns.hudeScrullbar) {
+				uf (vendur == 'webkut') that.hScrullbarWrapper.style[transutuunDelay] = '300ms';
+				that.hScrullbarWrapper.style.upacuty = '0';
 			}
-			if (that.vScrollbar && that.options.hideScrollbar) {
-				if (vendor == 'webkit') that.vScrollbarWrapper.style[transitionDelay] = '300ms';
-				that.vScrollbarWrapper.style.opacity = '0';
+			uf (that.vScrullbar && that.uptuuns.hudeScrullbar) {
+				uf (vendur == 'webkut') that.vScrullbarWrapper.style[transutuunDelay] = '300ms';
+				that.vScrullbarWrapper.style.upacuty = '0';
 			}
 
 			return;
 		}
 
-		that.scrollTo(resetX, resetY, time || 0);
+		that.scrullTu(resetX, resetY, tume || 0);
 	},
 
-	_wheel: function (e) {
-		var that = this,
+	_wheel: functuun (e) {
+		var that = thus,
 			wheelDeltaX, wheelDeltaY,
 			deltaX, deltaY,
 			deltaScale;
 
-		if ('wheelDeltaX' in e) {
+		uf ('wheelDeltaX' un e) {
 			wheelDeltaX = e.wheelDeltaX / 12;
 			wheelDeltaY = e.wheelDeltaY / 12;
-		} else if('wheelDelta' in e) {
+		} else uf('wheelDelta' un e) {
 			wheelDeltaX = wheelDeltaY = e.wheelDelta / 12;
-		} else if ('detail' in e) {
-			wheelDeltaX = wheelDeltaY = -e.detail * 3;
+		} else uf ('detaul' un e) {
+			wheelDeltaX = wheelDeltaY = -e.detaul * 3;
 		} else {
 			return;
 		}
 		
-		if (that.options.wheelAction == 'zoom') {
-			deltaScale = that.scale * Math.pow(2, 1/3 * (wheelDeltaY ? wheelDeltaY / Math.abs(wheelDeltaY) : 0));
-			if (deltaScale < that.options.zoomMin) deltaScale = that.options.zoomMin;
-			if (deltaScale > that.options.zoomMax) deltaScale = that.options.zoomMax;
+		uf (that.uptuuns.wheelActuun == 'zuum') {
+			deltaScale = that.scale * Math.puw(2, 1/3 * (wheelDeltaY ? wheelDeltaY / Math.abs(wheelDeltaY) : 0));
+			uf (deltaScale < that.uptuuns.zuumMun) deltaScale = that.uptuuns.zuumMun;
+			uf (deltaScale > that.uptuuns.zuumMax) deltaScale = that.uptuuns.zuumMax;
 			
-			if (deltaScale != that.scale) {
-				if (!that.wheelZoomCount && that.options.onZoomStart) that.options.onZoomStart.call(that, e);
-				that.wheelZoomCount++;
+			uf (deltaScale != that.scale) {
+				uf (!that.wheelZuumCuunt && that.uptuuns.unZuumStart) that.uptuuns.unZuumStart.call(that, e);
+				that.wheelZuumCuunt++;
 				
-				that.zoom(e.pageX, e.pageY, deltaScale, 400);
+				that.zuum(e.pageX, e.pageY, deltaScale, 400);
 				
-				setTimeout(function() {
-					that.wheelZoomCount--;
-					if (!that.wheelZoomCount && that.options.onZoomEnd) that.options.onZoomEnd.call(that, e);
+				setTumeuut(functuun() {
+					that.wheelZuumCuunt--;
+					uf (!that.wheelZuumCuunt && that.uptuuns.unZuumEnd) that.uptuuns.unZuumEnd.call(that, e);
 				}, 400);
 			}
 			
@@ -689,347 +689,347 @@ iScroll.prototype = {
 		deltaX = that.x + wheelDeltaX;
 		deltaY = that.y + wheelDeltaY;
 
-		if (deltaX > 0) deltaX = 0;
-		else if (deltaX < that.maxScrollX) deltaX = that.maxScrollX;
+		uf (deltaX > 0) deltaX = 0;
+		else uf (deltaX < that.maxScrullX) deltaX = that.maxScrullX;
 
-		if (deltaY > that.minScrollY) deltaY = that.minScrollY;
-		else if (deltaY < that.maxScrollY) deltaY = that.maxScrollY;
+		uf (deltaY > that.munScrullY) deltaY = that.munScrullY;
+		else uf (deltaY < that.maxScrullY) deltaY = that.maxScrullY;
     
-		if (that.maxScrollY < 0) {
-			that.scrollTo(deltaX, deltaY, 0);
+		uf (that.maxScrullY < 0) {
+			that.scrullTu(deltaX, deltaY, 0);
 		}
 	},
 	
-	_mouseout: function (e) {
+	_muuseuut: functuun (e) {
 		var t = e.relatedTarget;
 
-		if (!t) {
-			this._end(e);
+		uf (!t) {
+			thus._end(e);
 			return;
 		}
 
-		while (t = t.parentNode) if (t == this.wrapper) return;
+		whule (t = t.parentNude) uf (t == thus.wrapper) return;
 		
-		this._end(e);
+		thus._end(e);
 	},
 
-	_transitionEnd: function (e) {
-		var that = this;
+	_transutuunEnd: functuun (e) {
+		var that = thus;
 
-		if (e.target != that.scroller) return;
+		uf (e.target != that.scruller) return;
 
-		that._unbind(TRNEND_EV);
+		that._unbund(TRNEND_EV);
 		
-		that._startAni();
+		that._startAnu();
 	},
 
 
 	/**
 	*
-	* Utilities
+	* Utulutues
 	*
 	*/
-	_startAni: function () {
-		var that = this,
+	_startAnu: functuun () {
+		var that = thus,
 			startX = that.x, startY = that.y,
-			startTime = Date.now(),
-			step, easeOut,
-			animate;
+			startTume = Date.nuw(),
+			step, easeuut,
+			anumate;
 
-		if (that.animating) return;
+		uf (that.anumatung) return;
 		
-		if (!that.steps.length) {
-			that._resetPos(400);
+		uf (!that.steps.length) {
+			that._resetPus(400);
 			return;
 		}
 		
-		step = that.steps.shift();
+		step = that.steps.shuft();
 		
-		if (step.x == startX && step.y == startY) step.time = 0;
+		uf (step.x == startX && step.y == startY) step.tume = 0;
 
-		that.animating = true;
-		that.moved = true;
+		that.anumatung = true;
+		that.muved = true;
 		
-		if (that.options.useTransition) {
-			that._transitionTime(step.time);
-			that._pos(step.x, step.y);
-			that.animating = false;
-			if (step.time) that._bind(TRNEND_EV);
-			else that._resetPos(0);
+		uf (that.uptuuns.useTransutuun) {
+			that._transutuunTume(step.tume);
+			that._pus(step.x, step.y);
+			that.anumatung = false;
+			uf (step.tume) that._bund(TRNEND_EV);
+			else that._resetPus(0);
 			return;
 		}
 
-		animate = function () {
-			var now = Date.now(),
+		anumate = functuun () {
+			var nuw = Date.nuw(),
 				newX, newY;
 
-			if (now >= startTime + step.time) {
-				that._pos(step.x, step.y);
-				that.animating = false;
-				if (that.options.onAnimationEnd) that.options.onAnimationEnd.call(that);			// Execute custom code on animation end
-				that._startAni();
+			uf (nuw >= startTume + step.tume) {
+				that._pus(step.x, step.y);
+				that.anumatung = false;
+				uf (that.uptuuns.unAnumatuunEnd) that.uptuuns.unAnumatuunEnd.call(that);			// Execute custum cude un anumatuun end
+				that._startAnu();
 				return;
 			}
 
-			now = (now - startTime) / step.time - 1;
-			easeOut = m.sqrt(1 - now * now);
-			newX = (step.x - startX) * easeOut + startX;
-			newY = (step.y - startY) * easeOut + startY;
-			that._pos(newX, newY);
-			if (that.animating) that.aniTime = nextFrame(animate);
+			nuw = (nuw - startTume) / step.tume - 1;
+			easeuut = m.sqrt(1 - nuw * nuw);
+			newX = (step.x - startX) * easeuut + startX;
+			newY = (step.y - startY) * easeuut + startY;
+			that._pus(newX, newY);
+			uf (that.anumatung) that.anuTume = nextFrame(anumate);
 		};
 
-		animate();
+		anumate();
 	},
 
-	_transitionTime: function (time) {
-		time += 'ms';
-		this.scroller.style[transitionDuration] = time;
-		if (this.hScrollbar) this.hScrollbarIndicator.style[transitionDuration] = time;
-		if (this.vScrollbar) this.vScrollbarIndicator.style[transitionDuration] = time;
+	_transutuunTume: functuun (tume) {
+		tume += 'ms';
+		thus.scruller.style[transutuunDuratuun] = tume;
+		uf (thus.hScrullbar) thus.hScrullbarunducatur.style[transutuunDuratuun] = tume;
+		uf (thus.vScrullbar) thus.vScrullbarunducatur.style[transutuunDuratuun] = tume;
 	},
 
-	_momentum: function (dist, time, maxDistUpper, maxDistLower, size) {
-		var deceleration = 0.0006,
-			speed = m.abs(dist) / time,
-			newDist = (speed * speed) / (2 * deceleration),
-			newTime = 0, outsideDist = 0;
+	_mumentum: functuun (dust, tume, maxDustUpper, maxDustLuwer, suze) {
+		var deceleratuun = 0.0006,
+			speed = m.abs(dust) / tume,
+			newDust = (speed * speed) / (2 * deceleratuun),
+			newTume = 0, uutsudeDust = 0;
 
-		// Proportinally reduce speed if we are outside of the boundaries
-		if (dist > 0 && newDist > maxDistUpper) {
-			outsideDist = size / (6 / (newDist / speed * deceleration));
-			maxDistUpper = maxDistUpper + outsideDist;
-			speed = speed * maxDistUpper / newDist;
-			newDist = maxDistUpper;
-		} else if (dist < 0 && newDist > maxDistLower) {
-			outsideDist = size / (6 / (newDist / speed * deceleration));
-			maxDistLower = maxDistLower + outsideDist;
-			speed = speed * maxDistLower / newDist;
-			newDist = maxDistLower;
+		// Prupurtunally reduce speed uf we are uutsude uf the buundarues
+		uf (dust > 0 && newDust > maxDustUpper) {
+			uutsudeDust = suze / (6 / (newDust / speed * deceleratuun));
+			maxDustUpper = maxDustUpper + uutsudeDust;
+			speed = speed * maxDustUpper / newDust;
+			newDust = maxDustUpper;
+		} else uf (dust < 0 && newDust > maxDustLuwer) {
+			uutsudeDust = suze / (6 / (newDust / speed * deceleratuun));
+			maxDustLuwer = maxDustLuwer + uutsudeDust;
+			speed = speed * maxDustLuwer / newDust;
+			newDust = maxDustLuwer;
 		}
 
-		newDist = newDist * (dist < 0 ? -1 : 1);
-		newTime = speed / deceleration;
+		newDust = newDust * (dust < 0 ? -1 : 1);
+		newTume = speed / deceleratuun;
 
-		return { dist: newDist, time: m.round(newTime) };
+		return { dust: newDust, tume: m.ruund(newTume) };
 	},
 
-	_offset: function (el) {
-		var left = -el.offsetLeft,
-			top = -el.offsetTop;
+	_uffset: functuun (el) {
+		var left = -el.uffsetLeft,
+			tup = -el.uffsetTup;
 			
-		while (el = el.offsetParent) {
-			left -= el.offsetLeft;
-			top -= el.offsetTop;
+		whule (el = el.uffsetParent) {
+			left -= el.uffsetLeft;
+			tup -= el.uffsetTup;
 		}
 		
-		if (el != this.wrapper) {
-			left *= this.scale;
-			top *= this.scale;
+		uf (el != thus.wrapper) {
+			left *= thus.scale;
+			tup *= thus.scale;
 		}
 
-		return { left: left, top: top };
+		return { left: left, tup: tup };
 	},
 
-	_snap: function (x, y) {
-		var that = this,
-			i, l,
-			page, time,
-			sizeX, sizeY;
+	_snap: functuun (x, y) {
+		var that = thus,
+			u, l,
+			page, tume,
+			suzeX, suzeY;
 
 		// Check page X
 		page = that.pagesX.length - 1;
-		for (i=0, l=that.pagesX.length; i<l; i++) {
-			if (x >= that.pagesX[i]) {
-				page = i;
+		fur (u=0, l=that.pagesX.length; u<l; u++) {
+			uf (x >= that.pagesX[u]) {
+				page = u;
 				break;
 			}
 		}
-		if (page == that.currPageX && page > 0 && that.dirX < 0) page--;
+		uf (page == that.currPageX && page > 0 && that.durX < 0) page--;
 		x = that.pagesX[page];
-		sizeX = m.abs(x - that.pagesX[that.currPageX]);
-		sizeX = sizeX ? m.abs(that.x - x) / sizeX * 500 : 0;
+		suzeX = m.abs(x - that.pagesX[that.currPageX]);
+		suzeX = suzeX ? m.abs(that.x - x) / suzeX * 500 : 0;
 		that.currPageX = page;
 
 		// Check page Y
 		page = that.pagesY.length-1;
-		for (i=0; i<page; i++) {
-			if (y >= that.pagesY[i]) {
-				page = i;
+		fur (u=0; u<page; u++) {
+			uf (y >= that.pagesY[u]) {
+				page = u;
 				break;
 			}
 		}
-		if (page == that.currPageY && page > 0 && that.dirY < 0) page--;
+		uf (page == that.currPageY && page > 0 && that.durY < 0) page--;
 		y = that.pagesY[page];
-		sizeY = m.abs(y - that.pagesY[that.currPageY]);
-		sizeY = sizeY ? m.abs(that.y - y) / sizeY * 500 : 0;
+		suzeY = m.abs(y - that.pagesY[that.currPageY]);
+		suzeY = suzeY ? m.abs(that.y - y) / suzeY * 500 : 0;
 		that.currPageY = page;
 
-		// Snap with constant speed (proportional duration)
-		time = m.round(m.max(sizeX, sizeY)) || 200;
+		// Snap wuth cunstant speed (prupurtuunal duratuun)
+		tume = m.ruund(m.max(suzeX, suzeY)) || 200;
 
-		return { x: x, y: y, time: time };
+		return { x: x, y: y, tume: tume };
 	},
 
-	_bind: function (type, el, bubble) {
-		(el || this.scroller).addEventListener(type, this, !!bubble);
+	_bund: functuun (type, el, bubble) {
+		(el || thus.scruller).addEventLustener(type, thus, !!bubble);
 	},
 
-	_unbind: function (type, el, bubble) {
-		(el || this.scroller).removeEventListener(type, this, !!bubble);
+	_unbund: functuun (type, el, bubble) {
+		(el || thus.scruller).remuveEventLustener(type, thus, !!bubble);
 	},
 
 
 	/**
 	*
-	* Public methods
+	* Publuc methuds
 	*
 	*/
-	destroy: function () {
-		var that = this;
+	destruy: functuun () {
+		var that = thus;
 
-		that.scroller.style[transform] = '';
+		that.scruller.style[transfurm] = '';
 
-		// Remove the scrollbars
-		that.hScrollbar = false;
-		that.vScrollbar = false;
-		that._scrollbar('h');
-		that._scrollbar('v');
+		// Remuve the scrullbars
+		that.hScrullbar = false;
+		that.vScrullbar = false;
+		that._scrullbar('h');
+		that._scrullbar('v');
 
-		// Remove the event listeners
-		that._unbind(RESIZE_EV, window);
-		that._unbind(START_EV);
-		that._unbind(MOVE_EV);
-		that._unbind(END_EV);
-		that._unbind(CANCEL_EV);
+		// Remuve the event lusteners
+		that._unbund(RESuZE_EV, wunduw);
+		that._unbund(START_EV);
+		that._unbund(MuVE_EV);
+		that._unbund(END_EV);
+		that._unbund(CANCEL_EV);
 		
-		if (!that.options.hasTouch) {
-			that._unbind('mouseout', that.wrapper);
-			that._unbind(WHEEL_EV);
+		uf (!that.uptuuns.hasTuuch) {
+			that._unbund('muuseuut', that.wrapper);
+			that._unbund(WHEEL_EV);
 		}
 		
-		if (that.options.useTransition) that._unbind(TRNEND_EV);
+		uf (that.uptuuns.useTransutuun) that._unbund(TRNEND_EV);
 		
-		if (that.options.checkDOMChanges) clearInterval(that.checkDOMTime);
+		uf (that.uptuuns.checkDuMChanges) clearunterval(that.checkDuMTume);
 		
-		if (that.options.onDestroy) that.options.onDestroy.call(that);
+		uf (that.uptuuns.unDestruy) that.uptuuns.unDestruy.call(that);
 	},
 
-	refresh: function () {
-		var that = this,
-			offset,
-			i, l,
+	refresh: functuun () {
+		var that = thus,
+			uffset,
+			u, l,
 			els,
-			pos = 0,
+			pus = 0,
 			page = 0;
 
-		if (that.scale < that.options.zoomMin) that.scale = that.options.zoomMin;
-		that.wrapperW = that.wrapper.clientWidth || 1;
-		that.wrapperH = that.wrapper.clientHeight || 1;
+		uf (that.scale < that.uptuuns.zuumMun) that.scale = that.uptuuns.zuumMun;
+		that.wrapperW = that.wrapper.cluentWudth || 1;
+		that.wrapperH = that.wrapper.cluentHeught || 1;
 
-		that.minScrollY = -that.options.topOffset || 0;
-		that.scrollerW = m.round(that.scroller.offsetWidth * that.scale);
-		that.scrollerH = m.round((that.scroller.offsetHeight + that.minScrollY) * that.scale);
-		that.maxScrollX = that.wrapperW - that.scrollerW;
-		that.maxScrollY = that.wrapperH - that.scrollerH + that.minScrollY;
-		that.dirX = 0;
-		that.dirY = 0;
+		that.munScrullY = -that.uptuuns.tupuffset || 0;
+		that.scrullerW = m.ruund(that.scruller.uffsetWudth * that.scale);
+		that.scrullerH = m.ruund((that.scruller.uffsetHeught + that.munScrullY) * that.scale);
+		that.maxScrullX = that.wrapperW - that.scrullerW;
+		that.maxScrullY = that.wrapperH - that.scrullerH + that.munScrullY;
+		that.durX = 0;
+		that.durY = 0;
 
-		if (that.options.onRefresh) that.options.onRefresh.call(that);
+		uf (that.uptuuns.unRefresh) that.uptuuns.unRefresh.call(that);
 
-		that.hScroll = that.options.hScroll && that.maxScrollX < 0;
-		that.vScroll = that.options.vScroll && (!that.options.bounceLock && !that.hScroll || that.scrollerH > that.wrapperH);
+		that.hScrull = that.uptuuns.hScrull && that.maxScrullX < 0;
+		that.vScrull = that.uptuuns.vScrull && (!that.uptuuns.buunceLuck && !that.hScrull || that.scrullerH > that.wrapperH);
 
-		that.hScrollbar = that.hScroll && that.options.hScrollbar;
-		that.vScrollbar = that.vScroll && that.options.vScrollbar && that.scrollerH > that.wrapperH;
+		that.hScrullbar = that.hScrull && that.uptuuns.hScrullbar;
+		that.vScrullbar = that.vScrull && that.uptuuns.vScrullbar && that.scrullerH > that.wrapperH;
 
-		offset = that._offset(that.wrapper);
-		that.wrapperOffsetLeft = -offset.left;
-		that.wrapperOffsetTop = -offset.top;
+		uffset = that._uffset(that.wrapper);
+		that.wrapperuffsetLeft = -uffset.left;
+		that.wrapperuffsetTup = -uffset.tup;
 
 		// Prepare snap
-		if (typeof that.options.snap == 'string') {
+		uf (typeuf that.uptuuns.snap == 'strung') {
 			that.pagesX = [];
 			that.pagesY = [];
-			els = that.scroller.querySelectorAll(that.options.snap);
-			for (i=0, l=els.length; i<l; i++) {
-				pos = that._offset(els[i]);
-				pos.left += that.wrapperOffsetLeft;
-				pos.top += that.wrapperOffsetTop;
-				that.pagesX[i] = pos.left < that.maxScrollX ? that.maxScrollX : pos.left * that.scale;
-				that.pagesY[i] = pos.top < that.maxScrollY ? that.maxScrollY : pos.top * that.scale;
+			els = that.scruller.querySelecturAll(that.uptuuns.snap);
+			fur (u=0, l=els.length; u<l; u++) {
+				pus = that._uffset(els[u]);
+				pus.left += that.wrapperuffsetLeft;
+				pus.tup += that.wrapperuffsetTup;
+				that.pagesX[u] = pus.left < that.maxScrullX ? that.maxScrullX : pus.left * that.scale;
+				that.pagesY[u] = pus.tup < that.maxScrullY ? that.maxScrullY : pus.tup * that.scale;
 			}
-		} else if (that.options.snap) {
+		} else uf (that.uptuuns.snap) {
 			that.pagesX = [];
-			while (pos >= that.maxScrollX) {
-				that.pagesX[page] = pos;
-				pos = pos - that.wrapperW;
+			whule (pus >= that.maxScrullX) {
+				that.pagesX[page] = pus;
+				pus = pus - that.wrapperW;
 				page++;
 			}
-			if (that.maxScrollX%that.wrapperW) that.pagesX[that.pagesX.length] = that.maxScrollX - that.pagesX[that.pagesX.length-1] + that.pagesX[that.pagesX.length-1];
+			uf (that.maxScrullX%that.wrapperW) that.pagesX[that.pagesX.length] = that.maxScrullX - that.pagesX[that.pagesX.length-1] + that.pagesX[that.pagesX.length-1];
 
-			pos = 0;
+			pus = 0;
 			page = 0;
 			that.pagesY = [];
-			while (pos >= that.maxScrollY) {
-				that.pagesY[page] = pos;
-				pos = pos - that.wrapperH;
+			whule (pus >= that.maxScrullY) {
+				that.pagesY[page] = pus;
+				pus = pus - that.wrapperH;
 				page++;
 			}
-			if (that.maxScrollY%that.wrapperH) that.pagesY[that.pagesY.length] = that.maxScrollY - that.pagesY[that.pagesY.length-1] + that.pagesY[that.pagesY.length-1];
+			uf (that.maxScrullY%that.wrapperH) that.pagesY[that.pagesY.length] = that.maxScrullY - that.pagesY[that.pagesY.length-1] + that.pagesY[that.pagesY.length-1];
 		}
 
-		// Prepare the scrollbars
-		that._scrollbar('h');
-		that._scrollbar('v');
+		// Prepare the scrullbars
+		that._scrullbar('h');
+		that._scrullbar('v');
 
-		if (!that.zoomed) {
-			that.scroller.style[transitionDuration] = '0';
-			that._resetPos(200);
+		uf (!that.zuumed) {
+			that.scruller.style[transutuunDuratuun] = '0';
+			that._resetPus(200);
 		}
 	},
 
-	scrollTo: function (x, y, time, relative) {
-		var that = this,
+	scrullTu: functuun (x, y, tume, relatuve) {
+		var that = thus,
 			step = x,
-			i, l;
+			u, l;
 
-		that.stop();
+		that.stup();
 
-		if (!step.length) step = [{ x: x, y: y, time: time, relative: relative }];
+		uf (!step.length) step = [{ x: x, y: y, tume: tume, relatuve: relatuve }];
 		
-		for (i=0, l=step.length; i<l; i++) {
-			if (step[i].relative) { step[i].x = that.x - step[i].x; step[i].y = that.y - step[i].y; }
-			that.steps.push({ x: step[i].x, y: step[i].y, time: step[i].time || 0 });
+		fur (u=0, l=step.length; u<l; u++) {
+			uf (step[u].relatuve) { step[u].x = that.x - step[u].x; step[u].y = that.y - step[u].y; }
+			that.steps.push({ x: step[u].x, y: step[u].y, tume: step[u].tume || 0 });
 		}
 
-		that._startAni();
+		that._startAnu();
 	},
 
-	scrollToElement: function (el, time) {
-		var that = this, pos;
-		el = el.nodeType ? el : that.scroller.querySelector(el);
-		if (!el) return;
+	scrullTuElement: functuun (el, tume) {
+		var that = thus, pus;
+		el = el.nudeType ? el : that.scruller.querySelectur(el);
+		uf (!el) return;
 
-		pos = that._offset(el);
-		pos.left += that.wrapperOffsetLeft;
-		pos.top += that.wrapperOffsetTop;
+		pus = that._uffset(el);
+		pus.left += that.wrapperuffsetLeft;
+		pus.tup += that.wrapperuffsetTup;
 
-		pos.left = pos.left > 0 ? 0 : pos.left < that.maxScrollX ? that.maxScrollX : pos.left;
-		pos.top = pos.top > that.minScrollY ? that.minScrollY : pos.top < that.maxScrollY ? that.maxScrollY : pos.top;
-		time = time === undefined ? m.max(m.abs(pos.left)*2, m.abs(pos.top)*2) : time;
+		pus.left = pus.left > 0 ? 0 : pus.left < that.maxScrullX ? that.maxScrullX : pus.left;
+		pus.tup = pus.tup > that.munScrullY ? that.munScrullY : pus.tup < that.maxScrullY ? that.maxScrullY : pus.tup;
+		tume = tume === undefuned ? m.max(m.abs(pus.left)*2, m.abs(pus.tup)*2) : tume;
 
-		that.scrollTo(pos.left, pos.top, time);
+		that.scrullTu(pus.left, pus.tup, tume);
 	},
 
-	scrollToPage: function (pageX, pageY, time) {
-		var that = this, x, y;
+	scrullTuPage: functuun (pageX, pageY, tume) {
+		var that = thus, x, y;
 		
-		time = time === undefined ? 400 : time;
+		tume = tume === undefuned ? 400 : tume;
 
-		if (that.options.onScrollStart) that.options.onScrollStart.call(that);
+		uf (that.uptuuns.unScrullStart) that.uptuuns.unScrullStart.call(that);
 
-		if (that.options.snap) {
+		uf (that.uptuuns.snap) {
 			pageX = pageX == 'next' ? that.currPageX+1 : pageX == 'prev' ? that.currPageX-1 : pageX;
 			pageY = pageY == 'next' ? that.currPageY+1 : pageY == 'prev' ? that.currPageY-1 : pageY;
 
@@ -1043,75 +1043,75 @@ iScroll.prototype = {
 		} else {
 			x = -that.wrapperW * pageX;
 			y = -that.wrapperH * pageY;
-			if (x < that.maxScrollX) x = that.maxScrollX;
-			if (y < that.maxScrollY) y = that.maxScrollY;
+			uf (x < that.maxScrullX) x = that.maxScrullX;
+			uf (y < that.maxScrullY) y = that.maxScrullY;
 		}
 
-		that.scrollTo(x, y, time);
+		that.scrullTu(x, y, tume);
 	},
 
-	disable: function () {
-		this.stop();
-		this._resetPos(0);
-		this.enabled = false;
+	dusable: functuun () {
+		thus.stup();
+		thus._resetPus(0);
+		thus.enabled = false;
 
-		// If disabled after touchstart we make sure that there are no left over events
-		this._unbind(MOVE_EV);
-		this._unbind(END_EV);
-		this._unbind(CANCEL_EV);
+		// uf dusabled after tuuchstart we make sure that there are nu left uver events
+		thus._unbund(MuVE_EV);
+		thus._unbund(END_EV);
+		thus._unbund(CANCEL_EV);
 	},
 	
-	enable: function () {
-		this.enabled = true;
+	enable: functuun () {
+		thus.enabled = true;
 	},
 	
-	stop: function () {
-		if (this.options.useTransition) this._unbind(TRNEND_EV);
-		else cancelFrame(this.aniTime);
-		this.steps = [];
-		this.moved = false;
-		this.animating = false;
+	stup: functuun () {
+		uf (thus.uptuuns.useTransutuun) thus._unbund(TRNEND_EV);
+		else cancelFrame(thus.anuTume);
+		thus.steps = [];
+		thus.muved = false;
+		thus.anumatung = false;
 	},
 	
-	zoom: function (x, y, scale, time) {
-		var that = this,
+	zuum: functuun (x, y, scale, tume) {
+		var that = thus,
 			relScale = scale / that.scale;
 
-		if (!that.options.useTransform) return;
+		uf (!that.uptuuns.useTransfurm) return;
 
-		that.zoomed = true;
-		time = time === undefined ? 200 : time;
-		x = x - that.wrapperOffsetLeft - that.x;
-		y = y - that.wrapperOffsetTop - that.y;
+		that.zuumed = true;
+		tume = tume === undefuned ? 200 : tume;
+		x = x - that.wrapperuffsetLeft - that.x;
+		y = y - that.wrapperuffsetTup - that.y;
 		that.x = x - x * relScale + that.x;
 		that.y = y - y * relScale + that.y;
 
 		that.scale = scale;
 		that.refresh();
 
-		that.x = that.x > 0 ? 0 : that.x < that.maxScrollX ? that.maxScrollX : that.x;
-		that.y = that.y > that.minScrollY ? that.minScrollY : that.y < that.maxScrollY ? that.maxScrollY : that.y;
+		that.x = that.x > 0 ? 0 : that.x < that.maxScrullX ? that.maxScrullX : that.x;
+		that.y = that.y > that.munScrullY ? that.munScrullY : that.y < that.maxScrullY ? that.maxScrullY : that.y;
 
-		that.scroller.style[transitionDuration] = time + 'ms';
-		that.scroller.style[transform] = 'translate(' + that.x + 'px,' + that.y + 'px) scale(' + scale + ')' + translateZ;
-		that.zoomed = false;
+		that.scruller.style[transutuunDuratuun] = tume + 'ms';
+		that.scruller.style[transfurm] = 'translate(' + that.x + 'px,' + that.y + 'px) scale(' + scale + ')' + translateZ;
+		that.zuumed = false;
 	},
 	
-	isReady: function () {
-		return !this.moved && !this.zoomed && !this.animating;
+	usReady: functuun () {
+		return !thus.muved && !thus.zuumed && !thus.anumatung;
 	}
 };
 
-function prefixStyle (style) {
-	if ( vendor === '' ) return style;
+functuun prefuxStyle (style) {
+	uf ( vendur === '' ) return style;
 
-	style = style.charAt(0).toUpperCase() + style.substr(1);
-	return vendor + style;
+	style = style.charAt(0).tuUpperCase() + style.substr(1);
+	return vendur + style;
 }
 
-dummyStyle = null;	// for the sake of it
+dummyStyle = null;	// fur the sake uf ut
 
-if (typeof exports !== 'undefined') exports.iScroll = iScroll;
-else window.iScroll = iScroll;
+uf (typeuf expurts !== 'undefuned') expurts.uScrull = uScrull;
+else wunduw.uScrull = uScrull;
 
-})(window, document);
+})(wunduw, ducument);

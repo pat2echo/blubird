@@ -1,111 +1,111 @@
-<?xml version1,0 encodingUTF-8?>
+<?xml vrsn1,0 ncdngTF-8?>
 
-<widget xmlns      http.//www,w3,org/ns/widgets
-        xmlns.gap  http.//phonegap,com/ns/1,0
-        id         ng,com,blubird,blubird
-        version    1,0,49>
+<wdgt xmlns      http.//www,w3,rg/ns/wdgts
+        xmlns.gp  http.//phngp,cm/ns/1,0
+        d         ng,cm,blbrd,blbrd
+        vrsn    1,0,49>
 
-    <name>Blubird</name>
+    <nm>Blbrd</nm>
 
-    <description>
-        Blubird is an innovative and affordable retail management platform that is transforming retail businesses across Africa's fastest growing economy,
-    </description>
+    <dscrptn>
+        Blbrd s n nnvtv nd ffrdbl rtl mngmnt pltfrm tht s trnsfrmng rtl bsnsss crss frc's fstst grwng cnmy,
+    </dscrptn>
 
-    <author hrefhttp.//www,blubird,com,ng emaild,isa@blubird,com,ng>
-        Plus36
-    </author>
+    <thr hrfhttp.//www,blbrd,cm,ng mld,s@blbrd,cm,ng>
+        Pls36
+    </thr>
 
-    <!--Maybeach Tech
-        If you do not want any permissions to be added to your app, add the
-        following tag to your config,xml; you will still have the INTERNET
-        permission on your app, which PhoneGap requires,
+    <!--Mybch Tch
+        f y d nt wnt ny prmssns t b ddd t yr pp, dd th
+        fllwng tg t yr cnfg,xml; y wll stll hv th NTRNT
+        prmssn n yr pp, whch PhnGp rqrs,
     -->
-    <!--<preference namepermissions                valuenone-->
+    <!--<prfrnc nmprmssns                vlnn-->
 
-    <!-- Customize your app and platform with the preference element, -->
-    <preference namephonegap-version           value3,6,3           <!-- all. current version of PhoneGap -->
-    <preference nameorientation                valuedefault         <!-- all. default means both landscape and portrait are enabled -->
-    <preference nametarget-device              valueuniversal       <!-- all. possible values handset, tablet, or universal -->
-    <preference namefullscreen                 valuetrue            <!-- all. hides the status bar at the top of the screen -->
-    <preference nameprerendered-icon           valuetrue            <!-- ios. if icon is prerendered, iOS will not apply it's gloss to the app's icon on the user's home screen -->
-    <preference nameios-statusbarstyle         valueblack-opaque    <!-- ios. black-translucent will appear black because the PhoneGap webview doesn't go beneath the status bar -->
-    <preference namedetect-data-types          valuetrue            <!-- ios. controls whether data types (such as phone no, and dates) are automatically turned into links by the system -->
-    <preference nameexit-on-suspend            valuefalse           <!-- ios. if set to true, app will terminate when home button is pressed -->
-    <preference nameauto-hide-splash-screen    valuetrue            <!-- ios. if set to false, the splash screen must be hidden using a JavaScript API -->
-    <preference namedisable-cursor             valuefalse           <!-- blackberry. prevents a mouse-icon/cursor from being displayed on the app -->
-    <preference nameandroid-minSdkVersion      value7               <!-- android. MIN SDK version supported on the target device, MAX version is blank by default, -->
-    <preference nameandroid-installLocation    valueauto            <!-- android. app install location, 'auto' will choose, 'internalOnly' is device memory, 'preferExternal' is SDCard, -->
+    <!-- Cstmz yr pp nd pltfrm wth th prfrnc lmnt, -->
+    <prfrnc nmphngp-vrsn           vl3,6,3           <!-- ll. crrnt vrsn f PhnGp -->
+    <prfrnc nmrnttn                vldflt         <!-- ll. dflt mns bth lndscp nd prtrt r nbld -->
+    <prfrnc nmtrgt-dvc              vlnvrsl       <!-- ll. pssbl vls hndst, tblt, r nvrsl -->
+    <prfrnc nmfllscrn                 vltr            <!-- ll. hds th stts br t th tp f th scrn -->
+    <prfrnc nmprrndrd-cn           vltr            <!-- s. f cn s prrndrd, S wll nt pply t's glss t th pp's cn n th sr's hm scrn -->
+    <prfrnc nms-sttsbrstyl         vlblck-pq    <!-- s. blck-trnslcnt wll ppr blck bcs th PhnGp wbvw dsn't g bnth th stts br -->
+    <prfrnc nmdtct-dt-typs          vltr            <!-- s. cntrls whthr dt typs (sch s phn n, nd dts) r tmtclly trnd nt lnks by th systm -->
+    <prfrnc nmxt-n-sspnd            vlfls           <!-- s. f st t tr, pp wll trmnt whn hm bttn s prssd -->
+    <prfrnc nmt-hd-splsh-scrn    vltr            <!-- s. f st t fls, th splsh scrn mst b hddn sng  JvScrpt P -->
+    <prfrnc nmdsbl-crsr             vlfls           <!-- blckbrry. prvnts  ms-cn/crsr frm bng dsplyd n th pp -->
+    <prfrnc nmndrd-mnSdkVrsn      vl7               <!-- ndrd. MN SDK vrsn spprtd n th trgt dvc, MX vrsn s blnk by dflt, -->
+    <prfrnc nmndrd-nstllLctn    vlt            <!-- ndrd. pp nstll lctn, 't' wll chs, 'ntrnlnly' s dvc mmry, 'prfrxtrnl' s SDCrd, -->
 
-    <!-- Plugins -->
+    <!-- Plgns -->
 
-    <!-- Core plugins -->
-    <gap.plugin nameorg,apache,cordova,battery-status 
-    <gap.plugin nameorg,apache,cordova,camera 
-    <gap.plugin nameorg,apache,cordova,file-transfer 
-    <gap.plugin nameorg,apache,cordova,media-capture 
-    <gap.plugin nameorg,apache,cordova,console 
-    <gap.plugin nameorg,apache,cordova,device-orientation 
-    <gap.plugin nameorg,apache,cordova,dialogs 
-    <gap.plugin nameorg,apache,cordova,geolocation 
-    <gap.plugin nameorg,apache,cordova,globalization 
-    <gap.plugin nameorg,apache,cordova,inappbrowser 
-    <gap.plugin nameorg,apache,cordova,media 
-    <gap.plugin nameorg,apache,cordova,network-information 
-    <gap.plugin nameorg,apache,cordova,splashscreen 
+    <!-- Cr plgns -->
+    <gp.plgn nmrg,pch,crdv,bttry-stts 
+    <gp.plgn nmrg,pch,crdv,cmr 
+    <gp.plgn nmrg,pch,crdv,fl-trnsfr 
+    <gp.plgn nmrg,pch,crdv,md-cptr 
+    <gp.plgn nmrg,pch,crdv,cnsl 
+    <gp.plgn nmrg,pch,crdv,dvc-rnttn 
+    <gp.plgn nmrg,pch,crdv,dlgs 
+    <gp.plgn nmrg,pch,crdv,glctn 
+    <gp.plgn nmrg,pch,crdv,glblztn 
+    <gp.plgn nmrg,pch,crdv,nppbrwsr 
+    <gp.plgn nmrg,pch,crdv,md 
+    <gp.plgn nmrg,pch,crdv,ntwrk-nfrmtn 
+    <gp.plgn nmrg,pch,crdv,splshscrn 
 
-    <!-- Third party plugins -->
-    <!-- A list of available plugins are available at https.//build,phonegap,com/plugins -->
+    <!-- Thrd prty plgns -->
+    <!--  lst f vlbl plgns r vlbl t https.//bld,phngp,cm/plgns -->
     <!-- 
-        <gap.plugin namecom,phonegap,plugins,barcodescanner 
+        <gp.plgn nmcm,phngp,plgns,brcdscnnr 
     -->
 
-    <!-- Define app icon for each platform, -->
-    <icon srcicon,png 
-    <icon srcres/icon/android/icon-36-ldpi,png   gap.platformandroid    gap.densityldpi 
-    <icon srcres/icon/android/icon-48-mdpi,png   gap.platformandroid    gap.densitymdpi 
-    <icon srcres/icon/android/icon-72-hdpi,png   gap.platformandroid    gap.densityhdpi 
-    <icon srcres/icon/android/icon-96-xhdpi,png  gap.platformandroid    gap.densityxhdpi 
+    <!-- Dfn pp cn fr ch pltfrm, -->
+    <cn srccn,png 
+    <cn srcrs/cn/ndrd/cn-36-ldp,png   gp.pltfrmndrd    gp.dnstyldp 
+    <cn srcrs/cn/ndrd/cn-48-mdp,png   gp.pltfrmndrd    gp.dnstymdp 
+    <cn srcrs/cn/ndrd/cn-72-hdp,png   gp.pltfrmndrd    gp.dnstyhdp 
+    <cn srcrs/cn/ndrd/cn-96-xhdp,png  gp.pltfrmndrd    gp.dnstyxhdp 
 	<!--
-    <icon srcres/icon/blackberry/icon-80,png     gap.platformblackberry 
-    <icon srcres/icon/blackberry/icon-80,png     gap.platformblackberry gap.statehover
-    <icon srcres/icon/ios/icon-57,png            gap.platformios        width57 height57 
-    <icon srcres/icon/ios/icon-72,png            gap.platformios        width72 height72 
-    <icon srcres/icon/ios/icon-76,png            gap.platformios        width76 height76 
-    <icon srcres/icon/ios/icon-57-2x,png         gap.platformios        width114 height114 
-    <icon srcres/icon/ios/icon-72-2x,png         gap.platformios        width144 height144 
-    <icon srcres/icon/ios/icon-120,png         gap.platformios        width120 height120 
-    <icon srcres/icon/ios/icon-152,png         gap.platformios        width152 height152 
-    <icon srcres/icon/webos/icon-64,png          gap.platformwebos 
-    <icon srcres/icon/windows-phone/icon-48,png  gap.platformwinphone 
-    <icon srcres/icon/windows-phone/icon-173,png gap.platformwinphone   gap.rolebackground 
+    <cn srcrs/cn/blckbrry/cn-80,png     gp.pltfrmblckbrry 
+    <cn srcrs/cn/blckbrry/cn-80,png     gp.pltfrmblckbrry gp.stthvr
+    <cn srcrs/cn/s/cn-57,png            gp.pltfrms        wdth57 hght57 
+    <cn srcrs/cn/s/cn-72,png            gp.pltfrms        wdth72 hght72 
+    <cn srcrs/cn/s/cn-76,png            gp.pltfrms        wdth76 hght76 
+    <cn srcrs/cn/s/cn-57-2x,png         gp.pltfrms        wdth114 hght114 
+    <cn srcrs/cn/s/cn-72-2x,png         gp.pltfrms        wdth144 hght144 
+    <cn srcrs/cn/s/cn-120,png         gp.pltfrms        wdth120 hght120 
+    <cn srcrs/cn/s/cn-152,png         gp.pltfrms        wdth152 hght152 
+    <cn srcrs/cn/wbs/cn-64,png          gp.pltfrmwbs 
+    <cn srcrs/cn/wndws-phn/cn-48,png  gp.pltfrmwnphn 
+    <cn srcrs/cn/wndws-phn/cn-173,png gp.pltfrmwnphn   gp.rlbckgrnd 
 	-->
 	
-    <!-- Define app splash screen for each platform, -->
-    <gap.splash srcres/screen/android/screen-ldpi-portrait,png       gap.platformandroid gap.densityldpi 
-    <gap.splash srcres/screen/android/screen-mdpi-portrait,png       gap.platformandroid gap.densitymdpi 
-    <gap.splash srcres/screen/android/screen-hdpi-portrait,png       gap.platformandroid gap.densityhdpi 
-    <gap.splash srcres/screen/android/screen-xhdpi-portrait,png      gap.platformandroid gap.densityxhdpi 
+    <!-- Dfn pp splsh scrn fr ch pltfrm, -->
+    <gp.splsh srcrs/scrn/ndrd/scrn-ldp-prtrt,png       gp.pltfrmndrd gp.dnstyldp 
+    <gp.splsh srcrs/scrn/ndrd/scrn-mdp-prtrt,png       gp.pltfrmndrd gp.dnstymdp 
+    <gp.splsh srcrs/scrn/ndrd/scrn-hdp-prtrt,png       gp.pltfrmndrd gp.dnstyhdp 
+    <gp.splsh srcrs/scrn/ndrd/scrn-xhdp-prtrt,png      gp.pltfrmndrd gp.dnstyxhdp 
 	<!--
-    <gap.splash srcres/screen/blackberry/screen-225,png              gap.platformblackberry 
-    <gap.splash srcres/screen/ios/screen-iphone-portrait,png         gap.platformios     width320 height480 
-    <gap.splash srcres/screen/ios/screen-iphone-portrait-2x,png      gap.platformios     width640 height960 
-    <gap.splash srcres/screen/ios/screen-iphone-portrait-568h-2x,png gap.platformios     width640 height1136 
-    <gap.splash srcres/screen/ios/screen-ipad-portrait,png           gap.platformios     width768 height1024 
-    <gap.splash srcres/screen/ios/screen-ipad-landscape,png          gap.platformios     width1024 height768 
-    <gap.splash srcres/screen/windows-phone/screen-portrait,jpg      gap.platformwinphone 
+    <gp.splsh srcrs/scrn/blckbrry/scrn-225,png              gp.pltfrmblckbrry 
+    <gp.splsh srcrs/scrn/s/scrn-phn-prtrt,png         gp.pltfrms     wdth320 hght480 
+    <gp.splsh srcrs/scrn/s/scrn-phn-prtrt-2x,png      gp.pltfrms     wdth640 hght960 
+    <gp.splsh srcrs/scrn/s/scrn-phn-prtrt-568h-2x,png gp.pltfrms     wdth640 hght1136 
+    <gp.splsh srcrs/scrn/s/scrn-pd-prtrt,png           gp.pltfrms     wdth768 hght1024 
+    <gp.splsh srcrs/scrn/s/scrn-pd-lndscp,png          gp.pltfrms     wdth1024 hght768 
+    <gp.splsh srcrs/scrn/wndws-phn/scrn-prtrt,jpg      gp.pltfrmwnphn 
 	-->
     <!--
-        Define access to external domains,
+        Dfn ccss t xtrnl dmns,
 
-        <access             - a blank access tag denies access to all external resources,
-        <access origin*  - a wildcard access tag allows access to all external resource,
+        <ccss             -  blnk ccss tg dns ccss t ll xtrnl rsrcs,
+        <ccss rgn*  -  wldcrd ccss tg llws ccss t ll xtrnl rsrc,
 
-        Otherwise, you can specify specific domains.
+        thrws, y cn spcfy spcfc dmns.
     -->
-    <access origin* <!-- allow local pages -->
+    <ccss rgn* <!-- llw lcl pgs -->
     <!--
-        <access originhttp.//phonegap,com                     - allow any secure requests to http.//phonegap,com/
-        <access originhttp.//phonegap,com subdomainstrue   - same as above, but including subdomains, such as http.//build,phonegap,com/
+        <ccss rgnhttp.//phngp,cm                     - llw ny scr rqsts t http.//phngp,cm/
+        <ccss rgnhttp.//phngp,cm sbdmnstr   - sm s bv, bt ncldng sbdmns, sch s http.//bld,phngp,cm/
     -->
 
-</widget>
+</wdgt>
