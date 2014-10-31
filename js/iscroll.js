@@ -94,27 +94,6 @@ var m = Math,
 		// Default options
 		that.options = {
 			hScroll: true,
-			vScroll: true,
-			x: 0,
-			y: 0,
-			bounce: true,
-			bounceLock: false,
-			momentum: true,
-			lockDirection: true,
-			useTransform: true,
-			useTransition: false,
-			topOffset: 0,
-			checkDOMChanges: false,		// Experimental
-			handleClick: true,
-
-			// Scrollbar
-			hScrollbar: true,
-			vScrollbar: true,
-			fixedScrollbar: isAndroid,
-			hideScrollbar: isIDevice,
-			fadeScrollbar: isIDevice && has3d,
-			scrollbarClass: '',
-
 			// Zoom
 			zoom: false,
 			zoomMin: 1,
@@ -151,9 +130,6 @@ var m = Math,
 		// Normalize options
 		that.options.useTransform = hasTransform && that.options.useTransform;
 		that.options.hScrollbar = that.options.hScroll && that.options.hScrollbar;
-		that.options.vScrollbar = that.options.vScroll && that.options.vScrollbar;
-		that.options.zoom = that.options.useTransform && that.options.zoom;
-		that.options.useTransition = hasTransitionEnd && that.options.useTransition;
 
 		// Helpers FIX ANDROID BUG!
 		// translate3d and scale doesn't work together!
@@ -193,30 +169,6 @@ iScroll.prototype = {
 	enabled: true,
 	x: 0,
 	y: 0,
-	steps: [],
-	scale: 1,
-	currPageX: 0, currPageY: 0,
-	pagesX: [], pagesY: [],
-	aniTime: null,
-	wheelZoomCount: 0,
-	
-	handleEvent: function (e) {
-		var that = this;
-		switch(e.type) {
-			case START_EV:
-				if (!hasTouch && e.button !== 0) return;
-				that._start(e);
-				break;
-			case MOVE_EV: that._move(e); break;
-			case END_EV:
-			case CANCEL_EV: that._end(e); break;
-			case RESIZE_EV: that._resize(); break;
-			case WHEEL_EV: that._wheel(e); break;
-			case 'mouseout': that._mouseout(e); break;
-			case TRNEND_EV: that._transitionEnd(e); break;
-		}
-	},
-	
 	_checkDOMChanges: function () {
 		if (this.moved || this.zoomed || this.animating ||
 			(this.scrollerW == this.scroller.offsetWidth * this.scale && this.scrollerH == this.scroller.offsetHeight * this.scale)) return;

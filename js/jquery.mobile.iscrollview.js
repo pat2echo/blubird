@@ -547,42 +547,6 @@ function jqmIscrollviewRemoveLayerXYProps(e) {
       "createScroller",
       "deferNonActiveRefresh",
       "preventTouchHover",
-      "deferNonActiveResize",
-      "bindIscrollUsingJqueryEvents",
-      "scrollTopOnResize",
-      "scrollTopOnOrientationChange",
-      "pullDownResetText",
-      "pullDownPulledText",
-      "pullDownLoadingText",
-      "pullUpResetText",
-      "pullUpPulledText",
-      "pullUpLoadingText",
-      "pullPulledClass",
-      "pullLoadingClass",
-      "onpulldownreset",
-      "onpulldownpulled",
-      "onpulldown",
-      "onpullupreset",
-      "onpulluppulled",
-      "onpullup",
-      "onbeforerefresh",
-      "onafterrefresh",
-      "fastDestroy",
-      "preventPageScroll"
-      ],
-
-    //-----------------------------------------------------------------------
-    // Map of widget event names to corresponding iscroll4 object event names
-    //-----------------------------------------------------------------------
-    _event_map: {
-      onrefresh:           "onRefresh",
-      onbeforescrollstart: "onBeforeScrollStart",
-      onscrollstart:       "onScrollStart",
-      onbeforescrollmove:  "onBeforeScrollMove",
-      onscrollmove:        'onScrollMove',
-      onbeforescrollend:   'onBeforeScrollEnd',
-      onscrollend:         "onScrollEnd",
-      ontouchend:          "onTouchEnd",
       ondestroy:           "onDetroy",
       onzoomstart:         "onZoomStart",
       onzoom:              "onZoom",
@@ -670,12 +634,6 @@ function jqmIscrollviewRemoveLayerXYProps(e) {
     // Remove options that are widget-only options
     $.each(this._widgetOnlyOptions, function(i,v) {delete options[v];});
     // Remove widget event options
-    $.each(this._event_map, function(k,v) {delete options[k];});
-    if (this.options.emulateBottomOffset) { delete options.bottomOffset; }
-    // Add proxy event functions
-    return $.extend(options, this._proxy_event_funcs);
-    },
-
   // Formats number with fixed digits
   _pad: function(num, digits, padChar) {
     var str = num.toString(),
@@ -1048,153 +1006,6 @@ function jqmIscrollviewRemoveLayerXYProps(e) {
   //--------------------------------------------------------
   _calculateBarsHeight: function() {
     var barsHeight = 0,
-        fixedHeightSelector = "." + this.options.fixedHeightClass,
-        // Persistent footers are sometimes inside the page, sometimes outside of all pages! (as
-        // direct descendant of <body>/.ui-mobile-viewport). And sometimes both. During transitions, the page that
-        // is transitioning in will have had it's persistent footer moved outside of the page,
-        // while all other pages will have their persistent footer internal to the page.
-        //
-        // To deal with this, we find iscroll-fixed elements in the page, as well as outside
-        // of the page (as direct descendants of <body>/.ui-mobile-viewport). We avoid double-counting persistent
-        // footers that have the same data-id. (Experimentally, then, we also permit the user
-        // to place fixed-height elements outside of the page, but unsure if this is of any
-        // practical use.)
-        $barsInPage = this.$page.find(fixedHeightSelector),
-        $barsOutsidePage = $(".ui-mobile-viewport").children(fixedHeightSelector);
-
-    $barsInPage.each(function() {  // Iterate over headers/footers/etc.
-        barsHeight += $(this).outerHeight(true);
-        });
-
-    $barsOutsidePage.each(function() {
-      var id = $(this).jqmData("id");  // Find data-id if present
-      // Count bars outside of the page if they don't have data-id (so not a persistent
-      // footer, but something the developer put there and tagged with data-iscroll-fixed class),
-      // or if a matching data-id is NOT found among the bars that are inside the page.
-      if (id === "" || !$barsInPage.is( ":jqmData(id='" + id + "')" )) {
-        barsHeight += $(this).outerHeight(true);
-        }
-      });
-    return barsHeight;
-    },
-
-  //-----------------------------------------------------------------------
-  // Determine the box-sizing model of an element
-  // While jQuery normalizes box-sizing models when retriving geometry,
-  // it doesn't consider it when SETTING geometry. So, this is useful when
-  // setting geometry. (e.g. the height of the wrapper)
-  //-----------------------------------------------------------------------
-  _getBoxSizing: function($elem) {
-    var  boxSizing,
-         prefix = "";
-
-    if (IsFirefox)     { prefix = "-moz-"; }
-    else if (IsWebkit) { prefix = "-webkit-"; } // note: can drop prefix for Chrome >=10, Safari >= 5.1 (534.12)
-    boxSizing = $elem.css(prefix + "box-sizing");
-    if (!boxSizing && prefix) { boxSizing = $elem.css("box-sizing"); }  // Not found, try again with standard CSS
-    if (!boxSizing) {     // Still not found - no CSS property available to guide us.
-      // See what JQuery thinks the global box model is
-      if ($.boxModel) { boxSizing = "content-box"; }
-      else            { boxSizing = "border-box"; }
-      }
-    return boxSizing;
-    },
-
-  //-----------------------------------------------------------------
-  // Get the height adjustment for setting the height of an element,
-  // based on the content-box model
-  //-----------------------------------------------------------------
-  _getHeightAdjustForBoxModel: function($elem) {
-    // Take into account the box model. This defaults to either W3C or traditional
-    // model for a given browser, but can be overridden with CSS
-    var adjust;
-    switch (this._getBoxSizing($elem)) {
-      case "border-box":      // AKA traditional, or IE5 (old browsers and IE quirks mode)
-        // only subtract margin
-        adjust = $elem.outerHeight(true) - $elem.outerHeight();
-        break;
-
-      case "padding-box":    // Firefox-only
-        // subtract margin and border
-        adjust = $elem.outerHeight() - $elem.height();
-        break;
-
-      case "content-box":     // AKA W3C  Ignore jshint warning
-      default:                // Ignore jslint warning
-        // We will subtract padding, border, margin
-        // However...
-        // wrapper will never have padding, at least once we are done
-        // modifying it. This function is called before any removal of
-        // padding, though. So, if $wrapper, use same calculation as for padding-box,
-        // ignoring padding.
-        // (We actually don't call this for anything but $wrapper, but preseve
-        // functionality in case we ever use it on another element)
-          adjust = $elem.outerHeight($elem !== this.$wrapper ) - $elem.height();
-          break;
-      }
-    return adjust;
-    },
-
-  //--------------------------------------------------------
-  // If there's a pull-down element, we need to set the
-  // topOffset to the height of that element. If user
-  // specified a topOffset option, use that instead, though.
-  //--------------------------------------------------------
-  _setTopOffsetForPullDown: function() {
-    if (this.$pullDown.length && !this.options.topOffset) {
-      this.options.topOffset = this.$pullDown.outerHeight(true);
-      }
-    },
-
-  //--------------------------------------------------------
-  // If there's a pull-up element, we need to set the
-  // bottomOffset to the height of that element. If user
-  // specified a bottomOffset option, use that instead, though.
-  //--------------------------------------------------------
-  _setBottomOffsetForPullUp: function() {
-    if (this.$pullUp.length && !this.options.bottomOffset) {
-      this.options.bottomOffset = this.$pullUp.outerHeight(true);
-      }
-    },
-
-   _removeWrapperPadding: function() {
-     var $wrapper = this.$wrapper;
-     if (this.options.removeWrapperPadding) {
-       // Save padding so we can re-apply it to the iscroll-content div that we create
-       this._origWrapperPaddingLeft   = $wrapper.css("padding-left");
-       this._origWrapperPaddingRight  = $wrapper.css("padding-right");
-       this._origWrapperPaddingTop    = $wrapper.css("padding-top");
-       this._origWrapperPaddingBottom = $wrapper.css("padding-bottom");
-       this.$wrapper.css("padding", 0);
-       }
-   },
-
-  //---------------------------------------------------------
-  // Modify some wrapper CSS
-  //---------------------------------------------------------
-  _modifyWrapperCSS: function() {
-    this._origWrapperStyle = this.$wrapper.attr("style") || null;
-    this._removeWrapperPadding();
-    },
-
-  _undoModifyWrapperCSS: function() {
-    this._restoreStyle(this.$wrapper, this._origWrapperStyle);
-    },
-
-  //---------------------------------------------------------
-  // Adds padding around scrolled content (not including
-  // any pull-down or pull-up) using a div with padding
-  // removed from wrapper.
-  //---------------------------------------------------------
-  _addScrollerPadding: function () {
-  if (this.options.removeWrapperPadding && this.options.addScrollerPadding) {
-    // We do not store $scrollerContent in the object, because elements might be added/deleted
-    // after instantiation. When we undo, we need the CURRENT children in order to unwrap
-    var $scrollerContentWrapper,
-        $scrollerChildren = this.$scroller.children(),
-        $scrollerContent = $scrollerChildren.not(this.$pullDown).not(this.$pullUp).not(this.$pullUpSpacer);
-    $scrollerContent.wrapAll("<div/>");
-
     $scrollerContentWrapper = $scrollerContent.parent().addClass(this.options.scrollerContentClass);
     $scrollerContentWrapper.css({
       "padding-left"   : this._origWrapperPaddingLeft,
