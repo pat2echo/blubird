@@ -1,5 +1,5 @@
 /******************************************************************************
-  jslint directives. In case you hate yourself, and need that reinforced..
+  jslint directives. In case you hate yourself, and need that reinforced...
 
   You will still get a few warnings that can't be turned off, or that I'm just
   too stubborn to "fix"
@@ -12,7 +12,7 @@
 *******************************************************************************/
 
 /*jslint browser: true, sloppy: true, white: true, nomen: true, regexp: true, todo: true,
-maxerr: 5, indent: 2 */
+maxerr: 50, indent: 2 */
 /*global jQuery:false, iScroll:false, console:false, Event:false*/
 
 /*******************************************************************************
@@ -25,7 +25,7 @@ maxerr: 5, indent: 2 */
 *******************************************************************************/
 
 /*jshint forin:true, noarg:true, noempty:true, eqeqeq:true, bitwise:true, strict:true, undef:true,
-curly:true, browser:true, jquery:true, indent:2, maxerr:5, sloppy:true, white:false, nomen:false,
+curly:true, browser:true, jquery:true, indent:2, maxerr:50, sloppy:true, white:false, nomen:false,
 regexp:false, todo:true */
 
 
@@ -33,7 +33,7 @@ regexp:false, todo:true */
 jquery.mobile.iscrollview.js
 Version: 1.3.2
 jQuery Mobile iScroll4 view widget
-Copyright (c), 212, 213 Watusiware Corporation
+Copyright (c), 2012, 2013 Watusiware Corporation
 Distributed under the MIT License
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this
@@ -65,7 +65,7 @@ Licensed under the MIT license
 
 dependency:  iScroll 4.1.9 https://github.com/cubiq/iscroll or later (4.2 provided in demo)
              jQuery - see jQuery Mobile documentation, depends on JQM version
-             JQuery Mobile = 1.1 through 1.3.1
+             JQuery Mobile = 1.0.1 through 1.3.1
 */
 
 ;   // Ignore jslint/jshint warning - for safety - terminate previous file if unterminated
@@ -105,9 +105,9 @@ function jqmIscrollviewRemoveLayerXYProps(e) {
       // Standalone is when running a website saved to the desktop (SpringBoard)
       IsIDeviceStandalone = IsIDevice && (window.navigator.Standalone !== undefined),
 
-      // Kludgey way to seeing if we have JQM v1.x, since there apparently is no
+      // Kludgey way to seeing if we have JQM v1.0.x, since there apparently is no
       // way to access the version number!
-      JQMIsV1_ = $.mobile.ignoreContentEnabled === undefined,
+      JQMIsV1_0 = $.mobile.ignoreContentEnabled === undefined,
 
       nextPageID = 1;      // Used to generate event namespaces
 
@@ -166,7 +166,7 @@ function jqmIscrollviewRemoveLayerXYProps(e) {
          }
        }
 
-      // If preventTouchHover, stop hover from occuring inside scroller for jQuery Mobile 1.
+      // If preventTouchHover, stop hover from occuring inside scroller for jQuery Mobile 1.0
       // (Not used for 1.1)
       if (this.iscrollview.options.preventTouchHover) { e.stopImmediatePropagation(); }
       else                                            { e.preventDefault(); }
@@ -276,7 +276,7 @@ function jqmIscrollviewRemoveLayerXYProps(e) {
   $pullUp:            [],  // The pull-up element (if any)
   $pullUpSpacer:      [],
   $page:              [],  // The page element that contains the wrapper
-  _wrapperHeightAdjustForBoxModel: ,  // This is set in _create
+  _wrapperHeightAdjustForBoxModel: 0,  // This is set in _create
 
   _firstScrollerExpand:    true,  // True on first scroller expand, so we can capture original CSS
 
@@ -328,7 +328,7 @@ function jqmIscrollviewRemoveLayerXYProps(e) {
 
     // bottomOffset is currently only in Watusi-patched iScroll. We emulate it in case it isn't
     // there.
-    bottomOffset: ,
+    bottomOffset: 0,
     emulateBottomOffset: true,
 
     pageClass:            "iscroll-page",          // Class to be applied to pages containing this widget
@@ -376,11 +376,11 @@ function jqmIscrollviewRemoveLayerXYProps(e) {
     // disable for some other reason
     fixInput: true,
 
-    wrapperAdd: ,      // Shouldn't be necessary, but in case user needs to fudge
+    wrapperAdd: 0,      // Shouldn't be necessary, but in case user needs to fudge
                         // Can be + or -
 
     // Timeout to allow page to render prior to refresh()
-    refreshDelay:  IsAndroid ? 2 : ,   // Wild-ass guesses
+    refreshDelay:  IsAndroid ? 200 : 0,   // Wild-ass guesses
 
     // true to set the minimum height of scroller content (not including
     // any pull-down or pull-up) to the height of the wrapper. Note that
@@ -439,17 +439,17 @@ function jqmIscrollviewRemoveLayerXYProps(e) {
     // But you still will on desktop browser with mouse, and you will still get "down" effect
     // when a link is selected. This really is a jQuery Mobile problem with listview, and is
     // fixed in JQM 1.1.
-    preventTouchHover: JQMIsV1_ && HasTouch,   // Enable if touch device and JQM version is < 1.1
+    preventTouchHover: JQMIsV1_0 && HasTouch,   // Enable if touch device and JQM version is < 1.1
 
     // This is an experimental feature under development and DOES NOT WORK completely!
     // For one, it breaks mousewheel with jQuery Mobile 1.1 (because jQuery Mobile 1.1 breaks
-    // mousewheel..)
+    // mousewheel...)
     bindIscrollUsingJqueryEvents: false,
 
     // If fastDestroy is true, don't tear down the widget on destroy. The assumption is destroy
     // will only be called when the page is removed, so there is no need. Is anyone really
     // going to un-enhance a scroller? If so, set this to false, but then you will have to
-    // fix the unbind issue..
+    // fix the unbind issue...
     fastDestroy: false,
 
     // Prevent scrolling the page by grabbing areas outside of the scroller.
@@ -459,12 +459,12 @@ function jqmIscrollviewRemoveLayerXYProps(e) {
     // Note that we ALWAYS prevent scrolling the page by dragging inside the scroller.
     preventPageScroll: true,
 
-    pullDownResetText   : "Pull down to refresh..",
-    pullDownPulledText  : "Release to refresh..",
-    pullDownLoadingText : "Loading..",
-    pullUpResetText     : "Pull up to refresh..",
-    pullUpPulledText    : "Release to refresh..",
-    pullUpLoadingText   : "Loading..",
+    pullDownResetText   : "Pull down to refresh...",
+    pullDownPulledText  : "Release to refresh...",
+    pullDownLoadingText : "Loading...",
+    pullUpResetText     : "Pull up to refresh...",
+    pullUpPulledText    : "Release to refresh...",
+    pullUpLoadingText   : "Loading...",
 
     pullPulledClass     : "iscroll-pull-pulled",
     pullLoadingClass    : "iscroll-pull-loading",
@@ -678,7 +678,7 @@ function jqmIscrollviewRemoveLayerXYProps(e) {
   // Formats number with fixed digits
   _pad: function(num, digits, padChar) {
     var str = num.toString(),
-        _padChar = padChar || "";
+        _padChar = padChar || "0";
     while (str.length < digits) { str = _padChar + str; }
     return str;
   },
@@ -747,7 +747,7 @@ function jqmIscrollviewRemoveLayerXYProps(e) {
   _logCallback: function(callbackName, e, then) {
     if (!this.options.debug ||
         !this.options.traceIscrollCallbacks ||
-       (this.options.tracedIscrollCallbacks.length !==  &&
+       (this.options.tracedIscrollCallbacks.length !== 0 &&
         $.inArray(callbackName, this.options.tracedIscrollCallbacks) === -1) ) {
       return null;
       }
@@ -763,7 +763,7 @@ function jqmIscrollviewRemoveLayerXYProps(e) {
         type = haveEvent ? e.type : e;
     if (!this.options.debug ||
         !this.options.traceIscrollEvents ||
-        (this.options.tracedIscrollEvents.length !==  &&
+        (this.options.tracedIscrollEvents.length !== 0 &&
          $.inArray(type, this.options.tracedIscrollEvents) === -1)) {
       return null;
       }
@@ -776,7 +776,7 @@ function jqmIscrollviewRemoveLayerXYProps(e) {
         type = haveEvent ? e.type : e;
     if (!this.options.debug ||
         !this.options.traceWidgetEvents ||
-        (this.options.tracedWidgetEvents.length !==  &&
+        (this.options.tracedWidgetEvents.length !== 0 &&
          $.inArray(type, this.options.tracedWidgetEvents) === -1)) {
       return null;
       }
@@ -787,7 +787,7 @@ function jqmIscrollviewRemoveLayerXYProps(e) {
   _logWidgetCallback: function(callbackName, e, then) {
     if (!this.options.debug ||
         !this.options.traceWidgetCallbacks ||
-       (this.options.tracedWidgetCallbacks.length !==  &&
+       (this.options.tracedWidgetCallbacks.length !== 0 &&
         $.inArray(callbackName, this.options.tracedWidgetCallbacks) === -1) ) {
       return null;
       }
@@ -937,7 +937,7 @@ function jqmIscrollviewRemoveLayerXYProps(e) {
   _orientationChangeFunc: function(e) {
     var then = this._logWidgetEvent("_orientationChangeFunc", e);
     if (this.options.scrollTopOnOrientationChange) {
-      $.mobile.silentScroll();
+      $.mobile.silentScroll(0);
       }
     this._logWidgetEvent("_orientationChangeFunc", e, then);
     },
@@ -953,7 +953,7 @@ function jqmIscrollviewRemoveLayerXYProps(e) {
   // instantiated on the page.
   _instanceCount: function(count_in) {
     var key = "iscroll-private",
-        count = ,
+        count = 0,
         data = this.$page.jqmData(key) || {};
     if (count_in !== undefined) {
       count = count_in;
@@ -1010,7 +1010,7 @@ function jqmIscrollviewRemoveLayerXYProps(e) {
 
     // Only adapt the page if this is the only iscrollview widget instantiated on the page
     // If the count >1, then the page has already been adapted. When the count goes back
-    // to , the changes will be un-done
+    // to 0, the changes will be un-done
     if (this._instanceCount() === 1) {
       this.$page.addClass(this.options.pageClass);
       this.$page.find(this.options.fixedHeightSelector).each(function() {  // Iterate over headers/footers/etc.
@@ -1020,8 +1020,8 @@ function jqmIscrollviewRemoveLayerXYProps(e) {
           // We cannot simply use a selector that requires the fixed-height element
           // to be a child of .ui-page, because of the complication that JQM
           // moves persistent headers/footers out of the page during transitions.
-          isPopup = $fixedHeightElement.closest(".ui-popup").length !== ,
-          isPanel = $fixedHeightElement.closest(".ui-panel").length !== ;
+          isPopup = $fixedHeightElement.closest(".ui-popup").length !== 0,
+          isPanel = $fixedHeightElement.closest(".ui-panel").length !== 0;
         if (!isPopup && !isPanel) {
           $fixedHeightElement.addClass(_this.options.fixedHeightClass);
         }
@@ -1046,7 +1046,7 @@ function jqmIscrollviewRemoveLayerXYProps(e) {
   // Calculate total bar heights.
   //--------------------------------------------------------
   _calculateBarsHeight: function() {
-    var barsHeight = ,
+    var barsHeight = 0,
         fixedHeightSelector = "." + this.options.fixedHeightClass,
         // Persistent footers are sometimes inside the page, sometimes outside of all pages! (as
         // direct descendant of <body>/.ui-mobile-viewport). And sometimes both. During transitions, the page that
@@ -1088,7 +1088,7 @@ function jqmIscrollviewRemoveLayerXYProps(e) {
          prefix = "";
 
     if (IsFirefox)     { prefix = "-moz-"; }
-    else if (IsWebkit) { prefix = "-webkit-"; } // note: can drop prefix for Chrome >=1, Safari >= 5.1 (534.12)
+    else if (IsWebkit) { prefix = "-webkit-"; } // note: can drop prefix for Chrome >=10, Safari >= 5.1 (534.12)
     boxSizing = $elem.css(prefix + "box-sizing");
     if (!boxSizing && prefix) { boxSizing = $elem.css("box-sizing"); }  // Not found, try again with standard CSS
     if (!boxSizing) {     // Still not found - no CSS property available to guide us.
@@ -1121,7 +1121,7 @@ function jqmIscrollviewRemoveLayerXYProps(e) {
       case "content-box":     // AKA W3C  Ignore jshint warning
       default:                // Ignore jslint warning
         // We will subtract padding, border, margin
-        // However..
+        // However...
         // wrapper will never have padding, at least once we are done
         // modifying it. This function is called before any removal of
         // padding, though. So, if $wrapper, use same calculation as for padding-box,
@@ -1164,7 +1164,7 @@ function jqmIscrollviewRemoveLayerXYProps(e) {
        this._origWrapperPaddingRight  = $wrapper.css("padding-right");
        this._origWrapperPaddingTop    = $wrapper.css("padding-top");
        this._origWrapperPaddingBottom = $wrapper.css("padding-bottom");
-       this.$wrapper.css("padding", );
+       this.$wrapper.css("padding", 0);
        }
    },
 
@@ -1241,8 +1241,8 @@ function jqmIscrollviewRemoveLayerXYProps(e) {
 
       this.$scroller.css("min-height",
         this.$wrapper.height() +
-        (this.$pullDown.length ? this.$pullDown.outerHeight(true) : ) +
-        (this.$pullUp.length ? this.$pullUp.outerHeight(true) : )
+        (this.$pullDown.length ? this.$pullDown.outerHeight(true) : 0) +
+        (this.$pullUp.length ? this.$pullUp.outerHeight(true) : 0)
         );
       }
     },
@@ -1284,7 +1284,7 @@ function jqmIscrollviewRemoveLayerXYProps(e) {
       this._wrapperHeightAdjustForBoxModel +   // Make adjustment based on content-box model
       // Note: the following will fail for Safari desktop with Develop/User Agent/iPhone
       // Fake fullscreen or webview by using custom user agent and removing "Safari" from string
-      (IsMobileSafari && !IsIPad ? 6 : ) +  // Add 6px for space recovered from Mobile Safari address bar
+      (IsMobileSafari && !IsIPad ? 60 : 0) +  // Add 60px for space recovered from Mobile Safari address bar
       this.options.wrapperAdd;                // User-supplied fudge-factor if needed
 
     this.$wrapper.css("height", newWrapperHeight);
@@ -1331,7 +1331,7 @@ function jqmIscrollviewRemoveLayerXYProps(e) {
   //--------------------------------------------------------
   _modifyPullDown: function () {
     var $pullDownLabel, pulledText, loadingText;
-    if (this.$pullDown.length === ) { return; }
+    if (this.$pullDown.length === 0) { return; }
     $pullDownLabel = $("." + this.options.pullLabelClass, this.$pullDown);
     if ($pullDownLabel.length) {
       this._origPullDownLabelText = $pullDownLabel.text();
@@ -1345,9 +1345,9 @@ function jqmIscrollviewRemoveLayerXYProps(e) {
     },
 
   _undoModifyPullDown: function () {
-    if (this.$pullDown.length === ) { return; }
+    if (this.$pullDown.length === 0) { return; }
     var $pullDownLabel = $("." + this.options.pullLabelClass, this.$pullDown);
-    if ($pullDownLabel.length === ) { return; }
+    if ($pullDownLabel.length === 0) { return; }
     $pullDownLabel.text(this._origPullDownLabelText);
   },
 
@@ -1362,7 +1362,7 @@ function jqmIscrollviewRemoveLayerXYProps(e) {
   _modifyPullUp: function () {
     var $pullUpLabel, pulledText, loadingText;
 
-    if (this.$pullUp.length === ) { return; }
+    if (this.$pullUp.length === 0) { return; }
 
     // Since we are positioning the pullUp element absolutely, it is pulled out of the
     // document flow. We need to add a dummy <div> with the same height as the pullUp.
@@ -1385,7 +1385,7 @@ function jqmIscrollviewRemoveLayerXYProps(e) {
     },
 
   _undoModifyPullUp: function () {
-    if (this.$pullUp.length === ) { return; }
+    if (this.$pullUp.length === 0) { return; }
     this.$pullUp.prev().remove();  // Remove the dummy div
     if (this._origPullUpLabelText) {
       $("." + this.options.pullLabelClass, this.$pullUp).text(this._origPullUpLabelText);
@@ -1395,7 +1395,7 @@ function jqmIscrollviewRemoveLayerXYProps(e) {
   _correctPushedDownPage: function() {
     // Scroll to top in case address bar pushed the page down
     if (this.options.resizeWrapper && this.options.scrollTopOnResize) {
-      $.mobile.silentScroll();
+      $.mobile.silentScroll(0);
       }
   },
 
@@ -1475,7 +1475,7 @@ function jqmIscrollviewRemoveLayerXYProps(e) {
    //---------------------------
   _create_iscroll_object: function() {
     /*jslint newcap:true */
-    this.iscroll = new IScroll(this, this.$wrapper.get(), this._create_iscroll_options());
+    this.iscroll = new IScroll(this, this.$wrapper.get(0), this._create_iscroll_options());
     /* jslint newcap:false */
     },
 
@@ -1572,7 +1572,7 @@ function jqmIscrollviewRemoveLayerXYProps(e) {
     this._createScroller();
     this.$scroller = this.$wrapper.children(":first");   // Get the first child of the wrapper, which is the
                                                          //   element that we will scroll
-    if (this.$scroller.length === ) { return; }
+    if (this.$scroller.length === 0) { return; }
 
     // Find pull elements, if present
     this.$pullDown = $("." + this.options.pullDownClass, this.$scroller);
@@ -1651,7 +1651,7 @@ function jqmIscrollviewRemoveLayerXYProps(e) {
       }
 
     this._instanceCount(this._instanceCount() - 1);   // The count of extant instances of this widget on the page
-    if (this._instanceCount() === ) {
+    if (this._instanceCount() === 0) {
       this._undoAdaptPage();
     }
 
@@ -1699,7 +1699,7 @@ function jqmIscrollviewRemoveLayerXYProps(e) {
         //case "hScrollbar":
         //case "vScrollbar":
           //this.options[ key ] = value;          // Change our options object
-          //this.iscroll.options[ key ] = value;  // .. and iscroll's options object
+          //this.iscroll.options[ key ] = value;  // ... and iscroll's options object
           //this.iscroll.refresh();               // Don't think we need the timing hack here
           //break;
 
@@ -1868,12 +1868,12 @@ function jqmIscrollviewRemoveLayerXYProps(e) {
         // by pullDownPast pixels
         if (!pullDownIsPulled && y > pullDownPast ) {
           this._pullDownSetStatePulled(e);
-          this.minScrollY();   // Circumvent top offset so pull-down element doesn't rubber-band
+          this.minScrollY(0);   // Circumvent top offset so pull-down element doesn't rubber-band
           }
 
         // Allow user to "oopsie", and scroll back to cancel and avoid pull-down action
         // Cancel if pulled and user has scrolled back to top of pulldown element
-        else if (pullDownIsPulled && y <= ) {
+        else if (pullDownIsPulled && y <= 0) {
           this._pullDownSetStateReset(e);
           this.minScrollY(-pullDownHeight);  // Re-instate top offset
           }

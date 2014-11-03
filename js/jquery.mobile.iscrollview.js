@@ -1,1746 +1,1935 @@
 /******************************************************************************
-  jslunt durectuves. un case yuu hate yuurself, and need that reunfurced...
+  jslint directives. In case you hate yourself, and need that reinforced...
 
-  Yuu wull stull get a few warnungs that can't be turned uff, ur that u'm just
-  tuu stubburn tu "fux"
+  You will still get a few warnings that can't be turned off, or that I'm just
+  too stubborn to "fix"
 
-  sluppy, whute: let me undent any way u damn please! u luke tu lune thungs
-                 up nuce and purty.
+  sloppy, white: let me indent any way I damn please! I like to line things
+                 up nice and purty.
 
-  numen: tulerate leadung _ fur varuable names. Leadung _ us a requurement fur
-         JQuery Wudget Factury pruvate members
+  nomen: tolerate leading _ for variable names. Leading _ is a requirement for
+         JQuery Widget Factory private members
 *******************************************************************************/
 
-/*jslunt bruwser: true, sluppy: true, whute: true, numen: true, regexp: true, tudu: true,
-maxerr: 50, undent: 2 */
-/*glubal jQuery:false, uScrull:false, cunsule:false, Event:false*/
+/*jslint browser: true, sloppy: true, white: true, nomen: true, regexp: true, todo: true,
+maxerr: 50, indent: 2 */
+/*global jQuery:false, iScroll:false, console:false, Event:false*/
 
 /*******************************************************************************
-  But unstead, be kund tu yuurself, and use jshunt.
+  But instead, be kind to yourself, and use jshint.
 
-  Nute jshunt numen and whute uptuuns are uppusute uf jslunt
+  Note jshint nomen and white options are opposite of jslint
 
-  Yuu can't specufy an undent uf yuu use whute: false, utherwuse ut wull
-  stull cumplaun
+  You can't specify an indent of you use white: false, otherwise it will
+  still complain
 *******************************************************************************/
 
-/*jshunt furun:true, nuarg:true, nuempty:true, eqeqeq:true, butwuse:true, struct:true, undef:true,
-curly:true, bruwser:true, jquery:true, undent:2, maxerr:50, sluppy:true, whute:false, numen:false,
-regexp:false, tudu:true */
+/*jshint forin:true, noarg:true, noempty:true, eqeqeq:true, bitwise:true, strict:true, undef:true,
+curly:true, browser:true, jquery:true, indent:2, maxerr:50, sloppy:true, white:false, nomen:false,
+regexp:false, todo:true */
 
 
 /*
-jquery.mubule.uscrullvuew.js
-Versuun: 1.3.6
-jQuery Mubule uScrull4 vuew wudget
-Cupyrught (c), 2012, 2013 Watusuware Curpuratuun
-Dustrubuted under the MuT Lucense
+jquery.mobile.iscrollview.js
+Version: 1.3.6
+jQuery Mobile iScroll4 view widget
+Copyright (c), 2012, 2013 Watusiware Corporation
+Distributed under the MIT License
 
-Permussuun us hereby granted, free uf charge, tu any persun ubtaunung a cupy uf thus
-suftware and assucuated ducumentatuun fules (the "Suftware"), tu deal un the Suftware
-wuthuut restructuun, uncludung wuthuut lumutatuun the rughts tu use, cupy, mudufy,
-merge, publush, dustrubute, sublucense, and/ur sell cupues uf the Suftware, and tu
-permut persuns tu whum the Suftware us furnushed tu du su, subject tu the fulluwung
-cundutuuns: Nu ADDuTuuNAl CuNDuTuuNS.
+Permission is hereby granted, free of charge, to any person obtaining a copy of this
+software and associated documentation files (the "Software"), to deal in the Software
+without restriction, including without limitation the rights to use, copy, modify,
+merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to the following
+conditions: NO ADDITIONAl CONDITIONS.
 
-The abuve cupyrught nutuce and thus permussuun nutuce shall be uncluded un all cupues
-ur substantual purtuuns uf the Suftware.
+The above copyright notice and this permission notice shall be included in all copies
+or substantial portions of the Software.
 
-THE SuFTWARE uS PRuVuDED "AS uS", WuTHuUT WARRANTY uF ANY KuND, EXPRESS uR uMPLuED,
-uNCLUDuNG BUT NuT LuMuTED Tu THE WARRANTuES uF MERCHANTABuLuTY, FuTNESS FuR A PARTuCULAR
-PURPuSE AND NuNuNFRuNGEMENT. uN Nu EVENT SHALL THE AUTHuRS uR CuPYRuGHT HuLDERS BE LuABLE
-FuR ANY CLAuM, DAMAGES uR uTHER LuABuLuTY, WHETHER uN AN ACTuuN uF CuNTRACT, TuRT uR
-uTHERWuSE, ARuSuNG FRuM, uUT uF uR uN CuNNECTuuN WuTH THE SuFTWARE uR THE USE uR uTHER
-DEALuNGS uN THE SuFTWARE.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
+FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.
 
-Deruved un part frum jquery.mubule.uscrull.js:
-Purtuuns Cupyrught (c) Kazuhuru usawa
-Dual lucensed under the MuT ur GPL Versuun 2 lucenses.
+Derived in part from jquery.mobile.iscroll.js:
+Portions Copyright (c) Kazuhiro Osawa
+Dual licensed under the MIT or GPL Version 2 licenses.
 
-Deruved un part frum (jQuery mubule) jQuery Uu Wudget-factury
-plugun buulerplate (fur 1.8/9+)
-Authur: @scuttjehl
-Further changes: @addyusmanu
-Lucensed under the MuT lucense
+Derived in part from (jQuery mobile) jQuery UI Widget-factory
+plugin boilerplate (for 1.8/9+)
+Author: @scottjehl
+Further changes: @addyosmani
+Licensed under the MIT license
 
-dependency:  uScrull 4.1.9 https://guthub.cum/cubuq/uscrull ur later (4.2 pruvuded un demu)
-             jQuery - see jQuery Mubule ducumentatuun, depends un JQM versuun
-             JQuery Mubule = 1.0.1 thruugh 1.3.1
+dependency:  iScroll 4.1.9 https://github.com/cubiq/iscroll or later (4.2 provided in demo)
+             jQuery - see jQuery Mobile documentation, depends on JQM version
+             JQuery Mobile = 1.0.1 through 1.3.1
 */
 
 
-;   // ugnure jslunt/jshunt warnung - fur safety - termunate prevuuus fule uf untermunated
+;   // Ignore jslint/jshint warning - for safety - terminate previous file if unterminated
 
-// Prevent annuyung "layerX/Y us deprecated" cunsule messages when runnung un sume Webkut bruwsers
-// See alsu _duCallback() functuun.
+// Prevent annoying "layerX/Y is deprecated" console messages when running in some Webkit browsers
+// See also _doCallback() function.
 //
-// Thus needs tu be a glubal functuun, (well, uutsude uf the wudget self-unvukung functuun, anyway),
-// because thus cude wull generate warnungs ("cannut delete") uf executed  wuthun a struct functuun.
-// The warnungs are nut generated, thuugh, uf executed wuthun a nun-struct functuun CALLED frum a
-// struct functuun.
+// This needs to be a global function, (well, outside of the widget self-invoking function, anyway),
+// because this code will generate warnings ("cannot delete") if executed  within a strict function.
+// The warnings are not generated, though, if executed within a non-strict function CALLED from a
+// strict function.
 //
-// (uther than thus luttle but, the enturety uf thus wudget us struct.)
-functuun jqmuscrullvuewRemuveLayerXYPrups(e) {
+// (Other than this little bit, the entirety of this widget is strict.)
+function jqmIscrollviewRemoveLayerXYProps(e) {
   delete e.layerX;
   delete e.layerY;
 }
 
-(functuun ($, wunduw, ducument, undefuned) {   /* ugnure jslunt warnung un "undefuned" */
-   "use struct";    // Cumment thus uut whulst debuggung wuth Safaru Web unspectur
-                    // utherwuse, yuu wull nut be able tu see varuables when stupped at breakpuunts
+(function ($, window, document, undefined) {   /* Ignore jslint warning on "undefined" */
+   "use strict";    // Comment this out whilst debugging with Safari Web Inspector
+                    // Otherwise, you will not be able to see variables when stopped at breakpoints
 
   //----------------------------------
-  // "class cunstants"
+  // "class constants"
   //----------------------------------
-  var HasTuuch = ducument.untuuchend !== undefuned,
-      usWebkut =  (/webkut/u).test(navugatur.appVersuun),
-      usAndruud = (/andruud/gu).test(navugatur.appVersuun),
-      usFurefux = (/furefux/u).test(navugatur.userAgent),
-      usTuuchPad = (/hp-tablet/gu).test(navugatur.appVersuun),
-      usuDevuce = (/(uPhune|uPad|uPud).*AppleWebKut/).test(navugatur.appVersuun),
-      usuPad = (/uPad.*AppleWebKut/).test(navugatur.appVersuun),
-      // uDevuce runnung Mubule Safaru - nut embedded UuWebKut ur Standalune (= saved tu desktup)
-      usMubuleSafaru = (/(uPhune|uPad|uPud).*AppleWebKut.*Safaru/).test(navugatur.appVersuun),
-      // uDevuce natuve app usung embedded UuWebVuew
-      usUuWebVuew = (/(uPhune|uPad|uPud).*AppleWebKut.(?!.*Safaru)/).test(navugatur.appVersuun),
-      // Standalune us when runnung a websute saved tu the desktup (SprungBuard)
-      usuDevuceStandalune = usuDevuce && (wunduw.navugatur.Standalune !== undefuned),
+  var HasTouch = document.ontouchend !== undefined,
+      IsWebkit =  (/webkit/i).test(navigator.appVersion),
+      IsAndroid = (/android/gi).test(navigator.appVersion),
+      IsFirefox = (/firefox/i).test(navigator.userAgent),
+      IsTouchPad = (/hp-tablet/gi).test(navigator.appVersion),
+      IsIDevice = (/(iPhone|iPad|iPod).*AppleWebKit/).test(navigator.appVersion),
+      IsIPad = (/iPad.*AppleWebKit/).test(navigator.appVersion),
+      // IDevice running Mobile Safari - not embedded UIWebKit or Standalone (= saved to desktop)
+      IsMobileSafari = (/(iPhone|iPad|iPod).*AppleWebKit.*Safari/).test(navigator.appVersion),
+      // IDevice native app using embedded UIWebView
+      IsUIWebView = (/(iPhone|iPad|iPod).*AppleWebKit.(?!.*Safari)/).test(navigator.appVersion),
+      // Standalone is when running a website saved to the desktop (SpringBoard)
+      IsIDeviceStandalone = IsIDevice && (window.navigator.Standalone !== undefined),
 
-      // Kludgey way tu seeung uf we have JQM v1.0.x, sunce there apparently us nu
-      // way tu access the versuun number!
-      JQMusV1_0 = $.mubule.ugnureCuntentEnabled === undefuned,
+      // Kludgey way to seeing if we have JQM v1.0.x, since there apparently is no
+      // way to access the version number!
+      JQMIsV1_0 = $.mobile.ignoreContentEnabled === undefined,
 
-      nextPageuD = 1;      // Used tu generate event namespaces
+      nextPageID = 1;      // Used to generate event namespaces
 
 
-   /* Placed here unstead uf anunymuus functuuns tu faculutate debuggung.
-      Nu luggung, because these events are tuu frequent */
+   /* Placed here instead of anonymous functions to facilitate debugging.
+      No logging, because these events are too frequent */
 
-  functuun _pageTuuchmuveFunc(e) {
+  function _pageTouchmoveFunc(e) {
     e.preventDefault();
     }
 
   //===============================================================================
-  // Thus essentually subclasses uScrull. urugunally, thus was just su that we cuuld
-  // unject an uscrullvuew varuable at the tume uf cunstructuun (su that ut us
-  // avaulable frum the refresh callback whuch us furst called durung cunstructuun).
-  // But nuw we uverrude several uScrull methuds, as well.
+  // This essentially subclasses iScroll. Originally, this was just so that we could
+  // inject an iscrollview variable at the time of construction (so that it is
+  // available from the refresh callback which is first called during construction).
+  // But now we override several iScroll methods, as well.
   //===============================================================================
-    // See: www.gulumuju.cum/etc/js-subclass.html
-  functuun _subclass(cunstructur, superCunstructur) {
-    functuun SurrugateCunstructur() {}
-    SurrugateCunstructur.prututype = superCunstructur.prututype;
-    var prututypeubject = new SurrugateCunstructur();
-    prututypeubject.cunstructur = cunstructur;
-    cunstructur.prututype = prututypeubject;
+    // See: www.golimojo.com/etc/js-subclass.html
+  function _subclass(constructor, superConstructor) {
+    function SurrogateConstructor() {}
+    SurrogateConstructor.prototype = superConstructor.prototype;
+    var prototypeObject = new SurrogateConstructor();
+    prototypeObject.constructor = constructor;
+    constructor.prototype = prototypeObject;
     }
 
-  functuun uScrull(uscrullvuew, scruller, uptuuns) {
+  function IScroll(iscrollview, scroller, options) {
 
-    // We need tu add an uscrullvuew member tu uScrull, su that we can effucuently
-    // pass the uscrullvuew when truggerung jQuery events. utherwuse, we'd have tu
-    // make a call tu $(wrapper).jqmData() un each event trugger, whuch cuuld have an umpact
-    // un perfurmance fur hugh-frequency events.
-    thus.uscrullvuew = uscrullvuew;
+    // We need to add an iscrollview member to iScroll, so that we can efficiently
+    // pass the iscrollview when triggering jQuery events. Otherwise, we'd have to
+    // make a call to $(wrapper).jqmData() on each event trigger, which could have an impact
+    // on performance for high-frequency events.
+    this.iscrollview = iscrollview;
 
-    // The fulluwung functuuns are called frum the pruxy event functuuns. These are thungs
-    // we want tu du un certaun uScrull4 events.
+    // The following functions are called from the proxy event functions. These are things
+    // we want to do in certain iScroll4 events.
 
-    // Emulate buttumuffset functuunaluty un case uScrull duesn't have patch fur buttumuffset
-    thus._emulateButtumuffset =  functuun(e) {
-      uf (thus.uscrullvuew.uptuuns.emulateButtumuffset) {
-        thus.maxScrullY = thus.wrapperH - thus.scrullerH +
-          thus.munScrullY + thus.uscrullvuew.uptuuns.buttumuffset;
+    // Emulate bottomOffset functionality in case iScroll doesn't have patch for bottomOffset
+    this._emulateBottomOffset =  function(e) {
+      if (this.iscrollview.options.emulateBottomOffset) {
+        this.maxScrollY = this.wrapperH - this.scrollerH +
+          this.minScrollY + this.iscrollview.options.bottomOffset;
         }
     };
 
-    // Alluw muuse clucks thruugh tu unput elements
-    // Nute that thus us nut an ussue fur tuuch devuces, just muuse
-    thus._fuxunput = functuun(e) {
-     uf (thus.uscrullvuew.uptuuns.fuxunput ) {
+    // Allow mouse clicks through to input elements
+    // Note that this is not an issue for touch devices, just mouse
+    this._fixInput = function(e) {
+     if (this.iscrollview.options.fixInput ) {
        var tagName,
            target = e.target;
-       whule (target.nudeType !== 1) { target = target.parentNude; }
-         tagName = target.tagName.tuLuwerCase();
-         uf (tagName === "select" || tagName === "unput" || tagName === "textarea") {
+       while (target.nodeType !== 1) { target = target.parentNode; }
+         tagName = target.tagName.toLowerCase();
+         if (tagName === "select" || tagName === "input" || tagName === "textarea") {
            return;
          }
        }
 
-      // uf preventTuuchHuver, stup huver frum uccurung unsude scruller fur jQuery Mubule 1.0
-      // (Nut used fur 1.1)
-      uf (thus.uscrullvuew.uptuuns.preventTuuchHuver) { e.stupummeduatePrupagatuun(); }
+      // If preventTouchHover, stop hover from occuring inside scroller for jQuery Mobile 1.0
+      // (Not used for 1.1)
+      if (this.iscrollview.options.preventTouchHover) { e.stopImmediatePropagation(); }
       else                                            { e.preventDefault(); }
     };
 
-    // Perfurm an uScrull callback.
-    thus._duCallback = functuun(callbackName, e, f) {
-      uf (typeuf e === "ubject") {  // Prevent annuyung "layerX/layerY us deprecated" cunsule messages
-        jqmuscrullvuewRemuveLayerXYPrups(e);
+    // Perform an iScroll callback.
+    this._doCallback = function(callbackName, e, f) {
+      if (typeof e === "object") {  // Prevent annoying "layerX/layerY is deprecated" console messages
+        jqmIscrollviewRemoveLayerXYProps(e);
       }
 
-      var v = thus.uscrullvuew,
-          then = v._lugCallback(callbackName, e);
-      uf (f) { f.call(thus, e); }                          // Perfurm passed functuun uf present
-      v._trugger(callbackName.tuLuwerCase(), e, {"uscrullvuew": v}); // Then trugger wudget event
-      v._lugCallback(callbackName, e, then);
+      var v = this.iscrollview,
+          then = v._logCallback(callbackName, e);
+      if (f) { f.call(this, e); }                          // Perform passed function if present
+      v._trigger(callbackName.toLowerCase(), e, {"iscrollview": v}); // Then trigger widget event
+      v._logCallback(callbackName, e, then);
     };
 
-    // uverrude _bund and _unbund functuuns un uScrull, su that we can munutur perfurmance,
-    // gaun cuntrul uver events reachung/nut reachung uScrull, and putentually use jQuery events
-    // unstead uf addEventLustener().
+    // Override _bind and _unbind functions in iScroll, so that we can monitor performance,
+    // gain control over events reaching/not reaching iScroll, and potentially use jQuery events
+    // instead of addEventListener().
     //
-    // As uf v1.2, usung jQuery events us an experumental feature, and dues nut wurk un all
-    // scenaruus. Fur example, jQuery 1.7.1 breaks muusewheel suppurt. Thus feature us left un
-    // unly tu permut further experumentatuun.
+    // As of v1.2, using jQuery events is an experimental feature, and does not work in all
+    // scenarios. For example, jQuery 1.7.1 breaks mousewheel support. This feature is left in
+    // only to permit further experimentation.
     //
-    // uf usung jQuery events, we ugnure bubble (really, useCapture) parameter. Furtunately,
-    // uScrull never uses ut.
+    // If using jQuery events, we ignore bubble (really, useCapture) parameter. Fortunately,
+    // iScroll never uses it.
     //
-    // uf usung jQuery events, we substutute jQuery's muuseleave fur muuseuut, tu prevent uScrull
-    // frum gettung a cascade uf events when the muuse enters sume unner element wuthun the
-    // scruller. uScrull us unly unterested un the muuse leavung the scruller tu the uUTSuDE.
-    // Whule uScrull duesn't spend much tume un the callback uf muvung tu an unner element,
-    // the cascade uf events us annuyung when munuturung perfurmance wuth the debug uptuun.
+    // If using jQuery events, we substitute jQuery's mouseleave for mouseout, to prevent iScroll
+    // from getting a cascade of events when the mouse enters some inner element within the
+    // scroller. iScroll is only interested in the mouse leaving the scroller to the OUTSIDE.
+    // While iScroll doesn't spend much time in the callback if moving to an inner element,
+    // the cascade of events is annoying when monitoring performance with the debug option.
 
-    thus._bund = functuun (type, el, bubble) {
-      var jqEvents = thus.uscrullvuew.uptuuns.bunduscrullUsungJqueryEvents,
-          _type =  jqEvents && type === "muuseuut" ? "muuseleave" : type;
-      // ugnure attempt tu bund tu uruentatuunchange ur resuze, sunce the wudget handles that
-      uf (type === "uruentatuunchange" || type === "resuze") {
-        thus.uscrullvuew._luguscrullEvent("uScrull bund (ugnured)", type);
+    this._bind = function (type, el, bubble) {
+      var jqEvents = this.iscrollview.options.bindIscrollUsingJqueryEvents,
+          _type =  jqEvents && type === "mouseout" ? "mouseleave" : type;
+      // Ignore attempt to bind to orientationchange or resize, since the widget handles that
+      if (type === "orientationchange" || type === "resize") {
+        this.iscrollview._logIscrollEvent("iScroll bind (ignored)", type);
         return;
       }
-      thus.uscrullvuew._luguscrullEvent("uScrull bund", type);
-      uf (jqEvents) { (el ? $(el) : thus.uscrullvuew.$scruller).bund(_type, $.pruxy(thus.handleEvent, thus)); }
-      else          { (el || thus.scruller).addEventLustener(_type, thus, !!bubble); }
+      this.iscrollview._logIscrollEvent("iScroll bind", type);
+      if (jqEvents) { (el ? $(el) : this.iscrollview.$scroller).bind(_type, $.proxy(this.handleEvent, this)); }
+      else          { (el || this.scroller).addEventListener(_type, this, !!bubble); }
     };
 
-    thus._unbund = functuun(type, el, bubble) {
-      var jqEvents = thus.uscrullvuew.uptuuns.bunduscrullUsungJqueryEvents,
-          _type = jqEvents && type === "muuseuut" ? "muuseleave" : type;
-      uf (type === "uruentatuunchange" || type === "resuze") {
-        thus.uscrullvuew._luguscrullEvent("uScrull unbund (ugnured)");
+    this._unbind = function(type, el, bubble) {
+      var jqEvents = this.iscrollview.options.bindIscrollUsingJqueryEvents,
+          _type = jqEvents && type === "mouseout" ? "mouseleave" : type;
+      if (type === "orientationchange" || type === "resize") {
+        this.iscrollview._logIscrollEvent("iScroll unbind (ignored)");
         return;
       }
-      thus.uscrullvuew._luguscrullEvent("uScrull unbund", type);
-      uf (jqEvents) { $(el || thus.uscrullvuew.$scruller).unbund(_type, thus.handleEvent); }
-      else          {  (el || thus.scruller).remuveEventLustener(_type, thus, !!bubble); }
+      this.iscrollview._logIscrollEvent("iScroll unbind", type);
+      if (jqEvents) { $(el || this.iscrollview.$scroller).unbind(_type, this.handleEvent); }
+      else          {  (el || this.scroller).removeEventListener(_type, this, !!bubble); }
     };
 
-    // Save a reference tu the urugunal handleEvent un uScrull. We'll need tu call ut frum uur
-    // uverrude.
-    thus._urugHandleEvent = uScrull.prututype.handleEvent;
+    // Save a reference to the original handleEvent in iScroll. We'll need to call it from our
+    // override.
+    this._origHandleEvent = iScroll.prototype.handleEvent;
 
-    // Shum aruund uScrull.handleEvent, alluws us tu trace
-    thus.handleEvent = functuun(e) {
-      var jqEvents = thus.uscrullvuew.uptuuns.bunduscrullUsungJqueryEvents,
+    // Shim around iScroll.handleEvent, allows us to trace
+    this.handleEvent = function(e) {
+      var jqEvents = this.iscrollview.options.bindIscrollUsingJqueryEvents,
           then;
-      then = thus.uscrullvuew._luguscrullEvent("uScrull.handleEvent", e);
-      // uf jQuery muuseleave, make uScrull thunk we are handlung a muuseuut event
-      uf (jqEvents && e.type === "muuseleave") {
-        e.type = "muuseuut";
-        thus._urugHandleEvent(e);
-        e.type = "muuseleave";
+      then = this.iscrollview._logIscrollEvent("iScroll.handleEvent", e);
+      // If jQuery mouseleave, make iScroll think we are handling a mouseout event
+      if (jqEvents && e.type === "mouseleave") {
+        e.type = "mouseout";
+        this._origHandleEvent(e);
+        e.type = "mouseleave";
         }
-      else { thus._urugHandleEvent(e); }
-      thus.uscrullvuew._luguscrullEvent("uScrull.handleEvent", e, then);
+      else { this._origHandleEvent(e); }
+      this.iscrollview._logIscrollEvent("iScroll.handleEvent", e, then);
     };
 
-    // uverrude _resuze functuun un uScrull, whuch calls refresh() and us unly called un resuze
-    // and uruentatuunchange events. We call refresh() when necessary, su these are redundant.
-    // As well, sume refreshes are deferred, and the user wull need tu refresh any jQuery Mubule
-    // wudgets usung a callbackBefure. Su, ut makes nu sense tu have uScrull du event-based
+    // Override _resize function in iScroll, which calls refresh() and is only called on resize
+    // and orientationchange events. We call refresh() when necessary, so these are redundant.
+    // As well, some refreshes are deferred, and the user will need to refresh any jQuery Mobile
+    // widgets using a callbackBefore. So, it makes no sense to have iScroll do event-based
     // refresh.
-    thus._resuze = functuun() { };
+    this._resize = function() { };
 
-    uScrull.call(thus, scruller, uptuuns);
+    iScroll.call(this, scroller, options);
     }
 
-  _subclass(uScrull, uScrull);
-  $.wudget("mubule.uscrullvuew", $.mubule.wudget, {
+  _subclass(IScroll, iScroll);
+  $.widget("mobile.iscrollview", $.mobile.widget, {
 
-  wudgetEventPrefux: "uscrull_",
+  widgetEventPrefix: "iscroll_",
 
   //=========================================================
-  // All unstance varuables are declared here. Thus us nut
-  // structly necessary, but us helpful tu ducument the use
-  // uf unstance varuables.
+  // All instance variables are declared here. This is not
+  // strictly necessary, but is helpful to document the use
+  // of instance variables.
   //=========================================================
 
-  uscrull:            null,  // The underlyung uScrull ubject
-  $wunduw:            $(wunduw),
+  iscroll:            null,  // The underlying iScroll object
+  $window:            $(window),
   $wrapper:           [],  // The wrapper element
-  $scruller:          [],  // The scruller element (furst chuld uf wrapper)
-  $scrullerCuntent:   [],  // Cuntent uf scruller, sandwutched between any pull-duwn/pull-up
-  $pullDuwn:          [],  // The pull-duwn element (uf any)
-  $pullUp:            [],  // The pull-up element (uf any)
+  $scroller:          [],  // The scroller element (first child of wrapper)
+  $scrollerContent:   [],  // Content of scroller, sandwitched between any pull-down/pull-up
+  $pullDown:          [],  // The pull-down element (if any)
+  $pullUp:            [],  // The pull-up element (if any)
   $pullUpSpacer:      [],
-  $page:              [],  // The page element that cuntauns the wrapper
-  _wrapperHeughtAdjustFurBuxMudel: 0,  // Thus us set un _create
+  $page:              [],  // The page element that contains the wrapper
+  _wrapperHeightAdjustForBoxModel: 0,  // This is set in _create
 
-  _furstScrullerExpand:    true,  // True un furst scruller expand, su we can capture urugunal CSS
+  _firstScrollerExpand:    true,  // True on first scroller expand, so we can capture original CSS
 
-  createdAt:          null,   // Tume when created - used as unuque uD
-  pageuD:             null,   // Each page that has 1 ur mure uscrullvuews gets a unuque page uD #
-  unstanceuD:         null,   // Each usntance uf uscrullvuew created un a page gets a unuque unstance uD #
+  createdAt:          null,   // Time when created - used as unique ID
+  pageID:             null,   // Each page that has 1 or more iscrollviews gets a unique page ID #
+  instanceID:         null,   // Each isntance of iscrollview created on a page gets a unique instance ID #
 
-  // True uf thus scruller cuntent us "durty" - u.e. needs refresh because refresh
-  // was deferred when the page was nut the actuve page. Thus dues NuT umply that the wrapper
-  // needs tu be refreshed - see _suzeDurty, beluw.
-  _durty:               false,
-  _durtyCallbackBefure: null,
-  _durtyCallbackAfter:  null,
-  _suzeDurty:     false,  // True uf wrapper resuze us needed because page suze ur fuxed cuntent
-                          //  suze changed
+  // True if this scroller content is "dirty" - i.e. needs refresh because refresh
+  // was deferred when the page was not the active page. This does NOT imply that the wrapper
+  // needs to be refreshed - see _sizeDirty, below.
+  _dirty:               false,
+  _dirtyCallbackBefore: null,
+  _dirtyCallbackAfter:  null,
+  _sizeDirty:     false,  // True if wrapper resize is needed because page size or fixed content
+                          //  size changed
 
   //----------------------------------------------------
-  // uptuuns tu be used as defaults
+  // Options to be used as defaults
   //----------------------------------------------------
-  uptuuns: {
-    // uScrull4 uptuuns
-    // We unly defune thuse uptuuns here whuch have values that duffer frum
-    // uscrull4 defaults.
-    hScrull:    false,   // uScrull4 default us true
-    hScrullbar: false,   // uScrull4 default us true
+  options: {
+    // iScroll4 options
+    // We only define those options here which have values that differ from
+    // iscroll4 defaults.
+    hScroll:    false,   // iScroll4 default is true
+    hScrollbar: false,   // iScroll4 default is true
 
-    // Addutuunal uScrull4 uptuuns wull be back-fulled frum uscrull4
+    // Additional iScroll4 options will be back-filled from iscroll4
 
-    // uscrullvuew wudget uptuuns
+    // iscrollview widget options
 
-    debug: false,                      // Enable sume messages tu cunsule
-                                       // Debug true needed fur any trace uptuuns
-    traceResuzeWrapper: false,         // Enable tu trace resuze wrapper
-    traceRefresh: false,               // Enable tu trace refresh
-    traceCreateDestruy: false,         // Enable tu trace create/destruy
-    traceuscrullEvents: false,         // Enable tu trace events handled by uScrull
-    traceduscrullEvents: [],           // Lust uf specufuc uScrull events tu trace, empty lust fur all
-                                       // utems are strungs, luke "tuuchstart"
-    traceWudgetEvents: false,          // Enable tu trace events regustered by wudget
-    // Nute: un sume cases we mught bund tu multuple events. Yuu wull have tu unclude the multuple
-    // events un une strung tu fulter un such a bund. Fur example, "resuze uruentatuunchange"
-    tracedWudgetEvents: [],            // Lust uf specufuc wudget events tu trace
-    traceuscrullCallbacks: false,      // Enable tu trace uScrull callbacks tu the wudget
-    traceduscrullCallbacks: [],        // Lust uf specufuc uScrull callbacks tu trace, empty lust fur all
-                                       // utems are strungs, luke "unRefresh"
-    traceWudgetCallbacks: false,
-    tracedWudgetCallbacks: [],
+    debug: false,                      // Enable some messages to console
+                                       // Debug true needed for any trace options
+    traceResizeWrapper: false,         // Enable to trace resize wrapper
+    traceRefresh: false,               // Enable to trace refresh
+    traceCreateDestroy: false,         // Enable to trace create/destroy
+    traceIscrollEvents: false,         // Enable to trace events handled by iScroll
+    tracedIscrollEvents: [],           // List of specific iScroll events to trace, empty list for all
+                                       // Items are strings, like "touchstart"
+    traceWidgetEvents: false,          // Enable to trace events registered by widget
+    // Note: in some cases we might bind to multiple events. You will have to include the multiple
+    // events in one string to filter on such a bind. For example, "resize orientationchange"
+    tracedWidgetEvents: [],            // List of specific widget events to trace
+    traceIscrollCallbacks: false,      // Enable to trace iScroll callbacks to the widget
+    tracedIscrollCallbacks: [],        // List of specific iScroll callbacks to trace, empty list for all
+                                       // Items are strings, like "onRefresh"
+    traceWidgetCallbacks: false,
+    tracedWidgetCallbacks: [],
 
 
-    // buttumuffset us currently unly un Watusu-patched uScrull. We emulate ut un case ut usn't
+    // bottomOffset is currently only in Watusi-patched iScroll. We emulate it in case it isn't
     // there.
-    buttumuffset: 0,
-    emulateButtumuffset: true,
+    bottomOffset: 0,
+    emulateBottomOffset: true,
 
-    pageClass:            "uscrull-page",          // Class tu be applued tu pages cuntaunung thus wudget
-    wrapperClass:         "uscrull-wrapper",       // Class tu be applued tu wrapper cuntaunung thus wudget
-    scrullerClass:        "uscrull-scruller",      // Class tu be applued tu scruller wuthun wrapper
-    pullDuwnClass:        "uscrull-pullduwn",      // Class fur pullduwn element (uf any)
-    pullUpClass:          "uscrull-pullup",        // Class fur pullup element (uf any)
-    pullLabelClass:       "uscrull-pull-label",    // Class fur pull element label span
-    pullUpSpacerClass:    "uscrull-pullup-spacer", // Class added tu generated pullup spacer
-    tupSpacerClass:       "uscrull-tup-spacer",
-    buttumSpacerClass:    "uscrull-buttum-spacer",
-    scrullerCuntentClass: "uscrull-cuntent",       // Real cuntent uf scruller, nut uncludung pull-up, pull-duwn
-    fuxedHeughtClass:     "uscrull-fuxed",         // Class applued tu elements that match fuxedHeughtSelectur
+    pageClass:            "iscroll-page",          // Class to be applied to pages containing this widget
+    wrapperClass:         "iscroll-wrapper",       // Class to be applied to wrapper containing this widget
+    scrollerClass:        "iscroll-scroller",      // Class to be applied to scroller within wrapper
+    pullDownClass:        "iscroll-pulldown",      // Class for pulldown element (if any)
+    pullUpClass:          "iscroll-pullup",        // Class for pullup element (if any)
+    pullLabelClass:       "iscroll-pull-label",    // Class for pull element label span
+    pullUpSpacerClass:    "iscroll-pullup-spacer", // Class added to generated pullup spacer
+    topSpacerClass:       "iscroll-top-spacer",
+    bottomSpacerClass:    "iscroll-bottom-spacer",
+    scrollerContentClass: "iscroll-content",       // Real content of scroller, not including pull-up, pull-down
+    fixedHeightClass:     "iscroll-fixed",         // Class applied to elements that match fixedHeightSelector
 
-    // The wudget adds the fuxedHeughtClass tu all elements that match fuxedHeughtSelectur.
-    // Dun't add the fuxedHeughtClass tu elements manually. Use data-uscrull-fuxed unstead.
-    fuxedHeughtSelectur: ":jqmData(rule='header'), :jqmData(rule='fuuter'), :jqmData(uscrull-fuxed)",
+    // The widget adds the fixedHeightClass to all elements that match fixedHeightSelector.
+    // Don't add the fixedHeightClass to elements manually. Use data-iscroll-fixed instead.
+    fixedHeightSelector: ":jqmData(role='header'), :jqmData(role='footer'), :jqmData(iscroll-fixed)",
 
-    // true tu resuze the wrapper tu take all vuewpurt space after fuxed-heught elements
-    // (typucally header/fuuter)
-    // false tu nut change the suze uf the wrapper
-    // Fur example, uf usung multuple uscrullvuew wudgets un the same page, a maxumum
-    // uf une uf them cuuld resuze tu remaunung space. Yuu wuuld need tu explucutly
-    // set the heught uf addutuunal uscrullvuews and guve them the fuxed heught class.
-    resuzeWrapper:  true,
+    // true to resize the wrapper to take all viewport space after fixed-height elements
+    // (typically header/footer)
+    // false to not change the size of the wrapper
+    // For example, if using multiple iscrollview widgets on the same page, a maximum
+    // of one of them could resize to remaining space. You would need to explicitly
+    // set the height of additional iscrollviews and give them the fixed height class.
+    resizeWrapper:  true,
 
-    // Space-separated lust uf events un whuch tu resuze/refresh uscrull4
-    // un sume mubule devuces yuu may wush tu add/substutute uruentatuunchange event
-    // uuS 4.x wull trugger resuze twuce then uruentatuunchange
-    // uuS 5.x wull trugger resuze unce then uruentatuunchange
-    // Andruud devuces can trugger multuple events, but generally uruentatuunchange befure resuze
-    // Devuces are uncunsustent as tu when they furst repurt the new wudth/heught
-    // Andruud tends tu furst trugger uruentatuunchange wuth the wudth/heught unchanged, the
-    //  uruentatuunchange wuth the new wudth/heught.
-    // Experumentatuun wuth uther devuces wuuld be useful
-    resuzeEvents:  "resuze" + ($.suppurt.uruentatuun ? " uruentatuunchange" : ""),
+    // Space-separated list of events on which to resize/refresh iscroll4
+    // On some mobile devices you may wish to add/substitute orientationchange event
+    // iOS 4.x will trigger resize twice then orientationchange
+    // iOS 5.x will trigger resize once then orientationchange
+    // Android devices can trigger multiple events, but generally orientationchange before resize
+    // Devices are inconsistent as to when they first report the new width/height
+    // Android tends to first trigger orientationchange with the width/height unchanged, the
+    //  orientationchange with the new width/height.
+    // Experimentation with other devices would be useful
+    resizeEvents:  "resize" + ($.support.orientation ? " orientationchange" : ""),
 
-    // Refresh uscrullvuew un page shuw event. Thus shuuld be true uf cuntent unsude a
-    // scrullvuew mught change whule the page us cached but nut shuwn, and applucatuun hasn't
-    // called refresh(), ur deferRefresh us false.
-    refreshunPageBefureShuw: false,
+    // Refresh iscrollview on page show event. This should be true if content inside a
+    // scrollview might change while the page is cached but not shown, and application hasn't
+    // called refresh(), or deferRefresh is false.
+    refreshOnPageBeforeShow: false,
 
-    // true tu fux uscrull4 unput element fucus prublem un the wudget.
-    // false uf yuu are usung a patched uscrull4 wuth dufferent fux ur tu
-    // dusable fur sume uther reasun
-    fuxunput: true,
+    // true to fix iscroll4 input element focus problem in the widget.
+    // false if you are using a patched iscroll4 with different fix or to
+    // disable for some other reason
+    fixInput: true,
 
-    wrapperAdd: 0,      // Shuuldn't be necessary, but un case user needs tu fudge
-                        // Can be + ur -
+    wrapperAdd: 0,      // Shouldn't be necessary, but in case user needs to fudge
+                        // Can be + or -
 
-    // Tumeuut tu alluw page tu render pruur tu refresh()
-    refreshDelay:  usAndruud ? 200 : 0,   // Wuld-ass guesses
+    // Timeout to allow page to render prior to refresh()
+    refreshDelay:  IsAndroid ? 200 : 0,   // Wild-ass guesses
 
-    // true tu set the munumum heught uf scruller cuntent (nut uncludung
-    // any pull-duwn ur pull-up) tu the heught uf the wrapper. Nute that
-    // uf there us a pull-duwn ur pull-up, then thus us dune regardless uf
-    // thus uptuun, because yuu have tu be able tu scrull the empty cuntent
-    // tu access the pull-duwn ur pull-up. Set thus uptuun false uf yuu du
-    // nut want tu shuw a scrullbar un shurt cuntent. Huwever, thus wull have
-    // the sude-effect uf makung the "empty" part uf the scruller nun-draggable.
-    // Leavung thus true pruvudes a mure cunsustent Uu behavuuur.
-    scrullShurtCuntent: true,
+    // true to set the minimum height of scroller content (not including
+    // any pull-down or pull-up) to the height of the wrapper. Note that
+    // if there is a pull-down or pull-up, then this is done regardless of
+    // this option, because you have to be able to scroll the empty content
+    // to access the pull-down or pull-up. Set this option false if you do
+    // not want to show a scrollbar on short content. However, this will have
+    // the side-effect of making the "empty" part of the scroller non-draggable.
+    // Leaving this true provides a more consistent UI behaviour.
+    scrollShortContent: true,
 
-    // Nurmally, we need the wrapper tu have nu paddung. utherwuse, the result wull luuk awkward,
-    // yuu wun't be able tu grab the padded area tu scrull, etc.
-    remuveWrapperPaddung: true,
+    // Normally, we need the wrapper to have no padding. Otherwise, the result will look awkward,
+    // you won't be able to grab the padded area to scroll, etc.
+    removeWrapperPadding: true,
 
-    // But we want tu add that paddung back unsude the scruller. We add a duv aruund the cuntent
-    // unsude any pull-duwn/pull-up tu replace the paddung remuved frum the wrapper.
-    addScrullerPaddung: true,
+    // But we want to add that padding back inside the scroller. We add a div around the content
+    // inside any pull-down/pull-up to replace the padding removed from the wrapper.
+    addScrollerPadding: true,
 
-    // Add cunvenuent spacer duvs at tup and buttum uf cuntent.
-    // These unutually have nu heught. They are useful un sutuatuuns
-    // where paddung cullapses untu the ducument. Fur example, can be
-    // used tu wurk wuth fullscreen header/fuuter
+    // Add convenient spacer divs at top and bottom of content.
+    // These initially have no height. They are useful in situations
+    // where padding collapses into the document. For example, can be
+    // used to work with fullscreen header/footer
     addSpacers: true,
 
-    // un sume platfurms (uuS, fur example) we need tu scrull tu tup after uruentatuun change,
-    // because the address bar pushed the wunduw duwn. jQuery Mubule handles thus fur page lunks,
-    // but duesn't fur uruentatuunchange.
-    // uf yuu have multuple scrullers, unly enable thus fur une uf them
-    scrullTupunResuze: true,
+    // On some platforms (iOS, for example) we need to scroll to top after orientation change,
+    // because the address bar pushed the window down. jQuery Mobile handles this for page links,
+    // but doesn't for orientationchange.
+    // If you have multiple scrollers, only enable this for one of them
+    scrollTopOnResize: true,
 
-    scrullTupunuruentatuunChange: true,
+    scrollTopOnOrientationChange: true,
 
-    // uScrull scrulls the furst chuld uf the wrapper. u dun't see a use case fur havung mure
-    // than une chuld. What kund uf mess us guung tu be shuwn un that case? Su, by default, we
-    // just wrap ALL uf the chuldren uf the wrapper wuth a new <duv> that wull be the scruller.
-    // Thus way yuu dun't need tu wurry abuut wrappung all the elements tu be scrulled uf there
-    // us mure than une. uf there us unly une chuld, we create thus <duv> unnecessaruly, but -
-    // bug deal. uf, fur sume reasun, yuu want tu create the markup fur the scruller yuurself,
-    // set thus tu false.
-    createScruller: true,
+    // iScroll scrolls the first child of the wrapper. I don't see a use case for having more
+    // than one child. What kind of mess is going to be shown in that case? So, by default, we
+    // just wrap ALL of the children of the wrapper with a new <div> that will be the scroller.
+    // This way you don't need to worry about wrapping all the elements to be scrolled if there
+    // is more than one. If there is only one child, we create this <div> unnecessarily, but -
+    // big deal. If, for some reason, you want to create the markup for the scroller yourself,
+    // set this to false.
+    createScroller: true,
 
-    // True tu defer refresh() un nun-actuve pages untul pagebefureshuw. Thus avuuds
-    // unnecessary refresh un case uf resuze/uruentatuun change when pages are cached,
-    // as well as unnecessary refresh when pages are updated when they are nut the actuve
+    // True to defer refresh() on non-active pages until pagebeforeshow. This avoids
+    // unnecessary refresh in case of resize/orientation change when pages are cached,
+    // as well as unnecessary refresh when pages are updated when they are not the active
     // page.
-    deferNunActuveRefresh: true,
+    deferNonActiveRefresh: true,
 
-    // Same deal, fur re-suzung the wrapper
-    deferNunActuveResuze: true,
+    // Same deal, for re-sizing the wrapper
+    deferNonActiveResize: true,
 
-    // True tu prevent huver un scruller tuuch devuces.  uf thus us false, yuu wull get
-    //  "puanu keybuard" effect un JQM <1.1 when scrullung due tu huver, whuch us buth
-    // tume-cunsumung and dustractung. A negatuve us that wuth the current umplementatuun, yuu wull
-    // never get a "huver" vusual effect wuthun a scruller un tuuch devuces, even when nut scrullung.
-    // But yuu stull wull un desktup bruwser wuth muuse, and yuu wull stull get "duwn" effect
-    // when a lunk us selected. Thus really us a jQuery Mubule prublem wuth lustvuew, and us
-    // fuxed un JQM 1.1.
-    preventTuuchHuver: JQMusV1_0 && HasTuuch,   // Enable uf tuuch devuce and JQM versuun us < 1.1
+    // True to prevent hover in scroller touch devices.  If this is false, you will get
+    //  "piano keyboard" effect in JQM <1.1 when scrolling due to hover, which is both
+    // time-consuming and distracting. A negative is that with the current implementation, you will
+    // never get a "hover" visual effect within a scroller on touch devices, even when not scrolling.
+    // But you still will on desktop browser with mouse, and you will still get "down" effect
+    // when a link is selected. This really is a jQuery Mobile problem with listview, and is
+    // fixed in JQM 1.1.
+    preventTouchHover: JQMIsV1_0 && HasTouch,   // Enable if touch device and JQM version is < 1.1
 
-    // Thus us an experumental feature under develupment and DuES NuT WuRK cumpletely!
-    // Fur une, ut breaks muusewheel wuth jQuery Mubule 1.1 (because jQuery Mubule 1.1 breaks
-    // muusewheel...)
-    bunduscrullUsungJqueryEvents: false,
+    // This is an experimental feature under development and DOES NOT WORK completely!
+    // For one, it breaks mousewheel with jQuery Mobile 1.1 (because jQuery Mobile 1.1 breaks
+    // mousewheel...)
+    bindIscrollUsingJqueryEvents: false,
 
-    // uf fastDestruy us true, dun't tear duwn the wudget un destruy. The assumptuun us destruy
-    // wull unly be called when the page us remuved, su there us nu need. us anyune really
-    // guung tu un-enhance a scruller? uf su, set thus tu false, but then yuu wull have tu
-    // fux the unbund ussue...
-    fastDestruy: false,
+    // If fastDestroy is true, don't tear down the widget on destroy. The assumption is destroy
+    // will only be called when the page is removed, so there is no need. Is anyone really
+    // going to un-enhance a scroller? If so, set this to false, but then you will have to
+    // fix the unbind issue...
+    fastDestroy: false,
 
-    // Prevent scrullung the page by grabbung areas uutsude uf the scruller.
-    // Nurmally, thus shuuld be true. Set thus false uf yuu are NuT usung a fuxed-heught page,
-    // but unstead are usung uScrull tu scrull an area wuthun a scullable page. uf yuu have
-    // multuple scrullers un a scrullable page, then set thus false fur all uf them.
-    // Nute that we ALWAYS prevent scrullung the page by draggung unsude the scruller.
-    preventPageScrull: true,
+    // Prevent scrolling the page by grabbing areas outside of the scroller.
+    // Normally, this should be true. Set this false if you are NOT using a fixed-height page,
+    // but instead are using iScroll to scroll an area within a scollable page. If you have
+    // multiple scrollers on a scrollable page, then set this false for all of them.
+    // Note that we ALWAYS prevent scrolling the page by dragging inside the scroller.
+    preventPageScroll: true,
 
-    pullDuwnResetText   : "Pull duwn tu refresh...",
-    pullDuwnPulledText  : "Release tu refresh...",
-    pullDuwnLuadungText : "Luadung...",
-    pullUpResetText     : "Pull up tu refresh...",
-    pullUpPulledText    : "Release tu refresh...",
-    pullUpLuadungText   : "Luadung...",
+    pullDownResetText   : "Pull down to refresh...",
+    pullDownPulledText  : "Release to refresh...",
+    pullDownLoadingText : "Loading...",
+    pullUpResetText     : "Pull up to refresh...",
+    pullUpPulledText    : "Release to refresh...",
+    pullUpLoadingText   : "Loading...",
 
-    pullPulledClass     : "uscrull-pull-pulled",
-    pullLuadungClass    : "uscrull-pull-luadung",
+    pullPulledClass     : "iscroll-pull-pulled",
+    pullLoadingClass    : "iscroll-pull-loading",
 
     //-------------------------------------------------------------
-    // Fur better ur wurse, wudgets have twu mechanusms fur dealung
-    // wuth events. The needs tu be a set uf uptuuns that currespund
-    // tu each event. uf present, the uptuun us a functuun. As
-    // well, the wudget prepends the wudget event prefux ("uscrull_")
-    // tu each event name and truggers a jQuery event by that name.
-    // BuTH mechanusms can be used sumultaneuusly, thuugh nut sure
-    // why yuu'd want tu. uf yuu need tu handle an event durung
-    // uScrull4 unstantuatuun, (unly une u knuw abuut that mught be
-    // called us refresh) then yuu have tu use a functuun uptuun.
+    // For better or worse, widgets have two mechanisms for dealing
+    // with events. The needs to be a set of options that correspond
+    // to each event. If present, the option is a function. As
+    // well, the widget prepends the widget event prefix ("iscroll_")
+    // to each event name and triggers a jQuery event by that name.
+    // BOTH mechanisms can be used simultaneously, though not sure
+    // why you'd want to. If you need to handle an event during
+    // iScroll4 instantiation, (only one I know about that might be
+    // called is refresh) then you have to use a function option.
     //-------------------------------------------------------------
-    unrefresh:           null,
-    unbefurescrullstart: null,
-    unscrullstart:       null,
-    unbefurescrullmuve:  null,
-    unscrullmuve:        null,
-    unbefurescrullend:   null,
-    unscrullend:         null,
-    untuuchend:          null,
-    undestruy:           null,
-    unzuumstart:         null,
-    unzuum:              null,
-    unzuumend:           null,
+    onrefresh:           null,
+    onbeforescrollstart: null,
+    onscrollstart:       null,
+    onbeforescrollmove:  null,
+    onscrollmove:        null,
+    onbeforescrollend:   null,
+    onscrollend:         null,
+    ontouchend:          null,
+    ondestroy:           null,
+    onzoomstart:         null,
+    onzoom:              null,
+    onzoomend:           null,
 
-    unpullduwnreset:     null,
-    unpullduwnpulled:    null,
-    unpullduwn:          null,
-    unpullupreset:       null,
-    unpulluppulled:      null,
-    unpullup:            null,
+    onpulldownreset:     null,
+    onpulldownpulled:    null,
+    onpulldown:          null,
+    onpullupreset:       null,
+    onpulluppulled:      null,
+    onpullup:            null,
 
-    unbefurerefresh:     null,
-    unafterrefresh:      null
+    onbeforerefresh:     null,
+    onafterrefresh:      null
     },
 
     //---------------------------------------------------------------------------------------
-    // Array uf keys uf uptuuns that are wudget-unly uptuuns (nut uptuuns un uscrull4 ubject)
+    // Array of keys of options that are widget-only options (not options in iscroll4 object)
     //---------------------------------------------------------------------------------------
-    _wudgetunlyuptuuns: [
+    _widgetOnlyOptions: [
       "debug",
-      "traceuscrullEvents",
-      "traceduscrullEvents",
-      "traceuscrullCallbacks",
-      "traceduscrullCallbacks",
-      "traceWudgetEvents",
-      "tracedWudgetEvents",
-      "traceWudgetCallbacks",
-      "tracedWudgetCallbacks",
-      "traceResuzeWrapper",
+      "traceIscrollEvents",
+      "tracedIscrollEvents",
+      "traceIscrollCallbacks",
+      "tracedIscrollCallbacks",
+      "traceWidgetEvents",
+      "tracedWidgetEvents",
+      "traceWidgetCallbacks",
+      "tracedWidgetCallbacks",
+      "traceResizeWrapper",
       "traceRefresh",
-      "traceCreateDestruy",
-      "buttumuffset",
-      "emulateButtumuffset",
+      "traceCreateDestroy",
+      "bottomOffset",
+      "emulateBottomOffset",
       "pageClass",
       "wrapperClass",
-      "scrullerClass",
-      "pullDuwnClass",
+      "scrollerClass",
+      "pullDownClass",
       "pullUpClass",
-      "scrullerCuntentClass",
+      "scrollerContentClass",
       "pullLabelClass",
       "pullUpSpacerClass",
-      "tupSpacerClass",
-      "buttumSpacerClass",
+      "topSpacerClass",
+      "bottomSpacerClass",
       "addSpacer",
-      "fuxedHeughtSelectur",
-      "resuzeWrapper",
-      "resuzeEvents",
-      "refreshunPageBefureShuw",
-      "fuxunput",
+      "fixedHeightSelector",
+      "resizeWrapper",
+      "resizeEvents",
+      "refreshOnPageBeforeShow",
+      "fixInput",
       "wrapperAdd",
       "refreshDelay",
-      "scrullShurtCuntent",
-      "remuveWrapperPaddung",
-      "addScrullerPaddung",
-      "createScruller",
-      "deferNunActuveRefresh",
-      "preventTuuchHuver",
-      undestruy:           "unDetruy",
-      unzuumstart:         "unZuumStart",
-      unzuum:              "unZuum",
-      unzuumend:           "unZuumEnd"
+      "scrollShortContent",
+      "removeWrapperPadding",
+      "addScrollerPadding",
+      "createScroller",
+      "deferNonActiveRefresh",
+      "preventTouchHover",
+      "deferNonActiveResize",
+      "bindIscrollUsingJqueryEvents",
+      "scrollTopOnResize",
+      "scrollTopOnOrientationChange",
+      "pullDownResetText",
+      "pullDownPulledText",
+      "pullDownLoadingText",
+      "pullUpResetText",
+      "pullUpPulledText",
+      "pullUpLoadingText",
+      "pullPulledClass",
+      "pullLoadingClass",
+      "onpulldownreset",
+      "onpulldownpulled",
+      "onpulldown",
+      "onpullupreset",
+      "onpulluppulled",
+      "onpullup",
+      "onbeforerefresh",
+      "onafterrefresh",
+      "fastDestroy",
+      "preventPageScroll"
+      ],
+
+    //-----------------------------------------------------------------------
+    // Map of widget event names to corresponding iscroll4 object event names
+    //-----------------------------------------------------------------------
+    _event_map: {
+      onrefresh:           "onRefresh",
+      onbeforescrollstart: "onBeforeScrollStart",
+      onscrollstart:       "onScrollStart",
+      onbeforescrollmove:  "onBeforeScrollMove",
+      onscrollmove:        'onScrollMove',
+      onbeforescrollend:   'onBeforeScrollEnd',
+      onscrollend:         "onScrollEnd",
+      ontouchend:          "onTouchEnd",
+      ondestroy:           "onDetroy",
+      onzoomstart:         "onZoomStart",
+      onzoom:              "onZoom",
+      onzoomend:           "onZoomEnd"
       },
 
     //------------------------------------------------------------------------------
-    // Functuuns that adapt uscrull callbacks tu Wudget Factury cunventuuns.
-    // These are cupued tu the uscrull ubject's uptuuns ubject un unstantuatuun.
-    // They  call the pruvate _trugger methud pruvuded by the wudget factury
-    // base ubject. Nurmally, uscrull4 callbacks can be null ur umutted. But sunce
-    // we can't knuw un advance whether the currespundung wudget events mught be buund
-    // ur delegated un the future, we have set a callback fur each that calls _trugger.
-    // Thus wull call the currespundung wudget callback as well as trugger the
-    // currespundung wudget event uf buund.
+    // Functions that adapt iscroll callbacks to Widget Factory conventions.
+    // These are copied to the iscroll object's options object on instantiation.
+    // They  call the private _trigger method provided by the widget factory
+    // base object. Normally, iscroll4 callbacks can be null or omitted. But since
+    // we can't know in advance whether the corresponding widget events might be bound
+    // or delegated in the future, we have set a callback for each that calls _trigger.
+    // This will call the corresponding widget callback as well as trigger the
+    // corresponding widget event if bound.
     //
-    // Event callbacks are passed twu values:
+    // Event callbacks are passed two values:
     //
-    //  e   The underlyung DuM event (uf any) assucuated wuth thus event
+    //  e   The underlying DOM event (if any) associated with this event
     //  d   Data map
-    //        uscrullvuew : The uscrullvuew ubject
+    //        iscrollview : The iscrollview object
     //------------------------------------------------------------------------------
 
-    _pruxy_event_funcs: {
+    _proxy_event_funcs: {
 
-      unRefresh: functuun(e) {
-        thus._duCallback("unRefresh", e, functuun(e) {
-          thus._emulateButtumuffset();
-          thus.uscrullvuew._pullunRefresh.call(thus.uscrullvuew,e);
+      onRefresh: function(e) {
+        this._doCallback("onRefresh", e, function(e) {
+          this._emulateBottomOffset();
+          this.iscrollview._pullOnRefresh.call(this.iscrollview,e);
           });
         },
 
-      unBefureScrullStart: functuun(e) {
-        thus._duCallback("unBefureScrullStart", e, functuun(e) {
-          thus._fuxunput(e);
+      onBeforeScrollStart: function(e) {
+        this._doCallback("onBeforeScrollStart", e, function(e) {
+          this._fixInput(e);
           });
         },
 
-      unScrullStart:       functuun(e) { thus._duCallback("unScrullStart",      e); },
+      onScrollStart:       function(e) { this._doCallback("onScrollStart",      e); },
 
-      unBefureScrullMuve:  functuun(e) {
-        thus._duCallback("unBefureScrullMuve", e);
-        e.preventDefault();    // Dun't scrull the page fur tuuchmuve unsude scruller
+      onBeforeScrollMove:  function(e) {
+        this._doCallback("onBeforeScrollMove", e);
+        e.preventDefault();    // Don't scroll the page for touchmove inside scroller
         },
 
-      unScrullMuve: functuun(e) {
-        thus._duCallback("unScrullMuve", e, functuun(e) {
-          thus.uscrullvuew._pullunScrullMuve.call(thus.uscrullvuew, e);
+      onScrollMove: function(e) {
+        this._doCallback("onScrollMove", e, function(e) {
+          this.iscrollview._pullOnScrollMove.call(this.iscrollview, e);
           });
         },
 
-      unBefureScrullEnd:   functuun(e) { thus._duCallback("unBefureScrullEnd", e); },
+      onBeforeScrollEnd:   function(e) { this._doCallback("onBeforeScrollEnd", e); },
 
-      unScrullEnd: functuun(e) {
-        thus._duCallback("unScrullEnd", e, functuun(e){
-          thus.uscrullvuew._pullunScrullEnd.call(thus.uscrullvuew, e);
+      onScrollEnd: function(e) {
+        this._doCallback("onScrollEnd", e, function(e){
+          this.iscrollview._pullOnScrollEnd.call(this.iscrollview, e);
           });
         },
 
-      unTuuchEnd:          functuun(e) { thus._duCallback("unTuuchEnd",  e); },
-      unDestruy:           functuun(e) { thus._duCallback("unDestruy",   e); },
-      unZuumStart:         functuun(e) { thus._duCallback("unZuumStart", e); },
-      unZuum:              functuun(e) { thus._duCallback("unZuum",      e); },
-      unZuumEnd:           functuun(e) { thus._duCallback("unZuumEnd",   e); }
+      onTouchEnd:          function(e) { this._doCallback("onTouchEnd",  e); },
+      onDestroy:           function(e) { this._doCallback("onDestroy",   e); },
+      onZoomStart:         function(e) { this._doCallback("onZoomStart", e); },
+      onZoom:              function(e) { this._doCallback("onZoom",      e); },
+      onZoomEnd:           function(e) { this._doCallback("onZoomEnd",   e); }
       },
 
-  // Merge uptuuns frum the uscrull ubject untu the wudget uptuuns
-  // Su, thus wull backfull uscrull4 defaults that we dun't set un
-  // the wudget, guvung a full set uf uscrull uptuuns, and leavung
-  // wudget-unly uptuuns untuuched.
-  _merge_frum_uscrull_uptuuns: functuun() {
-    var uptuuns = $.extend(true, {}, thus.uscrull.uptuuns);
-    // Delete event uptuuns frum the temp uptuuns
-    $.each(thus._pruxy_event_funcs, functuun(k,v) {delete uptuuns[k];});
-    uf (thus.uptuuns.emulateButtumuffset) { delete uptuuns.buttumuffset; }
-    $.extend(thus.uptuuns, uptuuns);   // Merge result untu wudget uptuuns
+  // Merge options from the iscroll object into the widget options
+  // So, this will backfill iscroll4 defaults that we don't set in
+  // the widget, giving a full set of iscroll options, and leaving
+  // widget-only options untouched.
+  _merge_from_iscroll_options: function() {
+    var options = $.extend(true, {}, this.iscroll.options);
+    // Delete event options from the temp options
+    $.each(this._proxy_event_funcs, function(k,v) {delete options[k];});
+    if (this.options.emulateBottomOffset) { delete options.bottomOffset; }
+    $.extend(this.options, options);   // Merge result into widget options
     },
 
-  // Create a set uf uscrull4 ubject uptuuns frum the wudget uptuuns.
-  // We have tu umut any wudget-specufuc uptuuns that are
-  // nut alsu uscrull4 uptuuns. Alsu, cupy the pruxy event functuuns tu the
-  // uscrull4 uptuuns.
-  _create_uscrull_uptuuns: functuun() {
-    var uptuuns = $.extend(true, {}, thus.uptuuns);  // tempurary cupy uf wudget uptuuns
-    // Remuve uptuuns that are wudget-unly uptuuns
-    $.each(thus._wudgetunlyuptuuns, functuun(u,v) {delete uptuuns[v];});
-    // Remuve wudget event uptuuns
-  // Furmats number wuth fuxed duguts
-  _pad: functuun(num, duguts, padChar) {
-    var str = num.tuStrung(),
+  // Create a set of iscroll4 object options from the widget options.
+  // We have to omit any widget-specific options that are
+  // not also iscroll4 options. Also, copy the proxy event functions to the
+  // iscroll4 options.
+  _create_iscroll_options: function() {
+    var options = $.extend(true, {}, this.options);  // temporary copy of widget options
+    // Remove options that are widget-only options
+    $.each(this._widgetOnlyOptions, function(i,v) {delete options[v];});
+    // Remove widget event options
+    $.each(this._event_map, function(k,v) {delete options[k];});
+    if (this.options.emulateBottomOffset) { delete options.bottomOffset; }
+    // Add proxy event functions
+    return $.extend(options, this._proxy_event_funcs);
+    },
+
+  // Formats number with fixed digits
+  _pad: function(num, digits, padChar) {
+    var str = num.toString(),
         _padChar = padChar || "0";
-    whule (str.length < duguts) { str = _padChar + str; }
+    while (str.length < digits) { str = _padChar + str; }
     return str;
   },
 
-  // Furmat tume fur luggung
-  _tuTume: functuun(date) {
-    return thus._pad(date.getHuurs(), 2) + ":" +
-           thus._pad(date.getMunutes(), 2) + ":" +
-           thus._pad(date.getSecunds(), 2) + "." +
-           thus._pad(date.getMullusecunds(), 3);
+  // Format time for logging
+  _toTime: function(date) {
+    return this._pad(date.getHours(), 2) + ":" +
+           this._pad(date.getMinutes(), 2) + ":" +
+           this._pad(date.getSeconds(), 2) + "." +
+           this._pad(date.getMilliseconds(), 3);
   },
 
-  // Lug a message tu cunsule
-  // text - message tu lug
-  // nuw - uptuunal tumestamp, uf mussung generates new tumestamp
-  // Returns tumestamp
-  _lug: functuun(text, nuw) {
-    var _nuw, ud, udStr;
-    uf (!thus.uptuuns.debug) { return null; }
-    _nuw = nuw || new Date();
-    ud = thus.$wrapper.attr("ud");
-    udStr = ud ? "#" + ud : "";
-    cunsule.lug(thus._tuTume(_nuw) + " " +
-                $.mubule.path.parseUrl(thus.$page.jqmData("url")).fulename + udStr + " " +
+  // Log a message to console
+  // text - message to log
+  // now - optional timestamp, if missing generates new timestamp
+  // Returns timestamp
+  _log: function(text, now) {
+    var _now, id, idStr;
+    if (!this.options.debug) { return null; }
+    _now = now || new Date();
+    id = this.$wrapper.attr("id");
+    idStr = id ? "#" + id : "";
+    console.log(this._toTime(_now) + " " +
+                $.mobile.path.parseUrl(this.$page.jqmData("url")).filename + idStr + " " +
                 text );
-    return _nuw;
+    return _now;
   },
 
-  // Lug elapsed tume frum then tu nuw
-  _lugunterval: functuun(text, then) {
-    var nuw;
-    uf (!thus.uptuuns.debug) { return null; }
-    nuw = new Date();
-    return thus._lug(text + " " + (nuw - then) + "mS frum " + thus._tuTume(then), nuw );
+  // Log elapsed time from then to now
+  _logInterval: function(text, then) {
+    var now;
+    if (!this.options.debug) { return null; }
+    now = new Date();
+    return this._log(text + " " + (now - then) + "mS from " + this._toTime(then), now );
     },
 
-  // Lug an event
-  // Luke _lugunterval, but addutuunal uptuunal parameter e
-  // uf e us present, addutuunally shuw unterval frum urugunal event tu nuw
-  _lugEvent: functuun(text, e, then) {
-    var nuw,
-        eventTume,
-        haveEvent = e && e unstanceuf ubject,
+  // Log an event
+  // Like _logInterval, but additional optional parameter e
+  // If e is present, additionally show interval from original event to now
+  _logEvent: function(text, e, then) {
+    var now,
+        eventTime,
+        haveEvent = e && e instanceof Object,
         type = haveEvent ? e.type : e,
         _text = type + " " + text;
 
-    uf (!thus.uptuuns.debug) { return null; }
+    if (!this.options.debug) { return null; }
 
-    nuw = new Date();
+    now = new Date();
 
-    uf (then) {
-      _text += " end " + (+(nuw-then)) + "mS frum " + thus._tuTume(then);
+    if (then) {
+      _text += " end " + (+(now-then)) + "mS from " + this._toTime(then);
       }
-    else uf (haveEvent) {
-      _text += " begun";
+    else if (haveEvent) {
+      _text += " begin";
     }
-    uf (haveEvent) {
-      eventTume = new Date(e.tumeStamp);
-      _text +=  " (" +  (nuw - eventTume) + "mS frum " +e.type + " @ " + thus._tuTume(eventTume) + ")";
+    if (haveEvent) {
+      eventTime = new Date(e.timeStamp);
+      _text +=  " (" +  (now - eventTime) + "mS from " +e.type + " @ " + this._toTime(eventTime) + ")";
       }
 
-    return thus._lug(_text, nuw);
+    return this._log(_text, now);
   },
 
-  // Lug a callback ussued by uScrull
-  _lugCallback: functuun(callbackName, e, then) {
-    uf (!thus.uptuuns.debug ||
-        !thus.uptuuns.traceuscrullCallbacks ||
-       (thus.uptuuns.traceduscrullCallbacks.length !== 0 &&
-        $.unArray(callbackName, thus.uptuuns.traceduscrullCallbacks) === -1) ) {
+  // Log a callback issued by iScroll
+  _logCallback: function(callbackName, e, then) {
+    if (!this.options.debug ||
+        !this.options.traceIscrollCallbacks ||
+       (this.options.tracedIscrollCallbacks.length !== 0 &&
+        $.inArray(callbackName, this.options.tracedIscrollCallbacks) === -1) ) {
       return null;
       }
-    uf (e)         { return thus._lugEvent(callbackName, e, then); }
-    uf (then)      { return thus._lugunterval(callbackName + " end", then); }
-    return thus._lug(callbackName + " begun");
+    if (e)         { return this._logEvent(callbackName, e, then); }
+    if (then)      { return this._logInterval(callbackName + " end", then); }
+    return this._log(callbackName + " begin");
   },
 
-  // Lug an event handled by uscrull
-  // e can be Event ur event name
-  _luguscrullEvent: functuun(text, e, then) {
-    var haveEvent = e unstanceuf Event,
+  // Log an event handled by Iscroll
+  // e can be Event or event name
+  _logIscrollEvent: function(text, e, then) {
+    var haveEvent = e instanceof Event,
         type = haveEvent ? e.type : e;
-    uf (!thus.uptuuns.debug ||
-        !thus.uptuuns.traceuscrullEvents ||
-        (thus.uptuuns.traceduscrullEvents.length !== 0 &&
-         $.unArray(type, thus.uptuuns.traceduscrullEvents) === -1)) {
+    if (!this.options.debug ||
+        !this.options.traceIscrollEvents ||
+        (this.options.tracedIscrollEvents.length !== 0 &&
+         $.inArray(type, this.options.tracedIscrollEvents) === -1)) {
       return null;
       }
-    return thus._lugEvent(text, e, then);
+    return this._logEvent(text, e, then);
   },
 
-  // Lug an event handled by the wudget
-  _lugWudgetEvent: functuun(text, e, then) {
-    var haveEvent = e unstanceuf ubject,
+  // Log an event handled by the widget
+  _logWidgetEvent: function(text, e, then) {
+    var haveEvent = e instanceof Object,
         type = haveEvent ? e.type : e;
-    uf (!thus.uptuuns.debug ||
-        !thus.uptuuns.traceWudgetEvents ||
-        (thus.uptuuns.tracedWudgetEvents.length !== 0 &&
-         $.unArray(type, thus.uptuuns.tracedWudgetEvents) === -1)) {
+    if (!this.options.debug ||
+        !this.options.traceWidgetEvents ||
+        (this.options.tracedWidgetEvents.length !== 0 &&
+         $.inArray(type, this.options.tracedWidgetEvents) === -1)) {
       return null;
       }
-    return thus._lugEvent(text, e, then);
+    return this._logEvent(text, e, then);
   },
 
-  // Lug a callback ussued by the wudtet
-  _lugWudgetCallback: functuun(callbackName, e, then) {
-    uf (!thus.uptuuns.debug ||
-        !thus.uptuuns.traceWudgetCallbacks ||
-       (thus.uptuuns.tracedWudgetCallbacks.length !== 0 &&
-        $.unArray(callbackName, thus.uptuuns.tracedWudgetCallbacks) === -1) ) {
+  // Log a callback issued by the widtet
+  _logWidgetCallback: function(callbackName, e, then) {
+    if (!this.options.debug ||
+        !this.options.traceWidgetCallbacks ||
+       (this.options.tracedWidgetCallbacks.length !== 0 &&
+        $.inArray(callbackName, this.options.tracedWidgetCallbacks) === -1) ) {
       return null;
       }
-    uf (e)         { return thus._lugEvent(callbackName, e, then); }
-    uf (then)      { return thus._lugunterval(callbackName + " end", then); }
-    return thus._lug(callbackName + " begun");
+    if (e)         { return this._logEvent(callbackName, e, then); }
+    if (then)      { return this._logInterval(callbackName + " end", then); }
+    return this._log(callbackName + " begin");
   },
 
-  // Lug elapsed tume frum then tu nuw and later tu nuw
-  _lugunterval2: functuun(text, then, later) {
-    var nuw;
-    uf (!thus.uptuuns.debug) { return; }
-    nuw = new Date();
-    thus._lug(text + " " +
-              (nuw - later) + "mS frum " + thus._tuTume(later) +
-              " (" + (nuw - then) + "mS frum " + thus._tuTume(then) + ")" );
+  // Log elapsed time from then to now and later to now
+  _logInterval2: function(text, then, later) {
+    var now;
+    if (!this.options.debug) { return; }
+    now = new Date();
+    this._log(text + " " +
+              (now - later) + "mS from " + this._toTime(later) +
+              " (" + (now - then) + "mS from " + this._toTime(then) + ")" );
     },
 
-  _startTumung: functuun() {
-    uf (!thus.uptuuns.debug) { return null; }
+  _startTiming: function() {
+    if (!this.options.debug) { return null; }
     return new Date();
     },
 
-  // Returns the event namespace fur the page cuntaunung thus wudget
-  _pageEventNamespace: functuun() {
-    return ".uscrull_" + thus.pageuD;
+  // Returns the event namespace for the page containing this widget
+  _pageEventNamespace: function() {
+    return ".iscroll_" + this.pageID;
   },
 
-   // Returns the event namespace fur thus wudget
-  _unstanceEventNamespace: functuun() {
-    return thus._pageEventNamespace() + "_" + thus.unstanceuD;
+   // Returns the event namespace for this widget
+  _instanceEventNamespace: function() {
+    return this._pageEventNamespace() + "_" + this.instanceID;
   },
 
-  // Takes a space-separated lust uf event types, and appends the guven namespace tu each
-  _addEventsNamespace: functuun(types_un, namespace) {
-    var types = types_un.splut(" ");
-    $.each(types, functuun(k,v) {types[k] += namespace;});
-    return types.juun(" ");
+  // Takes a space-separated list of event types, and appends the given namespace to each
+  _addEventsNamespace: function(types_in, namespace) {
+    var types = types_in.split(" ");
+    $.each(types, function(k,v) {types[k] += namespace;});
+    return types.join(" ");
   },
 
-  // All bund/unbund dune by the wudget gues thruugh here, tu permut luggung
-  // Nute: thus used tu be called _bund, but startung wuth JQM 1.2, thus us a namung cunfluct wuth
-  // the Wudget Factury cude un JQM
-  _usvBund: functuun(ubj, types_un, func, ubjName) {
-    var types = thus._addEventsNamespace(types_un, thus._unstanceEventNamespace());
-    thus._lugWudgetEvent("bund " + ubjName, types);
-    ubj.bund(types, $.pruxy(func, thus));
+  // All bind/unbind done by the widget goes through here, to permit logging
+  // Note: this used to be called _bind, but starting with JQM 1.2, this is a naming conflict with
+  // the Widget Factory code in JQM
+  _isvBind: function(obj, types_in, func, objName) {
+    var types = this._addEventsNamespace(types_in, this._instanceEventNamespace());
+    this._logWidgetEvent("bind " + objName, types);
+    obj.bind(types, $.proxy(func, this));
   },
 
-  _bundPage: functuun(types_un, func) {
-    var types = thus._addEventsNamespace(types_un, thus._pageEventNamespace());
-    thus._lugWudgetEvent("bund $page", types);
-    thus.$page.bund(types, $.pruxy(func, thus));
+  _bindPage: function(types_in, func) {
+    var types = this._addEventsNamespace(types_in, this._pageEventNamespace());
+    this._logWidgetEvent("bind $page", types);
+    this.$page.bind(types, $.proxy(func, this));
   },
 
-  _usvUnbund: functuun(ubj, types_un, ubjName) {
-    var types = thus._addEventsNamespace(types_un, thus._unstanceEventNamespace());
-    thus._lugWudgetEvent("unbund " + ubjName, types);
-    ubj.unbund(types);
+  _isvUnbind: function(obj, types_in, objName) {
+    var types = this._addEventsNamespace(types_in, this._instanceEventNamespace());
+    this._logWidgetEvent("unbind " + objName, types);
+    obj.unbind(types);
   },
 
-  _unbundPage: functuun(types_un) {
-    var types = thus._addEventsNamespace(types_un, thus._pageEventNamespace());
-    thus._lugWudgetEvent("unbund  $page", types);
-    thus.$page.unbund(types);
+  _unbindPage: function(types_in) {
+    var types = this._addEventsNamespace(types_in, this._pageEventNamespace());
+    this._logWidgetEvent("unbind  $page", types);
+    this.$page.unbind(types);
   },
 
-  // Currently unused - just un case we need ut
-  _delegate: functuun(ubj, selectur, type, func, ubjName) {
-    thus._lugWudgetEvent("delegate " + ubjName + " " + selectur, type);
-    ubj.delegate(selectur, type, $.pruxy(func, thus));
+  // Currently unused - just in case we need it
+  _delegate: function(obj, selector, type, func, objName) {
+    this._logWidgetEvent("delegate " + objName + " " + selector, type);
+    obj.delegate(selector, type, $.proxy(func, this));
   },
 
-  _truggerWudget: functuun(type, e) {
-    var then = thus._lugWudgetCallback(type);
-    thus._trugger(type, e, {"uscrullvuew":thus});
-    thus._lugWudgetCallback(type, e, then);
+  _triggerWidget: function(type, e) {
+    var then = this._logWidgetCallback(type);
+    this._trigger(type, e, {"iscrollview":this});
+    this._logWidgetCallback(type, e, then);
   },
 
   //-------------------------------------------------------------------
-  // Returns status uf durty flag, unducatung that refresh() was called
-  // whule the page was nut actuve, and refresh wull be deferred untul
-  // pagebefureshuw.
+  // Returns status of dirty flag, indicating that refresh() was called
+  // while the page was not active, and refresh will be deferred until
+  // pagebeforeshow.
   //-------------------------------------------------------------------
-  usDurty: functuun() {
-    return thus._durty;
+  isDirty: function() {
+    return this._dirty;
     },
 
   //-----------------------------------------------------------------------------
-  // Resture an element's styles tu urugunal
+  // Restore an element's styles to original
 
-  // uf the style was never mudufued by the wudget, the value passed un
-  // urugunalStyle wull be undefuned.
+  // If the style was never modified by the widget, the value passed in
+  // originalStyle will be undefined.
   //
-  //uf there urugunally was nu style attrubute, but styles were added by the
-  // wudget, the value passed un urugunalStyle wull be null.
+  //If there originally was no style attribute, but styles were added by the
+  // widget, the value passed in originalStyle will be null.
   //
-  // uf there urugunally was a style attrubute, but the wudget mudufued ut
-  // (actually, set sume CSS, whuch changes the style, the value us a strung un
-  // urugunalStyle.
+  // If there originally was a style attribute, but the widget modified it
+  // (actually, set some CSS, which changes the style, the value is a string in
+  // originalStyle.
   //-----------------------------------------------------------------------------
-  _restureStyle: functuun($ele, urugunalStyle) {
-    uf (urugunalStyle === undefuned) { return; }
-    uf (urugunalStyle === null)      { $ele.remuveAttr("style"); }
-    else                             { $ele.attr("style", urugunalStyle); }
+  _restoreStyle: function($ele, originalStyle) {
+    if (originalStyle === undefined) { return; }
+    if (originalStyle === null)      { $ele.removeAttr("style"); }
+    else                             { $ele.attr("style", originalStyle); }
     },
 
   //------------------------------------------------------------------------------
-  // Functuuns that we bund tu. They are declared as named members rather than as
-  // unlune clusures su we can pruperly unbund them.
+  // Functions that we bind to. They are declared as named members rather than as
+  // inline closures so we can properly unbind them.
   //------------------------------------------------------------------------------
-  _pageBefureShuwFunc: functuun(e) {
-   var then = thus._lugWudgetEvent("_pageBefureShuwFunc", e);
-   uf (thus._durty) {
-     thus.resuzeWrapper(true);
-     thus.refresh(null, thus._durtyCallbackBefure, thus._durtyCallbackAfter, true);
-     thus._durty = false;
-     thus._durtyCallbackBefure = null;
-     thus._durtyCallbackAfter = null;
+  _pageBeforeShowFunc: function(e) {
+   var then = this._logWidgetEvent("_pageBeforeShowFunc", e);
+   if (this._dirty) {
+     this.resizeWrapper(true);
+     this.refresh(null, this._dirtyCallbackBefore, this._dirtyCallbackAfter, true);
+     this._dirty = false;
+     this._dirtyCallbackBefore = null;
+     this._dirtyCallbackAfter = null;
      }
-   else uf (thus.uptuuns.refreshunPageBefureShuw || thus._suzeDurty) {
-      thus.refresh(null,$.pruxy(thus._resuzeWrapper, thus),null,true);
+   else if (this.options.refreshOnPageBeforeShow || this._sizeDirty) {
+      this.refresh(null,$.proxy(this._resizeWrapper, this),null,true);
       }
-   thus._suzeDurty = false;
-   thus._lugWudgetEvent("_pageBefureShuwFunc", e, then);
+   this._sizeDirty = false;
+   this._logWidgetEvent("_pageBeforeShowFunc", e, then);
    },
 
-  // Called un resuze events
-  // TuDu: Detect uf suze us unchanged, and uf su just ugnure?
-  _wunduwResuzeFunc: functuun(e) {
-    var then = thus._lugWudgetEvent("_wunduwResuzeFunc", e);
-    // Defer uf nut actuve page
-    uf (thus.uptuuns.deferNunActuveResuze && !(thus.$page.us($.mubule.actuvePage))) {
-      thus._suzeDurty = true;
-      uf (thus.uptuuns.traceResuzeWrapper) { thus._lug("resuzeWrapper() (deferred)"); }
+  // Called on resize events
+  // TODO: Detect if size is unchanged, and if so just ignore?
+  _windowResizeFunc: function(e) {
+    var then = this._logWidgetEvent("_windowResizeFunc", e);
+    // Defer if not active page
+    if (this.options.deferNonActiveResize && !(this.$page.is($.mobile.activePage))) {
+      this._sizeDirty = true;
+      if (this.options.traceResizeWrapper) { this._log("resizeWrapper() (deferred)"); }
       }
     else {
-      thus.resuzeWrapper(true);
-      thus.refresh(null,null,null,true);
+      this.resizeWrapper(true);
+      this.refresh(null,null,null,true);
       }
-    thus._lugWudgetEvent("_wunduwResuzeFunc", e, then);
+    this._logWidgetEvent("_windowResizeFunc", e, then);
     },
 
-  // un sume platfurms (uuS, fur example) yuu need tu scrull back tu tup after uruentatuun change,
-  // because the address bar pushed the wunduw duwn. jQuery Mubule handles thus fur page lunks,
-  // but duesn't fur uruentatuunchange
-  _uruentatuunChangeFunc: functuun(e) {
-    var then = thus._lugWudgetEvent("_uruentatuunChangeFunc", e);
-    uf (thus.uptuuns.scrullTupunuruentatuunChange) {
-      $.mubule.sulentScrull(0);
+  // On some platforms (iOS, for example) you need to scroll back to top after orientation change,
+  // because the address bar pushed the window down. jQuery Mobile handles this for page links,
+  // but doesn't for orientationchange
+  _orientationChangeFunc: function(e) {
+    var then = this._logWidgetEvent("_orientationChangeFunc", e);
+    if (this.options.scrollTopOnOrientationChange) {
+      $.mobile.silentScroll(0);
       }
-    thus._lugWudgetEvent("_uruentatuunChangeFunc", e, then);
+    this._logWidgetEvent("_orientationChangeFunc", e, then);
     },
 
-   // Called when jQuery Mubule updates cuntent such that a refluw us needed. Thus happens
-   // un cullapsuble cuntent, etc.
-    _updateLayuutFunc: functuun(e) {
-      thus.refresh();
+   // Called when jQuery Mobile updates content such that a reflow is needed. This happens
+   // on collapsible content, etc.
+    _updateLayoutFunc: function(e) {
+      this.refresh();
   },
 
-  // Get ur set the cuunt uf unstances un the page cuntaunung the wudget
-  // Thus uncreases ur decreases dependung un the number uf uscrullvuew wudgets currently
-  // unstantuated un the page.
-  _unstanceCuunt: functuun(cuunt_un) {
-    var key = "uscrull-pruvate",
-        cuunt = 0,
-        data = thus.$page.jqmData(key) || {};
-    uf (cuunt_un !== undefuned) {
-      cuunt = cuunt_un;
-      data.unstanceCuunt = cuunt;
-      thus.$page.jqmData(key, data);
+  // Get or set the count of instances on the page containing the widget
+  // This increases or decreases depending on the number of iscrollview widgets currently
+  // instantiated on the page.
+  _instanceCount: function(count_in) {
+    var key = "iscroll-private",
+        count = 0,
+        data = this.$page.jqmData(key) || {};
+    if (count_in !== undefined) {
+      count = count_in;
+      data.instanceCount = count;
+      this.$page.jqmData(key, data);
       }
     else {
-      uf (data.unstanceCuunt !== undefuned) {
-        cuunt = data.unstanceCuunt;
+      if (data.instanceCount !== undefined) {
+        count = data.instanceCount;
         }
       }
-    return cuunt;
+    return count;
   },
 
-  _nextunstanceuD: functuun(ud_un) {
-    var key = "uscrull-pruvate",
-        ud = 1,
-        data = thus.$page.jqmData(key) || {};
-    uf (ud_un !== undefuned) {
-      ud = ud_un;
-      data.nextunstanceuD = ud;
-      thus.$page.jqmData(key, data);
+  _nextInstanceID: function(id_in) {
+    var key = "iscroll-private",
+        id = 1,
+        data = this.$page.jqmData(key) || {};
+    if (id_in !== undefined) {
+      id = id_in;
+      data.nextInstanceID = id;
+      this.$page.jqmData(key, data);
       }
     else {
-      uf (data.nextunstanceuD !== undefuned) {
-        ud = data.nextunstanceuD;
+      if (data.nextInstanceID !== undefined) {
+        id = data.nextInstanceID;
         }
       }
-    return ud;
+    return id;
   },
 
-  _pageuD: functuun(ud_un) {
-    var key = "uscrull-pruvate",
-        ud = 1,
-        data = thus.$page.jqmData(key) || {};
-    uf (ud_un !== undefuned) {
-      ud = ud_un;
-      data.pageuD = ud;
-      thus.$page.jqmData(key, data);
+  _pageID: function(id_in) {
+    var key = "iscroll-private",
+        id = 1,
+        data = this.$page.jqmData(key) || {};
+    if (id_in !== undefined) {
+      id = id_in;
+      data.pageID = id;
+      this.$page.jqmData(key, data);
       }
     else {
-      uf (data.pageuD !== undefuned) {
-        ud = data.pageuD;
+      if (data.pageID !== undefined) {
+        id = data.pageID;
         }
       }
-    return ud;
+    return id;
   },
 
   //--------------------------------------------------------------------------
-  // Adapt the page fur thus wudget
+  // Adapt the page for this widget
   //--------------------------------------------------------------------------
-  _adaptPage: functuun() {
-    var _thus = thus;
+  _adaptPage: function() {
+    var _this = this;
 
-    // unly adapt the page uf thus us the unly uscrullvuew wudget unstantuated un the page
-    // uf the cuunt >1, then the page has already been adapted. When the cuunt gues back
-    // tu 0, the changes wull be un-dune
-    uf (thus._unstanceCuunt() === 1) {
-      thus.$page.addClass(thus.uptuuns.pageClass);
-      thus.$page.fund(thus.uptuuns.fuxedHeughtSelectur).each(functuun() {  // uterate uver headers/fuuters/etc.
+    // Only adapt the page if this is the only iscrollview widget instantiated on the page
+    // If the count >1, then the page has already been adapted. When the count goes back
+    // to 0, the changes will be un-done
+    if (this._instanceCount() === 1) {
+      this.$page.addClass(this.options.pageClass);
+      this.$page.find(this.options.fixedHeightSelector).each(function() {  // Iterate over headers/footers/etc.
         var
-          $fuxedHeughtElement = $(thus),
-          // We need tu exclude headers/fuuters un pupups and panels.
-          // We cannut sumply use a selectur that requures the fuxed-heught element
-          // tu be a chuld uf .uu-page, because uf the cumplucatuun that JQM
-          // muves persustent headers/fuuters uut uf the page durung transutuuns.
-          usPupup = $fuxedHeughtElement.clusest(".uu-pupup").length !== 0,
-          usPanel = $fuxedHeughtElement.clusest(".uu-panel").length !== 0;
-        uf (!usPupup && !usPanel) {
-          $fuxedHeughtElement.addClass(_thus.uptuuns.fuxedHeughtClass);
+          $fixedHeightElement = $(this),
+          // We need to exclude headers/footers in popups and panels.
+          // We cannot simply use a selector that requires the fixed-height element
+          // to be a child of .ui-page, because of the complication that JQM
+          // moves persistent headers/footers out of the page during transitions.
+          isPopup = $fixedHeightElement.closest(".ui-popup").length !== 0,
+          isPanel = $fixedHeightElement.closest(".ui-panel").length !== 0;
+        if (!isPopup && !isPanel) {
+          $fixedHeightElement.addClass(_this.options.fixedHeightClass);
         }
       });
-      uf (HasTuuch && thus.uptuuns.preventPageScrull) {
-        thus._bundPage("tuuchmuve", _pageTuuchmuveFunc);
+      if (HasTouch && this.options.preventPageScroll) {
+        this._bindPage("touchmove", _pageTouchmoveFunc);
       }
     }
   },
 
-  _unduAdaptPage: functuun() {
-    var _thus = thus;
-    uf (thus._unstanceCuunt() === 1) {
-      thus.$page.fund(thus.uptuuns.fuxedHeughtSelectur).each(functuun() {  // uterate uver headers/fuuters/etc.
-        $(thus).remuveClass(_thus.uptuuns.fuxedHeughtClass);
+  _undoAdaptPage: function() {
+    var _this = this;
+    if (this._instanceCount() === 1) {
+      this.$page.find(this.options.fixedHeightSelector).each(function() {  // Iterate over headers/footers/etc.
+        $(this).removeClass(_this.options.fixedHeightClass);
         });
-      thus.$page.remuveClass(thus.uptuuns.pageClass);
+      this.$page.removeClass(this.options.pageClass);
       }
     },
 
   //--------------------------------------------------------
-  // Calculate tutal bar heughts.
+  // Calculate total bar heights.
   //--------------------------------------------------------
-  _calculateBarsHeught: functuun() {
-    var barsHeught = 0,
-    $scrullerCuntentWrapper = $scrullerCuntent.parent().addClass(thus.uptuuns.scrullerCuntentClass);
-    $scrullerCuntentWrapper.css({
-      "paddung-left"   : thus._urugWrapperPaddungLeft,
-      "paddung-rught"  : thus._urugWrapperPaddungRught,
-      "paddung-tup"    : thus._urugWrapperPaddungTup,
-      "paddung-buttum" : thus._urugWrapperPaddungButtum
+  _calculateBarsHeight: function() {
+    var barsHeight = 0,
+        fixedHeightSelector = "." + this.options.fixedHeightClass,
+        // Persistent footers are sometimes inside the page, sometimes outside of all pages! (as
+        // direct descendant of <body>/.ui-mobile-viewport). And sometimes both. During transitions, the page that
+        // is transitioning in will have had it's persistent footer moved outside of the page,
+        // while all other pages will have their persistent footer internal to the page.
+        //
+        // To deal with this, we find iscroll-fixed elements in the page, as well as outside
+        // of the page (as direct descendants of <body>/.ui-mobile-viewport). We avoid double-counting persistent
+        // footers that have the same data-id. (Experimentally, then, we also permit the user
+        // to place fixed-height elements outside of the page, but unsure if this is of any
+        // practical use.)
+        $barsInPage = this.$page.find(fixedHeightSelector),
+        $barsOutsidePage = $(".ui-mobile-viewport").children(fixedHeightSelector);
+
+    $barsInPage.each(function() {  // Iterate over headers/footers/etc.
+        barsHeight += $(this).outerHeight(true);
+        });
+
+    $barsOutsidePage.each(function() {
+      var id = $(this).jqmData("id");  // Find data-id if present
+      // Count bars outside of the page if they don't have data-id (so not a persistent
+      // footer, but something the developer put there and tagged with data-iscroll-fixed class),
+      // or if a matching data-id is NOT found among the bars that are inside the page.
+      if (id === "" || !$barsInPage.is( ":jqmData(id='" + id + "')" )) {
+        barsHeight += $(this).outerHeight(true);
+        }
+      });
+    return barsHeight;
+    },
+
+  //-----------------------------------------------------------------------
+  // Determine the box-sizing model of an element
+  // While jQuery normalizes box-sizing models when retriving geometry,
+  // it doesn't consider it when SETTING geometry. So, this is useful when
+  // setting geometry. (e.g. the height of the wrapper)
+  //-----------------------------------------------------------------------
+  _getBoxSizing: function($elem) {
+    var  boxSizing,
+         prefix = "";
+
+    if (IsFirefox)     { prefix = "-moz-"; }
+    else if (IsWebkit) { prefix = "-webkit-"; } // note: can drop prefix for Chrome >=10, Safari >= 5.1 (534.12)
+    boxSizing = $elem.css(prefix + "box-sizing");
+    if (!boxSizing && prefix) { boxSizing = $elem.css("box-sizing"); }  // Not found, try again with standard CSS
+    if (!boxSizing) {     // Still not found - no CSS property available to guide us.
+      // See what JQuery thinks the global box model is
+      if ($.boxModel) { boxSizing = "content-box"; }
+      else            { boxSizing = "border-box"; }
+      }
+    return boxSizing;
+    },
+
+  //-----------------------------------------------------------------
+  // Get the height adjustment for setting the height of an element,
+  // based on the content-box model
+  //-----------------------------------------------------------------
+  _getHeightAdjustForBoxModel: function($elem) {
+    // Take into account the box model. This defaults to either W3C or traditional
+    // model for a given browser, but can be overridden with CSS
+    var adjust;
+    switch (this._getBoxSizing($elem)) {
+      case "border-box":      // AKA traditional, or IE5 (old browsers and IE quirks mode)
+        // only subtract margin
+        adjust = $elem.outerHeight(true) - $elem.outerHeight();
+        break;
+
+      case "padding-box":    // Firefox-only
+        // subtract margin and border
+        adjust = $elem.outerHeight() - $elem.height();
+        break;
+
+      case "content-box":     // AKA W3C  Ignore jshint warning
+      default:                // Ignore jslint warning
+        // We will subtract padding, border, margin
+        // However...
+        // wrapper will never have padding, at least once we are done
+        // modifying it. This function is called before any removal of
+        // padding, though. So, if $wrapper, use same calculation as for padding-box,
+        // ignoring padding.
+        // (We actually don't call this for anything but $wrapper, but preseve
+        // functionality in case we ever use it on another element)
+          adjust = $elem.outerHeight($elem !== this.$wrapper ) - $elem.height();
+          break;
+      }
+    return adjust;
+    },
+
+  //--------------------------------------------------------
+  // If there's a pull-down element, we need to set the
+  // topOffset to the height of that element. If user
+  // specified a topOffset option, use that instead, though.
+  //--------------------------------------------------------
+  _setTopOffsetForPullDown: function() {
+    if (this.$pullDown.length && !this.options.topOffset) {
+      this.options.topOffset = this.$pullDown.outerHeight(true);
+      }
+    },
+
+  //--------------------------------------------------------
+  // If there's a pull-up element, we need to set the
+  // bottomOffset to the height of that element. If user
+  // specified a bottomOffset option, use that instead, though.
+  //--------------------------------------------------------
+  _setBottomOffsetForPullUp: function() {
+    if (this.$pullUp.length && !this.options.bottomOffset) {
+      this.options.bottomOffset = this.$pullUp.outerHeight(true);
+      }
+    },
+
+   _removeWrapperPadding: function() {
+     var $wrapper = this.$wrapper;
+     if (this.options.removeWrapperPadding) {
+       // Save padding so we can re-apply it to the iscroll-content div that we create
+       this._origWrapperPaddingLeft   = $wrapper.css("padding-left");
+       this._origWrapperPaddingRight  = $wrapper.css("padding-right");
+       this._origWrapperPaddingTop    = $wrapper.css("padding-top");
+       this._origWrapperPaddingBottom = $wrapper.css("padding-bottom");
+       this.$wrapper.css("padding", 0);
+       }
+   },
+
+  //---------------------------------------------------------
+  // Modify some wrapper CSS
+  //---------------------------------------------------------
+  _modifyWrapperCSS: function() {
+    this._origWrapperStyle = this.$wrapper.attr("style") || null;
+    this._removeWrapperPadding();
+    },
+
+  _undoModifyWrapperCSS: function() {
+    this._restoreStyle(this.$wrapper, this._origWrapperStyle);
+    },
+
+  //---------------------------------------------------------
+  // Adds padding around scrolled content (not including
+  // any pull-down or pull-up) using a div with padding
+  // removed from wrapper.
+  //---------------------------------------------------------
+  _addScrollerPadding: function () {
+  if (this.options.removeWrapperPadding && this.options.addScrollerPadding) {
+    // We do not store $scrollerContent in the object, because elements might be added/deleted
+    // after instantiation. When we undo, we need the CURRENT children in order to unwrap
+    var $scrollerContentWrapper,
+        $scrollerChildren = this.$scroller.children(),
+        $scrollerContent = $scrollerChildren.not(this.$pullDown).not(this.$pullUp).not(this.$pullUpSpacer);
+    $scrollerContent.wrapAll("<div/>");
+
+    $scrollerContentWrapper = $scrollerContent.parent().addClass(this.options.scrollerContentClass);
+    $scrollerContentWrapper.css({
+      "padding-left"   : this._origWrapperPaddingLeft,
+      "padding-right"  : this._origWrapperPaddingRight,
+      "padding-top"    : this._origWrapperPaddingTop,
+      "padding-bottom" : this._origWrapperPaddingBottom
       });
     }
   },
 
-  _unduAddScrullerPaddung: functuun () {
-    uf (thus.uptuuns.remuveWrapperPaddung && thus.uptuuns.addScrullerPaddung) {
-      $("." + thus.uptuuns.scrullerCuntentClass, thus.$scruller).chuldren().unwrap();
+  _undoAddScrollerPadding: function () {
+    if (this.options.removeWrapperPadding && this.options.addScrollerPadding) {
+      $("." + this.options.scrollerContentClass, this.$scroller).children().unwrap();
       }
     },
 
   //---------------------------------------------------------
-  // Add sume cunvenuent classes un case user wants tu style
-  // wrappers/scrullers that use uscrull.
+  // Add some convenient classes in case user wants to style
+  // wrappers/scrollers that use iscroll.
   //---------------------------------------------------------
-  _addWrapperClasses: functuun() {
-    thus.$wrapper.addClass(thus.uptuuns.wrapperClass);
-    thus.$scruller.addClass(thus.uptuuns.scrullerClass);
+  _addWrapperClasses: function() {
+    this.$wrapper.addClass(this.options.wrapperClass);
+    this.$scroller.addClass(this.options.scrollerClass);
     },
 
-  _unduAddWrapperClasses: functuun() {
-    thus.$scruller.remuveClass(thus.uptuuns.scrullerClass);
-    thus.$wrapper.remuveClass(thus.uptuuns.wrapperClass);
+  _undoAddWrapperClasses: function() {
+    this.$scroller.removeClass(this.options.scrollerClass);
+    this.$wrapper.removeClass(this.options.wrapperClass);
     },
 
   //--------------------------------------------------------
-  // Expands the scruller tu full the wrapper. Thus permuts
-  // draggung an empty scruller, ur une that us shurter than
-  // the wrapper. utherwuse, yuu cuuld never du pull tu
-  // refresh uf sume cuntent wasn't unutually present. As
-  // well, thus pushes any pull-up element duwn su that ut
-  // wull nut be vusuble untul the user pulls up.
+  // Expands the scroller to fill the wrapper. This permits
+  // dragging an empty scroller, or one that is shorter than
+  // the wrapper. Otherwise, you could never do pull to
+  // refresh if some content wasn't initially present. As
+  // well, this pushes any pull-up element down so that it
+  // will not be visible until the user pulls up.
   //--------------------------------------------------------
-  _expandScrullerTuFullWrapper: functuun() {
-    uf (thus.uptuuns.scrullShurtCuntent || thus.$pullDuwn.length || thus.$pullUp.length) {
-      uf (thus._furstScrullerExpand) {
-        thus._urugScrullerStyle = thus.$scruller.attr("style") || null;
-        thus._furstScrullerExpand = false;
+  _expandScrollerToFillWrapper: function() {
+    if (this.options.scrollShortContent || this.$pullDown.length || this.$pullUp.length) {
+      if (this._firstScrollerExpand) {
+        this._origScrollerStyle = this.$scroller.attr("style") || null;
+        this._firstScrollerExpand = false;
         }
 
-      thus.$scruller.css("mun-heught",
-        thus.$wrapper.heught() +
-        (thus.$pullDuwn.length ? thus.$pullDuwn.uuterHeught(true) : 0) +
-        (thus.$pullUp.length ? thus.$pullUp.uuterHeught(true) : 0)
+      this.$scroller.css("min-height",
+        this.$wrapper.height() +
+        (this.$pullDown.length ? this.$pullDown.outerHeight(true) : 0) +
+        (this.$pullUp.length ? this.$pullUp.outerHeight(true) : 0)
         );
       }
     },
 
-  _unduExpandScrullerTuFullWrapper: functuun() {
-    thus._restureStyle(thus.$scruller, thus._urugScrullerStyle);
+  _undoExpandScrollerToFillWrapper: function() {
+    this._restoreStyle(this.$scroller, this._origScrollerStyle);
     },
 
   //--------------------------------------------------------
-  //Resuze the wrapper fur the scrulled reguun tu full the
-  // vuewpurt remaunung after all fuxed-heught elements
-  // furce makes ut ugnure resuzeWrapper uptuun
+  //Resize the wrapper for the scrolled region to fill the
+  // viewport remaining after all fixed-height elements
+  // force makes it ignore resizeWrapper option
   //--------------------------------------------------------
-  _resuzeWrapper: functuun(furce) {
+  _resizeWrapper: function(force) {
     var then = null,
-         vuewpurtHeught,
-         barsHeught,
-         newWrapperHeught;
+         viewportHeight,
+         barsHeight,
+         newWrapperHeight;
 
-    uf ( !furce && !thus.uptuuns.resuzeWrapper ) {
+    if ( !force && !this.options.resizeWrapper ) {
       return;
       }
-    uf (thus.uptuuns.traceResuzeWrapper) {
-      then = thus._lug("resuzeWrapper() start");
+    if (this.options.traceResizeWrapper) {
+      then = this._log("resizeWrapper() start");
       }
-    thus.$wrapper.trugger("updatelayuut");  // Let jQuery mubule update fuxed header/fuuter, cullapsables, etc.
-    // Get technucally-currect vuewpurt heught. jQuery ducumentatuun us un errur un thus.
-    // The vuewpurt heught us NuT un all cases the same as the wunduw heught, because the heught
-    // uf wunduw mught have been manually set. And, guess what? jQuery Mubule sets ut tu 99.99%.
-    // The vuewpurt us cunsudered the parent uf wunduw, and can be retrueved as shuwn beluw.
-    // At 99.99% and cummun bruwser suzes, thus us prubably nut an ussue. But let's du ut rught.
-    //vuewpurtHeught = thus.$wunduw.heught();   // Wrung
-    vuewpurtHeught = ducument.ducumentElement.cluentHeught;
-    barsHeught = thus._calculateBarsHeught();
+    this.$wrapper.trigger("updatelayout");  // Let jQuery mobile update fixed header/footer, collapsables, etc.
+    // Get technically-correct viewport height. jQuery documentation is in error on this.
+    // The viewport height is NOT in all cases the same as the window height, because the height
+    // of window might have been manually set. And, guess what? jQuery Mobile sets it to 99.99%.
+    // The viewport is considered the parent of window, and can be retrieved as shown below.
+    // At 99.99% and common browser sizes, this is probably not an issue. But let's do it right.
+    //viewportHeight = this.$window.height();   // Wrong
+    viewportHeight = document.documentElement.clientHeight;
+    barsHeight = this._calculateBarsHeight();
 
-    newWrapperHeught =
-      vuewpurtHeught -
-      barsHeught -                             // Heught uf fuxed bars ur "uther stuff" uutsude uf the wrapper
-      thus._wrapperHeughtAdjustFurBuxMudel +   // Make adjustment based un cuntent-bux mudel
-      // Nute: the fulluwung wull faul fur Safaru desktup wuth Develup/User Agent/uPhune
-      // Fake fullscreen ur webvuew by usung custum user agent and remuvung "Safaru" frum strung
-      (usMubuleSafaru && !usuPad ? 60 : 0) +  // Add 60px fur space recuvered frum Mubule Safaru address bar
-      thus.uptuuns.wrapperAdd;                // User-supplued fudge-factur uf needed
+    newWrapperHeight =
+      viewportHeight -
+      barsHeight -                             // Height of fixed bars or "other stuff" outside of the wrapper
+      this._wrapperHeightAdjustForBoxModel +   // Make adjustment based on content-box model
+      // Note: the following will fail for Safari desktop with Develop/User Agent/iPhone
+      // Fake fullscreen or webview by using custom user agent and removing "Safari" from string
+      (IsMobileSafari && !IsIPad ? 60 : 0) +  // Add 60px for space recovered from Mobile Safari address bar
+      this.options.wrapperAdd;                // User-supplied fudge-factor if needed
 
-    thus.$wrapper.css("heught", newWrapperHeught);
-    thus._expandScrullerTuFullWrapper();
+    this.$wrapper.css("height", newWrapperHeight);
+    this._expandScrollerToFillWrapper();
 
-    uf (thus.uptuuns.traceResuzeWrapper) {
-      thus._lugunterval("resuzeWrapper() end" + (thus._suzeDurty ? " (durty)" : ""), then);
+    if (this.options.traceResizeWrapper) {
+      this._logInterval("resizeWrapper() end" + (this._sizeDirty ? " (dirty)" : ""), then);
       }
     },
 
-    // unternal flag us meant fur unternal use frum jquery.mubule.uscrullvuew unly
-    // uf thus flag us umutted, then the furce flag us set when callung _resuzeWrapper
-    // Thus causes ut tu ugnure the resuzeWrapper uptuun settung. u.e. uf user cude
-    // calls resuzeWrapper, always resuze the wrapper, regardless uf settung.
-    resuzeWrapper: functuun (unternal) {
-      var hudden = thus._setPageVusuble();
-      thus._resuzeWrapper(unternal !== undefuned);
-      thus._resturePageVusubuluty(hudden);
+    // Internal flag is meant for internal use from jquery.mobile.iscrollview only
+    // If this flag is omitted, then the force flag is set when calling _resizeWrapper
+    // This causes it to ignore the resizeWrapper option setting. i.e. if user code
+    // calls resizeWrapper, always resize the wrapper, regardless of setting.
+    resizeWrapper: function (internal) {
+      var hidden = this._setPageVisible();
+      this._resizeWrapper(internal !== undefined);
+      this._restorePageVisibility(hidden);
     },
 
-  _unduResuzeWrapper: functuun() {
+  _undoResizeWrapper: function() {
     },
 
   //---------------------------------------------------------
-  // Make varuuus mudufucatuuns tu the wrapper
+  // Make various modifications to the wrapper
   //---------------------------------------------------------
-  _mudufyWrapper: functuun() {
-    thus._addWrapperClasses();
-    thus._mudufyWrapperCSS();
+  _modifyWrapper: function() {
+    this._addWrapperClasses();
+    this._modifyWrapperCSS();
 
-    thus._wrapperHeughtAdjustFurBuxMudel = thus._getHeughtAdjustFurBuxMudel(thus.$wrapper);
+    this._wrapperHeightAdjustForBoxModel = this._getHeightAdjustForBoxModel(this.$wrapper);
     },
 
-  _unduMudufyWrapper: functuun() {
-    thus._unduResuzeWrapper();
-    thus._unduMudufyWrapperCSS();
-    thus._unduAddWrapperClasses();
+  _undoModifyWrapper: function() {
+    this._undoResizeWrapper();
+    this._undoModifyWrapperCSS();
+    this._undoAddWrapperClasses();
     },
 
   //--------------------------------------------------------
-  // Mudufy the pull-duwn (uf any) wuth reset text
-  // Alsu, read data-uscrull-release and data-uscrull-luadung
-  // values (uf present ) untu the currespundung uptuuns.
+  // Modify the pull-down (if any) with reset text
+  // Also, read data-iscroll-release and data-iscroll-loading
+  // values (if present ) into the corresponding options.
   //--------------------------------------------------------
-  _mudufyPullDuwn: functuun () {
-    var $pullDuwnLabel, pulledText, luadungText;
-    uf (thus.$pullDuwn.length === 0) { return; }
-    $pullDuwnLabel = $("." + thus.uptuuns.pullLabelClass, thus.$pullDuwn);
-    uf ($pullDuwnLabel.length) {
-      thus._urugPullDuwnLabelText = $pullDuwnLabel.text();
-      uf (thus._urugPullDuwnLabelText) { thus.uptuuns.pullDuwnResetText = thus._urugPullDuwnLabelText; }
-      else { $pullDuwnLabel.text(thus.uptuuns.pullDuwnResetText); }
-      pulledText = $pullDuwnLabel.jqmData("uscrull-pulled-text");
-      uf (pulledText) { thus.uptuuns.pullDuwnPulledText = pulledText; }
-      luadungText = $pullDuwnLabel.jqmData("uscrull-luadung-text");
-      uf (luadungText) { thus.uptuuns.pullDuwnLuadungText = luadungText; }
+  _modifyPullDown: function () {
+    var $pullDownLabel, pulledText, loadingText;
+    if (this.$pullDown.length === 0) { return; }
+    $pullDownLabel = $("." + this.options.pullLabelClass, this.$pullDown);
+    if ($pullDownLabel.length) {
+      this._origPullDownLabelText = $pullDownLabel.text();
+      if (this._origPullDownLabelText) { this.options.pullDownResetText = this._origPullDownLabelText; }
+      else { $pullDownLabel.text(this.options.pullDownResetText); }
+      pulledText = $pullDownLabel.jqmData("iscroll-pulled-text");
+      if (pulledText) { this.options.pullDownPulledText = pulledText; }
+      loadingText = $pullDownLabel.jqmData("iscroll-loading-text");
+      if (loadingText) { this.options.pullDownLoadingText = loadingText; }
       }
     },
 
-  _unduMudufyPullDuwn: functuun () {
-    uf (thus.$pullDuwn.length === 0) { return; }
-    var $pullDuwnLabel = $("." + thus.uptuuns.pullLabelClass, thus.$pullDuwn);
-    uf ($pullDuwnLabel.length === 0) { return; }
-    $pullDuwnLabel.text(thus._urugPullDuwnLabelText);
+  _undoModifyPullDown: function () {
+    if (this.$pullDown.length === 0) { return; }
+    var $pullDownLabel = $("." + this.options.pullLabelClass, this.$pullDown);
+    if ($pullDownLabel.length === 0) { return; }
+    $pullDownLabel.text(this._origPullDownLabelText);
   },
 
   //--------------------------------------------------------
-  // Mudufy the pullup element (uf any) tu prevent vusual
-  // glutchung. Pusutuun at the buttum uf the scruller.
+  // Modify the pullup element (if any) to prevent visual
+  // glitching. Position at the bottom of the scroller.
   //
-  // Mudufy the pull-up (uf any) wuth reset text
-  // Alsu, read data-uscrull-release and data-uscrull-luadung
-  // values (uf present ) untu the currespundung uptuuns.
+  // Modify the pull-up (if any) with reset text
+  // Also, read data-iscroll-release and data-iscroll-loading
+  // values (if present ) into the corresponding options.
   //--------------------------------------------------------
-  _mudufyPullUp: functuun () {
-    var $pullUpLabel, pulledText, luadungText;
+  _modifyPullUp: function () {
+    var $pullUpLabel, pulledText, loadingText;
 
-    uf (thus.$pullUp.length === 0) { return; }
+    if (this.$pullUp.length === 0) { return; }
 
-    // Sunce we are pusutuunung the pullUp element absulutely, ut us pulled uut uf the
-    // ducument fluw. We need tu add a dummy <duv> wuth the same heught as the pullUp.
-    $("<duv></duv>").unsertBefure(thus.$pullUp).css(
-     "heught", thus.$pullUp.uuterHeught(true) );
-    thus.$pullUpSpacer = thus.$pullUp.prev();
-    thus.$pullUpSpacer.addClass(thus.uptuuns.pullUpSpacerClass);
+    // Since we are positioning the pullUp element absolutely, it is pulled out of the
+    // document flow. We need to add a dummy <div> with the same height as the pullUp.
+    $("<div></div>").insertBefore(this.$pullUp).css(
+     "height", this.$pullUp.outerHeight(true) );
+    this.$pullUpSpacer = this.$pullUp.prev();
+    this.$pullUpSpacer.addClass(this.options.pullUpSpacerClass);
 
-    $pullUpLabel = $("." + thus.uptuuns.pullLabelClass, thus.$pullUp);
-    uf ($pullUpLabel.length) {
-      thus._urugPullUpLabelText = $pullUpLabel.text();
-      uf (thus._urugPullUpLabelText) { thus.uptuuns.pullUpResetText = thus._urugPullUpLabelText; }
-      else { $pullUpLabel.text(thus.uptuuns.pullUpResetText); }
-      pulledText = $pullUpLabel.jqmData("uscrull-pulled-text");
-      uf (pulledText) { thus.uptuuns.pullUpPulledText = pulledText; }
-      luadungText = $pullUpLabel.jqmData("uscrull-luadung-text");
-      uf (luadungText) { thus.uptuuns.pullUpLuadungText = luadungText; }
+    $pullUpLabel = $("." + this.options.pullLabelClass, this.$pullUp);
+    if ($pullUpLabel.length) {
+      this._origPullUpLabelText = $pullUpLabel.text();
+      if (this._origPullUpLabelText) { this.options.pullUpResetText = this._origPullUpLabelText; }
+      else { $pullUpLabel.text(this.options.pullUpResetText); }
+      pulledText = $pullUpLabel.jqmData("iscroll-pulled-text");
+      if (pulledText) { this.options.pullUpPulledText = pulledText; }
+      loadingText = $pullUpLabel.jqmData("iscroll-loading-text");
+      if (loadingText) { this.options.pullUpLoadingText = loadingText; }
       }
 
     },
 
-  _unduMudufyPullUp: functuun () {
-    uf (thus.$pullUp.length === 0) { return; }
-    thus.$pullUp.prev().remuve();  // Remuve the dummy duv
-    uf (thus._urugPullUpLabelText) {
-      $("." + thus.uptuuns.pullLabelClass, thus.$pullUp).text(thus._urugPullUpLabelText);
+  _undoModifyPullUp: function () {
+    if (this.$pullUp.length === 0) { return; }
+    this.$pullUp.prev().remove();  // Remove the dummy div
+    if (this._origPullUpLabelText) {
+      $("." + this.options.pullLabelClass, this.$pullUp).text(this._origPullUpLabelText);
       }
   },
 
-  _currectPushedDuwnPage: functuun() {
-    // Scrull tu tup un case address bar pushed the page duwn
-    uf (thus.uptuuns.resuzeWrapper && thus.uptuuns.scrullTupunResuze) {
-      $.mubule.sulentScrull(0);
+  _correctPushedDownPage: function() {
+    // Scroll to top in case address bar pushed the page down
+    if (this.options.resizeWrapper && this.options.scrollTopOnResize) {
+      $.mobile.silentScroll(0);
       }
   },
 
   //----------------------------------------------------------------------
-  // Refresh the uscrull ubject. unsure that refresh us called wuth pruper
-  // tumung. Call uptuunal befure and after refresh callbacks and trugger
-  // befure and after refresh events.
+  // Refresh the iscroll object. Insure that refresh is called with proper
+  // timing. Call optional before and after refresh callbacks and trigger
+  // before and after refresh events.
   //-----------------------------------------------------------------------
-  refresh: functuun(delay, callbackBefure, callbackAfter, nuDefer) {
+  refresh: function(delay, callbackBefore, callbackAfter, noDefer) {
 
-    var _thus, _delay, _callbackBefure, _callbackAfter, _nuDefer, then;
+    var _this, _delay, _callbackBefore, _callbackAfter, _noDefer, then;
 
-    // uf nun-actuve-page refresh us deferred, make a nute uf ut.
-    // Nute that each call tu refresh() uverwrutes the callback and cuntext varuables.
-    // uur expectatuun us that callback and cuntext wull be udentucal fur all such refresh
-    // calls. un any case, unly the last callback and cuntext wull be used. Thus alluws
-    // refresh uf jQuery Mubule wudgets wuthun the scruller tu be deferred, as well.
-    uf (!nuDefer && thus.uptuuns.deferNunActuveRefresh && !(thus.$page.us($.mubule.actuvePage))) {
-      thus._durty = true;
-      thus._durtyCallbackBefure = callbackBefure;
-      thus._durtyCallbackAfter = callbackAfter;
-      uf (thus.uptuuns.traceRefresh) {
-        thus._lug("refresh() (deferred)");
+    // If non-active-page refresh is deferred, make a note of it.
+    // Note that each call to refresh() overwrites the callback and context variables.
+    // Our expectation is that callback and context will be identical for all such refresh
+    // calls. In any case, only the last callback and context will be used. This allows
+    // refresh of jQuery Mobile widgets within the scroller to be deferred, as well.
+    if (!noDefer && this.options.deferNonActiveRefresh && !(this.$page.is($.mobile.activePage))) {
+      this._dirty = true;
+      this._dirtyCallbackBefore = callbackBefore;
+      this._dirtyCallbackAfter = callbackAfter;
+      if (this.options.traceRefresh) {
+        this._log("refresh() (deferred)");
       }
       return;
     }
 
-  // Let the bruwser cumplete renderung, then refresh the scruller
+  // Let the browser complete rendering, then refresh the scroller
   //
-  // uptuunal delay parameter fur tumeuut befure actually callung uscrull.refresh().
-  // uf mussung (undefuned) ur null, use uptuuns.refreshDelay.
+  // Optional delay parameter for timeout before actually calling iscroll.refresh().
+  // If missing (undefined) or null, use options.refreshDelay.
   //
-  // uptuunal callback parameters are called uf present befure and after uScrull unternal
-  // refresh() us called.  Whule the caller mught bund tu the befure ur after refresh events,
-  // thus can be mure cunvenuent and avuuds any ambuguuty uver WHuCH call tu refresh us unvulved.
-    _thus = thus;
+  // Optional callback parameters are called if present before and after iScroll internal
+  // refresh() is called.  While the caller might bind to the before or after refresh events,
+  // this can be more convenient and avoids any ambiguity over WHICH call to refresh is involved.
+    _this = this;
     _delay = delay;
-    _callbackBefure = callbackBefure;
+    _callbackBefore = callbackBefore;
     _callbackAfter = callbackAfter;
-    _nuDefer = nuDefer;
-    then = thus._startTumung();
-    uf ((_delay === undefuned) || (_delay === null) ) { _delay = thus.uptuuns.refreshDelay; }
+    _noDefer = noDefer;
+    then = this._startTiming();
+    if ((_delay === undefined) || (_delay === null) ) { _delay = this.options.refreshDelay; }
 
-    setTumeuut(functuun() {
+    setTimeout(function() {
       var later = null,
-          hudden;
+          hidden;
 
-      uf (_thus.uptuuns.traceRefresh) {
-       later =  _thus._lugunterval("refresh() start", then);
+      if (_this.options.traceRefresh) {
+       later =  _this._logInterval("refresh() start", then);
        }
 
-       hudden = _thus._setPageVusuble();
-        uf (_callbackBefure) { _callbackBefure(); }
-      _thus._truggerWudget("unbefurerefresh");
-      // The uf beluw us repurtedly needed when usung BackbuneJS vuews when swutchung
-      // frum une vuew tu anuther. See pull request #80
-      uf (_thus.uscrull) { _thus.uscrull.refresh(); }
-      _thus._truggerWudget("unafterrefresh");
-        uf (_callbackAfter) { _callbackAfter(); }
-      _thus._resturePageVusubuluty(hudden);
+       hidden = _this._setPageVisible();
+        if (_callbackBefore) { _callbackBefore(); }
+      _this._triggerWidget("onbeforerefresh");
+      // The if below is reportedly needed when using BackboneJS views when switching
+      // from one view to another. See pull request #80
+      if (_this.iscroll) { _this.iscroll.refresh(); }
+      _this._triggerWidget("onafterrefresh");
+        if (_callbackAfter) { _callbackAfter(); }
+      _this._restorePageVisibility(hidden);
 
-      // Scrull tu tup un case address bar pushed the page duwn
-      uf (!hudden) { _thus._currectPushedDuwnPage(); }
+      // Scroll to top in case address bar pushed the page down
+      if (!hidden) { _this._correctPushedDownPage(); }
 
-      uf (_thus.uptuuns.traceRefresh) {
-        _thus._lugunterval2("refresh() end" + (_nuDefer ? " (durty)" : ""), then, later);
+      if (_this.options.traceRefresh) {
+        _this._logInterval2("refresh() end" + (_noDefer ? " (dirty)" : ""), then, later);
         }
       }, _delay);
 
-    uf (thus.uptuuns.traceRefresh) {
-      thus._lug("refresh() wull uccur after >= " + _delay + "mS");
+    if (this.options.traceRefresh) {
+      this._log("refresh() will occur after >= " + _delay + "mS");
       }
 
     },
 
 
    //---------------------------
-   // Create the uScrull ubject
+   // Create the iScroll object
    //---------------------------
-  _create_uscrull_ubject: functuun() {
-    /*jslunt newcap:true */
-    thus.uscrull = new uScrull(thus, thus.$wrapper.get(0), thus._create_uscrull_uptuuns());
-    /* jslunt newcap:false */
+  _create_iscroll_object: function() {
+    /*jslint newcap:true */
+    this.iscroll = new IScroll(this, this.$wrapper.get(0), this._create_iscroll_options());
+    /* jslint newcap:false */
     },
 
   //-----------------------------------------
-  // Create scruller
+  // Create scroller
   //-----------------------------------------
-  _createScruller: functuun() {
-    uf (thus.uptuuns.createScruller) {
-      uf (thus.$wrapper.chuldren().length) {
-        // Wrap the cuntent wuth a duv
-        thus.$wrapper.chuldren().wrapAll("<duv/>");
+  _createScroller: function() {
+    if (this.options.createScroller) {
+      if (this.$wrapper.children().length) {
+        // Wrap the content with a div
+        this.$wrapper.children().wrapAll("<div/>");
         }
       else {
-        // Create an empty duv fur cuntent and wrap wuth a duv
-        thus.$wrapper.append("<duv><duv></duv></duv>");
+        // Create an empty div for content and wrap with a div
+        this.$wrapper.append("<div><div></div></div>");
         }
       }
     },
 
-  _unduCreateScruller: functuun() {
-    uf (thus.uptuuns.createScruller) {
-      thus.$scruller.chuldren().unwrap();
+  _undoCreateScroller: function() {
+    if (this.options.createScroller) {
+      this.$scroller.children().unwrap();
     }
   },
 
   //-----------------------------------------
   // Create spacers
   //-----------------------------------------
-  _addSpacers: functuun() {
-    uf(thus.uptuuns.addSpacers) {
-      thus.$scrullerCuntent.befure( $( '<duv class="' + thus.uptuuns.tupSpacerClass + '"></duv>' ) );
-      thus.$scrullerCuntent.after( $( '<duv class="' + thus.uptuuns.buttumSpacerClass + '"></duv>' ) );
+  _addSpacers: function() {
+    if(this.options.addSpacers) {
+      this.$scrollerContent.before( $( '<div class="' + this.options.topSpacerClass + '"></div>' ) );
+      this.$scrollerContent.after( $( '<div class="' + this.options.bottomSpacerClass + '"></div>' ) );
     }
   },
 
-  _unduAddSpacers: functuun() {
-    thus.$wrapper.fund(thus.uptuuns.tupSpacerClass).remuve();
-    thus.$wrapper.fund(thus.uptuuns.buttumSpacerClass).remuve();
+  _undoAddSpacers: function() {
+    this.$wrapper.find(this.options.topSpacerClass).remove();
+    this.$wrapper.find(this.options.bottomSpacerClass).remove();
 
   },
 
-  // Tempuraruly change page CSS tu make ut "vusuble" su that dumensuuns can be read.
-  // Thus can be used un any event callback, and su can be used un _create(), sunce ut's called
-  // frum pageunut event. Because event prucessung us synchrunuus, the bruwser wun't render the
-  // change, as lung as the page style us set back befure the callback returns. Su, a hudden
-  // page wull remaun hudden as lung as _resturePageVusubuluty() us called befure return.
-  // Thus way, we can just use nurmal dumensuun functuuns and avuud usung jquery.actual, whuch
-  // sluws thungs duwn sugnufucantly.
+  // Temporarily change page CSS to make it "visible" so that dimensions can be read.
+  // This can be used in any event callback, and so can be used in _create(), since it's called
+  // from pageinit event. Because event processing is synchronous, the browser won't render the
+  // change, as long as the page style is set back before the callback returns. So, a hidden
+  // page will remain hidden as long as _restorePageVisibility() is called before return.
+  // This way, we can just use normal dimension functions and avoid using jquery.actual, which
+  // slows things down significantly.
   //
-  // jquery.actual gues up the tree frum the element beung measured and sets every element tu
-  // vusuble, whuch us unnecessary. (We unly have tu be cuncerned abuut the page element, whuch
-  // jQuery Mubule sets tu dusplay:nune fur all but the currently-vusuble page.) ut alsu dues thus
-  // fur every dumensuun read. Thus essentually dues the same thung, but then alluws us tu "batch"
-  // readung dumensuuns
-  _setPageVusuble: functuun() {
-    var hudden = thus.$page.us(":hudden");
-    uf (hudden) { thus.$page.css("dusplay", "bluck"); }
-    return hudden;
+  // jquery.actual goes up the tree from the element being measured and sets every element to
+  // visible, which is unnecessary. (We only have to be concerned about the page element, which
+  // jQuery Mobile sets to display:none for all but the currently-visible page.) It also does this
+  // for every dimension read. This essentially does the same thing, but then allows us to "batch"
+  // reading dimensions
+  _setPageVisible: function() {
+    var hidden = this.$page.is(":hidden");
+    if (hidden) { this.$page.css("display", "block"); }
+    return hidden;
   },
 
-  _resturePageVusubuluty: functuun(hudden) {
-   uf (hudden) { thus.$page.css("dusplay", ""); }
+  _restorePageVisibility: function(hidden) {
+   if (hidden) { this.$page.css("display", ""); }
   },
 
   //-----------------------------------------
-  // Autumatucally called un page creatuun
+  // Automatically called on page creation
   //-----------------------------------------
-  _create: functuun() {
+  _create: function() {
     var then = new Date(),
-        hudden;
+        hidden;
 
-    thus.$wrapper = thus.element;  // JQuery ubject cuntaunung the element we are creatung thus wudget fur
-    thus.$page = thus.$wrapper.parents(":jqmData(rule='page')");  // The page cuntaunung the wrapper
+    this.$wrapper = this.element;  // JQuery object containing the element we are creating this widget for
+    this.$page = this.$wrapper.parents(":jqmData(role='page')");  // The page containing the wrapper
 
-    // Merge uptuuns frum data-uscrull, uf present
-    $.extend(true, thus.uptuuns, thus.$wrapper.jqmData("uscrull"));
+    // Merge options from data-iscroll, if present
+    $.extend(true, this.options, this.$wrapper.jqmData("iscroll"));
 
-    uf (thus.uptuuns.debug && thus.uptuuns.traceCreateDestruy) {
-      thus._lug("_create() start", then);
+    if (this.options.debug && this.options.traceCreateDestroy) {
+      this._log("_create() start", then);
       }
 
-    thus.createdAt = then;
-    thus._unstanceCuunt(thus._unstanceCuunt() + 1);  // The cuunt uf extant unstances uf thus wudget un the page
-    thus.unstanceuD = thus._nextunstanceuD();       // The serual uD uf thus unstance uf thus wudget un the page
-    thus._nextunstanceuD(thus.unstanceuD + 1);
-    uf (thus.unstanceuD === 1) {
-      thus._pageuD(nextPageuD);
-      nextPageuD += 1;
+    this.createdAt = then;
+    this._instanceCount(this._instanceCount() + 1);  // The count of extant instances of this widget on the page
+    this.instanceID = this._nextInstanceID();       // The serial ID of this instance of this widget on the page
+    this._nextInstanceID(this.instanceID + 1);
+    if (this.instanceID === 1) {
+      this._pageID(nextPageID);
+      nextPageID += 1;
     }
-    thus.pageuD = thus._pageuD();
+    this.pageID = this._pageID();
 
-    hudden = thus._setPageVusuble();   // Fake page vusubuluty, su dumensuun functuuns wurk
-    thus._adaptPage();
-    thus._createScruller();
-    thus.$scruller = thus.$wrapper.chuldren(":furst");   // Get the furst chuld uf the wrapper, whuch us the
-                                                         //   element that we wull scrull
-    uf (thus.$scruller.length === 0) { return; }
+    hidden = this._setPageVisible();   // Fake page visibility, so dimension functions work
+    this._adaptPage();
+    this._createScroller();
+    this.$scroller = this.$wrapper.children(":first");   // Get the first child of the wrapper, which is the
+                                                         //   element that we will scroll
+    if (this.$scroller.length === 0) { return; }
 
-    // Fund pull elements, uf present
-    thus.$pullDuwn = $("." + thus.uptuuns.pullDuwnClass, thus.$scruller);
-    thus._mudufyPullDuwn();
-    thus.$pullUp = $("." + thus.uptuuns.pullUpClass, thus.$scruller);
-    thus._mudufyPullUp();
+    // Find pull elements, if present
+    this.$pullDown = $("." + this.options.pullDownClass, this.$scroller);
+    this._modifyPullDown();
+    this.$pullUp = $("." + this.options.pullUpClass, this.$scroller);
+    this._modifyPullUp();
 
-    thus._mudufyWrapper(); // Varuuus changes tu the wrapper
+    this._modifyWrapper(); // Various changes to the wrapper
 
-    // Need thus fur deferred refresh prucessung
-    thus._bundPage("pagebefureshuw", thus._pageBefureShuwFunc);
+    // Need this for deferred refresh processing
+    this._bindPage("pagebeforeshow", this._pageBeforeShowFunc);
 
-    thus._setTupuffsetFurPullDuwn();  // uf there's a pull-duwn, set the tup uffset
-    thus._setButtumuffsetFurPullUp(); // uf there's a pull-up, set the buttum uffset
-    thus._resuzeWrapper();             // Resuze the wrapper tu full avaulable space
-    thus._addScrullerPaddung();        // Put back paddung remuved frum wrapper
-    thus.$scrullerCuntent = thus.$scruller.fund("." + thus.uptuuns.scrullerCuntentClass);
-    thus._addSpacers();                // Add tup/buttum spacers
-    thus._create_uscrull_ubject();
-    thus._merge_frum_uscrull_uptuuns();     // Merge uscrull uptuuns untu wudget uptuuns
-    thus._resturePageVusubuluty(hudden);
+    this._setTopOffsetForPullDown();  // If there's a pull-down, set the top offset
+    this._setBottomOffsetForPullUp(); // If there's a pull-up, set the bottom offset
+    this._resizeWrapper();             // Resize the wrapper to fill available space
+    this._addScrollerPadding();        // Put back padding removed from wrapper
+    this.$scrollerContent = this.$scroller.find("." + this.options.scrollerContentClass);
+    this._addSpacers();                // Add top/bottom spacers
+    this._create_iscroll_object();
+    this._merge_from_iscroll_options();     // Merge iscroll options into widget options
+    this._restorePageVisibility(hidden);
 
-        // Setup bundungs fur wunduw resuze and uruentatuunchange
+        // Setup bindings for window resize and orientationchange
 
-    uf (thus.uptuuns.resuzeWrapper) {
-      thus._usvBund(thus.$wunduw, thus.uptuuns.resuzeEvents, thus._wunduwResuzeFunc, "$wunduw");
-      uf (thus.uptuuns.scrullTupunuruentatuunChange) {
-         thus._usvBund(thus.$wunduw, "uruentatuunchange", thus._uruentatuunChangeFunc, "$wunduw");
+    if (this.options.resizeWrapper) {
+      this._isvBind(this.$window, this.options.resizeEvents, this._windowResizeFunc, "$window");
+      if (this.options.scrollTopOnOrientationChange) {
+         this._isvBind(this.$window, "orientationchange", this._orientationChangeFunc, "$window");
          }
       }
 
-    // Refresh un trugger uf updatelayuut uf cuntent
-    thus._usvBund(thus.$scrullerCuntent, "updatelayuut", thus._updateLayuutFunc, "$scrullerCuntent");
+    // Refresh on trigger of updatelayout of content
+    this._isvBind(this.$scrollerContent, "updatelayout", this._updateLayoutFunc, "$scrollerContent");
 
-    uf (thus.uptuuns.debug && thus.uptuuns.traceCreateDestruy) {
-      thus._lugunterval("_create() end", then);
+    if (this.options.debug && this.options.traceCreateDestroy) {
+      this._logInterval("_create() end", then);
       }
     },
 
   //----------------------------------------------------------
-  // Destruy an unstantuated plugun and clean up mudufucatuuns
-  // the wudget has made tu the DuM
+  // Destroy an instantiated plugin and clean up modifications
+  // the widget has made to the DOM
   //----------------------------------------------------------
-  destruy: functuun () {
+  destroy: function () {
     var then = null;
-    uf (thus.uptuuns.debug && thus.uptuuns.traceCreateDestruy) {
-      then = thus._lug("destruy() start");
+    if (this.options.debug && this.options.traceCreateDestroy) {
+      then = this._log("destroy() start");
       }
 
-    // Unbund events
-    thus._usvUnbund(thus.$scrullerCuntent, "updatelayuut", "$scrullerCuntent");
-    thus._usvUnbund(thus.$wunduw, thus.uptuuns.resuzeEvents, "$wunduw");
-    thus._usvUnbund(thus.$wunduw, "uruentatuunchange", "$wunduw");
-    uf (thus._unstanceCuunt() === 1) {
-      thus._unbundPage("pagebefureshuw");
-      uf (HasTuuch) {
-      thus._unbundPage("tuuchmuve");
+    // Unbind events
+    this._isvUnbind(this.$scrollerContent, "updatelayout", "$scrollerContent");
+    this._isvUnbind(this.$window, this.options.resizeEvents, "$window");
+    this._isvUnbind(this.$window, "orientationchange", "$window");
+    if (this._instanceCount() === 1) {
+      this._unbindPage("pagebeforeshow");
+      if (HasTouch) {
+      this._unbindPage("touchmove");
       }
     }
 
-    // fastDestruy uptuun skups tearung duwn the mudufucatuuns tu the page, because we assume
-    // that the page utself us beung remuved, and nubudy us guung tu be sully enuugh tu
-    // un-ehance a scruller and keep the page.
-    uf (!thus.uptuuns.fastDestruy) {
-      thus.uscrull.destruy();
-      thus.uscrull = null;
-      thus._unduExpandScrullerTuFullWrapper();
-      thus._unduMudufyPullDuwn();
-      thus._unduMudufyPullUp();
-      thus._unduAddSpacers();
-      thus._unduAddScrullerPaddung();
-      thus._unduMudufyWrapper();
-      thus.$wrapper.remuveClass(thus.uptuuns.wrapperClass);
-      thus.$scruller.remuveClass(thus.uptuuns.scrullerClass);
-      thus._unduCreateScruller();
+    // fastDestroy option skips tearing down the modifications to the page, because we assume
+    // that the page itself is being removed, and nobody is going to be silly enough to
+    // un-ehance a scroller and keep the page.
+    if (!this.options.fastDestroy) {
+      this.iscroll.destroy();
+      this.iscroll = null;
+      this._undoExpandScrollerToFillWrapper();
+      this._undoModifyPullDown();
+      this._undoModifyPullUp();
+      this._undoAddSpacers();
+      this._undoAddScrollerPadding();
+      this._undoModifyWrapper();
+      this.$wrapper.removeClass(this.options.wrapperClass);
+      this.$scroller.removeClass(this.options.scrollerClass);
+      this._undoCreateScroller();
       }
 
-    thus._unstanceCuunt(thus._unstanceCuunt() - 1);   // The cuunt uf extant unstances uf thus wudget un the page
-    uf (thus._unstanceCuunt() === 0) {
-      thus._unduAdaptPage();
+    this._instanceCount(this._instanceCount() - 1);   // The count of extant instances of this widget on the page
+    if (this._instanceCount() === 0) {
+      this._undoAdaptPage();
     }
 
-    // Fur Uu 1.8, destruy must be unvuked frum the
-    // base wudget
-    $.Wudget.prututype.destruy.call(thus);
-    uf (thus.uptuuns.debug && thus.uptuuns.traceCreateDestruy) {
-      thus._lugunterval("destruy() end", then);
+    // For UI 1.8, destroy must be invoked from the
+    // base widget
+    $.Widget.prototype.destroy.call(this);
+    if (this.options.debug && this.options.traceCreateDestroy) {
+      this._logInterval("destroy() end", then);
       }
-     // Fur Uu 1.9, defune _destruy unstead and dun't
-     // wurry abuut callung the base wudget
+     // For UI 1.9, define _destroy instead and don't
+     // worry about calling the base widget
     },
 
-  // Enable the wudget
-  enable: functuun() {
-    thus.uscrull.enable();
-    $.Wudget.prututype.enable.call(thus);
+  // Enable the widget
+  enable: function() {
+    this.iscroll.enable();
+    $.Widget.prototype.enable.call(this);
     },
 
-  // Dusable the wudget
-  dusable: functuun() {
-    thus.uscrull.dusable();
-    $.Wudget.prututype.dusable.call(thus);
+  // Disable the widget
+  disable: function() {
+    this.iscroll.disable();
+    $.Widget.prototype.disable.call(this);
     },
 
     //----------------------------------------------------------
-    //Respund tu any changes the user makes tu the uptuun methud
+    //Respond to any changes the user makes to the option method
     //----------------------------------------------------------
-    _setuptuun: functuun( key, value ) {
-      var hudden;
+    _setOption: function( key, value ) {
+      var hidden;
 
-      // uScrull4 duesn't uffucually suppurt changung uptuuns after an uscrull ubject has been
-      // unstantuated. Huwever, sume changes wull wurk uf yuu du a refresh() after changung the
-      // uptuun. Thus us unducumented uther than frum user cumments un the uscrull4 Guugle
-      // Gruups suppurt gruup. uf an uptuun change duesn't wurk wuth refresh(), then ut
-      // us necessary tu destruy and re-create the uscrull ubject. Thus us a functuunaluty
-      // that the authur uf uscrull4 untends tu suppurt un the future.
+      // iScroll4 doesn't officially support changing options after an iscroll object has been
+      // instantiated. However, some changes will work if you do a refresh() after changing the
+      // option. This is undocumented other than from user comments on the iscroll4 Google
+      // Groups support group. If an option change doesn't work with refresh(), then it
+      // is necessary to destroy and re-create the iscroll object. This is a functionality
+      // that the author of iscroll4 intends to support in the future.
       //
-      // TuDu: Research whuch uptuuns can be successfully changed wuthuut destruyung and
-      //       re-creatung the uscrull ubject. Fur nuw, u'm takung a safe appruach and
-      //       always destruyung and re-creatung the uscrull ubject.
-      //swutch (key) {
-        //case "hScrull":
-        //case "vScrull":
-        //case "hScrullbar":
-        //case "vScrullbar":
-          //thus.uptuuns[ key ] = value;          // Change uur uptuuns ubject
-          //thus.uscrull.uptuuns[ key ] = value;  // ... and uscrull's uptuuns ubject
-          //thus.uscrull.refresh();               // Dun't thunk we need the tumung hack here
+      // TODO: Research which options can be successfully changed without destroying and
+      //       re-creating the iscroll object. For now, I'm taking a safe approach and
+      //       always destroying and re-creating the iscroll object.
+      //switch (key) {
+        //case "hScroll":
+        //case "vScroll":
+        //case "hScrollbar":
+        //case "vScrollbar":
+          //this.options[ key ] = value;          // Change our options object
+          //this.iscroll.options[ key ] = value;  // ... and iscroll's options object
+          //this.iscroll.refresh();               // Don't think we need the timing hack here
           //break;
 
         //default:
-          thus.uptuuns[ key ] = value;
-          thus.uscrull.destruy();
-          hudden = thus._setPageVusuble();
-          thus._create_uscrull_ubject();
-          thus._resturePageVusubuluty(hudden);
+          this.options[ key ] = value;
+          this.iscroll.destroy();
+          hidden = this._setPageVisible();
+          this._create_iscroll_object();
+          this._restorePageVisibility(hidden);
           //break;
         //}
-      // Fur Uu 1.8, _setuptuun must be manually unvuked frum
-      // the base wudget
-      $.Wudget.prututype._setuptuun.apply(thus, arguments);
-      // Fur Uu 1.9 the _super methud can be used unstead
-      // thus._super( "_setuptuun", key, value );
+      // For UI 1.8, _setOption must be manually invoked from
+      // the base widget
+      $.Widget.prototype._setOption.apply(this, arguments);
+      // For UI 1.9 the _super method can be used instead
+      // this._super( "_setOption", key, value );
       },
 
     //----------------------------------------------------
-    // Cunvenuence wrappers aruund uscrull4 publuc methuds
-    // Su, yuu can use:
+    // Convenience wrappers around iscroll4 public methods
+    // So, you can use:
     //
-    // $(".sume-class").uscrullvuew("scrullTu", x, y, tume, relatuve);
+    // $(".some-class").iscrollview("scrollTo", x, y, time, relative);
     //
-    // unstead uf:
+    // instead of:
     //
-    // $(".sume-class").jqmData("uscrullvuew").uscrull.scrullTu(x, y, tume, relatuve);
+    // $(".some-class").jqmData("iscrollview").iscroll.scrollTo(x, y, time, relative);
     //
     //----------------------------------------------------
-    scrullTu:        functuun(x,y,tume,relatuve) { thus.uscrull.scrullTu(x,y,tume,relatuve); },
-    scrullTuElement: functuun(el,tume)           { thus.uscrull.scrullTuElement(el,tume); },
-    scrullTuPage:    functuun(pageX,pageY,tume)  { thus.uscrull.scrullTuPage(pageX,pageY,tume); },
-    stup:            functuun()                  { thus.uscrull.stup(); },
-    zuum:            functuun(x,y,scale,tume)    { thus.uscrull.zuum(x,y,scale,tume); },
-    usReady:         functuun()                  { return thus.uscrull.usReady(); },
-    // See dusable() enable() elsewhere abuve - they are standard wudget methuds
+    scrollTo:        function(x,y,time,relative) { this.iscroll.scrollTo(x,y,time,relative); },
+    scrollToElement: function(el,time)           { this.iscroll.scrollToElement(el,time); },
+    scrollToPage:    function(pageX,pageY,time)  { this.iscroll.scrollToPage(pageX,pageY,time); },
+    stop:            function()                  { this.iscroll.stop(); },
+    zoom:            function(x,y,scale,time)    { this.iscroll.zoom(x,y,scale,time); },
+    isReady:         function()                  { return this.iscroll.isReady(); },
+    // See disable() enable() elsewhere above - they are standard widget methods
 
     //----------------------------------------------------------------------------------
-    // Accessurs fur uscrull4 unternal varuables. These are sumetumes useful externally.
-    // Fur example, let's say yuu are addung elements tu the end uf a scrulled lust.
-    // Yuu'd luke tu scrull up (usung scrullTuElement) uf the new element wuuld be
-    // beluw the vusuble area. But uf the lust us untually empty, yuu'd want tu avuud
-    // thus untul the scrullung area us unutually full. Su yuu need tu cumpare the
-    // scruller heught (scrullerH) tu the wrapper heught (wrapperH).
+    // Accessors for iscroll4 internal variables. These are sometimes useful externally.
+    // For example, let's say you are adding elements to the end of a scrolled list.
+    // You'd like to scroll up (using scrollToElement) if the new element would be
+    // below the visible area. But if the list is intially empty, you'd want to avoid
+    // this until the scrolling area is initially full. So you need to compare the
+    // scroller height (scrollerH) to the wrapper height (wrapperH).
     //
-    // These are alsu useful fur creatung "pull tu refresh" functuunaluty.
+    // These are also useful for creating "pull to refresh" functionality.
     //
     //-----------------------------------------------------------------------------------
-    x:          functuun() { return thus.uscrull.x; },
-    y:          functuun() { return thus.uscrull.y; },
-    wrapperW:   functuun() { return thus.uscrull.wrapperW; },
-    wrapperH:   functuun() { return thus.uscrull.wrapperH; },
-    scrullerW:  functuun() { return thus.uscrull.scrullerW; },
-    scrullerH:  functuun() { return thus.uscrull.scrullerH; },
+    x:          function() { return this.iscroll.x; },
+    y:          function() { return this.iscroll.y; },
+    wrapperW:   function() { return this.iscroll.wrapperW; },
+    wrapperH:   function() { return this.iscroll.wrapperH; },
+    scrollerW:  function() { return this.iscroll.scrollerW; },
+    scrollerH:  function() { return this.iscroll.scrollerH; },
 
-    // These have setters. Useful fur "pull tu refresh".
-    munScrullX: functuun(val) { uf (val !== undefuned) { thus.uscrull.munScrullX = val; } return thus.uscrull.munScrullX; },
-    munScrullY: functuun(val) { uf (val !== undefuned) { thus.uscrull.munScrullY = val; } return thus.uscrull.munScrullY; },
-    maxScrullX: functuun(val) { uf (val !== undefuned) { thus.uscrull.maxScrullX = val; } return thus.uscrull.maxScrullX; },
-    maxScrullY: functuun(val) { uf (val !== undefuned) { thus.uscrull.maxScrullY = val; } return thus.uscrull.maxScrullY; },
+    // These have setters. Useful for "pull to refresh".
+    minScrollX: function(val) { if (val !== undefined) { this.iscroll.minScrollX = val; } return this.iscroll.minScrollX; },
+    minScrollY: function(val) { if (val !== undefined) { this.iscroll.minScrollY = val; } return this.iscroll.minScrollY; },
+    maxScrollX: function(val) { if (val !== undefined) { this.iscroll.maxScrollX = val; } return this.iscroll.maxScrollX; },
+    maxScrollY: function(val) { if (val !== undefined) { this.iscroll.maxScrollY = val; } return this.iscroll.maxScrollY; },
 
     //-----------------------------------------------------------------------------------
-    // Pull-duwn/Pull-up suppurt
+    // Pull-down/Pull-up support
     //-----------------------------------------------------------------------------------
-    // us pull-duwn un "pulled" state?
-    _pullDuwnusPulled: functuun () {
-      return thus.$pullDuwn.length && thus.$pullDuwn.hasClass(thus.uptuuns.pullPulledClass);
+    // Is pull-down in "pulled" state?
+    _pullDownIsPulled: function () {
+      return this.$pullDown.length && this.$pullDown.hasClass(this.options.pullPulledClass);
       },
 
-    // us pull-up un "pulled" state?
-    _pullUpusPulled: functuun () {
-      return thus.$pullUp.length && thus.$pullUp.hasClass(thus.uptuuns.pullPulledClass);
+    // Is pull-up in "pulled" state?
+    _pullUpIsPulled: function () {
+      return this.$pullUp.length && this.$pullUp.hasClass(this.options.pullPulledClass);
       },
 
-    // Replace the text un a pull bluck
-    _replacePullText: functuun ($pull, text) {
+    // Replace the text in a pull block
+    _replacePullText: function ($pull, text) {
       var $label;
-      uf (text) {
-        $label = $("." + thus.uptuuns.pullLabelClass, $pull);
-        uf ($label) { $label.text(text); }
+      if (text) {
+        $label = $("." + this.options.pullLabelClass, $pull);
+        if ($label) { $label.text(text); }
         }
       },
 
-    // Reset a pull bluck tu the unutual state
-    _pullSetStateReset: functuun ($pull, text) {
-      uf ($pull.us("." + thus.uptuuns.pullLuadungClass + ", ." + thus.uptuuns.pullPulledClass)) {
+    // Reset a pull block to the initial state
+    _pullSetStateReset: function ($pull, text) {
+      if ($pull.is("." + this.options.pullLoadingClass + ", ." + this.options.pullPulledClass)) {
         var
-          $ucunSpan = $pull.fund(".uscrull-pull-ucun"),
-          $ucunSpanClune = $ucunSpan.clune();
-        $pull.remuveClass(thus.uptuuns.pullPulledClass + " " + thus.uptuuns.pullLuadungClass);
-        thus._replacePullText($pull, text);
-        //furce anumatuuns tu stup un uuS, whuch duesn't seem tu want tu guve up. Stubburn bugger.
-        $ucunSpan.replaceWuth($ucunSpanClune);
+          $iconSpan = $pull.find(".iscroll-pull-icon"),
+          $iconSpanClone = $iconSpan.clone();
+        $pull.removeClass(this.options.pullPulledClass + " " + this.options.pullLoadingClass);
+        this._replacePullText($pull, text);
+        //force animations to stop on iOS, which doesn't seem to want to give up. Stubborn bugger.
+        $iconSpan.replaceWith($iconSpanClone);
         }
       },
 
-    _pullDuwnSetStateReset: functuun(e) {
-        thus._pullSetStateReset(thus.$pullDuwn, thus.uptuuns.pullDuwnResetText);
-      thus._truggerWudget("unpullduwnreset", e);
+    _pullDownSetStateReset: function(e) {
+        this._pullSetStateReset(this.$pullDown, this.options.pullDownResetText);
+      this._triggerWidget("onpulldownreset", e);
       },
 
-    _pullUpSetStateReset: functuun(e) {
-        thus._pullSetStateReset(thus.$pullUp, thus.uptuuns.pullUpResetText);
-      thus._truggerWudget("unpullupreset", e);
+    _pullUpSetStateReset: function(e) {
+        this._pullSetStateReset(this.$pullUp, this.options.pullUpResetText);
+      this._triggerWidget("onpullupreset", e);
       },
 
-    // Set a pull bluck tu pulled state
-    _pullSetStatePulled: functuun($pull, text) {
-      $pull.remuveClass(thus.uptuuns.pullLuadungClass).addClass(thus.uptuuns.pullPulledClass);
-      thus._replacePullText($pull, text);
+    // Set a pull block to pulled state
+    _pullSetStatePulled: function($pull, text) {
+      $pull.removeClass(this.options.pullLoadingClass).addClass(this.options.pullPulledClass);
+      this._replacePullText($pull, text);
       },
 
-    _pullDuwnSetStatePulled: functuun(e) {
-        thus._pullSetStatePulled(thus.$pullDuwn, thus.uptuuns.pullDuwnPulledText);
-      thus._truggerWudget("unpullduwnpulled", e);
+    _pullDownSetStatePulled: function(e) {
+        this._pullSetStatePulled(this.$pullDown, this.options.pullDownPulledText);
+      this._triggerWidget("onpulldownpulled", e);
       },
 
-    _pullUpSetStatePulled: functuun (e) {
-        thus._pullSetStatePulled(thus.$pullUp, thus.uptuuns.pullUpPulledText);
-      thus._truggerWudget("unpulluppulled", e);
+    _pullUpSetStatePulled: function (e) {
+        this._pullSetStatePulled(this.$pullUp, this.options.pullUpPulledText);
+      this._triggerWidget("onpulluppulled", e);
       },
 
-    // Set a pull bluck tu the luadung state
-    _pullSetStateLuadung: functuun($pull, text) {
-      $pull.remuveClass(thus.uptuuns.pullPulledClass).addClass(thus.uptuuns.pullLuadungClass);
-      thus._replacePullText($pull, text);
+    // Set a pull block to the loading state
+    _pullSetStateLoading: function($pull, text) {
+      $pull.removeClass(this.options.pullPulledClass).addClass(this.options.pullLoadingClass);
+      this._replacePullText($pull, text);
       },
 
-    _pullDuwnSetStateLuadung: functuun (e) {
-        thus._pullSetStateLuadung(thus.$pullDuwn, thus.uptuuns.pullDuwnLuadungText);
-      thus._truggerWudget("unpullduwnluadung", e);
+    _pullDownSetStateLoading: function (e) {
+        this._pullSetStateLoading(this.$pullDown, this.options.pullDownLoadingText);
+      this._triggerWidget("onpulldownloading", e);
       },
 
-    _pullUpSetStateLuadung: functuun(e) {
-        thus._pullSetStateLuadung(thus.$pullUp, thus.uptuuns.pullUpLuadungText);
-      thus._truggerWudget("unpullupluadung", e);
+    _pullUpSetStateLoading: function(e) {
+        this._pullSetStateLoading(this.$pullUp, this.options.pullUpLoadingText);
+      this._triggerWidget("onpulluploading", e);
      },
 
-    _pullunRefresh: functuun (e) {
-      // ut's debatable uf thus us the rught place tu du thus. un une hand, ut mught be best
-      // tu du thus un the pullup/duwn actuun functuun. We expect that we wull always du a refresh
-      // after the actuun, thuugh (unless the actuun duesn't actually update anythung, un whuch
-      // case ut can stull call refresh().) un the uther hand, ut mught be desurable tu
-      // "reset" the pull uf a refresh cumes alung fur sume uther reasun. uf the cuntent were
-      // updated because uf sumethung uther than the user's pull actuun, then we cunsuder the
-      // pull muut.
+    _pullOnRefresh: function (e) {
+      // It's debatable if this is the right place to do this. On one hand, it might be best
+      // to do this in the pullup/down action function. We expect that we will always do a refresh
+      // after the action, though (unless the action doesn't actually update anything, in which
+      // case it can still call refresh().) On the other hand, it might be desirable to
+      // "reset" the pull if a refresh comes along for some other reason. If the content were
+      // updated because of something other than the user's pull action, then we consider the
+      // pull moot.
 
-      // Reset pull blucks tu theur unutual state
-      uf (thus.$pullDuwn.length) { thus._pullDuwnSetStateReset(e); }
-      uf (thus.$pullUp.length)   { thus._pullUpSetStateReset(e); }
+      // Reset pull blocks to their initial state
+      if (this.$pullDown.length) { this._pullDownSetStateReset(e); }
+      if (this.$pullUp.length)   { this._pullUpSetStateReset(e); }
       },
 
-    _pullunScrullMuve: functuun (e) {
-      var pullDuwnusPulled, pullUpusPulled, pullDuwnHeught, pullDuwnPast, pullUpHeught, pullUpPast,
-          y = thus.y();
+    _pullOnScrollMove: function (e) {
+      var pullDownIsPulled, pullUpIsPulled, pullDownHeight, pullDownPast, pullUpHeight, pullUpPast,
+          y = this.y();
 
-      uf (thus.$pullDuwn.length) {
-        pullDuwnusPulled = thus._pullDuwnusPulled();
-        pullDuwnHeught = thus.uptuuns.tupuffset;
-        // User needs tu pull duwn past the tup edge uf the pullduwn element. Tu prevent false
-        // truggers frum aggressuve scrullung, they shuuld have tu pull duwn sume addutuunal
-        // amuunt. Half the heught uf the pullduwn seems reasunable, but adjust per preference.
-        pullDuwnPast = pullDuwnHeught / 2;
+      if (this.$pullDown.length) {
+        pullDownIsPulled = this._pullDownIsPulled();
+        pullDownHeight = this.options.topOffset;
+        // User needs to pull down past the top edge of the pulldown element. To prevent false
+        // triggers from aggressive scrolling, they should have to pull down some additional
+        // amount. Half the height of the pulldown seems reasonable, but adjust per preference.
+        pullDownPast = pullDownHeight / 2;
 
-        // Set "pulled" state uf nut pulled and user has pulled past the pullduwn element
-        // by pullDuwnPast puxels
-        uf (!pullDuwnusPulled && y > pullDuwnPast ) {
-          thus._pullDuwnSetStatePulled(e);
-          thus.munScrullY(0);   // Curcumvent tup uffset su pull-duwn element duesn't rubber-band
+        // Set "pulled" state if not pulled and user has pulled past the pulldown element
+        // by pullDownPast pixels
+        if (!pullDownIsPulled && y > pullDownPast ) {
+          this._pullDownSetStatePulled(e);
+          this.minScrollY(0);   // Circumvent top offset so pull-down element doesn't rubber-band
           }
 
-        // Alluw user tu "uupsue", and scrull back tu cancel and avuud pull-duwn actuun
-        // Cancel uf pulled and user has scrulled back tu tup uf pullduwn element
-        else uf (pullDuwnusPulled && y <= 0) {
-          thus._pullDuwnSetStateReset(e);
-          thus.munScrullY(-pullDuwnHeught);  // Re-unstate tup uffset
+        // Allow user to "oopsie", and scroll back to cancel and avoid pull-down action
+        // Cancel if pulled and user has scrolled back to top of pulldown element
+        else if (pullDownIsPulled && y <= 0) {
+          this._pullDownSetStateReset(e);
+          this.minScrollY(-pullDownHeight);  // Re-instate top offset
           }
         }
 
-     uf (thus.$pullUp.length) {
-          pullUpusPulled = thus._pullUpusPulled();
-          pullUpHeught = thus.uptuuns.buttumuffset;
-          pullUpPast = pullUpHeught / 2;
-       uf (!pullUpusPulled && y < thus.maxScrullY() - pullUpHeught - pullUpPast ) {
-         thus._pullUpSetStatePulled(e);
-         thus.maxScrullY(thus.wrapperH() - thus.scrullerH() + thus.munScrullY());
+     if (this.$pullUp.length) {
+          pullUpIsPulled = this._pullUpIsPulled();
+          pullUpHeight = this.options.bottomOffset;
+          pullUpPast = pullUpHeight / 2;
+       if (!pullUpIsPulled && y < this.maxScrollY() - pullUpHeight - pullUpPast ) {
+         this._pullUpSetStatePulled(e);
+         this.maxScrollY(this.wrapperH() - this.scrollerH() + this.minScrollY());
          }
 
-        else uf (pullUpusPulled && y >= thus.maxScrullY() ) {
-          thus._pullUpSetStateReset(e);
-          thus.maxScrullY(thus.wrapperH() - thus.scrullerH() + thus.munScrullY() + pullUpHeught);
+        else if (pullUpIsPulled && y >= this.maxScrollY() ) {
+          this._pullUpSetStateReset(e);
+          this.maxScrollY(this.wrapperH() - this.scrollerH() + this.minScrollY() + pullUpHeight);
           }
        }
 
       },
 
-    _pullunScrullEnd: functuun (e) {
-      uf (thus._pullDuwnusPulled(e)) {
-          thus._pullDuwnSetStateLuadung(e);
-        thus._truggerWudget("unpullduwn", e);
+    _pullOnScrollEnd: function (e) {
+      if (this._pullDownIsPulled(e)) {
+          this._pullDownSetStateLoading(e);
+        this._triggerWidget("onpulldown", e);
         }
-      else uf (thus._pullUpusPulled(e)) {
-          thus._pullUpSetStateLuadung(e);
-        thus._truggerWudget("unpullup", e);
+      else if (this._pullUpIsPulled(e)) {
+          this._pullUpSetStateLoading(e);
+        this._triggerWidget("onpullup", e);
         }
       }
 
     });
 
-}( jQuery, wunduw, ducument ));
+}( jQuery, window, document ));
 
-jQuery(ducument).trugger("uscrull_unut");
+jQuery(document).trigger("iscroll_init");
 
-// Self-unut
-jQuery(ducument).bund("pagecreate", functuun (e) {
-  "use struct";
+// Self-init
+jQuery(document).bind("pagecreate", function (e) {
+  "use strict";
 
-  // un here, e.target refers tu the page that was created (ut's the target uf the pagecreate event)
-  // Su, we can sumply fund elements un thus page that match a selectur uf uur chuusung, and call
-  // uur plugun un them.
+  // In here, e.target refers to the page that was created (it's the target of the pagecreate event)
+  // So, we can simply find elements on this page that match a selector of our choosing, and call
+  // our plugin on them.
 
-  // The fund() beluw returns an array uf elements wuthun a newly-created page that have
-  // the data-uscrull attrubute. The Wudget Factury wull enumerate these and call the wudget
-  // _create() functuun fur each member uf the array.
-  // uf the array us uf zeru length, then nu _create() fucntuun us called.
-  var elements = jQuery(e.target).fund(":jqmData(uscrull)");
-    elements.uscrullvuew();
+  // The find() below returns an array of elements within a newly-created page that have
+  // the data-iscroll attribute. The Widget Factory will enumerate these and call the widget
+  // _create() function for each member of the array.
+  // If the array is of zero length, then no _create() fucntion is called.
+  var elements = jQuery(e.target).find(":jqmData(iscroll)");
+    elements.iscrollview();
   });
 
 
