@@ -23,96 +23,11 @@
 	
 	<script type="text/javascript" src="cordova.js"></script>
 	
-	<style type="text/css">
-		/*Virtual Progress Bar*/
-		#progress-bar-container,
-		.progress-bar-container-complete,
-		.progress-bar-container{
-			height:3.5px;
-			margin-bottom:-1px;
-            top:0;
-            width:100%;
-            position:fixed;
-            z-index:1000;
-		}
-		.progress-bar-container-complete,
-		.virtual-progress-bar{
-			height:3.5px;
-			width:100%;
-			position:relative;
-            border-bottom: 1px solid #f7f7f7;
-            /* border-top: 1px solid #fff; */
-            background: #eee;
-		}
-		.progress-bar-container-complete,
-		.virtual-progress-bar .progress-bar{
-			height:100%;
-			/*background:#f6e492;background:#43A2C5;*/
-			
-            background:linear-gradient(to right, rgb(84, 232, 84), #4fc1e9);
-			/*
-			border-top:2px solid #f6e492;
-			border-bottom:1px solid #978634;*/
-			/*background:linear-gradient(to bottom, #978634, #6d5c0a);*/
-		}
-        .hidden{
-            display:none !important;
-        }
-        .notifications-container{
-            font-size:0.6em;
-        }
-        .notifications-container li{
-            padding:0.4em;
-        }
-        .notifications-detailed-message-container{
-            padding:0.6em !important;
-            border-bottom:1px solid #ddd;
-        }
-        .ui-li-count-count {
-            background-color: #2f728a !important;
-            border: 2px solid #43a2c4 !important;
-            position: absolute;
-            font-size: 0.8em;
-            font-weight: normal !important;
-            text-align: center;
-            border-radius: 20px;
-            padding: 0.2em .5em 0em .5em;
-            line-height: 1.6em;
-            min-height: 1.6em;
-            min-width: .64em;
-            right: 3.2em;
-            top: 50%;
-            margin-top: -1em;
-            text-shadow: none !important;
-            color: #fff !important;
-        }
-        a.clear-notifications{
-            text-decoration:none;
-            background-color: #111 !important;
-        }
-        a.clear-notifications:active,
-        a.clear-notifications:focus,
-        a.clear-notifications:hover{
-            background-color: #444 !important;
-        }
-        .update-server-button{
-            position:fixed !important;
-            bottom:10px;
-            right:10px;
-            z-index:2000;
-        }
-        
-        .ui-header h1.uploading-data-title{
-            line-height: 2em !important;
-            font-size: 1.4em !important;
-        }
-        .ui-header .ui-title, .ui-footer .ui-title {
-            margin-top: 0.2em !important; 
-            padding: 0em !important; 
-            font-family: Roboto Thin;
-            font-size: 2em !important;
-        }
-	</style>
+    <link rel="stylesheet" href="css/jquery.mobile-1.4.4.css" rel="stylesheet" type="text/css"/>
+	<link href="css/hack.css" media="screen" rel="stylesheet" type="text/css" />
+	<link href="css/jquery.mobile.iscrollview.css" media="screen" rel="stylesheet" type="text/css" />
+	<link href="css/jquery.mobile.iscrollview-pull.css" media="screen" rel="stylesheet" type="text/css" />
+    
 	
 	<style>
 		.products .ui-listview li .ui-btn p {
@@ -289,9 +204,6 @@
 
 	</style>
 	
-	<link rel="stylesheet" href="css/jquery.mobile-1.4.4.css"/>
-	<link href="css/jquery.mobile.iscrollview.css" media="screen" rel="stylesheet" type="text/css" />
-	<link href="css/jquery.mobile.iscrollview-pull.css" media="screen" rel="stylesheet" type="text/css" />
 </head>
 <body>
 
@@ -303,10 +215,10 @@
 				<ul data-role="listview" data-theme="b">
 				
 					<li class="lidec"><a data-transition="none" class="ui-btn ui-icon-shop ui-btn-icon-left" href="#sales" data-transition="none"><b>Sales</b></a></li>
-					<li class="lidec"><a data-transition="none" class="ui-btn ui-icon-info ui-btn-icon-left" href="#inventory"><b>Inventory</b><span class="ui-li-count ui-btn-corner-all">164</span></a></li>
+					<li class="lidec"><a data-transition="none" class="ui-btn ui-icon-info ui-btn-icon-left" href="#inventory"><b>Inventory</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
 					<li class="lidec"><a data-transition="none" class="ui-btn ui-icon-calendar ui-btn-icon-left" href="#records" data-transition="none"><b>Records</b></a></li>
-					<li class="lidec"><a data-transition="none" class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier" data-transition="none"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all">6</span></a></li>
-					<li class="lidec"><a data-transition="none" class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notifications" data-transition="none"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all">3</span></a></li>
+					<li class="lidec"><a data-transition="none" class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier" data-transition="none"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
+					<li class="lidec"><a data-transition="none" class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notifications" data-transition="none"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
 					<li class="lidec"><a data-transition="none" class="ui-btn ui-icon-gear ui-btn-icon-left" href="#settings" data-transition="none"><b>Settings</b></a></li>
 			
 				</ul>	
@@ -561,9 +473,10 @@
             
                 <li class="lidec"><a class="ui-btn ui-icon-home ui-btn-icon-left" href="#dashboard" data-transition="none"><b>Dashboard</b></a></li>
                 <li  class="lidec"><a class="ui-btn ui-icon-check ui-btn-icon-left" href="#sales" data-transition="none"><b>Sales</b></a></li>
-                <li class="lidec"><a class="ui-btn ui-icon-gear ui-btn-icon-left" href="#inventory"><b>Inventory</b><span class="ui-li-count ui-btn-corner-all">38</span></a></li>
-                <li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier" data-transition="none"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all">6</span></a></li>
-                <li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notifications" data-transition="none"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all">3</span></a></li>
+                <li class="lidec"><a class="ui-btn ui-icon-gear ui-btn-icon-left" href="#inventory"><b>Inventory</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
+                <li class="lidec"><a class="ui-btn ui-icon-gear ui-btn-icon-left" href="#records" data-transition="none"><b>Records</b></a></li>
+                <li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier" data-transition="none"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
+                <li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notifications" data-transition="none"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
                 <li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" href="#settings" data-transition="none"><b>Settings</b></a></li>
         
             </ul>	
@@ -861,8 +774,8 @@
 <div data-role="page" id="setPricing" >
 		
 		<div data-role="header" id="hd" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);" >
-				<a href="#inventory" class="upload-queue ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none" data-ajax="false">Menu</a>
-				<h1 >Set Pricing</h1>
+            <a href="#inventory" data-transition="none" class="upload-queue ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext">Menu</a>
+			<h1 >Set Pricing</h1>
 		<div class="notifications-container hidden" data-role="navbar" data-mini="true">
 			<ul>
 				<li><a href="#notifications" data-transition="none">
@@ -905,49 +818,23 @@
 						<br>
 							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
 						<br>
-						<div style="padding: 0.5em 1.5em 0.5em 1.5em;">
-						<table data-role="table"  style="" class="inventory ui-responsive" >
-							
-							<thead>
-							   <tr style="padding: 0em !important;">
-								 <th></th>
-								 <th style="padding-right: 0.5em;">Item</th>
-								 <th style="width: 15%; padding-right: 0.5em;  text-align: center !important;">Qty</th>
-								 <th style="width: 15%; padding-right: 0.5em;  text-align: center !important;">Cost Price (&#8358;)</th>
-								 <th style="width: 25%; padding-right: 0.5em;  text-align: center !important;">Selling Price (&#8358;)</th>
-							   </tr>
-							 </thead>
-							 <style type="text/css">
-								
-								tbody.stockLevels-container tr td{
-									vertical-align:middle;
-									display:table-cell;
-									text-shadow: none; color: black;
-									font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;
-								}
-								tbody.stockLevels-container tr:nth-child(odd) td{
-									background-color: #bde3ea; 
-								}
-								tbody.stockLevels-container tr:nth-child(even) td{
-									background-color: #fff;
-								}
-								
-								tbody.stockLevels-container tr td:nth-child(3),
-								tbody.stockLevels-container tr td:nth-child(4){
-									text-align: center !important;
-								}
-								thead{
-									background-color: #333; color: #fff !important;
-									font-family: Roboto Thin;
-								}
-							</style>
-							<tbody class="stockLevels-container">
-								
-							</tbody>
-							</table>
-						
-						</div>
-					
+						<div style="margin-left: 0.3125em; margin-right: 0.3125em;">
+                        <table data-role="table1" id="setpricing-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table table-stroke ui-table ui-table-columntoggle">
+                          <thead>
+                            <tr>
+                              <th data-priority="3" data-colstart="1" class="ui-table-priority-3">#</th>
+                              <th data-colstart="2">Product</th>
+                              <th data-priority="2" data-colstart="3" class="ui-table-priority-2">Qty</th>
+                              <th data-priority="4" data-colstart="5" class="ui-table-priority-4">Cost Price (&#8358;)</th>
+                              <th data-priority="1" data-colstart="4" class="ui-table-priority-1"><abbr title="Selling Price">Selling Price (&#8358;)</abbr></th>
+                            </tr>
+                          </thead>
+                          <tbody class="stockLevels-container">
+                            
+                          </tbody>
+                        </table>
+                        </div>
+                
 					<br>
 						
 					<br>
@@ -1018,20 +905,26 @@
 							</div>
 						
 						</div>
+						<div style="margin-left: 0.3125em; margin-right: 0.3125em;">
 						<br>
 						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
 						<br>
+                        </div>
 						<div class="ui-grid-a invt">
 							<div class="ui-block-a">
-								<input type="text"  name="item_barcode" id="item_barcode-field" placeholder="Barcode Number" style="height: 2.65em;" required data-validate="barcode" data-error-title="Invalid Barcode" data-error-msg="Please provide a valid barcode, barcodes cannot begin with zero(0)" />
+                                <div style="margin-left:0.3125em; margin-right:0.3125em; margin-top:0.6em;">
+                                    <input type="text"  name="item_barcode" id="item_barcode-field" placeholder="Barcode Number" style=" height: 2.6em;" required data-validate="barcode" data-error-title="Invalid Barcode" data-error-msg="Please provide a valid barcode, barcodes cannot begin with zero(0)" />
+                                </div>
 							</div>
 							<div class="ui-block-b" >
 								<a href="#" class="button-scan" data-role="button" data-theme="a" data-icon="camera"  style="background-color:green; border: none; text-shadow: none; color: white !important; " >Scan Barcode</a>
 							</div>
 						</div>
+                        <div style="margin-left: 0.3125em; margin-right: 0.3125em;">
 						<br>
 						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
 						<br>
+                        </div>
 						<div class="ui-grid-a invt">
 							<div class="ui-block-a" >
 								
@@ -1042,74 +935,49 @@
 								<a href="#" id="capture-image-button" data-role="button" data-theme="a" data-icon="camera"  style="background-color:green; border: none; text-shadow: none; color: white !important; " >Take Picture</a>
 							</div>
 						</div>
-						<br>
-						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
-						<br>
-						<input type="text" name="item_desc" id="item_desc-field" placeholder="Item Description" required data-validate="text" data-error-title="Invalid Item Description" data-error-msg="Please provide a valid item description" />
-						
-						<input type="hidden" name="item_image" id="item_image-field" placeholder="Item Image" />
-						
-						<br />
-						
-						
-						<input type="submit" value="Save Item" />
-						
-						<br>
-					</form>
-					
-						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
-						
-						<br>
-						<table data-role="table"  style="" class="inventory ui-responsive " >
+                        
+                        <div style="margin-left: 0.3125em; margin-right: 0.3125em;">
+                            <br>
+                            <p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+                            <br>
+                            <input type="text" name="item_desc" id="item_desc-field" placeholder="Item Description" required data-validate="text" data-error-title="Invalid Item Description" data-error-msg="Please provide a valid item description" />
+                            
+                            <input type="hidden" name="item_image" id="item_image-field" placeholder="Item Image" />
+                            
+                            <br />
+                            
+                            
+                            <input type="submit" value="Save Item" />
+                            
+                            <br>
+                        </div>
+                        
+                        </form>
+                        
+                        <div style="margin-left: 0.3125em; margin-right: 0.3125em;">
+                        
+                            <p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+                            
+                            <br>
+                            
+                            <table data-role="table1" id="newinventory-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table table-stroke ui-table ui-table-columntoggle">
+                              <thead>
+                                <tr>
+                                  <th data-priority="3" data-colstart="1" class="ui-table-priority-1">#</th>
+                                  <th data-colstart="2">Product</th>
+                                  <th data-priority="2" data-colstart="3" class="ui-table-priority-2" style="text-align:left;">Created On</th>
+                                </tr>
+                              </thead>
+                              <tbody id="newly-listed-inventory-container">
+                                
+                              </tbody>
+                            </table>
+                            
+                            <p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+                        
+                        </div>
+                        
 							
-						<style type="text/css">
-							tbody#newly-listed-inventory-container tr td:nth-child(1){
-								width: 10px !important;  background-color: #fff !important; text-align: center;
-							}
-							tbody#newly-listed-inventory-container tr td img{
-								height: 4em;
-							}
-							tbody#newly-listed-inventory-container tr td{
-								vertical-align:middle;
-							}
-							tbody#newly-listed-inventory-container tr td:nth-child(2){
-								text-shadow: none; color: black; font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;
-							}
-							tbody#newly-listed-inventory-container tr:nth-child(odd){
-								background-color: #bde3ea;
-							}
-							tbody#newly-listed-inventory-container tr:nth-child(even){
-								background-color: #fff;
-							}
-							tbody#newly-listed-inventory-container tr{
-								display:none;
-							}
-							tbody#newly-listed-inventory-container tr:nth-child(1),
-							tbody#newly-listed-inventory-container tr:nth-child(2),
-							tbody#newly-listed-inventory-container tr:nth-child(3),
-							tbody#newly-listed-inventory-container tr:nth-child(4),
-							tbody#newly-listed-inventory-container tr:nth-child(5){
-								display:table-row;
-							}
-							tbody#newly-listed-inventory-container tr:nth-child(odd){
-								background-color: #bde3ea; 
-							}
-							tbody#newly-listed-inventory-container tr:nth-child(even){
-								background-color: #fff;
-							}
-						</style>
-							<thead style="font-family: Roboto Thin; font-size:0.9em; font-weight: 100; background-color: #43a2c4; color: #fff;  line-height: 1.4em; text-shadow: none;">
-							   <tr style="padding: 0em !important;">
-								 <th></th>
-								 <th style="padding-right: 0.5em;">Item</th>
-								 <th style="padding-right: 0.5em;">Created On</th>
-							   </tr>
-							 </thead>
-							 <tbody id="newly-listed-inventory-container">
-							   
-							 </tbody>
-							</table>
-							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
 						</div>
 						<br>
 						
@@ -1271,58 +1139,22 @@
 						<br>
 							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
 						<br>
-						<div style="padding: 0.5em 1.5em 0.5em 1.5em;">
+						<div style="">
 						
-						<table data-role="table"  style="" class="inventory ui-responsive" >
-							
-							<thead style="font-family: Roboto Thin; opacity: 0.6; font-size:0.9em; font-weight: 100; background-color: #000; color:#fff;  line-height: 1.4em; text-shadow: none;">
-							   <tr style="padding: 0em !important;">
-								 <th></th>
-								 <th style="padding-right: 0.5em;">Product</th>
-								 <th style="width:5%; padding-right: 0.5em;">Qty</th>
-								 
-								 <th style="width: 20%; padding-right: 0.5em;  text-align: center !important;">Selling Price (&#8358;)</th>
-								
-								
-								 <th style="padding-right: 0.5em; text-align: center !important;">Supplier</th>
-							   </tr>
-							 </thead>
-							 <style type="text/css">
-								tbody.stockLevels-container tr td:nth-child(1) img{
-									max-height:60px;
-								}
-								
-								tbody.stockLevels-container tr td{
-									vertical-align:middle;
-									display:table-cell;
-									text-shadow: none; color: black;
-									font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;
-								}
-								tbody.stockLevels-container tr:nth-child(odd) td{
-									background-color: #bde3ea; 
-								}
-								tbody.stockLevels-container tr:nth-child(even) td{
-									background-color: #fff;
-								}
-								
-								tbody.stockLevels-container tr td:nth-child(1){
-									width: 10px !important;  background-color: #fff; text-align: center;
-								}
-								tbody.stockLevels-container tr td:nth-child(5){
-									font-size: 1em;
-								}
-								tbody.stockLevels-container tr td:nth-child(4){
-									text-align: center !important;
-								}
-								tbody.stockLevels-container tr td a{
-									color: white !important; background-color: green !important; margin: 0.3em 0 0 0.5em !important; font-family: 'Roboto Thin' !important; font-weight: normal !important; text-shadow: none !important; border: none !important;
-								}
-							</style>
-							<tbody class="stockLevels-container">
-								
-							</tbody>
-							</table>
-							
+                 <table data-role="table1" id="inventory-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table table-stroke ui-table ui-table-columntoggle">
+	              <thead>
+	                <tr>
+	                  <th data-priority="2" data-colstart="1" class="ui-table-priority-2">#</th>
+	                  <th data-colstart="2">Product</th>
+	                  <th data-priority="1" data-colstart="3" class="ui-table-priority-1">Qty</th>
+	                  <th data-priority="3" data-colstart="4" class="ui-table-priority-3"><abbr title="Selling Price">Selling Price(&#8358;)</abbr></th>
+                      <th data-priority="4" data-colstart="5" class="ui-table-priority-4"></th>
+	                </tr>
+	              </thead>
+	              <tbody class="stockLevels-container">
+	                
+	              </tbody>
+	            </table>
 							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
 						</div>
 						<br>
@@ -1352,10 +1184,10 @@
 				
 				
 					<li class="lidec"><a class="ui-btn ui-icon-home ui-btn-icon-left" href="#dashboard" data-transition="none"><b>Dashboard</b></a></li>
-					<li  class="lidec"><a class="ui-btn ui-icon-info ui-btn-icon-left" href="#inventory"data-transition="none"><b>Inventory</b><span class="ui-li-count ui-btn-corner-all">38</span></a></li>
+					<li  class="lidec"><a class="ui-btn ui-icon-info ui-btn-icon-left" href="#inventory"data-transition="none"><b>Inventory</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
 					<li class="lidec"><a class="ui-btn ui-icon-calendar ui-btn-icon-left" href="#records"data-transition="none"><b>Records</b></a></li>
 					<li class="lidec"><a class="ui-btn ui-icon-shop ui-btn-icon-left" href="#sales" data-transition="none"><b>Sales</b></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notifications" data-transition="none"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all">3</span></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notifications" data-transition="none"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
 					<li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" data-transition="none" href="#settings" data-transition="none"><b>Settings</b></a></li>
 			
 				</ul>	
@@ -1409,14 +1241,14 @@
 						<div class="ui-grid-a invt">
 							<div class="ui-block-a" ><input type="tel" name="mobile" id="mobile-field" data-validate="tel" placeholder="Mobile" protocol="tel:"></div>
 							
-							<div class="ui-block-b" ><a  href="#" id="mobile-field-link" data-role="button" data-theme="b" data-icon="phone" style=" font-weight: normal !important; text-shadow: none; background-color: green; border: none;">Call</a></div>
+							<div class="ui-block-b" ><a  href="#" id="mobile-field-link" data-role="button" data-theme="b" data-icon="phone" style="font-size:1.1em !important; font-weight: normal !important; text-shadow: none; background-color: green; border: none;">Call</a></div>
 						</div>
 						<br>
 							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
 						<br>
 						<div class="ui-grid-a invt">
 							<div class="ui-block-a" ><input type="email" name="email" id="email-field" data-validate="email" placeholder="Email" protocol="mailto:"></div>
-							<div class="ui-block-b" "><a href="#" id="email-field-link" data-role="button" data-theme="b" data-icon="mail" style="height: 1em; font-weight: normal !important; text-shadow: none; background-color: green; border: none;">Email</a></div>
+							<div class="ui-block-b"><a href="#" id="email-field-link" data-role="button" data-theme="b" data-icon="mail" style="font-size:1.1em !important; font-weight: normal !important; text-shadow: none; background-color: green; border: none;">Email</a></div>
 						</div>
 						<br>
 							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
@@ -1429,10 +1261,6 @@
 						<br>			
 						
 						<style type="text/css">
-							#last-supply-activity-container td,
-							#suppliers-list-container td{
-								font-size: 1em; color: white; text-shadow: none;
-							}
 							#last-supply-activity-container tr,
 							#suppliers-list-container tr{
 								display:none;
@@ -1452,66 +1280,46 @@
 							tbody#last-supply-activity-container tr td:nth-child(1){
 								width: 10px !important;  background-color: #fff !important; text-align: center;
 							}
-							tbody#last-supply-activity-container tr td{
-								vertical-align:middle;
-								display:table-cell;
-								text-shadow: none; color: black;
-								font-family: Roboto; font-size: 1em; font-weight: 400 !important;
-								text-align: center;
-							}
-							tbody#last-supply-activity-container tr td:nth-child(2){
-								text-align:left;
-							}
-							tbody#last-supply-activity-container tr:nth-child(odd){
-								background-color: #bde3ea; 
-							}
-							tbody#last-supply-activity-container tr:nth-child(even){
-								background-color: #fff;
-							}
 							tbody#last-supply-activity-container tr td img{
 								max-height:4em;
 							}
 						</style>
-						
-						<table data-role="table" class="inventory ui-responsive">
-						<thead>
-							<tr style="font-size:1em; font-weight: 100; background-color: #333; color: #fff;  line-height: 1.4em; text-shadow: none;">
-								<td>Suppliers</td>
-								<td>Modified On</td>
-							</tr>
-						</thead>
-						<tbody id="suppliers-list-container">
-							
-						</tbody>
-						</table>
+						<table data-role="table1" id="suppliers-list-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table table-stroke ui-table ui-table-columntoggle">
+                          <thead>
+                            <tr>
+                              <th data-colstart="1">Suppliers</th>
+                              <th data-priority="2" data-colstart="2" class="ui-table-priority-2">Modified On</th>
+                            </tr>
+                          </thead>
+                          <tbody id="suppliers-list-container">
+                            
+                          </tbody>
+                        </table>
 						
 						<br>
 						<span class="df" style="color: white; text-shadow: none !important; "><span  id="last-supply-activity-supplier-name"></span> &rarr; Last supply activity &darr;</span>
 						<br>
 						
 						<br>
-						<table data-role="table"  style="" class="inventory ui-responsive " >
-							
-							<thead style="opacity: 0.8; font-family: Roboto Thin; font-size:0.9em; font-weight: 100; background-color: #43a2c4; color: #fff;  line-height: 1.4em; text-shadow: none;">
-							   <tr style="padding: 0em !important;">
-								 <th></th>
-								 <th style="width:40%; padding-right: 0.5em;">Item</th>
-								 <th style="width:35%; padding-right: 0.5em;text-align: center !important;">Qty</th>
-								 <th style="width: 35%; padding-right: 0.5em; text-align: center !important;">Date</th>
-								
-							   </tr>
-							 </thead>
-							 <tbody id="last-supply-activity-container">
-							   
-							 </tbody>
-							</table>
-						
-						</table>
+                        <table data-role="table1" id="suppliers-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table table-stroke ui-table ui-table-columntoggle">
+                          <thead>
+                            <tr>
+                              <th data-priority="3" data-colstart="1" class="ui-table-priority-1">#</th>
+                              <th data-colstart="2">Product</th>
+                              <th data-priority="2" data-colstart="3" class="ui-table-priority-2">Qty</th>
+                              <th data-priority="3" data-colstart="4" class="ui-table-priority-3">Date</th>
+                            </tr>
+                          </thead>
+                          <tbody id="last-supply-activity-container">
+                            
+                          </tbody>
+                        </table>
 						
 						<br>
 						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
 						<br>
 						<span class="df" style="color: white; text-shadow: none !important; text-align: right;">Oustanding balance owed : <span id="supplier-amount-owed">0.00</span></span>
+						<br>
 						<br>
 						
 					</div>
@@ -1658,8 +1466,8 @@
 					<li class="lidec"><a class="ui-btn ui-icon-home ui-btn-icon-left" href="#dashboard" data-transition="none"><b>Dashboard</b></a></li>
 					<li  class="lidec"><a class="ui-btn ui-icon-check ui-btn-icon-left" href="#sales" data-transition="none"><b>Sales</b></a></li>
 					<li class="lidec"><a class="ui-btn ui-icon-gear ui-btn-icon-left" href="#records" data-transition="none"><b>Records</b></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier" data-transition="none"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all">6</span></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notifications" data-transition="none"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all">3</span></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier" data-transition="none"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notifications" data-transition="none"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
 					<li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" href="#settings" data-transition="none"><b>Settings</b></a></li>
 			
 			</ul>	
@@ -1763,58 +1571,22 @@
 							</div>
 						
 						</div>
-						
-						<table data-role="table"  style="" class="inventory ui-responsive" >
-							
-							<thead style="font-family: Roboto Thin; opacity: 0.6; font-size:0.9em; font-weight: 100; background-color: #43a2c4; color: white;  line-height: 1.4em; text-shadow: none;">
-							   <tr style="padding: 0em !important;">
-								 <th></th>
-								 <th style="padding-right: 0.5em;">Product</th>
-								 <th style="width:5%; padding-right: 0.5em;">Qty</th>
-								 
-								 <th style="width: 20%; padding-right: 0.5em;  text-align: center !important;">Selling Price (&#8358;)</th>
-								
-								
-								 <th style="padding-right: 0.5em; text-align: center !important;">Supplier</th>
-							   </tr>
-							 </thead>
-							 <style type="text/css">
-								tbody.stockLevels-container tr td:nth-child(1) img{
-									max-height:60px;
-								}
-								
-								tbody.stockLevels-container tr td{
-									vertical-align:middle;
-									display:table-cell;
-									text-shadow: none; color: black;
-									font-family: Roboto; font-size: 1.4em; font-weight: 400 !important;
-								}
-								tbody.stockLevels-container tr:nth-child(odd) td{
-									background-color: #bde3ea; 
-								}
-								tbody.stockLevels-container tr:nth-child(even) td{
-									background-color: #fff;
-								}
-								
-								tbody.stockLevels-container tr td:nth-child(1){
-									width: 10px !important;  background-color: #fff; text-align: center;
-								}
-								tbody.stockLevels-container tr td:nth-child(5){
-									font-size: 1em;
-								}
-								tbody.stockLevels-container tr td:nth-child(4){
-									text-align: center !important;
-								}
-								tbody.stockLevels-container tr td a{
-									color: white !important; background-color: green !important; margin: 0.3em 0 0 0.5em !important; font-family: 'Roboto Thin' !important; font-weight: normal !important; text-shadow: none !important; border: none !important;
-								}
-							</style>
-							<tbody class="stockLevels-container">
-								
-							</tbody>
-							</table>
-							
-						
+						<div style="margin-left:0.3125em; margin-right:0.3125em; ">
+                        <table data-role="table1" id="current-inventory-table-column-toggle" data-mode="columntoggle" class="inventory inventory-table ui-responsive table-stroke ui-table ui-table-columntoggle">
+                          <thead>
+                            <tr>
+                              <th data-priority="2" data-colstart="1" class="ui-table-priority-2">#</th>
+                              <th data-colstart="2">Product</th>
+                              <th data-priority="1" data-colstart="3" class="ui-table-priority-1">Qty</th>
+                              <th data-priority="3" data-colstart="4" class="ui-table-priority-3"><abbr title="Selling Price">Selling Price(&#8358;)</abbr></th>
+                              <th data-priority="4" data-colstart="5" class="ui-table-priority-4">Supplier</th>
+                            </tr>
+                          </thead>
+                          <tbody class="stockLevels-container">
+                            
+                          </tbody>
+                        </table>
+                        </div>
 						<br>
 					</div>
 					
@@ -1849,10 +1621,10 @@
 				
 				
 					<li class="lidec"><a class="ui-btn ui-icon-home ui-btn-icon-left" href="#dashboard" data-transition="none"><b>Dashboard</b></a></li>
-					<li  class="lidec"><a class="ui-btn ui-icon-info ui-btn-icon-left" href="#inventory" data-transition="none"><b>Inventory</b><span class="ui-li-count ui-btn-corner-all">38</span></a></li>
+					<li  class="lidec"><a class="ui-btn ui-icon-info ui-btn-icon-left" href="#inventory" data-transition="none"><b>Inventory</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
 					<li class="lidec"><a class="ui-btn ui-icon-gear ui-btn-icon-left" href="#records" data-transition="none"><b>Records</b></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier" data-transition="none"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all">6</span></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notifications" data-transition="none"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all">3</span></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier" data-transition="none"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notifications" data-transition="none"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
 					<li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" href="#settings" data-transition="none"><b>Settings</b></a></li>
 			
 				</ul>	
@@ -1921,13 +1693,6 @@
 											</a>
 										</li>
 										
-										<li>
-											<a class="ripple" href="#">
-												<img src="image bank/Coca Cola - 50cl.jpg" class="ui-li-thumb" />
-												<p>Coca Cola - 50cl</p>
-											</a>
-										</li>
-										
 										
 									</ul>
 								</div>
@@ -1938,7 +1703,7 @@
 						<div class="ui-block-b" style="width: 50%; padding-left: 3px;">
 						
 								<div style="background-color: #43a2c4; margin-top: 0.5em ;padding: 10px; border-radius: 5px; text-shadow: none; color: white;">
-										<span style=" float: left; line-height: 2em;color: white; font-family: Roboto Thin; font-size: 1.7em !important; font-weight: 300;">Shopping Cart  (<span id="items-in-cart">0</span> items)</span>
+										<span style=" float: left; line-height: 2em;color: white; font-family: Roboto Thin; font-size: 1.4em !important; font-weight: 300;">Shopping Cart  (<span id="items-in-cart">0</span> items)</span>
 										</br>
 										</br>
 										</br>
@@ -2135,34 +1900,34 @@
                                                 color:#fff;
                                             }
 										</style>
-										<table data-role="table" id="table-column-toggle" data-mode="" class="ui-responsive table-stroke">
-											<thead>
-												<tr style=" font-family: Roboto Thin; font-size: 1em; font-weight: bold !important; color: #bde3ea; border-bottom: 1px solid rgba(0,0,0,.05); line-height: 1.4em;">
-													<td style="width: 40%;">Item</td>
-													<td style="width: 10%; text-align: center;">Qty</td>
-													<td style="width: 20%; text-align: right;">Unit Price (&#8358;)</td>
-													<td style="width: 20%; text-align: right;">Total Price (&#8358;)</td>
-												</tr>
-											</thead>
-											<tbody style="font-family: Roboto Thin;" id="checkout-table-body">
-												
-											</tbody>
-											<tfoot>
+                                        <table data-role="table1" id="checkout-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table table-stroke ui-table ui-table-columntoggle">
+                                          <thead>
+                                            <tr>
+                                              <th data-colstart="1">Product</th>
+                                              <th data-priority="2" data-colstart="2" class="ui-table-priority-2">Qty</th>
+                                              <th data-priority="3" data-colstart="3" class="ui-table-priority-3">Unit Price (&#8358;)</th>
+                                              <th data-priority="1" data-colstart="4" class="ui-table-priority-1">Total Price (&#8358;)</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody id="checkout-table-body">
+                                            
+                                          </tbody>
+                                          <tfoot>
 												<tr style="border-bottom: none !important; ">
-													 <td style="padding-top: 1.2em; font-size: 1.2em; font-weight: 100;">VAT (&#8358;)</td>
-													 <td></td>
-													 <td></td>
-													 <td style="padding-top: 1.2em; padding-bottom: 1em; font-size: 1.2em; font-weight: 100; text-align:right;"><span id="checkout-vat">0.00</span></td> 
+													 <td>VAT (&#8358;)</td>
+													 <td class="ui-table-priority-2"></td>
+													 <td class="ui-table-priority-3"></td>
+													 <td class="ui-table-priority-1"><span id="checkout-vat">0.00</span></td> 
 												</tr>
 												
 												<tr style="border-bottom: none !important; ">
-													 <td style="padding-top: 1.2em; font-size: 1.2em; font-weight: 100;">Discount (&#8358;)</td>
-													 <td></td>
-													 <td></td>
-													 <td style="padding-top: 1.2em; padding-bottom: 1em; font-size: 1.2em; font-weight: 100; text-align: right;"><span id="checkout-discount">0.00</span></td>
+													 <td>Discount (&#8358;)</td>
+													 <td class="ui-table-priority-2"></td>
+													 <td class="ui-table-priority-3"></td>
+													 <td class="ui-table-priority-1"><span id="checkout-discount">0.00</span></td>
 												</tr>
 											</tfoot>
-										</table>
+                                        </table>
 									
 								</div>
 								<br>
@@ -2237,9 +2002,10 @@
 			
 					<li class="lidec"><a class="ui-btn ui-icon-home ui-btn-icon-left" href="#dashboard" data-transition="none"><b>Dashboard</b></a></li>
 					<li  class="lidec"><a class="ui-btn ui-icon-check ui-btn-icon-left" href="#sales" data-transition="none"><b>Sales</b></a></li>
+                    <li class="lidec"><a data-transition="none" class="ui-btn ui-icon-info ui-btn-icon-left" href="#inventory"><b>Inventory</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
 					<li class="lidec"><a class="ui-btn ui-icon-gear ui-btn-icon-left" href="#records" data-transition="none"><b>Records</b></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier" data-transition="none"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all">6</span></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notifications" data-transition="none"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all">3</span></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier" data-transition="none"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notifications" data-transition="none"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
 					<li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" href="#settings" data-transition="none"><b>Settings</b></a></li>
 			
 			</ul>	
@@ -2357,7 +2123,7 @@
 						
 						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
 						<br>	
-						<div class="ui-grid-a invt">
+						<div class="ui-grid-a invt" style="margin-left: -0.3125em; margin-right: -0.3125em;">
 							<div class="ui-block-a">
 								<a href="#" class="delete-record" data-role="button" data-theme="a" data-icon="delete" style=" height: 1.2em; font-weight: normal !important; text-shadow: none;  background-color: red; border: none; color: white;"><b>Delete Category</b></a>
 							</div>
@@ -2372,16 +2138,10 @@
 						<br>			
 						
 						
-						<span class="df" style="font-family: Roboto Thin; color: white; text-shadow: none !important; ">Category list</span>
-						
-						
 						<br>
 						
 						
 						<style type="text/css">
-							#category-list-container td{
-								font-size: 1em; color: white; text-shadow: none;
-							}
 							#category-list-container tr{
 								display:none;
 							}
@@ -2394,17 +2154,17 @@
 							}
 						</style>
 						
-						<table data-role="table" class="inventory ui-responsive">
-						<thead>
-							<tr style="font-size:1em; font-weight: 100; background-color: #333; color: #fff;  line-height: 1.4em; text-shadow: none;">
-								<td>Category</td>
-								<td>Modified On</td>
-							</tr>
-						</thead>
-						<tbody id="category-list-container">
-							
-						</tbody>
-						</table>
+                        <table data-role="table1" id="category-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table table-stroke ui-table ui-table-columntoggle">
+                          <thead>
+                            <tr>
+                              <th data-colstart="1">Category</th>
+                              <th data-priority="2" data-colstart="2" class="ui-table-priority-2">Modified On</th>
+                            </tr>
+                          </thead>
+                          <tbody id="category-list-container">
+                            
+                          </tbody>
+                        </table>
 						
 						<br>
 						
@@ -2483,15 +2243,15 @@
 								<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
 							<br>
 							
-							<div class="ui-grid-a invt">
-							<div class="ui-block-a" >
-								<a href="#" class="delete-record" key="" object="" data-role="button" data-theme="a" data-icon="delete" style=" height: 1.3em; font-weight: normal !important; text-shadow: none;  background-color: #d11411; border: none; color: white;"><b>Delete User</b></a>
-							</div>
-							
-							<div class="ui-block-b" >
-							<input type="submit" value="Save" data-theme="a" />
-							</div>
-						</div>
+							<div class="ui-grid-a invt" style="margin-left: -0.3125em; margin-right: -0.3125em;">
+                                <div class="ui-block-a" >
+                                    <a href="#" class="delete-record" key="" object="" data-role="button" data-theme="a" data-icon="delete" style=" height: 1.3em; font-weight: normal !important; text-shadow: none;  background-color: #d11411; border: none; color: white;"><b>Delete User</b></a>
+                                </div>
+                                
+                                <div class="ui-block-b" >
+                                    <input type="submit" value="Save" data-theme="a" />
+                                </div>
+                            </div>
 						<br>
 						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
 						
@@ -2500,14 +2260,10 @@
 						<br>			
 						
 						
-						<h3 style="color: white; text-shadow: none !important; ">User list</h3>
 						<br>
 						<style type="text/css">
-							#users-list-container td{
-								font-size: 1em; color: white; text-shadow: none;
-							}
 							#users-list-container tr{
-								display:none;
+                                display:none;
 							}
 							#users-list-container tr:nth-child(1),
 							#users-list-container tr:nth-child(2),
@@ -2518,18 +2274,19 @@
 							}
 						</style>
 						
-						<table data-role="table" class="inventory ui-responsive">
-						<thead>
-							<tr style="font-size:1em; font-weight: 100; background-color: #333; color: #fff;  line-height: 1.4em; text-shadow: none;">
-								<td>User Name</td>
-								<td>Email</td>
-								<td>Modified On</td>
-							</tr>
-						</thead>
-						<tbody id="users-list-container">
-							
-						</tbody>
-						</table>
+                        <table data-role="table1" id="users-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table table-stroke ui-table ui-table-columntoggle">
+                          <thead>
+                            <tr>
+                              <th data-colstart="1">Username</th>
+                              <th data-priority="1" data-colstart="2" class="ui-table-priority-1">Email</th>
+                              <th data-priority="2" data-colstart="3" class="ui-table-priority-2">Modified On</th>
+                            </tr>
+                          </thead>
+                          <tbody id="users-list-container">
+                            
+                          </tbody>
+                        </table>
+                        
 						
 						<br>
 						
@@ -2607,12 +2364,7 @@
 						<br>			
 						
 						
-						<h3 style="color: white; text-shadow: none !important; ">Stores list</h3>
-						<br>
 						<style type="text/css">
-							#stores-list-container td{
-								font-size: 1em; color: white; text-shadow: none;
-							}
 							#stores-list-container tr{
 								display:none;
 							}
@@ -2625,19 +2377,19 @@
 							}
 						</style>
 						
-						<table data-role="table" class="inventory ui-responsive">
-						<thead>
-							<tr style="font-size:1em; font-weight: 100; background-color: #333; color: #fff;  line-height: 1.4em; text-shadow: none;">
-								<td>Store</td>
-								<td>Users</td>
-								<td>Modified On</td>
-							</tr>
-						</thead>
-						<tbody id="stores-list-container">
-							
-						</tbody>
-						</table>
-						
+                        <table data-role="table1" id="store-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table table-stroke ui-table ui-table-columntoggle">
+                          <thead>
+                            <tr>
+                              <th data-colstart="1">Store</th>
+                              <th data-priority="1" data-colstart="2" class="ui-table-priority-1">Users</th>
+                              <th data-priority="2" data-colstart="3" class="ui-table-priority-2">Modified On</th>
+                            </tr>
+                          </thead>
+                          <tbody id="stores-list-container">
+                            
+                          </tbody>
+                        </table>
+                        
 						<br>
 						
 						
@@ -2744,10 +2496,10 @@
 				<ul data-role="listview" data-theme="b">
 				
 					<li class="lidec"><a class="ui-btn ui-icon-shop ui-btn-icon-left" href="#sales" data-transition="none"><b>Sales</b></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-info ui-btn-icon-left" href="#inventory"><b>Inventory</b><span class="ui-li-count ui-btn-corner-all">164</span></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-info ui-btn-icon-left" href="#inventory"><b>Inventory</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
 					<li class="lidec"><a class="ui-btn ui-icon-calendar ui-btn-icon-left" href="#records" data-transition="none"><b>Records</b></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier" data-transition="none"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all">6</span></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notifications" data-transition="none"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all">3</span></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier" data-transition="none"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
+					<li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notifications" data-transition="none"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
 					<li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" href="#settings" data-transition="none"><b>Settings</b></a></li>
 			
 				</ul>	

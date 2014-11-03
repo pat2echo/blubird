@@ -120,6 +120,7 @@ function test_for_active_user(){
         if( userInfo ){
             //registered
             //$('.app-user-name').text( 'Welcome ' + userInfo.name + '!' );
+            /*
             if( ! blubirdFileURL ){
                 var settings = {
                     message_title:'Invalid File System',
@@ -128,6 +129,7 @@ function test_for_active_user(){
                 };
                 display_popup_notice( settings );
             }
+            */
         }else{
             //signup
             $.mobile.navigate( "#signup", { transition : "none" });
@@ -1001,13 +1003,14 @@ function get_inventory_html( key , value ){
 	if(  value.item_sold )qty -= parseFloat( value.item_sold );
 	if( ! value.item_image )value.item_image = '';
 	
-	var html = '<tr id="'+key+'" class="'+value.category.replace(' ', '-')+'" timestamp="'+value.timestamp+'"><td><img src="' + blubirdFileURL + value.item_image+'" class="ui-li-thumb" /></td><td>'+value.item_desc+'</td><td>'+formatNum( qty )+'</td><td>'+formatNum( value.selling_price )+'</td><td >';
+	var html = '<tr id="'+key+'" class="'+value.category.replace(' ', '-')+'" timestamp="'+value.timestamp+'"><td class="ui-table-priority-2"><img src="' + blubirdFileURL + value.item_image+'" class="ui-li-thumb" /></td><td>'+value.item_desc+'</td><td class="ui-table-priority-1">'+formatNum( qty )+'</td><td class="ui-table-priority-3">'+formatNum( value.selling_price )+'</td>';
 	
+    html += '<td class="ui-table-priority-4">';
 	if( value.supplier ){
 		html += '<a href="tel:+23408183140303" data-role="button" data-mini="true" data-theme="a" data-icon="phone" class="ui-link ui-btn ui-btn-a ui-icon-phone ui-btn-icon-left ui-shadow ui-corner-all ui-mini"><b>Mrs Ateke</b></a>';
 	}
-	
-	html += '</td></tr>';
+    html += '</td>';
+	html += '</tr>';
 	
 	return html;
 };
@@ -1039,7 +1042,7 @@ function get_inventory_set_pricing_html( key , value ){
     
 	if( ! value.item_image )value.item_image = '';
     
-	return '<tr id="'+key+'" class="'+value.category.replace(' ', '-')+'" timestamp="'+value.timestamp+'"><td><img src="'+blubirdFileURL+value.item_image+'" class="ui-li-thumb"></td><td>'+value.item_desc+'</td><td>'+formatNum( qty )+'</td><td>'+formatNum( cp.toFixed(2) )+'</td><td><div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset"><input type="number" min="0" step="any" value="'+value.selling_price+'" default-value="'+value.selling_price+'" item="'+value.item_desc+'" class="inventory-pricing-input" key="'+key+'" cost-price="'+value.cost_price+'" /></div></td></tr>';
+	return '<tr id="'+key+'" class="'+value.category.replace(' ', '-')+'" timestamp="'+value.timestamp+'"><td class="ui-table-priority-3"><img src="'+blubirdFileURL+value.item_image+'" class="ui-li-thumb"></td><td>'+value.item_desc+'</td><td class="ui-table-priority-2">'+formatNum( qty )+'</td><td class="ui-table-priority-4">'+formatNum( cp.toFixed(2) )+'</td><td class="ui-table-priority-1"><div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset"><input type="number" min="0" step="any" value="'+value.selling_price+'" default-value="'+value.selling_price+'" item="'+value.item_desc+'" class="inventory-pricing-input" key="'+key+'" cost-price="'+value.cost_price+'" /></div></td></tr>';
 };
 
 function get_supplier_html( key , value ){
@@ -1051,7 +1054,7 @@ function get_supplier_html( key , value ){
 	var hours = date.getHours();
 	var minutes = date.getMinutes();
 	
-	return '<tr id="'+key+'" timestamp="'+value.timestamp+'"><td>'+value.supplier+' ('+value.location+')</td><td>'+year+'-'+months_of_year[ month ]+'-'+day+' '+hours+':'+minutes+'</td></tr>';
+	return '<tr id="'+key+'" timestamp="'+value.timestamp+'"><td>'+value.supplier+' ('+value.location+')</td><td class="ui-table-priority-2">'+year+'-'+months_of_year[ month ]+'-'+day+' '+hours+':'+minutes+'</td></tr>';
 };
 
 function get_category_html( key , value ){
@@ -1063,7 +1066,7 @@ function get_category_html( key , value ){
 	var hours = date.getHours();
 	var minutes = date.getMinutes();
 	
-	return '<tr id="'+key+'" timestamp="'+value.timestamp+'"><td>'+value.category+'</td><td>'+year+'-'+months_of_year[ month ]+'-'+day+' '+hours+':'+minutes+'</td></tr>';
+	return '<tr id="'+key+'" timestamp="'+value.timestamp+'"><td>'+value.category+'</td><td class="ui-table-priority-2">'+year+'-'+months_of_year[ month ]+'-'+day+' '+hours+':'+minutes+'</td></tr>';
 };
 
 function get_users_html( key , value ){
@@ -1075,7 +1078,7 @@ function get_users_html( key , value ){
 	var hours = date.getHours();
 	var minutes = date.getMinutes();
 	
-	return '<tr id="'+key+'" timestamp="'+value.timestamp+'"><td>'+value.name+'</td><td>'+value.email+'</td><td>'+year+'-'+months_of_year[ month ]+'-'+day+' '+hours+':'+minutes+'</td></tr>';
+	return '<tr id="'+key+'" timestamp="'+value.timestamp+'"><td>'+value.name+'</td><td class="ui-table-priority-1">'+value.email+'</td><td class="ui-table-priority-2">'+year+'-'+months_of_year[ month ]+'-'+day+' '+hours+':'+minutes+'</td></tr>';
 };
 
 function get_stores_html( key , value ){
@@ -1090,7 +1093,7 @@ function get_stores_html( key , value ){
 	if( minutes < 10 ){
 		minutes = '0'+''+minutes;
 	}
-	return '<tr id="'+key+'" timestamp="'+value.timestamp+'"><td>'+value.name+'</td><td>'+value.user+'</td><td>'+year+'-'+months_of_year[ month ]+'-'+day+' '+hours+':'+minutes+'</td></tr>';
+	return '<tr id="'+key+'" timestamp="'+value.timestamp+'"><td>'+value.name+'</td><td class="ui-table-priority-1">'+value.user+'</td><td class="ui-table-priority-2">'+year+'-'+months_of_year[ month ]+'-'+day+' '+hours+':'+minutes+'</td></tr>';
 };
 
 var ffs = null;
@@ -1104,7 +1107,7 @@ function initFileSystem( persistentFileSys ) {
   //conlog(persistentFileSys);
   persistentFileSys.root.getDirectory( 'blubirdimagebank', {create: true, exclusive: false}, function( persistentDirectory ) {
     blubirdFileURL = persistentDirectory.nativeURL;
-    alert(blubirdFileURL);
+    //alert(blubirdFileURL);
   }, fail);
 };
 
@@ -2056,7 +2059,7 @@ function get_last_supply_activity_html( stock ){
 	
     if( ! stock.item_image )stock.item_image = '';
     
-	return '<tr timestamp="'+stock.creationtimestamp+'"><td><img src="'+blubirdFileURL+stock.item_image+'" class="ui-li-thumb"></td><td>'+stock.item_desc+'</td><td>'+stock.item_qty+'</td><td>'+stock.date+'</td></tr>';
+	return '<tr timestamp="'+stock.creationtimestamp+'"><td class="ui-table-priority-1"><img src="'+blubirdFileURL+stock.item_image+'" class="ui-li-thumb"></td><td>'+stock.item_desc+'</td><td class="ui-table-priority-2">'+stock.item_qty+'</td><td class="ui-table-priority-3">'+stock.date+'</td></tr>';
 	
 };
 
@@ -3226,7 +3229,7 @@ $( document ).on( "pageshow", "#checkout", function() {
 				var amount = val.unit_ordered * val.unit_selling_price;
 				var up = parseFloat( val.unit_selling_price );
 				
-				html += '<tr><td class="label">'+val.item_desc+'</td><td>'+val.unit_ordered+'</td><td>' + formatNum( up.toFixed(2) ) + '</td><td>' + formatNum( amount.toFixed(2) ) + '</td></tr>';
+				html += '<tr><td class="label">'+val.item_desc+'</td><td class="ui-table-priority-2">'+val.unit_ordered+'</td><td class="ui-table-priority-3">' + formatNum( up.toFixed(2) ) + '</td><td class="ui-table-priority-1">' + formatNum( amount.toFixed(2) ) + '</td></tr>';
 			});
 			
 			var v = salesData.vat;
@@ -4146,6 +4149,12 @@ function ajaxSuccess( data , store ){
                 if( data.trigger_download ){
                     check_for_data_to_download();
                 }
+                
+                if( $('.update-server-button-container') ){
+                    $('.update-server-button-container')
+                    .addClass('hidden');
+                }
+            
 			}
 		break;
         case 'trigger-download':
@@ -4239,7 +4248,7 @@ function progress_bar_change(){
 					message_message: 'The request was taking too long!',
 					auto_close: 'no'
 				};
-				
+				display_popup_notice( settings );
 			}else{
 				//display retrying msg
 				
@@ -4248,12 +4257,13 @@ function progress_bar_change(){
 					message_message: 'Please Wait.',
 					auto_close: 'yes'
 				};
-				
+				//display_popup_notice( settings );
+                
 				//request resources again
 				ajax_send();
 				
 			}
-			display_popup_notice( settings );
+			
 			
 		}else{
 			$progress
