@@ -40,7 +40,7 @@
             font-size:0.6em;
         }
         .notifications-container li{
-            padding:0.4em;
+           
         }
         .notifications-detailed-message-container{
             padding:0.6em !important;
@@ -98,8 +98,10 @@
         }
         
         .inventory-table thead tr{
-            background-color: #000; 
+			background-color: rgb(112,112,112);
+            font-family: Roboto Thin !important;
             color:#fff;
+			text-shadow: none;
         }
         
         .inventory-table tfoot tr td:nth-child(3),

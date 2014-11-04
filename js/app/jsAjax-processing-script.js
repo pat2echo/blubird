@@ -519,7 +519,8 @@ function successful_submit_action( stored ){
 			upload[ stores.key ] = stores.key;
 			queueUpload( upload );
 			
-			$.mobile.navigate( "#dashboard", { transition : "none" });
+			//$.mobile.navigate( "#dashboard", { transition : "none" });
+            
 		}
 	break;
 	case 'inventory':
@@ -1029,7 +1030,7 @@ function get_new_inventory_html( key , value ){
 	
     if( ! value.item_image )value.item_image = '';
     
-	return '<tr id="'+key+'" class="'+value.category.replace(' ', '-')+'" timestamp="'+value.timestamp+'"><td><img src="'+blubirdFileURL+value.item_image+'" class="ui-li-thumb"></td><td>'+value.item_desc+'</td><td>'+year+'-'+months_of_year[ month ]+'-'+day+' '+hours+':'+minutes+'</td></tr>';
+	return '<tr id="'+key+'" class="'+value.category.replace(' ', '-')+'" timestamp="'+value.timestamp+'"><td class="ui-table-priority-1"><img src="'+blubirdFileURL+value.item_image+'" class="ui-li-thumb"></td><td>'+value.item_desc+'</td><td class="ui-table-priority-2">'+year+'-'+months_of_year[ month ]+'-'+day+' '+hours+':'+minutes+'</td></tr>';
 };
 
 function get_inventory_set_pricing_html( key , value ){
@@ -2186,8 +2187,6 @@ $( document ).on( "pagecreate", "#newInventory", function() {
 	 });
 	 
 	update_inventory_list_on_inventory_page();
-	
-	
 });
 
 function getLocation() {
@@ -2466,7 +2465,95 @@ function downloadFiles(){
         }
         
         if( file && file.name ){
-            
+            window.resolveLocalFileSystemURL( blubirdFileURL + file.name , function(){
+                //file exists - //clear file key from download list
+                clearFileKeyFromDownloadList();
+                downloadFiles();
+                
+            } , function(){
+                var fileTransfer = new FileTransfer();
+                
+                fileTransfer.download(
+                    pagepointer + "files/" + customUUID + "/" + file.name,
+                    blubirdFileURL + file.name,
+                    function( theFile ) {
+                        
+                        if( $('#downloading-image-files-container') && $('#downloading-image-files-container').attr('src') ){
+                            $('#downloading-image-files-container')
+                            .attr( 'src' , theFile.toURI()  );
+                        }
+                        //clear file key from download list
+                        clearFileKeyFromDownloadList();
+                        
+                        //call download / recurse
+                        downloadFiles();
+                    },
+                    function(error) {
+                        clearFileKeyFromDownloadList();
+                        downloadFiles();
+                    }
+                );
+            } );
+        }else{
+            document.location = document.location.origin + document.location.pathname;
+            $.mobile.navigate( "#dashboard", { transition : "none" });
+        }
+    }else{
+        var settings = {
+			message_title:'Invalid File System Path',
+			message_message: 'File Download Not Initiated',
+			auto_close: 'yes'
+		};
+		display_popup_notice( settings );
+        
+        document.location = document.location.origin + document.location.pathname;
+        $.mobile.navigate( "#dashboard", { transition : "none" });
+    }
+    
+};
+
+function movePackedFiles(){
+    if( ! blubirdFileURL ){
+        window.requestFileSystem( LocalFileSystem.PERSISTENT, 0, initFileSystem, fail );
+    }
+    
+    alert( 'ext1'+cordova.file.externalRootDirectory );
+	alert( 'ext2'+cordova.file.applicationStorageDirectory );
+    
+    if( blubirdFileURL ){
+        imageURI = cordova.file.applicationStorageDirectory+'imagebank/'+'42182603.jpg';
+        newFileName = '42182603.jpg';
+        
+        moveImageUriFromTemporaryToPersistent(imageURI, newFileName, function( ImageURI ){
+            if( $('#downloading-image-files-container') && $('#downloading-image-files-container').attr('src') ){
+                $('#downloading-image-files-container')
+                .attr( 'src' , ImageURI  );
+            }
+        });
+    }
+    document.location = document.location.origin + document.location.pathname;
+    $.mobile.navigate( "#dashboard", { transition : "none" });
+    
+    return false;
+    
+    if( blubirdFileURL ){
+        var pendingImages = getData( downloadImageKey );
+        var file = {};
+        
+        if( pendingImages ){
+            $.each( pendingImages , function( k , v ){
+                if( v && v.length > 4 ){
+                    file.name = v;
+                    file.id = k;
+                }
+                
+                if( file.name ){
+                    return false;
+                }
+            });
+        }
+        
+        if( file && file.name ){
             window.resolveLocalFileSystemURL( blubirdFileURL + file.name , function(){
                 //file exists - //clear file key from download list
                 clearFileKeyFromDownloadList();
@@ -3947,7 +4034,7 @@ function ajax_send(){
 		type:form_method,
 		data:ajax_data,
 		url: pagepointer+'php/app_request_processor.php'+ajax_get_url,
-		timeout:30000,
+		timeout:60000,
 		beforeSend:function(){
 			//Display Loading Gif
 			function_click_process = 0;
@@ -4007,6 +4094,8 @@ function ajaxError( event, request, settings, ex ){
     }
 };
 
+var registration = false;
+
 function ajaxSuccess( data , store ){
 	/*store data in local storage*/
 	if( $('h1.uploading-data-title') && $('h1.uploading-data-title').attr('default-text') ){
@@ -4044,9 +4133,14 @@ function ajaxSuccess( data , store ){
 				var stored = store_record( tempData );
 				successful_submit_action( stored );
 				
-				tempData = {};
-				console.log( 'as' , stored );
-				
+                if( data.begin_download ){
+					tempDownloadObjects = data.begin_download;
+                    registration = true;
+                    
+					$.mobile.navigate( "#update-progress", { transition : "none" } );
+				}else{
+					$.mobile.navigate( "#dashboard", { transition : "none" });
+				}
 				data.typ = '';
 			}
 		break;
@@ -4126,8 +4220,12 @@ function ajaxSuccess( data , store ){
             prepare_notifications_for_display();
             
             //start downloading images that don't exists
-            downloadFiles();
-            
+            if( registration ){
+                registration = false;
+                movePackedFiles();
+            }else{
+                downloadFiles();
+            }
 			//store data
 			ga( 'send' , 'pageview' , {'page': '/data-download-complete' , 'title': 'Data Download Complete '+customUUID } );
 		break;
@@ -4508,7 +4606,6 @@ function barchart( data ){
 	}
 };
 
-
 function fail(message) {
   // Do nothing.
   uploadingImageInprogess = 0;
@@ -4569,11 +4666,10 @@ function gotPictureTest(imageURI) {
     //alert('new file loc '+newImageURI);
   });
   
-   window.requestFileSystem( LocalFileSystem.PERSISTENT, 0, initFileSystem, fail );
+   //window.requestFileSystem( LocalFileSystem.PERSISTENT, 0, initFileSystem, fail );
 };
 
 function moveImageUriFromTemporaryToPersistent(imageURI, newFileName, callbackFunction) {
-
 //cordova.file.externalApplicationStorageDirectory
  window.resolveLocalFileSystemURI(imageURI, function(temporaryEntry) {
     //conlog(temporaryEntry);

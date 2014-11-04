@@ -970,7 +970,7 @@ html body .ui-group-theme-a .ui-bar-inherit {
 .ui-overlay-a,
 .ui-page-theme-a,
 .ui-page-theme-a .ui-panel-wrapper {
-	background-color: 			#f1f1f1/*{a-page-background-color}*/;
+	background: #f1f1f1;
 	border-color:	 		#f1f1f1 /*{a-page-border}*/;
 	color: 					#333 /*{a-page-color}*/;
 	text-shadow: 0 /*{a-page-shadow-x}*/ 1px /*{a-page-shadow-y}*/ 0 /*{a-page-shadow-radius}*/ 	#f3f3f3 /*{a-page-shadow-color}*/;
@@ -1195,6 +1195,8 @@ html head + body .ui-btn.ui-btn-b:visited {
 	color: 					#fff /*{b-bup-color}*/;
 	text-shadow: none;
 	font-weight: none;
+
+	font-size: 1.3em;
 }
 /* Button hover */
 .ui-page-theme-b .ui-btn:hover,
@@ -2581,6 +2583,7 @@ button.ui-btn-icon-notext,
 .ui-grid-d,
 .ui-grid-solo {
 	overflow: hidden;
+	
 }
 .ui-block-a,
 .ui-block-b,
@@ -2588,7 +2591,7 @@ button.ui-btn-icon-notext,
 .ui-block-d,
 .ui-block-e {
 	margin: 0;
-	padding: 0;
+	padding: 0.1em;
 	border: 0;
 	float: left;
 	min-height: 1px;
@@ -2628,8 +2631,8 @@ li.ui-block-e {
 [class*="ui-block-"] > button.ui-btn-icon-notext,
 .ui-header [class*="ui-block-"] > button.ui-btn,
 .ui-footer [class*="ui-block-"] > button.ui-btn {
-	margin-right: .3125em;
-	margin-left: .3125em;
+	margin-right: 0em;
+	margin-left: 0em;
 }
 .ui-grid-a > .ui-block-a,
 .ui-grid-a > .ui-block-b {
@@ -4617,7 +4620,14 @@ html .ui-popup .ui-field-contain > label + .ui-flipswitch {
 	transition: transform 300ms ease;
 }
 
-
+@media (max-device-width: 768px) and (orientation: landscape) {
+.respons .ui-block-a, .respons .ui-block-b {
+float: left;
+width: 100% !important;
+display: block !important;
+padding: 0em !important;
+}
+}
 
 /* Fix for Windows Phone issue #6349: unset the transition for transforms in case of fixed toolbars. */
 @media( max-device-width: 768px ) and (orientation: portrait) {
@@ -4831,12 +4841,21 @@ html .ui-popup .ui-field-contain > label + .ui-flipswitch {
 	font-weight: 100:
 
 }
-
 .panl{
 	border-radius: 5px;
 	background-color: #fff;
 	padding: 10px;
 	margin: 10px;
+	color: #333 !important;
+	text-shadow: none !important;
+ }
+ 
+ 
+.panl3{
+	border-radius: 5px;
+	background-color: #fff;
+	padding: 10px;
+	
 	color: #333 !important;
 	text-shadow: none !important;
  }
@@ -4849,7 +4868,6 @@ html .ui-popup .ui-field-contain > label + .ui-flipswitch {
 	color: #333 !important;
 	text-shadow: none !important;
  }
-
  p{
 	margin: 0em !important;
 	font-family: 'Roboto' !important;
@@ -5058,6 +5076,11 @@ and (max-device-width : 480px) {
 		display: none !important; 
 	   
 		}	
+		
+		.ngdr{
+		display: none !important; 
+	   
+		}	
 
 		.bdrsle{
 		border-top: 1px solid rgba(112,112,112,0.5) !important; 
@@ -5065,7 +5088,7 @@ and (max-device-width : 480px) {
 		}	
 
 		.fntsle{
-		font-size: 0.8em !important;
+		font-size: 0.7em !important;
 		
 		}
 		
@@ -5083,12 +5106,32 @@ and (max-device-width : 480px) {
 		width: 100%;
 		display:block;
 		padding: 0em !important;
-		margin-top: 0.5em;
+		
 		}
 		
 		.invt .ui-block-c{
 		width: 100%;
 		display:block;
+		padding: 0em !important;
+		
+		}
+		
+		.invt2 .ui-block-a{
+		width: 33% !important;
+		display: inline !important;
+		padding: 0em !important;
+		}
+
+		.invt2 .ui-block-b{
+		width: 33% !important;
+		display: inline !important;
+		padding: 0em !important;
+		margin-top: 0.5em;
+		}
+		
+		.invt2 .ui-block-c{
+		width: 33% !important;
+		display: inline !important;
 		padding: 0em !important;
 		margin-top: 1em;
 		}
@@ -5135,7 +5178,8 @@ and (max-device-width : 480px) {
 		}
 		
 		.ui-input-text input, .ui-input-search input{
-		font-size: 1em !important;
+		font-size: 1.3em !important;
+		line-height: 2em;
 		}
 		
 		.eml{ display: none !important;}
@@ -5164,4 +5208,55 @@ and (max-device-width : 480px) {
 		border-bottom: 1px solid rgba(0,0,0,.05); 
 		line-height: 1.4em;
 		}
+		
+					
+	/* Button up */
+.ui-page-theme-c .ui-btn,
+html .ui-bar-c .ui-btn,
+html .ui-body-c .ui-btn,
+html body .ui-group-theme-c .ui-btn,
+html head + body .ui-btn.ui-btn-c,
+/* Button visited */
+.ui-page-theme-c.ui-btn:visited,
+html .ui-bar-c .ui-btn:visited,
+html .ui-body-c .ui-btn:visited,
+html body .ui-group-theme-c .ui-btn:visited,
+html head + body .ui-btn.ui-btn-c:visited {
+	background-color: 			green /*{b-bup-background-color}*/;
+	border: 1px solid rgba(0,0,0,.05);
+	color: 					#fff /*{b-bup-color}*/;
+	text-shadow: none;
+	font-weight: none;
+	
+	font-size: 1.3em;
+	
+}
+	
+	/* Active button */
+.ui-page-theme-c .ui-btn.ui-btn-active,
+html .ui-bar-c.ui-btn.ui-btn-active,
+html .ui-body-c .ui-btn.ui-btn-active,
+html body .ui-group-theme-c .ui-btn.ui-btn-active,
+html head + body .ui-btn.ui-btn-c.ui-btn-active,
+/* Active checkbox icon */
+.ui-page-theme-c.ui-checkbox-on:after,
+html .ui-bar-c.ui-checkbox-on:after,
+html .ui-body-c .ui-checkbox-on:after,
+html body .ui-group-theme-c .ui-checkbox-on:after,
+.ui-btn.ui-checkbox-on.ui-btn-a:after,
+
+/* Active slider track */
+.ui-page-theme-c.ui-slider-track .ui-btn-active,
+html .ui-bar-c.ui-slider-track .ui-btn-active,
+html .ui-body-c .ui-slider-track .ui-btn-active,
+html body .ui-group-theme-c.ui-slider-track .ui-btn-active,
+html body div.ui-slider-track.ui-body-c.ui-btn-active {
+		background-color: 			green /*{b-bup-background-color}*/;
+	border: 1px solid rgba(0,0,0,.05);
+	color: 					#fff /*{b-bup-color}*/;
+	text-shadow: none;
+	font-weight: none;
+
+	font-size: 1.3em;
+}
 	
