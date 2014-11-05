@@ -1051,7 +1051,7 @@ html .ui-bar-a .ui-btn:active,
 html .ui-body-a .ui-btn:active,
 html body .ui-group-theme-a .ui-btn:active,
 html head + body .ui-btn.ui-btn-a:active {
-	background-color: 			#e8e8e8 /*{a-bdown-background-color}*/;
+	background-color: 			#43a2c4 /*{a-bdown-background-color}*/;
 	border-color:	 		#ddd /*{a-bdown-border}*/;
 	color: 					#333 /*{a-bdown-color}*/;
 	text-shadow: 0 /*{a-bdown-shadow-x}*/ 1px /*{a-bdown-shadow-y}*/ 0 /*{a-bdown-shadow-radius}*/ #f3f3f3 /*{a-bdown-shadow-color}*/;
@@ -1164,7 +1164,7 @@ html body .ui-group-theme-b a {
 html .ui-bar-b a:visited,
 html .ui-body-b a:visited,
 html body .ui-group-theme-b a:visited {
-    color: #22aadd /*{b-link-visited}*/;
+    color: #43a2c4 /*{b-link-visited}*/;
 }
 .ui-page-theme-b a:hover,
 html .ui-bar-b a:hover,
@@ -2591,7 +2591,7 @@ button.ui-btn-icon-notext,
 .ui-block-d,
 .ui-block-e {
 	margin: 0;
-	padding: 0.1em;
+	padding: 0.5em;
 	border: 0;
 	float: left;
 	min-height: 1px;
@@ -2602,6 +2602,7 @@ button.ui-btn-icon-notext,
 /* force new row */
 .ui-block-a {
 	clear: left;
+	
 }
 ul.ui-grid-a,
 ul.ui-grid-b,
@@ -4148,7 +4149,7 @@ div.ui-rangeslider label {
 .ui-input-search input,
 textarea.ui-input-text {
 	padding: .4em;
-	line-height: 1.4em;
+	line-height: 1.8em;
 	display: block;
 	width: 100%;
 	-webkit-box-sizing: border-box;
@@ -5105,6 +5106,7 @@ and (max-device-width : 480px) {
 		.invt .ui-block-b{
 		width: 100%;
 		display:block;
+		margin-top: 0.5em;
 		padding: 0em !important;
 		
 		}
@@ -5147,7 +5149,7 @@ and (max-device-width : 480px) {
 		}
 		
 		.invt a{
-		font-size: 1em !important;
+		
 		}
 		
 		.invtr {

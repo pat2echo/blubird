@@ -102,6 +102,8 @@
             font-family: Roboto Thin !important;
             color:#fff;
 			text-shadow: none;
+			font-size: 1.2em;
+			
         }
         
         .inventory-table tfoot tr td:nth-child(3),
@@ -110,7 +112,7 @@
         .inventory-table tbody tr td:nth-child(4),
         .inventory-table tr th:nth-child(4),
         .inventory-table tr th:nth-child(3){
-            text-align:right;
+            text-align: center;
         }
             tbody.stockLevels-container tr td:nth-child(1) img,
             tbody.stockLevels-container tr td:nth-child(1) img{

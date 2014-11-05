@@ -1004,7 +1004,9 @@ function get_inventory_html( key , value ){
 	if(  value.item_sold )qty -= parseFloat( value.item_sold );
 	if( ! value.item_image )value.item_image = '';
 	
-	var html = '<tr id="'+key+'" class="'+value.category+'" timestamp="'+value.timestamp+'"><td class="ui-table-priority-2"><img src="' + blubirdFileURL + value.item_image+'" class="ui-li-thumb" /></td><td>'+value.item_desc+'</td><td class="ui-table-priority-1">'+formatNum( qty )+'</td><td class="ui-table-priority-3">'+formatNum( value.selling_price )+'</td>';
+    //cordova.file.dataDirectory+'imagebank/'+value.item_image
+    //window.resolveLocalFileSystemURL(store + fileName, appStart, downloadAsset);
+	var html = '<tr id="'+key+'" class="'+value.category+'" timestamp="'+value.timestamp+'"><td class="ui-table-priority-2"><img src="' + blubirdFileURL + value.item_image + '" class="ui-li-thumb" /></td><td>'+value.item_desc+'</td><td class="ui-table-priority-1">'+formatNum( qty )+'</td><td class="ui-table-priority-3">'+formatNum( value.selling_price )+'</td>';
 	
     html += '<td class="ui-table-priority-4">';
 	if( value.supplier ){
@@ -2003,10 +2005,35 @@ $( document ).on( "pageshow", "#stores", function() {
 
 $( document ).on( "pagecreate", "#notifications", function() {
 	test_for_active_user();
+    
+    
+    $('#change-img')
+    .on('click', function(){
+        var url = $('#change-img-text').val();
+        
+        $('#not-cont')
+        .prepend('<img src="'+url+'imagebank/50158904.jpg" /><img src="'+url+'imagebank/80891093.jpg" />');
+    });
 });
 
 $( document ).on( "pageshow", "#notifications", function() {
 	//reset notifications counter
+    alert( 'ext1' + cordova.file.externalRootDirectory );
+	alert( 'ext2' + cordova.file.applicationStorageDirectory );
+	alert( 'ext3' + cordova.file.dataDirectory );
+    alert( 'ext4' + cordova.file.externalApplicationStorageDirectory );
+    alert( 'ext5' + cordova.file.applicationDirectory );
+    
+    var html = '<img src="imagebank/87162240.jpg" />';
+    html += '<img src="'+cordova.file.externalApplicationStorageDirectory+'imagebank/87162240.jpg" />';
+    html += '<img src="'+cordova.file.dataDirectory+'imagebank/87162240.jpg" />';
+    html += '<img src="'+cordova.file.applicationStorageDirectory+'imagebank/87162240.jpg" />';
+    html += '<img src="'+cordova.file.externalRootDirectory+'imagebank/87162240.jpg" />';
+    html += '<img src="'+cordova.file.applicationDirectory+'/www/imagebank/87162240.jpg" />';
+    
+    $('#not-cont')
+    .html( html );
+    
     prepare_notifications_for_display( 1 );
 });
 
@@ -2046,8 +2073,6 @@ $( document ).on( "pageshow", "#settings", function() {
 	//var userInfo = get_user_info();
 	
 	//window.requestFileSystem( window.TEMPORARY , 1024*1024 , onInitFs, errorHandler);
-	//alert( 'ext'+cordova.file.externalRootDirectory );
-	//alert( 'ext'+cordova.file.applicationStorageDirectory );
 	
 	/*
 	$.each( userInfo , function( k , v ){
@@ -2526,94 +2551,7 @@ function downloadFiles(){
 };
 
 function movePackedFiles(){
-    //downloadFiles();
-    //return false;
-    if( ! blubirdFileURL ){
-        window.requestFileSystem( LocalFileSystem.PERSISTENT, 0, initFileSystem, fail );
-    }
-    
-    //alert( 'ext1'+cordova.file.externalRootDirectory );
-	//alert( 'ext2'+cordova.file.applicationStorageDirectory );
-    
-    if( blubirdFileURL ){
-        imageURI = cordova.file.applicationStorageDirectory+'imagebank/'+'42182603.jpg';
-        newFileName = '42182603.jpg';
-        
-        moveImageUriFromTemporaryToPersistent(imageURI, newFileName, function( ImageURI ){
-            if( $('#downloading-image-files-container') && $('#downloading-image-files-container').attr('src') ){
-                $('#downloading-image-files-container')
-                .attr( 'src' , ImageURI  );
-            }
-        });
-    }
-    document.location = document.location.origin + document.location.pathname;
-    $.mobile.navigate( "#dashboard", { transition : "none" });
-    
-    return false;
-    
-    if( blubirdFileURL ){
-        var pendingImages = getData( downloadImageKey );
-        var file = {};
-        
-        if( pendingImages ){
-            $.each( pendingImages , function( k , v ){
-                if( v && v.length > 4 ){
-                    file.name = v;
-                    file.id = k;
-                }
-                
-                if( file.name ){
-                    return false;
-                }
-            });
-        }
-        
-        if( file && file.name ){
-            window.resolveLocalFileSystemURL( blubirdFileURL + file.name , function(){
-                //file exists - //clear file key from download list
-                clearFileKeyFromDownloadList();
-                downloadFiles();
-                
-            } , function(){
-                var fileTransfer = new FileTransfer();
-                
-                fileTransfer.download(
-                    pagepointer + "files/" + customUUID + "/" + file.name,
-                    blubirdFileURL + file.name,
-                    function( theFile ) {
-                        
-                        if( $('#downloading-image-files-container') && $('#downloading-image-files-container').attr('src') ){
-                            $('#downloading-image-files-container')
-                            .attr( 'src' , theFile.toURI()  );
-                        }
-                        //clear file key from download list
-                        clearFileKeyFromDownloadList();
-                        
-                        //call download / recurse
-                        downloadFiles();
-                    },
-                    function(error) {
-                        clearFileKeyFromDownloadList();
-                        downloadFiles();
-                    }
-                );
-            } );
-        }else{
-            document.location = document.location.origin + document.location.pathname;
-            $.mobile.navigate( "#dashboard", { transition : "none" });
-        }
-    }else{
-        var settings = {
-			message_title:'Invalid File System Path',
-			message_message: 'File Download Not Initiated',
-			auto_close: 'yes'
-		};
-		display_popup_notice( settings );
-        
-        document.location = document.location.origin + document.location.pathname;
-        $.mobile.navigate( "#dashboard", { transition : "none" });
-    }
-    
+    downloadFiles();
 };
 
 function clearFileKeyFromDownloadList(){

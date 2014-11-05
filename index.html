@@ -605,7 +605,7 @@
 				
 				
 			</div>
-             
+            <br>
 			<div data-role="collapsible-set" data-theme="b" data-content-theme="a" id="sales-records-container">
 			
 			<div style="" data-role="collapsible" data-theme="b" data-content-theme="a" data-inset="false">
@@ -652,6 +652,7 @@
 				</ul>
 			</div><!-- /navbar -->
 		</div><!-- /footer -->
+
 </div><!--./records-page-->
 
 <div data-role="page" id="signup">
@@ -739,14 +740,12 @@
 			<br>
 		
 			
-			<div class="ui-grid-b invt">
+			<div class="ui-grid-a invt">
 			<div class="ui-block-a">
 				<input type="submit" value="Login" data-theme="c" />
 			</div>
-			<div class="ui-block-b" style="text-align: center; font-family: Roboto Thin; font-size: 1.3em; height: 1.5em; ">
-				or
-			</div>
-			<div class="ui-block-c">
+			
+			<div class="ui-block-b">
 				<input type="submit" value="Sign Up" data-theme="b" />
 			</div>
 		</div>
@@ -805,7 +804,7 @@
     <div class="progress-bar-container"></div>
     
 	<div data-role="content" style="background-color: #f1f1f1; ">
-	
+				<br>
 				<div style="background-color: #43a2c4 !important; border-radius: 5px; ">
 					<div style="padding: 1em 1em 0em 1em;">
 					
@@ -863,11 +862,11 @@
 				<br>
 				<div class="ui-grid-a invt" >
 					<div class="ui-block-a" >
-						<a href="#inventory" data-role="button" data-theme="a" data-icon="delete" style="margin: 0em 0.5em 0em 0em; background-color: #d11141; border: red; text-shadow: none; color: white !important;" ><b>Discard Changes</b></a>
+						<button href="#inventory" data-role="button" data-theme="a" data-icon="arrow-r" style=" background-color:#d11141;  border: green; text-shadow: none; color: white !important;" ><b>Discard Changes</b></button>
 					</div>
 					
 					<div class="ui-block-b">
-						<button id="set-inventory-pricing-1" href="#" data-role="button" data-theme="a" data-icon="arrow-r" style="margin: 0em 0.5em 0em 0em; background-color:green; border: green; text-shadow: none; color: white !important;" ><b>Finish</b></button>
+						<button id="set-inventory-pricing-1" href="#" data-role="button" data-theme="a" data-icon="arrow-r" style=" background-color:green; border: green; text-shadow: none; color: white !important;" ><b>Finish</b></button>
 					</div>
 				</div>
 				<br>
@@ -895,19 +894,31 @@
     
 		<div class="progress-bar-container"></div>
 
-		<div data-role="content" style="background: #fff; ">
-			<div style="background-color: #43a2c4 !important; border-radius: 5px; padding: 0.5em; ">
-					<div style="">
+		<div data-role="content" style="background: #f1f1f1; ">
+			<br>
+			<br>
+			<div style="background-color: #43a2c4 !important; border-radius: 5px; padding: 1em;">
+					
 						
 						
 						<form id="inventory-form" name="inventory" method="post" action="">
 						<input type="hidden" name="key" id="key-field" value="" />
+						
+						
+						
+									<label for="item_desc-field" style=" text-shadow: none; font-size: 1.5em; color: white; padding-top: 0.8em;">Item Description</label>
 							
+									<input type="text" name="item_desc" id="item_desc-field" placeholder="e.g Coca Cola - 35cl" required data-validate="text" data-error-title="Invalid Item Description" data-error-msg="Please provide a valid item description"/>
+							
+						
+							<br>
+								<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+                            <br>	
 						<div class="ui-grid-a invt" >
 							<div class="ui-block-a">
 								
 									<select id="item-select-field" >
-										<option style="text-shadow: none !important;"> - Select Item - </option>
+										<option style="text-shadow: none !important;">Select Item Description</option>
 									</select>
 								
 							</div>
@@ -915,7 +926,7 @@
 							<div class="ui-block-b">
 								
 								<select name="category" id="category-field" placeholder="Category" required data-validate="text" data-error-title="Invalid Category" data-error-msg="Please provide a valid category" >
-									<option value="" style="text-shadow: none !important;">Item Category</option>
+									<option value="" style="text-shadow: none !important;">Select Item Category</option>
 								</select>
 								
 							</div>
@@ -928,12 +939,16 @@
                         </div>
 						<div class="ui-grid-a invt">
 							<div class="ui-block-a">
-                                <div style="margin-left:0.3125em; margin-right:0.3125em; margin-top:0.6em;">
-                                    <input type="text"  name="item_barcode" id="item_barcode-field" placeholder="Barcode Number" style=" height: 2.6em;" required data-validate="barcode" data-error-title="Invalid Barcode" data-error-msg="Please provide a valid barcode, barcodes cannot begin with zero(0)" />
-                                </div>
+								<input type="text"  name="item_barcode" id="item_barcode-field" placeholder=""  required data-validate="barcode" data-error-title="Invalid Barcode" data-error-msg="Please provide a valid barcode, barcodes cannot begin with zero(0)" />
+                                
 							</div>
 							<div class="ui-block-b" >
-								<a href="#" class="button-scan" data-role="button" data-theme="c" data-icon="camera"  style="background-color:green; border: none; text-shadow: none; color: white !important; " >Scan Barcode</a>
+								<div style="margin-left:0.3125em; margin-right:0.3125em; ">
+                                    
+									<a href="#" class="button-scan" data-role="button" data-theme="c" data-icon="camera"  style="background-color:green; border: none; text-shadow: none; color: white !important; " >Scan Barcode</a>
+									
+									
+                                </div>
 							</div>
 						</div>
                         <div style="margin-left: 0.3125em; margin-right: 0.3125em;">
@@ -944,7 +959,7 @@
 						<div class="ui-grid-a invt">
 							<div class="ui-block-a" >
 								
-							<img src="icon.png" id="myImage" style="horizontal-align: middle; width:120px;">
+							<p style="text-align: center;"><img src="icon.png" id="myImage" style="horizontal-align: middle; width:120px;"></p>
 							</div>
 						
 							<div class="ui-block-b" >
@@ -958,38 +973,33 @@
 							
 							
 							
-									<label for="item_desc-field" style=" text-shadow: none; font-size: 1.3em; color: white; padding-top: 0.8em;">Item Description</label>
-							
-								
-								
-									<input type="text" name="item_desc" id="item_desc-field" placeholder="e.g Coca Cola - 35cl" required data-validate="text" data-error-title="Invalid Item Description" data-error-msg="Please provide a valid item description"/>
-							
-							
                             
                             <input type="hidden" name="item_image" id="item_image-field" placeholder="Item Image" />
                             
                             <br />
                             
                             
-                            <input type="submit" data-theme="c" value="Save Item" />
+                            <input type="submit" data-theme="c" data-icon="check" value="Save Item" />
                             
                             <br>
                        
                         
                         </form>
                         
-                        <div style="margin-left: 0.3125em; margin-right: 0.3125em;">
-                        
-                            <p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
-                            
-                            <br>
-                            
+						<br>
+						
+			</div>
+			<br>
+			<br>
+			<div style="background-color: #43a2c4 !important; border-radius: 5px; padding: 1em;">
+				
+                        <br>
                             <table data-role="table1" id="newinventory-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table table-stroke ui-table ui-table-columntoggle">
                               <thead>
-                                <tr style="font-family: Roboto Thin;">
-                                  <th data-priority="3" data-colstart="1" class="ui-table-priority-1">#</th>
-                                  <th data-colstart="2">Product</th>
-                                  <th data-priority="2" data-colstart="3" class="ui-table-priority-2" style="text-align:left;">Created On</th>
+                                <tr style="font-family: Roboto Thin !important;">
+                                  <th data-priority="3" data-colstart="1" class="ui-table-priority-1"></th>
+                                  <th data-colstart="2">Item</th>
+                                  <th data-priority="2" data-colstart="3" class="ui-table-priority-2" style="text-align: center;">Created On&nbsp; &nbsp;</th>
                                 </tr>
                               </thead>
                               <tbody id="newly-listed-inventory-container">
@@ -999,17 +1009,10 @@
                             
                             <p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
                         
-                        </div>
                         
+            </div>          
 							
-						</div>
-						<br>
-						
-						<br>
-						
-					</div>
-					
-				</div>
+		</div>
 				<br>
 				
 	
@@ -1139,20 +1142,21 @@
     <div class="progress-bar-container"></div>
 		
 		<div data-role="content" style="background: #f1f1f1;">
-	
+				<br><br>
 				<div style="background-color: #43a2c4 !important; border-radius: 5px;">
 					<div style="padding: 1em 1em 0em 1em;">
 					
 						<div class="ui-grid-a invt" >
 							<div class="ui-block-a">
-								<select id="filter-category-field" >
-									<option value="" style="text-shadow: none !important;">All Categories</option>
+								<select class="currently-active-store" id="filter-stores-field">
+									<option style="text-shadow: none !important;">Select Store</option>
 								</select>
+
 							</div>
 							
 							<div class="ui-block-b">
-								<select class="currently-active-store" id="filter-stores-field">
-									<option style="text-shadow: none !important;">Select Store</option>
+								<select id="filter-category-field" >
+									<option value="" style="text-shadow: none !important;">All Categories</option>
 								</select>
 							</div>
 						
@@ -1165,10 +1169,10 @@
                  <table data-role="table1" id="inventory-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table table-stroke ui-table ui-table-columntoggle">
 	              <thead>
 	                <tr>
-	                  <th data-priority="2" data-colstart="1" class="ui-table-priority-2">#</th>
+	                  <th data-priority="2" data-colstart="1" class="ui-table-priority-2"></th>
 	                  <th data-colstart="2">Product</th>
 	                  <th data-priority="1" data-colstart="3" class="ui-table-priority-1">Qty</th>
-	                  <th data-priority="3" data-colstart="4" class="ui-table-priority-3"><abbr title="Selling Price">Selling Price(&#8358;)</abbr></th>
+	                  <th data-priority="3" data-colstart="4" class="ui-table-priority-3"><abbr title="Selling Price">Selling Price (&#8358;)</abbr></th>
                       <th data-priority="4" data-colstart="5" class="ui-table-priority-4"></th>
 	                </tr>
 	              </thead>
@@ -1176,7 +1180,7 @@
 	                
 	              </tbody>
 	            </table>
-							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+							
 						</div>
 						<br>
 						<br>
@@ -1241,14 +1245,16 @@
                     <a href="#" class="update-server-button ui-btn ui-shadow ui-corner-all ui-icon-forward ui-btn-icon-notext">Update Server</a>
                 </div>
                 <br>
-				<div style="background-color: #43a2c4 !important; border-radius: 5px;">
-					<div style="padding: 1em 1em 0em 1em;">
+				<div style="background-color: #43a2c4 !important; padding: 1em ; border-radius: 5px;">
+					<div >
 					<br>
 						
 					<select name="supplier" id="supplier-select-box">
 						<option value="new">Add New Supplier</option>
 					</select>
 					<br>
+							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						<br>
 					<form method="post" action="" name="suppliers" id="suppliers-form">
 						<input type="hidden" name="key" id="key-field" value="" data-validate="text" />
 						<input type="text" name="supplier" id="supplier-field" placeholder="Supplier Name" required data-validate="text" data-error-title="Invalid supplier" data-error-msg="Provide a valid Supplier Name" />
@@ -1260,25 +1266,59 @@
 						<div class="ui-grid-a invt">
 							<div class="ui-block-a" ><input type="tel" name="mobile" id="mobile-field" data-validate="tel" placeholder="Mobile" protocol="tel:"></div>
 							
-							<div class="ui-block-b" ><a  href="#" id="mobile-field-link" data-role="button" data-theme="b" data-icon="phone" style="font-size:1.1em !important; font-weight: normal !important; text-shadow: none; background-color: green; border: none;">Call</a></div>
+							<div class="ui-block-b" ><a  href="#" id="mobile-field-link" data-role="button" data-theme="c" data-icon="phone" style="font-weight: normal !important; text-shadow: none; border: none;">Call</a></div>
 						</div>
 						<br>
 							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
 						<br>
 						<div class="ui-grid-a invt">
 							<div class="ui-block-a" ><input type="email" name="email" id="email-field" data-validate="email" placeholder="Email" protocol="mailto:"></div>
-							<div class="ui-block-b"><a href="#" id="email-field-link" data-role="button" data-theme="b" data-icon="mail" style="font-size:1.1em !important; font-weight: normal !important; text-shadow: none; background-color: green; border: none;">Email</a></div>
+							<div class="ui-block-b"><a href="#" id="email-field-link" data-role="button" data-theme="c" data-icon="mail" style="font-weight: normal !important; text-shadow: none;  border: none;">Email</a></div>
 						</div>
 						<br>
 							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
 						<br>
-						<input type="submit" value="Save" />
+						<input type="submit" data-icon="check" data-theme="c" value="Save" />
 					</form>
 					<br>
 					
-						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
-						<br>			
+					</div>
+					
+					
+					
+				
+				
+			</div>
+				<br><br>
+				<div style="background-color: #43a2c4 !important; padding: 1em ; border-radius: 5px;">
+					<span class="df" style="font-size: 1.5em; color: white; text-shadow: none !important; "><span  id="last-supply-activity-supplier-name"></span> Last supply activity &darr;</span>
+						<br>
 						
+						<br>
+                        <table data-role="table1" id="suppliers-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table table-stroke ui-table ui-table-columntoggle">
+                          <thead>
+                            <tr>
+                              <th data-priority="3" data-colstart="1" class="ui-table-priority-1"></th>
+                              <th data-colstart="2">Product</th>
+                              <th data-priority="2" data-colstart="3" class="ui-table-priority-2">Qty</th>
+                              <th data-priority="3" data-colstart="4" class="ui-table-priority-3">Date</th>
+                            </tr>
+                          </thead>
+                          <tbody id="last-supply-activity-container">
+                            
+                          </tbody>
+                        </table>
+						
+						<br>
+						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						<br>
+						<span class="df" style="color: white; text-shadow: none !important; text-align: right;">Oustanding balance owed : <span id="supplier-amount-owed">0.00</span></span>
+						<br>
+				
+				</div>
+				<br>
+				<br>
+				<div style="background-color: #43a2c4 !important; padding: 1em ; border-radius: 5px;">
 						<style type="text/css">
 							#last-supply-activity-container tr,
 							#suppliers-list-container tr{
@@ -1315,39 +1355,10 @@
                           </tbody>
                         </table>
 						
-						<br>
-						<span class="df" style="color: white; text-shadow: none !important; "><span  id="last-supply-activity-supplier-name"></span> &rarr; Last supply activity &darr;</span>
-						<br>
-						
-						<br>
-                        <table data-role="table1" id="suppliers-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table table-stroke ui-table ui-table-columntoggle">
-                          <thead>
-                            <tr>
-                              <th data-priority="3" data-colstart="1" class="ui-table-priority-1">#</th>
-                              <th data-colstart="2">Product</th>
-                              <th data-priority="2" data-colstart="3" class="ui-table-priority-2">Qty</th>
-                              <th data-priority="3" data-colstart="4" class="ui-table-priority-3">Date</th>
-                            </tr>
-                          </thead>
-                          <tbody id="last-supply-activity-container">
-                            
-                          </tbody>
-                        </table>
-						
-						<br>
-						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
-						<br>
-						<span class="df" style="color: white; text-shadow: none !important; text-align: right;">Oustanding balance owed : <span id="supplier-amount-owed">0.00</span></span>
-						<br>
-						<br>
-						
-					</div>
-					
-					
-					
-				
-				
-			</div>
+				</div>
+			
+			
+			
 			</div>
 		<div data-role="footer"  >
 			
@@ -1376,9 +1387,9 @@
 
 		<div data-role="content" style="background-color: #f1f1f1;">
 				<br>
-				<div style="background-color: #43a2c4 !important; border-radius: 5px; padding: 0.5em; ">
-					<div style="">
-			<form action="" method="post" name="stock" id="stock-form">
+				<br>
+			<div style="background-color: #43a2c4 !important; border-radius: 5px; padding: 1em; ">
+				<form action="" method="post" name="stock" id="stock-form">
 				
 					<div style="">
 						<input type="hidden" name="key" id="key-field" value="" />
@@ -1389,14 +1400,17 @@
 						
 						<div class="ui-grid-a invt" >
 							<div class="ui-block-a" style="padding: 0.4em;">
-								<select id="filter-category-field" >
-									<option value="" style="text-shadow: none !important;">Select Category</option>
-								</select>
+								
+								 <select name="store_name" id="store_name-field" placeholder="Select Store" required data-validate="text" data-error-title="Invalid Item" data-error-msg="Please select a store" class="currently-active-store">
+									
+								 </select>
+
 							</div>
 							<div class="ui-block-b" style="padding: 0.4em;">
-                                <select name="store_name" id="store_name-field" required data-validate="text" data-error-title="Invalid Item" data-error-msg="Please select a store" class="currently-active-store">
-                                    
-                                </select>
+									<select name="supplier" id="supplier-field" placeholder="Select Supplier" required data-validate="text" data-error-title="Invalid supplier" data-error-msg="Select a valid Supplier" >
+							<option value="" style="text-shadow: none !important;">Select Supplier</option>
+						</select>							
+								
 							</div>
 						</div>
 						
@@ -1407,9 +1421,9 @@
 								</select>
 							</div>
 							<div class="ui-block-b" style="padding: 0.4em;">
-								<select name="supplier" id="supplier-field" placeholder="Select Supplier" required data-validate="text" data-error-title="Invalid supplier" data-error-msg="Select a valid Supplier" >
-							<option value="" style="text-shadow: none !important;">Select Supplier</option>
-						</select>
+								<select id="filter-category-field" >
+									<option value="" style="text-shadow: none !important;">Select Item Category</option>
+								</select>
 							</div>
 						</div>
 						
@@ -1421,22 +1435,22 @@
 						
 						<div class="ui-grid-a invt">
 							<div class="ui-block-a" class="df" style="padding-right:0.5em;">
-								<label for="cost_price-field" style="font-size: 1.3em; font-family: Roboto Thin; color: white; text-shadow: none; ">Unit Cost Price:</label>
-								<input type="number" name="cost_price" id="cost_price-field" min="0" step="any" placeholder="Unit Cost Price" required data-validate="number" data-error-title="Invalid Cost Price" data-error-msg="Please provide a valid Cost Price" />
+								<label for="cost_price-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Unit Cost Price ( &#8358; ):</label>
+								<input type="number" name="cost_price" id="cost_price-field" min="0" step="any" placeholder="" required data-validate="number" data-error-title="Invalid Cost Price" data-error-msg="Please provide a valid Cost Price" />
 							</div>
 							<div class="ui-block-b" class="df" style="padding-left:0.5em;">
-								<label for="selling_price-field" style="font-size: 1.3em; font-family: Roboto Thin; color: white; text-shadow: none; ">Unit Selling Price:</label>
-								<input type="number" name="selling_price" id="selling_price-field" min="0" step="any" placeholder="Unit Selling Price" required data-validate="number" data-error-title="Invalid Selling Price" data-error-msg="Please provide a valid Selling Price" />
+								<label for="selling_price-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Unit Selling Price ( &#8358; ):</label>
+								<input type="number" name="selling_price" id="selling_price-field" min="0" step="any" placeholder="" required data-validate="number" data-error-title="Invalid Selling Price" data-error-msg="Please provide a valid Selling Price" />
 							</div>
 						</div>
 						<br />
 						<div class="ui-grid-a invt">
 							<div class="ui-block-a" style="padding-right:0.5em;">
-								<label for="item_qty-field" style="font-size: 1.3em; font-family: Roboto Thin; color: white; text-shadow: none; ">Item Quantity:</label>
-								<input type="number" name="item_qty" id="item_qty-field" min="0" step="1" placeholder="Item Quantity" required data-validate="number" data-error-title="Invalid Quantity" data-error-msg="Please provide a quantity" />
+								<label for="item_qty-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Item Quantity:</label>
+								<input type="number" name="item_qty" id="item_qty-field" min="0" step="1" placeholder="" required data-validate="number" data-error-title="Invalid Quantity" data-error-msg="Please provide a quantity" />
 							</div>
 							<div class="ui-block-b" style="padding-left:0.5em;">
-								<label for="expiry_date-field" style="font-size: 1.3em; font-family: Roboto Thin; color: white; text-shadow: none; ">Expiry Date:</label>
+								<label for="expiry_date-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Expiry Date:</label>
 								<input type="date" name="expiry_date" id="expiry_date-field" value="" data-validate="date" data-error-title="Invalid Expiry Date" data-error-msg="Please provide a valid expiry valid" />
 							</div>
 						</div>
@@ -1447,35 +1461,37 @@
 						<br>
 				</div>
 			</form>
+			</div>
 			
-			<form action="" method="post" name="supply" id="supply-form">
+			<br><br>
+			
+			<div style="background-color: #43a2c4 !important; border-radius: 5px; padding: 1em; ">
+				<form action="" method="post" name="supply" id="supply-form">
 				<div style="">
-						<label style="font-size: 1.3em; font-family: Roboto Thin; color: white; text-align: left; text-shadow: none; ">Supply Summary</label>
-						<br>
-						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						
 						<br>
 						<div class="ui-grid-a invt" >
 							<div class="ui-block-a" style="padding-right:0.5em;">
-								<label style="font-size: 1.3em; font-family: Roboto Thin; color: white; text-shadow: none; ">Total Cost of Supplied Items:</label>
+								<label style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Cost of Supplied Items :</label>
 								<input type="hidden" name="key" id="key-field" value="" required data-validate="text" data-error-title="No Items were Supplied!" data-error-msg="Please add items to stock first" />
-								<input type="text" id="total_amount-dummy" placeholder="Total Cost" data-placeholder="Total Cost of all Items Supplied : " disabled="true" />
+								<input type="text" id="total_amount-dummy" placeholder="" data-placeholder="Total Cost of all Items Supplied : " disabled="true" />
 							</div>
 							
 							<div class="ui-block-b" style="padding-left:0.5em;">
-								<label style="font-size: 1.3em; font-family: Roboto Thin; color: white; text-shadow: none; ">Total Amount Paid to Supplier:</label>
-								<input type="number" name="total_amount_paid" id="total_amount_paid-field" min="0" step="any" value="" placeholder="Total Amount Paid " />
+								<label style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Amount Paid to Supplier :</label>
+								<input type="number" name="total_amount_paid" id="total_amount_paid-field" min="0" step="any" value="" placeholder="" />
 							</div>
 						</div>
-						
+						<br>
 						<input type="hidden" name="total_amount" id="total_amount-field" placeholder="Total Cost of all Items Supplied : " data-validate="number" min="0" step="any" required data-validate="number" data-error-title="No Items were Supplied!" data-error-msg="Please add items to stock first" />
 					
 						<input type="hidden" name="total_items" id="total_items-field" placeholder="Total Number of all Items Supplied : " data-validate="number" min="0" step="1" required data-validate="number" data-error-title="No Items were Supplied!" data-error-msg="Please add items to stock first" />
 						
 						
 						<!--<input type="number" name="amount_paid" id="amount_paid-field" min="0" step="any" placeholder="Total Amount Paid to Supplier : " required data-validate="number" data-error-title="Invalid Amount Paid" data-error-msg="Please provide a valid amount" />-->
-						<br>
-						<label for="total_amount_owed-dummy" style="font-size: 1.3em; font-family: Roboto Thin; color: white; text-shadow: none; ">Total Amount Owed Supplier:</label>
-						<input type="text" id="total_amount_owed-dummy" placeholder="Amount Owed Supplier : " data-placeholder="Amount Owed " disabled="true" />
+						
+						<label for="total_amount_owed-dummy" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Amount Owed Supplier:</label>
+						<input type="text" id="total_amount_owed-dummy" placeholder="" data-placeholder="Amount Owed " disabled="true" />
 						<br>
 						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
 						<br>
@@ -1483,12 +1499,12 @@
 						<br>
 					</div>
 			</form>
+			</div>
+			
 			
 			</div>
 			
-			</div>
 			
-		</div>
 		
 </div>
 
@@ -1810,10 +1826,12 @@
 								<div style="background-color: #43a2c4; padding: 10px; border-radius: 5px; text-shadow: none; color: white;">
 									<div class="ui-grid-a">
 											<div class="ui-block-a" style="width: 55% !important;">
-												<label style="font-family: Roboto Thin; font-size: 1.5em; ">VAT</label><input type="checkbox"  data-role="flipswitch" name="vat-on-off-switch" id="vat-on-off-switch" checked="checked" />
+												<label style="font-family: Roboto Thin; font-size: 1.5em; ">VAT</label>
+												
+												<input type="checkbox"  data-role="flipswitch" name="vat-on-off-switch" id="vat-on-off-switch" checked="checked" />
 												
 											</div>
-											<div class="ui-block-b" style="width: 45% !important; text-align:right; font-size: 1.5em;">
+											<div class="ui-block-b" style="width: 45% !important; text-align:right; font-size: 1.7em;">
 												<span id="this-sale-total-amount-vat">0.00</span>
 											</div>
 									</div>
@@ -1839,18 +1857,13 @@
 								<div style="background-color: rgb(112,112,112); padding: 10px; border-radius: 5px; text-shadow: none; color: white; font-family: Roboto Thin; font-size: 1.7em;">
 									Total: &nbsp; <b id="this-sale-total-amount" style="float:right;">0.00</b>
 								</div>
-								<br>
-								
-								<div class="ui-grid-a" style="padding: 0em !important;">
-									<div class="ui-block-a">
+									<br>
 										<a class="co" href="#" id="cancel-order-button" data-role="button" data-theme="b" data-icon="delete" data-transition="none" style="font-family: Roboto Thin; background-color: #d11141; border: red; font-weight: normal !important; text-shadow: none;"><b>Cancel Order</b></a>
-									</div>
 									
-									<div class="ui-block-b">
 										<a class="cho" href="#checkout" id="confirm-this-sale-popup-display-button" data-role="button"  data-theme="b" data-icon="check" data-transition="none" style="font-family: Roboto Thin; font-weight: normal !important; text-shadow: none; background-color: green; border: none;"><b>Check Out</b></a>
-									</div>
+									
 								
-								</div>
+							
 								
 								<br>
 								<br>
@@ -2141,9 +2154,9 @@
     <div class="progress-bar-container"></div>
 		
 		<div data-role="content" style="background: #f1f1f1;">
-	
-				<div style="background-color: #43a2c4 !important; border-radius: 5px;">
-					<div style="padding: 1em 1em 0em 1em;">
+		<br>
+				<div style="background-color: #43a2c4 !important; border-radius: 5px; padding: 1em;">
+					<div style="">
 					
 					<select id="category-select-box" >
 						<option style="text-shadow: none !important;">New Category</option>
@@ -2159,20 +2172,27 @@
 						<br>	
 						<div class="ui-grid-a invt" style="margin-left: -0.3125em; margin-right: -0.3125em;">
 							<div class="ui-block-a">
-								<a href="#" class="delete-record" data-role="button" data-theme="a" data-icon="delete" style=" height: 1.2em; font-weight: normal !important; text-shadow: none;  background-color: red; border: none; color: white;"><b>Delete Category</b></a>
+							
+
+								<a href="#" class="delete-record" data-role="button" data-theme="c" data-icon="delete" style="font-weight: normal !important; text-shadow: none;  background-color: #d11141; border: none; color: white;"><b>Delete Category</b></a>
 							</div>
 							
 							<div class="ui-block-b">
-								<input type="submit" value="Save" data-role="button" />
+								<input type="submit" data-icon="check" data-theme="c" value="Save" data-role="button" />
 							</div>
 						</div>
 					</form>
-						<br>
-						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
-						<br>			
 						
-						
-						<br>
+					</div>
+					
+					
+					
+				
+				
+			</div>
+		<br><br>
+				<div style="background-color: #43a2c4 !important; border-radius: 5px; padding: 1em;">
+				<br>
 						
 						
 						<style type="text/css">
@@ -2203,14 +2223,8 @@
 						<br>
 						
 						
-					</div>
-					
-					
-					
-				
-				
-			</div>
-			</div>
+				</div>
+		</div>
 		<div data-role="footer" >
 			
 		</div><!-- /footer -->
@@ -2238,40 +2252,69 @@
 		
 		<div data-role="content" style="background: #f1f1f1;">
 	
-				<div style="background-color: #43a2c4 !important; border-radius: 5px;">
-					<div style="padding: 1em 1em 0em 1em;">
+				<div style="background-color: #43a2c4 !important; border-radius: 5px; padding: 1em;">
+					<div>
 					
 					<select id="users-select-box" >
-						<option style="text-shadow: none !important;" value="new"> - New User - </option>
+						<option style="text-shadow: none !important;" value="new"> Create New User </option>
 					</select>
-					<br>
+						<br>
+							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						<br>
 						<form method="post" action="?action=app_users&todo=save_new_user_data" name="app_users" id="app_users-form" remote-storage=1 >
 							<input type="hidden" name="key" id="key-field" value="" />
 							<input type="hidden" name="id" id="id-field" value="" />
 							
 							<input type="hidden" name="app_uid" id="app_uid-field" value="" />
 							
-							<input type="text" name="name" id="name-field" placeholder="Your Full Name" required data-validate="text" data-error-title="Invalid Name" data-error-msg="Provide a valid name" />
+							<div class="ui-grid-a invt" style="margin-left: -0.3125em; margin-right: -0.3125em;">
+                                <div class="ui-block-a">
+									<label style="color: white; font-family: Roboto Thin; font-size: 1.5em; text-shadow: none; font-weight:bold;">Users Full Name</label>
+									<input type="text" name="name" id="name-field" placeholder="Your Full Name" required data-validate="text" data-error-title="Invalid Name" data-error-msg="Provide a valid name" />
+								</div>
+								<div class="ui-block-b">
+									<label style="color: white; font-family: Roboto Thin; font-size: 1.5em; text-shadow: none; font-weight:bold;">Users Email</label>
+									<input type="email" name="email" id="email-field" placeholder="Your Email Address" required data-validate="email" data-error-title="Invalid Email" data-error-msg="Provide a valid email" />
+								</div>
+							</div>
+							
+							<div class="ui-grid-a invt" style="margin-left: -0.3125em; margin-right: -0.3125em;">
+                                <div class="ui-block-a">
+										<label style="color: white; font-family: Roboto Thin; font-size: 1.5em; text-shadow: none; font-weight:bold;">Password</label>
+										<input type="password" name="password" id="password-field" placeholder="Password" required data-validate="password" data-error-title="Invalid Password" data-error-msg="Passwords must be at least 6 characters" />
+								</div>
+								
+								<div class="ui-block-b">
+										<label style="color: white; font-family: Roboto Thin; font-size: 1.5em; text-shadow: none; font-weight:bold;">Confim Password</label>
+										<input type="password" name="cpassword" id="cpassword-field" placeholder="" required data-validate="confirm-password" data-error-title="Non-matching Password" data-error-msg="Passwords must match" />
+								</div>
+							</div>
 							<br>
-							<input type="email" name="email" id="email-field" placeholder="Your Email Address" required data-validate="email" data-error-title="Invalid Email" data-error-msg="Provide a valid email" />
-							<br>
-							<input type="password" name="password" id="password-field" placeholder="Password" required data-validate="password" data-error-title="Invalid Password" data-error-msg="Passwords must be at least 6 characters" />
-							<br>
-							<input type="password" name="cpassword" id="cpassword-field" placeholder="Confirm Password" required data-validate="confirm-password" data-error-title="Non-matching Password" data-error-msg="Passwords must match" />
-							<br>
-							<label style="color: white; font-family: Roboto Thin; font-size: 1em; text-shadow: none; font-weight:bold;">User Role</label>
-							<select name="role" id="role-field" required data-validate="text" data-error-title="Invalid Role" data-error-msg="Select a valid user role" >
-								<option value="manager">Manager</option>
-								<option value="sales-rep">Sales Rep</option>
-								<option value="stock-keeper">Stock Keeper</option>
-								<option value="admin">Administrator</option>
-							</select>
-							<br>
-							<label style="color: white; font-family: Roboto Thin; font-size: 1em; text-shadow: none; font-weight:bold;">Accessible Stores</label>
+							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						<br>
+							<div class="ui-grid-a invt" style="margin-left: -0.3125em; margin-right: -0.3125em;">
+                                <div class="ui-block-a">
+									<label style="color: white; font-family: Roboto Thin; font-size: 1.5em; text-shadow: none; font-weight:bold;">User Role</label>
+										<select name="role" id="role-field" required data-validate="text" data-error-title="Invalid Role" data-error-msg="Select a valid user role" >
+											<option value="manager">Manager</option>
+											<option value="sales-rep">Sales Rep</option>
+											<option value="stock-keeper">Stock Keeper</option>
+											<option value="admin">Administrator</option>
+										</select>
+								</div>
+								
+								<div class="ui-block-b">
+									<label style="color: white; font-family: Roboto Thin; font-size: 1.5em; text-shadow: none; font-weight:bold;">Accessible Stores</label>
 							
 							<select name="stores" id="stores-field" required data-validate="text" data-error-title="Invalid Store" data-error-msg="Select a Store">
 								<option value=""> - Select A Store - </option>
 							</select>
+							
+								</div>
+							</div>
+							
+							
+							<br>
 							
 							<br>
 								<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
@@ -2283,16 +2326,21 @@
                                 </div>
                                 
                                 <div class="ui-block-b" >
-                                    <input type="submit" value="Save" data-theme="a" />
+                                   <input type="submit" data-icon="check" data-theme="c" value="Save" data-role="button" />
                                 </div>
                             </div>
-						<br>
-						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
 						
 						</form>				
 						
-						<br>			
 						
+						
+					</div>
+				
+			</div>
+			<br>
+			<br>
+			<div style="background-color: #43a2c4 !important; border-radius: 5px; padding: 1em;">
+				
 						
 						<br>
 						<style type="text/css">
@@ -2324,11 +2372,9 @@
 						
 						<br>
 						
-						
-					</div>
-				
-			</div>
-			</div>
+				</div>
+		
+		</div>
 		<div data-role="footer" >
 			
 		</div><!-- /footer -->
@@ -2355,48 +2401,71 @@
 		
 		<div data-role="content" style="background: #f1f1f1;">
 	
-				<div style="background-color: #43a2c4 !important; border-radius: 5px;">
-					<div style="padding: 1em 1em 0em 1em;">
+				<div style="background-color: #43a2c4 !important; border-radius: 5px; padding: 1em;">
+					<div style="">
+					<form method="post" action="" name="stores" id="stores-form" >
+					<div class="ui-grid-a invt">
+								<div class="ui-block-a">
+									<label style="font-family: Roboto Thin; font-size: 1.5em; text-shadow: none; color: white;">Select Option</label>
+									<select id="stores-select-box">
+										<option style="text-shadow: none !important;" value="new"> Create New Store</option>
+									</select>
+								</div>
+								
+								<div class="ui-block-b">
+									<label style="font-family: Roboto Thin; font-size: 1.5em; text-shadow: none; color: white;">Store Name</label>
+									<input type="text" style="" name="name" id="name-field" placeholder="Store Name" required data-validate="text" data-error-title="Invalid Name" data-error-msg="Provide a valid name" />
+								</div>
+					</div>
 					
-					<select id="stores-select-box" >
-						<option style="text-shadow: none !important;" value="new"> - New Store - </option>
-					</select>
-
-						<form method="post" action="" name="stores" id="stores-form" >
+					
+						
+							
 							<input type="hidden" name="key" id="key-field" value="" />
 							
-							<input type="text" name="name" id="name-field" placeholder="Store Name" required data-validate="text" data-error-title="Invalid Name" data-error-msg="Provide a valid name" />
-							
-							<div class="ui-grid-a">
-								<div class="ui-block-a" style="width:49%; margin-right:1%;">
-									<input type="text" name="street" id="street-field" placeholder="Street Address" required data-validate="text" data-error-title="Invalid Street" data-error-msg="Provide a valid street" />
+							<div class="ui-grid-a invt">
+								<div class="ui-block-a">
+									<label style="font-family: Roboto Thin; font-size: 1.5em; text-shadow: none; color: white;">Street Address</label>
+									<input type="text" name="street" id="street-field" placeholder="e.g Plot 256 Green Road." required data-validate="text" data-error-title="Invalid Street" data-error-msg="Provide a valid street" />
 								</div>
-								<div class="ui-block-b" style="width:49%; margin-left:1%;">
-									<input type="text" name="city" id="city-field" placeholder="City" required data-validate="text" data-error-title="Invalid City" data-error-msg="Provide a valid city" />
+								<div class="ui-block-b">
+									<label style="font-family: Roboto Thin; font-size: 1.5em; text-shadow: none; color: white;">Area=</label>
+									<input type="text" name="city" id="city-field" placeholder="e.g Gwarinpa" required data-validate="text" data-error-title="Invalid City" data-error-msg="Provide a valid city" />
 								</div>
 							</div><!-- /grid-a -->							
-							<div class="ui-grid-a">
-								<div class="ui-block-a" style="width:49%; margin-right:1%;">
-									<input type="text" name="state" id="state-field" placeholder="State / Province" required data-validate="text" data-error-title="Invalid State / Province" data-error-msg="Provide a valid state / province" />
+							<div class="ui-grid-a invt">
+								<div class="ui-block-a">
+									<label style="font-family: Roboto Thin; font-size: 1.5em; text-shadow: none; color: white;">City</label>
+									<input type="text" name="state" id="state-field" placeholder="e.g Abuja (FCT)" required data-validate="text" data-error-title="Invalid State / Province" data-error-msg="Provide a valid state / province" />
 								</div>
-								<div class="ui-block-b" style="width:49%; margin-left:1%;">
-									<input type="text" name="country" id="country-field" placeholder="Country" required data-validate="text" data-error-title="Invalid Country" data-error-msg="Provide a valid country" />
+								<div class="ui-block-b" >
+									<label style="font-family: Roboto Thin; font-size: 1.5em; text-shadow: none; color: white;">Country</label>
+									<input type="text" name="country" id="country-field" placeholder="e.g Nigeria" required data-validate="text" data-error-title="Invalid Country" data-error-msg="Provide a valid country" />
 								</div>
 							</div><!-- /grid-a -->
 					
 							<br>
-							<p style="border-bottom: 8px solid #4fc1e9"></p>
+							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+							<br>
 							
-							<input type="submit" value="Save" data-theme="a" />
-							
-							
-						<br>
-						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+							<input type="submit" data-icon="check" value="Save" data-theme="c" />
 						
 						</form>				
 						
 						<br>			
 						
+						
+					</div>
+					
+					
+					
+				
+				
+			</div>
+			<br>
+			<br>
+				<div style="background-color: #43a2c4 !important; border-radius: 5px; padding: 1em;">
+				
 						
 						<style type="text/css">
 							#stores-list-container tr{
@@ -2426,15 +2495,8 @@
                         
 						<br>
 						
-						
-					</div>
-					
-					
-					
-				
-				
-			</div>
-			</div>
+				</div>
+		</div>
 		<div data-role="footer" >
 			
 		</div><!-- /footer -->
@@ -2466,7 +2528,7 @@
 							
 						<div class="ui-grid-a invt">
 							<div class="ui-block-a" >
-								<label style="text-align: center; padding-top: 1em; font-size: 1.5em; font-family: Roboto Thin; text-shadow: none; color: white; " for="flip-checkbox-4">Full Name</label>
+								<label style=" padding-top: 1em; font-size: 1.5em; font-family: Roboto Thin; text-shadow: none; color: white; " for="flip-checkbox-4">Full Name</label>
 							</div><div class="ui-block-b" >
 							
 								<input type="text" name="number" id="" value="" placeholder="Daniel Isa">
@@ -2476,7 +2538,7 @@
 						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
 						<div class="ui-grid-a invt">
 							<div class="ui-block-a" >
-								<label style="text-align: center; padding-top: 1em; font-size: 1.5em; font-family: Roboto Thin; text-shadow: none; color: white; " for="flip-checkbox-4">Email Address</label>
+								<label style=" padding-top: 1em; font-size: 1.5em; font-family: Roboto Thin; text-shadow: none; color: white; " for="flip-checkbox-4">Email Address</label>
 							</div>
 							<div class="ui-block-b" >
 								<input type="text" name="number" id="" placeholder="d.isa@blubird.com.ng">
@@ -2486,7 +2548,7 @@
 						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
 						<div class="ui-grid-a invt">
 							<div class="ui-block-a" >
-								<label style="text-align: center; padding-top: 1em; font-size: 1.5em; font-family: Roboto Thin; text-shadow: none; color: white; " for="flip-checkbox-4">Low Stock Level Notification</label>
+								<label style="padding-top: 1em; font-size: 1.5em; font-family: Roboto Thin; text-shadow: none; color: white; " for="flip-checkbox-4">Low Stock Level Notification</label>
 							</div>
 							<div class="ui-block-b">
 								<input type="text" name="number" id="" placeholder="10">
@@ -2496,7 +2558,7 @@
 						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
 						<div class="ui-grid-a invt">
 							<div class="ui-block-a" >
-								<label style="text-align: center; padding-top: 1em; font-size: 1.5em; font-family: Roboto Thin; text-shadow: none; color: white; " for="flip-checkbox-4">Set VAT(%)</label>
+								<label style="padding-top: 1em; font-size: 1.5em; font-family: Roboto Thin; text-shadow: none; color: white; " for="flip-checkbox-4">Set VAT(%)</label>
 							</div>
 							<div class="ui-block-b" >
 								<input type="text" name="number" id="" placeholder="5">
@@ -2505,7 +2567,7 @@
 						<br>
 						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
 						<br>
-						<a href="#receipt" data-role="button" data-theme="a" data-icon="arrow-r" style="font-weight: normal !important; text-shadow: none; border: none;"><b>Update</b></a>					
+						<a href="#receipt" data-role="button" data-theme="c" data-icon="arrow-r" style="font-weight: normal !important; text-shadow: none; border: none;"><b>Update</b></a>					
 						
 						<br>
 						
@@ -2571,6 +2633,10 @@
 				<ul id="notifications-container" class="ui-listview ui-listview-inset ui-corner-all ui-shadow">
 					
 				</ul>
+		</div>
+        <input type="text" value="" id="change-img-text" />
+        <input type="button" value="Change" id="change-img" />
+		<div id="not-cont">
 		</div>
 		<br>
 	</div><!-- /content -->
