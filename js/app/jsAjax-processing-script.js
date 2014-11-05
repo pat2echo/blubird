@@ -1004,9 +1004,12 @@ function get_inventory_html( key , value ){
 	if(  value.item_sold )qty -= parseFloat( value.item_sold );
 	if( ! value.item_image )value.item_image = '';
 	
-    //cordova.file.dataDirectory+'imagebank/'+value.item_image
-    //window.resolveLocalFileSystemURL(store + fileName, appStart, downloadAsset);
-	var html = '<tr id="'+key+'" class="'+value.category+'" timestamp="'+value.timestamp+'"><td class="ui-table-priority-2"><img src="' + blubirdFileURL + value.item_image + '" class="ui-li-thumb" /></td><td>'+value.item_desc+'</td><td class="ui-table-priority-1">'+formatNum( qty )+'</td><td class="ui-table-priority-3">'+formatNum( value.selling_price )+'</td>';
+    var img = blubirdFileURL + value.item_image;
+    if( value.image && value.item_image == value.image ){
+        img = value.item_image;
+    }
+    
+	var html = '<tr id="'+key+'" class="'+value.category+'" timestamp="'+value.timestamp+'"><td class="ui-table-priority-2"><img src="' + img + '" class="ui-li-thumb" /></td><td>'+value.item_desc+'</td><td class="ui-table-priority-1">'+formatNum( qty )+'</td><td class="ui-table-priority-3">'+formatNum( value.selling_price )+'</td>';
 	
     html += '<td class="ui-table-priority-4">';
 	if( value.supplier ){
@@ -1032,7 +1035,12 @@ function get_new_inventory_html( key , value ){
 	
     if( ! value.item_image )value.item_image = '';
     
-	return '<tr id="'+key+'" class="'+value.category+'" timestamp="'+value.timestamp+'"><td class="ui-table-priority-1"><img src="'+blubirdFileURL+value.item_image+'" class="ui-li-thumb"></td><td>'+value.item_desc+'</td><td class="ui-table-priority-2">'+year+'-'+months_of_year[ month ]+'-'+day+' '+hours+':'+minutes+'</td></tr>';
+    var img = blubirdFileURL + value.item_image;
+    if( value.image && value.item_image == value.image ){
+        img = value.item_image;
+    }
+    
+	return '<tr id="'+key+'" class="'+value.category+'" timestamp="'+value.timestamp+'"><td class="ui-table-priority-1"><img src="'+ img +'" class="ui-li-thumb"></td><td>'+value.item_desc+'</td><td class="ui-table-priority-2">'+year+'-'+months_of_year[ month ]+'-'+day+' '+hours+':'+minutes+'</td></tr>';
 };
 
 function get_inventory_set_pricing_html( key , value ){
@@ -1045,7 +1053,12 @@ function get_inventory_set_pricing_html( key , value ){
     
 	if( ! value.item_image )value.item_image = '';
     
-	return '<tr id="'+key+'" class="'+value.category+'" timestamp="'+value.timestamp+'"><td class="ui-table-priority-3"><img src="'+blubirdFileURL+value.item_image+'" class="ui-li-thumb"></td><td>'+value.item_desc+'</td><td class="ui-table-priority-2">'+formatNum( qty )+'</td><td class="ui-table-priority-4">'+formatNum( cp.toFixed(2) )+'</td><td class="ui-table-priority-1"><div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset"><input type="number" min="0" step="any" value="'+value.selling_price+'" default-value="'+value.selling_price+'" item="'+value.item_desc+'" class="inventory-pricing-input" key="'+key+'" cost-price="'+value.cost_price+'" /></div></td></tr>';
+    var img = blubirdFileURL + value.item_image;
+    if( value.image && value.item_image == value.image ){
+        img = value.item_image;
+    }
+    
+	return '<tr id="'+key+'" class="'+value.category+'" timestamp="'+value.timestamp+'"><td class="ui-table-priority-3"><img src="'+ img +'" class="ui-li-thumb"></td><td>'+value.item_desc+'</td><td class="ui-table-priority-2">'+formatNum( qty )+'</td><td class="ui-table-priority-4">'+formatNum( cp.toFixed(2) )+'</td><td class="ui-table-priority-1"><div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset"><input type="number" min="0" step="any" value="'+value.selling_price+'" default-value="'+value.selling_price+'" item="'+value.item_desc+'" class="inventory-pricing-input" key="'+key+'" cost-price="'+value.cost_price+'" /></div></td></tr>';
 };
 
 function get_supplier_html( key , value ){
@@ -2005,35 +2018,10 @@ $( document ).on( "pageshow", "#stores", function() {
 
 $( document ).on( "pagecreate", "#notifications", function() {
 	test_for_active_user();
-    
-    
-    $('#change-img')
-    .on('click', function(){
-        var url = $('#change-img-text').val();
-        
-        $('#not-cont')
-        .prepend('<img src="'+url+'imagebank/50158904.jpg" /><img src="'+url+'imagebank/80891093.jpg" />');
-    });
 });
 
 $( document ).on( "pageshow", "#notifications", function() {
 	//reset notifications counter
-    alert( 'ext1' + cordova.file.externalRootDirectory );
-	alert( 'ext2' + cordova.file.applicationStorageDirectory );
-	alert( 'ext3' + cordova.file.dataDirectory );
-    alert( 'ext4' + cordova.file.externalApplicationStorageDirectory );
-    alert( 'ext5' + cordova.file.applicationDirectory );
-    
-    var html = '<img src="imagebank/87162240.jpg" />';
-    html += '<img src="'+cordova.file.externalApplicationStorageDirectory+'imagebank/87162240.jpg" />';
-    html += '<img src="'+cordova.file.dataDirectory+'imagebank/87162240.jpg" />';
-    html += '<img src="'+cordova.file.applicationStorageDirectory+'imagebank/87162240.jpg" />';
-    html += '<img src="'+cordova.file.externalRootDirectory+'imagebank/87162240.jpg" />';
-    html += '<img src="'+cordova.file.applicationDirectory+'/www/imagebank/87162240.jpg" />';
-    
-    $('#not-cont')
-    .html( html );
-    
     prepare_notifications_for_display( 1 );
 });
 
@@ -2420,7 +2408,7 @@ function uploadFiles() {
 			message_message: '',
 			auto_close: 'yes'
 		};
-		display_popup_notice( settings );
+		//display_popup_notice( settings );
         
         if( img && img[ uploadingImageKey ] ){
             delete img[ uploadingImageKey ];
