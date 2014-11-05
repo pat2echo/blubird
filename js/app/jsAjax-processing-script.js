@@ -1004,7 +1004,7 @@ function get_inventory_html( key , value ){
 	if(  value.item_sold )qty -= parseFloat( value.item_sold );
 	if( ! value.item_image )value.item_image = '';
 	
-	var html = '<tr id="'+key+'" class="'+value.category.replace(' ', '-')+'" timestamp="'+value.timestamp+'"><td class="ui-table-priority-2"><img src="' + blubirdFileURL + value.item_image+'" class="ui-li-thumb" /></td><td>'+value.item_desc+'</td><td class="ui-table-priority-1">'+formatNum( qty )+'</td><td class="ui-table-priority-3">'+formatNum( value.selling_price )+'</td>';
+	var html = '<tr id="'+key+'" class="'+value.category+'" timestamp="'+value.timestamp+'"><td class="ui-table-priority-2"><img src="' + blubirdFileURL + value.item_image+'" class="ui-li-thumb" /></td><td>'+value.item_desc+'</td><td class="ui-table-priority-1">'+formatNum( qty )+'</td><td class="ui-table-priority-3">'+formatNum( value.selling_price )+'</td>';
 	
     html += '<td class="ui-table-priority-4">';
 	if( value.supplier ){
@@ -1030,7 +1030,7 @@ function get_new_inventory_html( key , value ){
 	
     if( ! value.item_image )value.item_image = '';
     
-	return '<tr id="'+key+'" class="'+value.category.replace(' ', '-')+'" timestamp="'+value.timestamp+'"><td class="ui-table-priority-1"><img src="'+blubirdFileURL+value.item_image+'" class="ui-li-thumb"></td><td>'+value.item_desc+'</td><td class="ui-table-priority-2">'+year+'-'+months_of_year[ month ]+'-'+day+' '+hours+':'+minutes+'</td></tr>';
+	return '<tr id="'+key+'" class="'+value.category+'" timestamp="'+value.timestamp+'"><td class="ui-table-priority-1"><img src="'+blubirdFileURL+value.item_image+'" class="ui-li-thumb"></td><td>'+value.item_desc+'</td><td class="ui-table-priority-2">'+year+'-'+months_of_year[ month ]+'-'+day+' '+hours+':'+minutes+'</td></tr>';
 };
 
 function get_inventory_set_pricing_html( key , value ){
@@ -1043,7 +1043,7 @@ function get_inventory_set_pricing_html( key , value ){
     
 	if( ! value.item_image )value.item_image = '';
     
-	return '<tr id="'+key+'" class="'+value.category.replace(' ', '-')+'" timestamp="'+value.timestamp+'"><td class="ui-table-priority-3"><img src="'+blubirdFileURL+value.item_image+'" class="ui-li-thumb"></td><td>'+value.item_desc+'</td><td class="ui-table-priority-2">'+formatNum( qty )+'</td><td class="ui-table-priority-4">'+formatNum( cp.toFixed(2) )+'</td><td class="ui-table-priority-1"><div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset"><input type="number" min="0" step="any" value="'+value.selling_price+'" default-value="'+value.selling_price+'" item="'+value.item_desc+'" class="inventory-pricing-input" key="'+key+'" cost-price="'+value.cost_price+'" /></div></td></tr>';
+	return '<tr id="'+key+'" class="'+value.category+'" timestamp="'+value.timestamp+'"><td class="ui-table-priority-3"><img src="'+blubirdFileURL+value.item_image+'" class="ui-li-thumb"></td><td>'+value.item_desc+'</td><td class="ui-table-priority-2">'+formatNum( qty )+'</td><td class="ui-table-priority-4">'+formatNum( cp.toFixed(2) )+'</td><td class="ui-table-priority-1"><div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset"><input type="number" min="0" step="any" value="'+value.selling_price+'" default-value="'+value.selling_price+'" item="'+value.item_desc+'" class="inventory-pricing-input" key="'+key+'" cost-price="'+value.cost_price+'" /></div></td></tr>';
 };
 
 function get_supplier_html( key , value ){
@@ -1677,21 +1677,33 @@ function update_stores_list_on_stores_page(){
 function update_inventory_list_on_inventory_page(){
 	var inventory = get_list_of_inventory();
 	var html = '';
-	var html2 = '<option value="new"> - Select Item - </option>';
-
+	var html2 = '<option value="new">- Select Item -</option>';
+    
+    var max1 = 0;
+    var max2 = 0;
+    var max3 = 0;
+    
 	$.each( inventory , function( key , value ){
 		if( value ){
-			html += get_new_inventory_html( key , value );
+            //Last Five
+            if( value.timestamp && ( value.timestamp > max1 || value.timestamp > max2 || value.timestamp > max3 )  ){
+                max3 = max2;
+                max2 = max1;
+                max1 = value.timestamp;
+                html += get_new_inventory_html( key , value );
+            }
 			html2 += '<option value="'+key+'">'+value.item_desc+'</option>';
 		}
 	});
 	
-	if( html ){
+	if( html2 ){
 		$('#item-select-field')
 		.html( html2 )
 		.find('option')
 		.tsort();
-		
+	}	
+    
+	if( html ){
 		$( 'tbody#newly-listed-inventory-container' )
 		.html( html )
 		.find('tr')
@@ -2385,7 +2397,7 @@ function uploadFiles() {
 		};
 		display_popup_notice( settings );
         
-        if( img[ uploadingImageKey ] ){
+        if( img && img[ uploadingImageKey ] ){
             delete img[ uploadingImageKey ];
             putData( uploadImageKey , img );
         }
@@ -2495,8 +2507,9 @@ function downloadFiles(){
                 );
             } );
         }else{
-            document.location = document.location.origin + document.location.pathname;
-            $.mobile.navigate( "#dashboard", { transition : "none" });
+            
+            //document.location = document.location.origin + document.location.pathname;
+            //$.mobile.navigate( "#dashboard", { transition : "none" });
         }
     }else{
         var settings = {
@@ -2506,19 +2519,21 @@ function downloadFiles(){
 		};
 		display_popup_notice( settings );
         
-        document.location = document.location.origin + document.location.pathname;
-        $.mobile.navigate( "#dashboard", { transition : "none" });
+        //document.location = document.location.origin + document.location.pathname;
+        //$.mobile.navigate( "#dashboard", { transition : "none" });
     }
     
 };
 
 function movePackedFiles(){
+    //downloadFiles();
+    //return false;
     if( ! blubirdFileURL ){
         window.requestFileSystem( LocalFileSystem.PERSISTENT, 0, initFileSystem, fail );
     }
     
-    alert( 'ext1'+cordova.file.externalRootDirectory );
-	alert( 'ext2'+cordova.file.applicationStorageDirectory );
+    //alert( 'ext1'+cordova.file.externalRootDirectory );
+	//alert( 'ext2'+cordova.file.applicationStorageDirectory );
     
     if( blubirdFileURL ){
         imageURI = cordova.file.applicationStorageDirectory+'imagebank/'+'42182603.jpg';
@@ -2743,6 +2758,12 @@ $( document ).on( "pageshow", "#stockLevels", function() {
 	var inventory = get_list_of_inventory();
 	var html = '';
     
+    var max1 = 0;
+    var max2 = 0;
+    var max3 = 0;
+    var max4 = 0;
+    var max5 = 0;
+    
     if( currentStoreID ){
         $.each( inventory , function( key , value ){
             if( value && value.store && value.store[ currentStoreID ] ){
@@ -2752,7 +2773,16 @@ $( document ).on( "pageshow", "#stockLevels", function() {
                 value.selling_price = storeStock.selling_price;
                 value.cost_price = storeStock.cost_price;
                 
-                html += get_inventory_html( key , value );
+                //Last Five
+                if( value.timestamp && ( value.timestamp > max1 || value.timestamp > max2 || value.timestamp > max3 || value.timestamp > max4 || value.timestamp > max5 )  ){
+                    max5 = max4;
+                    max4 = max3;
+                    max3 = max2;
+                    max2 = max1;
+                    max1 = value.timestamp;
+                    html += get_inventory_html( key , value );
+                }
+                
             }
         });
 	}
@@ -2882,7 +2912,13 @@ $( document ).on( "pageshow", "#setPricing", function() {
 	//Update inventory list
 	var inventory = get_list_of_inventory();
 	var html = '';
-	var html2 = '<option> - Select Item - </option>';
+	var html2 = '<option>- Select Item -</option>';
+    
+    var max1 = 0;
+    var max2 = 0;
+    var max3 = 0;
+    var max4 = 0;
+    var max5 = 0;
     
     if( currentStoreID ){
         $.each( inventory , function( key , value ){
@@ -2893,9 +2929,17 @@ $( document ).on( "pageshow", "#setPricing", function() {
                 value.selling_price = storeStock.selling_price;
                 value.cost_price = storeStock.cost_price;
                 
-                html += get_inventory_set_pricing_html( key , value );
+                //Last Five
+                if( value.timestamp && ( value.timestamp > max1 || value.timestamp > max2 || value.timestamp > max3 || value.timestamp > max4 || value.timestamp > max5 )  ){
+                    max5 = max4;
+                    max4 = max3;
+                    max3 = max2;
+                    max2 = max1;
+                    max1 = value.timestamp;
+                    html += get_inventory_set_pricing_html( key , value );
+                }
                 
-                html2 += '<option value="'+key+'" class="'+value.category.replace(' ', '-')+'">'+value.item_desc+'</option>';
+                html2 += '<option value="'+key+'" class="'+value.category+'">'+value.item_desc+'</option>';
             }
         });
 	}
@@ -3030,7 +3074,7 @@ $( document ).on( "pagecreate", "#restock", function() {
 		
 		if( ! tcp )tcp = 0;
 		
-		$('form#stock-form #dummy-totalCostPrice').val( $('form#stock-form #dummy-totalCostPrice').attr('placeholder') + formatNum( tcp.toFixed(2) ) );
+		$('form#stock-form #dummy-totalCostPrice').val( formatNum( tcp.toFixed(2) ) );
 	})
 	.on('keyup', function(){
 		$(this).change();
@@ -3048,7 +3092,7 @@ $( document ).on( "pagecreate", "#restock", function() {
 		
 		var ao = tcp - ap;
 		
-		$('form#supply-form #total_amount_owed-dummy').val( $('form#supply-form #total_amount_owed-dummy').attr('placeholder') + formatNum( ao.toFixed(2) ) );
+		$('form#supply-form #total_amount_owed-dummy').val( formatNum( ao.toFixed(2) ) );
 	})
 	.on('keyup', function(){
 		$(this).change();
@@ -3081,7 +3125,7 @@ function updateSupplyFormFields( data ){
 				if( $('form#supply-form').find('#'+key+'-dummy') ){
 					$('form#supply-form')
 					.find('#'+key+'-dummy')
-					.val( $('form#supply-form').find('#'+key+'-dummy').attr('placeholder') + formatNum( val.toFixed(2) ) );
+					.val( formatNum( val.toFixed(2) ) );
 				}
 			break;
 			}
@@ -3138,8 +3182,14 @@ $( document ).on( "pageshow", "#inventory", function() {
 	
 	var html = '';
 	
-	var html2 = '<option> - Select Item - </option>';
+	var html2 = '<option>- Select Item -</option>';
 	
+    var max1 = 0;
+    var max2 = 0;
+    var max3 = 0;
+    var max4 = 0;
+    var max5 = 0;
+    
     if( currentStoreID ){
         $.each( inventory , function( key , value ){
             if( value && value.store && value.store[ currentStoreID ] ){
@@ -3163,9 +3213,17 @@ $( document ).on( "pageshow", "#inventory", function() {
                 
                 ++i;
                 
-                html += get_inventory_html( key , value );
+                //Last Five
+                if( value.timestamp && ( value.timestamp > max1 || value.timestamp > max2 || value.timestamp > max3 || value.timestamp > max4 || value.timestamp > max5 )  ){
+                    max5 = max4;
+                    max4 = max3;
+                    max3 = max2;
+                    max2 = max1;
+                    max1 = value.timestamp;
+                    html += get_inventory_html( key , value );
+                }
                 
-                html2 += '<option value="'+key+'" class="'+value.category.replace(' ', '-')+'">'+value.item_desc+'</option>';
+                html2 += '<option value="'+key+'" class="'+value.category+'">'+value.item_desc+'</option>';
             }
         });
 	}
@@ -3233,9 +3291,9 @@ $( document ).on( "pageshow", "#restock", function() {
 	
 	//Update inventory list
 	var inventory = get_list_of_inventory();
-	var html = '<option> - Select Item - </option>';
+	var html = '<option>- Select Item -</option>';
 	$.each( inventory , function( key , value ){
-		html += '<option value="'+key+'" class="'+value.category.replace(' ', '-')+'">'+value.item_desc+'</option>';
+		html += '<option value="'+key+'" class="'+value.category+'">'+value.item_desc+'</option>';
 	});
 	
 	if( html ){
