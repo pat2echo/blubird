@@ -124,6 +124,15 @@
                 text-shadow: none; color: black;
                 font-family: 'Roboto Thin'; font-size: 1.2em; font-weight: 600 !important;
             }
+            .inventory-table tbody td.image-container{
+                text-align:center !important;
+                vertical-align:middle !important;
+                background:#fff;
+            }
+            .inventory-table tbody td img.ui-li-thumb{
+                max-height:90px;
+                max-width:100px;
+            }
             tbody tr:nth-child(odd) td{
                 background-color: #bde3ea; 
             }
@@ -141,4 +150,37 @@
             }
             tbody.stockLevels-container tr td a{
                 color: white !important; background-color: green !important; margin: 0.3em 0 0 0.5em !important; font-family: 'Roboto Thin' !important; font-weight: normal !important; text-shadow: none !important; border: none !important;
+            }
+            
+            .item-search .ui-select{
+                max-width:20%;
+            }
+            .item-search .ui-input-search{
+                float: left;
+                clear: none;
+                margin-top: 0;
+                border-radius: 0.3125em 0 0 0.3125em;
+                padding-top: 0.15em;
+            }
+            .item-search .ui-input-search.ui-input-has-clear .ui-btn.ui-input-clear,
+            .item-search .ui-input-text.ui-input-has-clear .ui-btn.ui-input-clear{
+                margin:-28px 0;
+            }
+            .my-reflow > .ui-block-a{
+                width: 30%;
+            }
+            .my-reflow > .ui-block-b{
+                width: 70%;
+            }
+            .item-search .ui-input-search{
+                max-width:35%;
+            }
+            @media (max-width: 600px) {
+                .my-reflow > .ui-block-b,
+                .my-reflow > .ui-block-a{
+                    width:100%;
+                }
+                .item-search .ui-input-search{
+                    max-width:47%;
+                }
             }

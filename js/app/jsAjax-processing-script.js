@@ -325,14 +325,14 @@ function store_record( data ){
 		
 		data.timestamp = launch_date.getTime();
 		if( d && d.creationtimestamp ){
-			data.creationtimestamp = d.creationtimestamp;
+			$.each( data , function(k,v){
+                d[k] = v;
+            });
+            data = d;
 		}else{
 			data.creationtimestamp = data.timestamp;
 		}
 		
-		if( d && d.id ){
-			data.id = d.id;
-		}
 		//add details like = creation time, user etc.
 		
 		//perm storage
@@ -1006,10 +1006,10 @@ function get_inventory_html( key , value ){
 	
     var img = blubirdFileURL + value.item_image;
     if( value.image && value.item_image == value.image ){
-        img = value.item_image;
+        img = 'imagebank/'+value.item_image;
     }
     
-	var html = '<tr id="'+key+'" class="'+value.category+'" timestamp="'+value.timestamp+'"><td class="ui-table-priority-2"><img src="' + img + '" class="ui-li-thumb" /></td><td>'+value.item_desc+'</td><td class="ui-table-priority-1">'+formatNum( qty )+'</td><td class="ui-table-priority-3">'+formatNum( value.selling_price )+'</td>';
+	var html = '<tr id="'+key+'" class="'+value.category+'" timestamp="'+value.timestamp+'"><td class="ui-table-priority-2 image-container"><img src="' + img + '" class="ui-li-thumb" /></td><td>'+value.item_desc+'</td><td class="ui-table-priority-1">'+formatNum( qty )+'</td><td class="ui-table-priority-3">'+formatNum( value.selling_price )+'</td>';
 	
     html += '<td class="ui-table-priority-4">';
 	if( value.supplier ){
@@ -1037,10 +1037,10 @@ function get_new_inventory_html( key , value ){
     
     var img = blubirdFileURL + value.item_image;
     if( value.image && value.item_image == value.image ){
-        img = value.item_image;
+        img = 'imagebank/'+value.item_image;
     }
     
-	return '<tr id="'+key+'" class="'+value.category+'" timestamp="'+value.timestamp+'"><td class="ui-table-priority-1"><img src="'+ img +'" class="ui-li-thumb"></td><td>'+value.item_desc+'</td><td class="ui-table-priority-2">'+year+'-'+months_of_year[ month ]+'-'+day+' '+hours+':'+minutes+'</td></tr>';
+	return '<tr id="'+key+'" class="'+value.category+'" timestamp="'+value.timestamp+'"><td class="ui-table-priority-1 image-container"><img src="'+ img +'" class="ui-li-thumb"></td><td>'+value.item_desc+'</td><td class="ui-table-priority-2">'+year+'-'+months_of_year[ month ]+'-'+day+' '+hours+':'+minutes+'</td></tr>';
 };
 
 function get_inventory_set_pricing_html( key , value ){
@@ -1055,10 +1055,10 @@ function get_inventory_set_pricing_html( key , value ){
     
     var img = blubirdFileURL + value.item_image;
     if( value.image && value.item_image == value.image ){
-        img = value.item_image;
+        img = 'imagebank/'+value.item_image;
     }
     
-	return '<tr id="'+key+'" class="'+value.category+'" timestamp="'+value.timestamp+'"><td class="ui-table-priority-3"><img src="'+ img +'" class="ui-li-thumb"></td><td>'+value.item_desc+'</td><td class="ui-table-priority-2">'+formatNum( qty )+'</td><td class="ui-table-priority-4">'+formatNum( cp.toFixed(2) )+'</td><td class="ui-table-priority-1"><div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset"><input type="number" min="0" step="any" value="'+value.selling_price+'" default-value="'+value.selling_price+'" item="'+value.item_desc+'" class="inventory-pricing-input" key="'+key+'" cost-price="'+value.cost_price+'" /></div></td></tr>';
+	return '<tr id="'+key+'" class="'+value.category+'" timestamp="'+value.timestamp+'"><td class="ui-table-priority-3 image-container"><img src="'+ img +'" class="ui-li-thumb"></td><td>'+value.item_desc+'</td><td class="ui-table-priority-2">'+formatNum( qty )+'</td><td class="ui-table-priority-4">'+formatNum( cp.toFixed(2) )+'</td><td class="ui-table-priority-1"><div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset"><input type="number" min="0" step="any" value="'+value.selling_price+'" default-value="'+value.selling_price+'" item="'+value.item_desc+'" class="inventory-pricing-input" key="'+key+'" cost-price="'+value.cost_price+'" /></div></td></tr>';
 };
 
 function get_supplier_html( key , value ){
@@ -2178,6 +2178,19 @@ $( document ).on( "pagecreate", "#newInventory", function() {
 				.find('#'+key+'-field')
 				.val( value );
 			});
+            
+            var img = 'icon.png';
+            if( blubirdFileURL ){
+                img = blubirdFileURL + inventory.item_image;
+            }
+            if( inventory.image && inventory.item_image == inventory.image ){
+                img = 'imagebank/'+inventory.item_image;
+            }
+            
+            $('form#inventory-form')
+            .find('#myImage')
+            .attr('src' , img );
+            
 		}else{
 			$('form#inventory-form')
 			.find('input')
@@ -2933,6 +2946,11 @@ $( document ).on( "pagecreate", "#restock", function() {
 			var $form = $(this).parents('form');
 			
 			if( inventory[key] ){
+                if( inventory[key].item_desc ){
+                    $("#restock")
+                    .find('input.item-search-field')
+                    .val(inventory[key].item_desc);
+                }
 				$.each( inventory[key] , function( k , v ){
 					switch( k ){
 					case 'item_barcode': case 'category': case 'item_qty': case 'amount_paid': case 'total_cost_price': case 'key':
@@ -3024,6 +3042,42 @@ $( document ).on( "pagecreate", "#restock", function() {
 		$(this).change();
 	});
 	
+    $('a.button-scan')
+	.on('click', function(){
+		cordova.plugins.barcodeScanner.scan(
+		  function (result) {
+			$("#restock")
+            .find('input.item-search-field')
+			.val( result.text );
+            
+			$("#restock")
+            .find('select[name="item_barcode"]')
+            .val( result.text )
+            .change();
+		  }, 
+		  function (error) {
+			  alert("Scanning failed: " + error);
+		  }
+	   );
+	});
+	
+    $("#restock")
+    .find('input.item-search-field')
+    .on('change', function(){
+        //check for barcode
+        var content = $(this).val();
+        
+        if( content && content.length > 5 ){
+            var inventory = getData( content );
+            if( inventory && inventory.item_desc && inventory.key ){
+                $(this)
+                .parents( "#restock" )
+                .find('select[name="item_barcode"]')
+                .val( inventory.key )
+                .change();
+            }
+        }
+    });
 });
 
 function updateSupplyFormFields( data ){
@@ -3064,6 +3118,7 @@ var low_stock_level = 25;
 
 $( document ).on( "pagecreate", "#inventory", function() {
 	test_for_active_user();
+    
 	$("#inventory")
 	.find('select#filter-category-field')
 	.on('change', function(){
@@ -3083,6 +3138,71 @@ $( document ).on( "pagecreate", "#inventory", function() {
 		
 	});
     
+    $("#inventory")
+    .find('form.item-search-field-form')
+    .on('submit', function(e){
+        e.preventDefault();
+        
+        //check for barcode
+        var p = false;
+        var content = $(this).find('input.item-search-field').val();
+        if( content && content.length > 5 ){
+            var inventory = getData( content );
+            if( inventory && inventory.item_desc && inventory.key ){
+                p = true;
+                $(this)
+                .find('select#filter-item-field')
+                .val( inventory.key )
+                .change();
+            }
+        }
+        
+        return false;
+    });
+    
+	$('a.button-scan')
+	.on('click', function(){
+		cordova.plugins.barcodeScanner.scan(
+		  function (result) {
+			$("#inventory")
+            .find('input.item-search-field')
+			.val( result.text );
+            
+			$("#inventory")
+            .find('select#filter-item-field')
+            .val( result.text )
+            .change();
+		  }, 
+		  function (error) {
+			  alert("Scanning failed: " + error);
+		  }
+	   );
+	});
+	
+    $("#inventory")
+	.find('select#filter-item-field')
+	.on('change', function(){
+        var content = $(this).val();
+        
+        if( content ){
+            var inventory = getData( content );
+            if( inventory && inventory.item_desc && inventory.key ){
+                $("#inventory")
+                .find('input.item-search-field')
+                .val( inventory.item_desc );
+                
+                var i = {};
+                i[ inventory.key ] = inventory;
+                display_table_on_inventory_page( i , $('tbody.stockLevels-container') , $('#inventory') , 0 );
+                
+                return false;
+            }
+        }
+        
+        var inventory = get_list_of_inventory();
+        display_table_on_inventory_page( inventory, $('tbody.stockLevels-container') , $('#inventory') , 0 );
+	});
+    
     activate_update_of_current_store( $("#inventory") );
     activate_manual_upload_data_button_click_event( $("#inventory") );
 });
@@ -3095,19 +3215,41 @@ $( document ).on( "pageshow", "#inventory", function() {
 	
     check_for_data_to_upload( $('#inventory') );
     
-    
 	//Update inventory list
 	var inventory = get_list_of_inventory();
 	
-	var label = new Array();
+    display_table_on_inventory_page( inventory, $('tbody.stockLevels-container') , $('#inventory') , 1 );
+    
+    
+    $("#inventory")
+    .find('input.item-search-field')
+    .on('change', function(){
+        //check for barcode
+        var content = $(this).val();
+        
+        if( content && content.length > 5 ){
+            var inventory = getData( content );
+            if( inventory && inventory.item_desc && inventory.key ){
+                $(this)
+                .parents( "#inventory" )
+                .find('select#filter-item-field')
+                .val( inventory.key )
+                .change();
+            }
+        }
+    });
+});
+
+function display_table_on_inventory_page( inventory, $tbody, $page, include_summary ){
+    var html = '';
+	
+    var label = new Array();
 	var values = new Array();
 	var i = 0;
 	
 	var total_value = 0;
 	var total_items = 0;
-	
-	var html = '';
-	
+    
 	var html2 = '<option>- Select Item -</option>';
 	
     var max1 = 0;
@@ -3155,38 +3297,29 @@ $( document ).on( "pageshow", "#inventory", function() {
 	}
     
 	if( html ){
-		$('tbody.stockLevels-container')
+		$tbody
 		.html( html )
 		.find('tr')
 		.tsort();
 		
-		$('#inventory')
-		.find('#filter-item-field')
-		.html( html2 );
+        if( include_summary ){
+            $page
+            .find('#filter-item-field')
+            .html( html2 );
+        }
 	}
-	//.find('.sort-element')
-	//.tsort({attr:'stock', order:'asc'});
-	
-	
-	$('.total-value-of-inventory')
-	.html( appCurrency + formatNum(total_value.toFixed(2) ) );
-	
-	$('.total-items-in-stock')
-	.html( formatNum( total_items ) );
-	
-	$('.total-unique-items')
-	.html( formatNum( i ) );
-	
-	if( label && values && i ){
-		var data = {};
-		data.label = label;
-		data.value = values;
-		data.id = 'chart6';
-		data.axislabel = new Array();
-		data.axislabel[0] = {label:'Remaining Stock'};
-		activate_bar_chart( data );
-	}
-});
+    
+    if( include_summary ){
+        $('.total-value-of-inventory')
+        .html( appCurrency + formatNum(total_value.toFixed(2) ) );
+        
+        $('.total-items-in-stock')
+        .html( formatNum( total_items ) );
+        
+        $('.total-unique-items')
+        .html( formatNum( i ) );
+    }
+};
 
 function activate_update_of_current_store( $page ){
     $page
@@ -3434,9 +3567,14 @@ $( document ).on( "pageshow", "#sales", function() {
                 if(  value.item_sold )qty -= parseFloat( value.item_sold );
                 
                 if( qty ){
-                    if( ! value.item_image )value.item_image = '';
+                    var img = 'icon.png';
+                    if( blubirdFileURL ){
+                        img = blubirdFileURL + value.item_image;
+                    }
+                    if( value.image && value.item_image == value.image )
+                        img = 'imagebank/' + value.item_image;
                     
-                    html += '<li><a href="#" id="item-link-'+key+'" key="'+key+'" max-qty="'+qty+'" selling-price="'+value.selling_price+'" cost-price="'+value.cost_price+'"><img src="'+blubirdFileURL+value.item_image+'" class="ui-li-thumb" /><p>'+value.item_desc+'</p></a></li>';
+                    html += '<li><a href="#" id="item-link-'+key+'" key="'+key+'" max-qty="'+qty+'" selling-price="'+value.selling_price+'" cost-price="'+value.cost_price+'"><img src="' + img + '" class="ui-li-thumb" /><p>'+value.item_desc+'</p></a></li>';
                 }
             }
         });
@@ -3476,7 +3614,7 @@ $( document ).on( "pageshow", "#sales", function() {
 				}
 			}else{
 				$('#sales-table-body')
-				.prepend( '<tr id="'+$(this).attr('key')+'" unit-price="'+amount+'" cost-price="'+cost+'" class="item-for-sale"><td class="label">'+$(this).text()+'</td><td class="input"><input type="number" min="1" step="1" max="'+$(this).attr('max-qty')+'" value="1" /></td><td class="price" total="'+amount+'" units="1"><span class="price-val">' + formatNum( amount.toFixed(2) ) + '</span></td><td><a href="#" class="ui-btn ui-btn-inline ui-icon-delete ui-btn-icon-notext ui-theme-a ui-corner-all remove-item-button">remove</a></td></tr>' );
+				.prepend( '<tr id="'+$(this).attr('key')+'" unit-price="'+amount+'" cost-price="'+cost+'" class="item-for-sale"><td class="label">'+$(this).text()+'</td><td class="input"><input type="number" min="1" step="1" max="'+$(this).attr('max-qty')+'" value="1" /></td><td class="price" total="'+amount+'" units="1"><span class="price-val">' + formatNum( amount.toFixed(2) ) + '</span></td><td class="ui-table-priority-2"><a href="#" class="ui-btn ui-btn-inline ui-icon-delete ui-btn-icon-notext ui-theme-a ui-corner-all remove-item-button">remove</a></td></tr>' );
 				
 				$('#sales-table-body')
 				.find('tr#'+$(this).attr('key')+' input[type="number"]' )
@@ -4636,7 +4774,7 @@ function gotPictureTest(imageURI) {
      image.src = newImageURI;
     
     var barcode = $('#newInventory').find('input[name="item_barcode"]').val();
-    if( ! barcode )barcode = 'a'+timestamp;
+    if( ! barcode )barcode = timestamp;
     var fileName = barcode+'.jpg';
     
     if( ! uploadImages )uploadImages = {};
@@ -4645,6 +4783,10 @@ function gotPictureTest(imageURI) {
      $('#newInventory')
 	.find('input[name="item_image"]')
 	.val( fileName );
+    
+     $('#newInventory')
+	.find('input[name="image"]')
+	.val( 'icon.png' );
     //alert('file new name'+fileName);
     
     //alert('new file loc '+newImageURI);

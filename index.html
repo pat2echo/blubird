@@ -60,7 +60,7 @@
 		}
 		.products .ui-listview li.ui-li-has-thumb .ui-li-thumb {
 			
-			margin: 0.5em 0.5em !important;
+			/*margin: 0.5em 0.5em !important;*/
 			height: auto; /* To keep aspect ratio. */
 			max-width: 100% !important; /* 33.3333% incl. 2 x 1.2% margin */
 			max-height: 100%; /* 232p */
@@ -838,7 +838,7 @@
                           <thead>
                             <tr>
                               <th data-priority="3" data-colstart="1" class="ui-table-priority-3">#</th>
-                              <th data-colstart="2">Product</th>
+                              <th data-colstart="2">Item</th>
                               <th data-priority="2" data-colstart="3" class="ui-table-priority-2">Qty</th>
                               <th data-priority="4" data-colstart="5" class="ui-table-priority-4">Cost Price (&#8358;)</th>
                               <th data-priority="1" data-colstart="4" class="ui-table-priority-1"><abbr title="Selling Price">Selling Price (&#8358;)</abbr></th>
@@ -959,7 +959,7 @@
 						<div class="ui-grid-a invt">
 							<div class="ui-block-a" >
 								
-							<p style="text-align: center;"><img src="icon.png" id="myImage" style="horizontal-align: middle; width:120px;"></p>
+							<p style="text-align: center;"><img src="icon.png" id="myImage" style="horizontal-align: middle; width:120px; max-height:120px;"></p>
 							</div>
 						
 							<div class="ui-block-b" >
@@ -971,10 +971,9 @@
 								<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
                             <br>
 							
-							
-							
-                            
                             <input type="hidden" name="item_image" id="item_image-field" placeholder="Item Image" />
+                            
+                            <input type="hidden" name="image" id="image-field" placeholder="Image" />
                             
                             <br />
                             
@@ -1170,7 +1169,7 @@
 	              <thead>
 	                <tr>
 	                  <th data-priority="2" data-colstart="1" class="ui-table-priority-2"></th>
-	                  <th data-colstart="2">Product</th>
+	                  <th data-colstart="2">Item</th>
 	                  <th data-priority="1" data-colstart="3" class="ui-table-priority-1">Qty</th>
 	                  <th data-priority="3" data-colstart="4" class="ui-table-priority-3"><abbr title="Selling Price">Selling Price (&#8358;)</abbr></th>
                       <th data-priority="4" data-colstart="5" class="ui-table-priority-4"></th>
@@ -1299,7 +1298,7 @@
                           <thead>
                             <tr>
                               <th data-priority="3" data-colstart="1" class="ui-table-priority-1"></th>
-                              <th data-colstart="2">Product</th>
+                              <th data-colstart="2">Item</th>
                               <th data-priority="2" data-colstart="3" class="ui-table-priority-2">Qty</th>
                               <th data-priority="3" data-colstart="4" class="ui-table-priority-3">Date</th>
                             </tr>
@@ -1414,18 +1413,30 @@
 							</div>
 						</div>
 						
-						<div class="ui-grid-a invt" >
-							<div class="ui-block-a" style="padding: 0.4em;">
-								<select name="item_barcode" id="item_barcode-field" required data-validate="text" data-error-title="Invalid Item" data-error-msg="Please select a valid item">
-									<option value="">Select Item</option>
-								</select>
+                        <div class="item-search-field-form">
+						<div class="ui-grid-a my-reflow" >
+							<div class="ui-block-a" style="padding: 0.7em;">
+								
+									<select id="filter-category-field">
+										<option value="" style="text-shadow: none !important;">All Categories</option>
+									</select>
+								
 							</div>
-							<div class="ui-block-b" style="padding: 0.4em;">
-								<select id="filter-category-field" >
-									<option value="" style="text-shadow: none !important;">Select Item Category</option>
-								</select>
+						
+                            
+							<div class="ui-block-b item-search" style="padding: 0.7em;">
+								<fieldset data-role="controlgroup" data-type="horizontal">
+                                    <input type="search" name="search-2" class="item-search-field" value="" placeholder="Scan Barcode" />
+                                    <select name="item_barcode" id="item_barcode-field" required data-validate="text" data-error-title="Invalid Item" data-error-msg="Please select a valid item">
+                                        <option style="text-shadow: none !important;"></option>
+                                    </select>
+                                    <a href="#" class="ui-btn ui-btn-inline ui-icon-camera ui-btn-icon-notext button-scan">Scan Barcode</a>
+                                </fieldset>
 							</div>
+						
 						</div>
+                        </div>
+                        
 						
 						<br>
 						
@@ -1604,7 +1615,8 @@
 						<h3 style="color: white; font-size: 1em !important; font-weight: 100 !important; text-shadow: none !important; text-align: center !important;">Current inventory listing <span class="ui-li-count ui-btn-corner-all"><strong class="total-unique-items">-</strong></span></h3>
 					
 						<br>
-						<div class="ui-grid-a" >
+                        <form class="item-search-field-form">
+						<div class="ui-grid-a my-reflow" >
 							<div class="ui-block-a" style="padding: 0.7em;">
 								
 									<select id="filter-category-field">
@@ -1613,21 +1625,26 @@
 								
 							</div>
 						
-							<div class="ui-block-b" style="padding: 0.7em;">
-								
-								<select id="filter-item-field">
-									<option style="text-shadow: none !important;">Select Item</option>
-								</select>
-								
+                            
+							<div class="ui-block-b item-search" style="padding: 0.7em;">
+								<fieldset data-role="controlgroup" data-type="horizontal">
+                                    <input type="search" name="search-2" class="item-search-field" value="" placeholder="Scan Barcode" />
+                                    <select id="filter-item-field">
+                                        <option style="text-shadow: none !important;"></option>
+                                    </select>
+                                    <a href="#" class="ui-btn ui-btn-inline ui-icon-camera ui-btn-icon-notext button-scan">Scan Barcode</a>
+                                </fieldset>
 							</div>
 						
 						</div>
+                        </form>
+                        
 						<div style="margin-left:0.3125em; margin-right:0.3125em; ">
                         <table data-role="table1" id="current-inventory-table-column-toggle" data-mode="columntoggle" class="inventory inventory-table ui-responsive table-stroke ui-table ui-table-columntoggle">
                           <thead>
                             <tr>
                               <th data-priority="2" data-colstart="1" class="ui-table-priority-2">#</th>
-                              <th data-colstart="2">Product</th>
+                              <th data-colstart="2">Item</th>
                               <th data-priority="1" data-colstart="3" class="ui-table-priority-1">Qty</th>
                               <th data-priority="3" data-colstart="4" class="ui-table-priority-3"><abbr title="Selling Price">Selling Price(&#8358;)</abbr></th>
                               <th data-priority="4" data-colstart="5" class="ui-table-priority-4">Supplier</th>
@@ -1716,7 +1733,7 @@
                 
 				<style type="text/css">
 					#sales-inventory-list-container li p{
-						background-color: #43A2C4; font-family: Roboto Thin !important; font-size: 0.7em !important; font-weight: bold !important; text-decoration: none; text-align: center; box-shadow: none; padding-top: 0.4em; color: #fff; opacity: 0.9;
+						background-color: #43A2C4; font-family: Roboto Thin !important; font-size: 0.6em !important; font-weight: bold !important; text-decoration: none; text-align: center; box-shadow: none; padding-top: 0.4em; color: #fff; opacity: 0.9;
 					}
 					#sales-inventory-list-container li a{
 						background-color: #fff !important; border:1px solid #4bb2cf;
@@ -1738,13 +1755,6 @@
 								<div  id="sales-inventory-list-container" class="products">
 									<ul data-role="listview"  data-filter="true" data-filter-placeholder="Search" data-inset="true">
 									
-										<li>
-											<a class="ripple" href="#">
-											<img src="image bank/Evian - 50cl.jpg" class="ui-li-thumb" />
-											<p>Evian - 50cl</p>
-											</a>
-										</li>
-										
 										
 									</ul>
 								</div>
@@ -1759,20 +1769,10 @@
 										</br>
 										</br>
 										</br>
-										<table data-role="table" id="table-column-toggle" data-mode="" class="ui-responsive table-stroke">
-											<thead>
-												<tr class="fntsle" style=" font-family: Roboto Thin; font-size: 1em; font-weight: bold !important; color: #bde3ea; border-top: 1px solid rgba(0,0,0,.10);border-bottom: 1px solid rgba(0,0,0,.05); line-height: 1.4em;">
-													<td style="width: 40%;">Item</td>
-													<td style="width: 10%; text-align: center;">Qty</td>
-													<td style="width: 20%; text-align: right;">Value (N)</td>
-													
-													<td style="width: 30%;"></td>
-
-												</tr>
-											</thead>
+                                        
 											<style type="text/css">
 												#sales-table-body td{
-													font-size: 1.2em; font-weight: bold ;
+													font-size: 1em; font-weight: bold ;
 													vertical-align:middle;
 												}
 												#sales-table-body td:nth-child(2){
@@ -1805,13 +1805,19 @@
 													color:#fff;
 												}
 											</style>
+                                        <table data-role="table1" id="sales-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table table-stroke ui-table ui-table-columntoggle">
+                                          <thead>
+                                            <tr>
+                                              <th data-colstart="1">Item</th>
+                                              <th data-colstart="2">Qty</th>
+                                              <th data-colstart="3">Value (&#8358;)</th>
+                                              <th data-priority="2" data-colstart="4" class="ui-table-priority-2"></th>
+                                            </tr>
+                                          </thead>
 											<tbody id="sales-table-body" style="font-family: Roboto Thin;">
 												
 											</tbody>
-											
 											<tfoot>
-												
-												
 												
 											</tfoot>
 										</table>
@@ -1950,7 +1956,7 @@
                                         <table data-role="table1" id="checkout-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table table-stroke ui-table ui-table-columntoggle">
                                           <thead>
                                             <tr>
-                                              <th data-colstart="1">Product</th>
+                                              <th data-colstart="1">Item</th>
                                               <th data-priority="2" data-colstart="2" class="ui-table-priority-2">Qty</th>
                                               <th data-priority="3" data-colstart="3" class="ui-table-priority-3">Unit Price (&#8358;)</th>
                                               <th data-priority="1" data-colstart="4" class="ui-table-priority-1">Total Price (&#8358;)</th>
