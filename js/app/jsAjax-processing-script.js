@@ -1554,7 +1554,7 @@ $( document ).on( "pageshow", "#records", function() {
 		
 		$('#popupRecords')
 		.data( 'key' , $(this).attr('key') )
-		.popup('open');
+		.popup('open', { positionTo: 'window' });
 	});
 	
 });
@@ -1692,7 +1692,7 @@ function update_stores_list_on_stores_page(){
 function update_inventory_list_on_inventory_page(){
 	var inventory = get_list_of_inventory();
 	var html = '';
-	var html2 = '<option value="new">- Select Item -</option>';
+	var html2 = '<option value="new">--Select Item--</option>';
     
     var max1 = 0;
     var max2 = 0;
@@ -2851,7 +2851,7 @@ $( document ).on( "pageshow", "#setPricing", function() {
 	//Update inventory list
 	var inventory = get_list_of_inventory();
 	var html = '';
-	var html2 = '<option>- Select Item -</option>';
+	var html2 = '<option>--Select Item--</option>';
     
     var max1 = 0;
     var max2 = 0;
@@ -2946,11 +2946,13 @@ $( document ).on( "pagecreate", "#restock", function() {
 			var $form = $(this).parents('form');
 			
 			if( inventory[key] ){
+                /*
                 if( inventory[key].item_desc ){
                     $("#restock")
                     .find('input.item-search-field')
                     .val(inventory[key].item_desc);
                 }
+                */
 				$.each( inventory[key] , function( k , v ){
 					switch( k ){
 					case 'item_barcode': case 'category': case 'item_qty': case 'amount_paid': case 'total_cost_price': case 'key':
@@ -3042,6 +3044,7 @@ $( document ).on( "pagecreate", "#restock", function() {
 		$(this).change();
 	});
 	
+    /*
     $('a.button-scan')
 	.on('click', function(){
 		cordova.plugins.barcodeScanner.scan(
@@ -3078,6 +3081,7 @@ $( document ).on( "pagecreate", "#restock", function() {
             }
         }
     });
+    */
 });
 
 function updateSupplyFormFields( data ){
@@ -3137,7 +3141,7 @@ $( document ).on( "pagecreate", "#inventory", function() {
 		}
 		
 	});
-    
+    /*
     $("#inventory")
     .find('form.item-search-field-form')
     .on('submit', function(e){
@@ -3159,7 +3163,8 @@ $( document ).on( "pagecreate", "#inventory", function() {
         
         return false;
     });
-    
+    */
+    /*
 	$('a.button-scan')
 	.on('click', function(){
 		cordova.plugins.barcodeScanner.scan(
@@ -3178,7 +3183,7 @@ $( document ).on( "pagecreate", "#inventory", function() {
 		  }
 	   );
 	});
-	
+	*/
     $("#inventory")
 	.find('select#filter-item-field')
 	.on('change', function(){
@@ -3187,10 +3192,11 @@ $( document ).on( "pagecreate", "#inventory", function() {
         if( content ){
             var inventory = getData( content );
             if( inventory && inventory.item_desc && inventory.key ){
+                /*
                 $("#inventory")
                 .find('input.item-search-field')
                 .val( inventory.item_desc );
-                
+                */
                 var i = {};
                 i[ inventory.key ] = inventory;
                 display_table_on_inventory_page( i , $('tbody.stockLevels-container') , $('#inventory') , 0 );
@@ -3220,7 +3226,7 @@ $( document ).on( "pageshow", "#inventory", function() {
 	
     display_table_on_inventory_page( inventory, $('tbody.stockLevels-container') , $('#inventory') , 1 );
     
-    
+    /*
     $("#inventory")
     .find('input.item-search-field')
     .on('change', function(){
@@ -3238,6 +3244,7 @@ $( document ).on( "pageshow", "#inventory", function() {
             }
         }
     });
+    */
 });
 
 function display_table_on_inventory_page( inventory, $tbody, $page, include_summary ){
@@ -3250,7 +3257,7 @@ function display_table_on_inventory_page( inventory, $tbody, $page, include_summ
 	var total_value = 0;
 	var total_items = 0;
     
-	var html2 = '<option>- Select Item -</option>';
+	var html2 = '<option>--Select Item--</option>';
 	
     var max1 = 0;
     var max2 = 0;
@@ -3350,7 +3357,7 @@ $( document ).on( "pageshow", "#restock", function() {
 	
 	//Update inventory list
 	var inventory = get_list_of_inventory();
-	var html = '<option>- Select Item -</option>';
+	var html = '<option>--Select Item--</option>';
 	$.each( inventory , function( key , value ){
 		html += '<option value="'+key+'" class="'+value.category+'">'+value.item_desc+'</option>';
 	});
