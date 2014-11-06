@@ -783,8 +783,8 @@ div.ui-controlgroup-label {
 }
 .table-stroke tbody th,
 .table-stroke tbody td {
-	border-bottom: 1px solid #e6e6e6; /* non-RGBA fallback  */
-	border-bottom: 1px solid rgba(0,0,0,.05);
+	/*border-bottom: 1px solid #e6e6e6; /* non-RGBA fallback  */
+	/*border-bottom: 1px solid rgba(0,0,0,.05);*/
 }
 .table-stripe.table-stroke tbody tr:last-child th,
 .table-stripe.table-stroke tbody tr:last-child td {

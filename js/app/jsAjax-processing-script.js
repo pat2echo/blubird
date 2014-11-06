@@ -1329,6 +1329,12 @@ $( document ).on( "pageshow", "#dashboard", function() {
 				dataset: dtset,
 			};
 			piechart( data );
+            setTimeout(function(){
+                if( ! ( $('#chart1').find('.highcharts-container') && $('#chart1').find('.highcharts-container').is(':visible') ) ){
+                    $('#chart1')
+                    .hide();
+                }
+            }, 3000 );
 		}
 	}
 	
@@ -1411,6 +1417,9 @@ $( document ).on( "pagecreate", "#records", function() {
 		
 		$('#sales-record-pop-container')
 		.html( html );
+        
+        $('#popupRecords')
+        .popup( "reposition", { positionTo: 'window' } );
 	});
 	
 	$('.sales-records-details-toggle')
@@ -1554,7 +1563,7 @@ $( document ).on( "pageshow", "#records", function() {
 		
 		$('#popupRecords')
 		.data( 'key' , $(this).attr('key') )
-		.popup('open', { positionTo: 'window' });
+		.popup('open', { positionTo: "window" });
 	});
 	
 });
@@ -3771,7 +3780,7 @@ function calculate_total_sales(){
 			
 			var dt = total;
 			$('#this-sale-total-amount-discount')
-			.html( formatNum( discount.toFixed(2) ) + ' from ' + formatNum( dt.toFixed(2) )  );
+			.html( formatNum( discount.toFixed(2) ) );
 			
 			total -=  discount;
 		}else{
@@ -4434,7 +4443,7 @@ var mouse_vertical_position;
 
 var progress_bar_timer_id;
 function progress_bar_change(){
-	var total = 20;
+	var total = 60;
 	var step = 1;
 	
 	if(function_click_process==0){

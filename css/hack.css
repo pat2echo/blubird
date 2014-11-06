@@ -8,6 +8,7 @@
             width:100%;
             position:fixed;
             z-index:1000;
+            left:0px;
 		}
 		.progress-bar-container-complete,
 		.virtual-progress-bar{
@@ -22,7 +23,7 @@
 		.virtual-progress-bar .progress-bar{
 			height:100%;
 			/*background:#f6e492;background:#43A2C5;*/
-			
+            background:#54e854;
             background:linear-gradient(to right, rgb(84, 232, 84), #4fc1e9);
 			/*
 			border-top:2px solid #f6e492;
