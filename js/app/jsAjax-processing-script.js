@@ -1136,12 +1136,6 @@ $( document ).on( "pageshow", "#dashboard", function() {
     prepare_notifications_for_display(0);
     check_for_data_to_upload( $('#dashboard') );
     
-    unreadNotificationsCount = 4;
-	if( unreadNotificationsCount ){
-		$('.notifications-count')
-		.text( unreadNotificationsCount );
-	}
-	
 	var inventory = get_list_of_inventory();
 	
 	var label = new Array();
@@ -1205,7 +1199,7 @@ $( document ).on( "pageshow", "#dashboard", function() {
 	var total_vat = 0;
 	
 	var date = new Date();
-	var today = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+	var today = date.getFullYear() + '-' + months_of_year[ date.getMonth() ] + '-' + date.getDate();
 	var today_total_days = 0;
 	var today_cost_price_days = 0;
 	
@@ -1219,6 +1213,7 @@ $( document ).on( "pageshow", "#dashboard", function() {
 	var week_data = {};
 	
     if( currentStoreID ){
+        console.log('piesales', sales );
         $.each( sales , function( key , value ){
             if( value && value.store_name == currentStoreID ){
                 if( value.subtotal )total_value += parseFloat( value.subtotal );
@@ -1233,29 +1228,11 @@ $( document ).on( "pageshow", "#dashboard", function() {
                 var month = date.getMonth();
                 var year = date.getFullYear();
                 
-                value.day = year + '-' + ( month + 1 ) + '-' + day;
+                value.day = year + '-' + months_of_year[ month ] + '-' + day;
                 
                 value.day_only = day;
                 value.week_day = weekdays[ date.getDay() ];
                 
-                if( value.timestamp > week_timestamp ){
-                    
-                    var tsales = parseFloat( value.total_amount );
-                    var gprofit = tsales - parseFloat( value.total_cost_price );
-                    
-                    if( week_data[value.day] && week_data[value.day].weekday ){
-                        week_data[value.day].total_sales += tsales;
-                        week_data[value.day].gross_profit += gprofit;
-                    }else{
-                        week_data[value.day] = {
-                            weekday: value.week_day+', '+day+' '+months_of_year[ month ],
-                            date: value.day,
-                            total_sales: tsales,
-                            gross_profit: gprofit,
-                        };
-                    }
-                    
-                }
                 
                 if( value.day == today ){
                     today_total_days += parseFloat( value.total_amount );
@@ -1263,6 +1240,7 @@ $( document ).on( "pageshow", "#dashboard", function() {
                     if( value.total_units )today_units += parseFloat( value.total_units );
                     
                     $.each( value.inventory , function( k, v){
+                        console.log('piein', inventory );
                         if( inventory[k] ){
                             if( most_selling[ k ] ){
                                 var  ini = most_selling[ k ];
@@ -1283,6 +1261,26 @@ $( document ).on( "pageshow", "#dashboard", function() {
                         }
                     });
                 }
+                
+                if( value.timestamp > week_timestamp ){
+                    
+                    var tsales = parseFloat( value.total_amount );
+                    var gprofit = tsales - parseFloat( value.total_cost_price );
+                    
+                    if( week_data[value.day] && week_data[value.day].weekday ){
+                        week_data[value.day].total_sales += tsales;
+                        week_data[value.day].gross_profit += gprofit;
+                    }else{
+                        week_data[value.day] = {
+                            weekday: value.week_day+', '+day+' '+months_of_year[ month ],
+                            date: value.day,
+                            total_sales: tsales,
+                            gross_profit: gprofit,
+                        };
+                    }
+                    
+                }
+                
             }
         });
         
@@ -1308,6 +1306,7 @@ $( document ).on( "pageshow", "#dashboard", function() {
 	$('.today-gross-profit')
 	.html( appCurrency + formatNum(today_profit.toFixed(2) ) );
 	
+    console.log( 'piechartmostselling', most_selling );
 	if( total_value ){
 		most_selling.sort(function(a,b){
 			return b.units - a.units;
@@ -3578,7 +3577,7 @@ $( document ).on( "pageshow", "#sales", function() {
                 
                 var qty = 0;
                 if(  value.item_qty )qty = parseFloat( value.item_qty );
-                if(  value.item_sold )qty -= parseFloat( value.item_sold );
+                if(  value.item_sold )qty = qty - parseFloat( value.item_sold );
                 
                 if( qty ){
                     var img = 'icon.png';
