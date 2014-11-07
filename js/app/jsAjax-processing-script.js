@@ -1308,9 +1308,7 @@ $( document ).on( "pageshow", "#dashboard", function() {
 	$('.today-gross-profit')
 	.html( appCurrency + formatNum(today_profit.toFixed(2) ) );
 	
-    conlog( total_value );
 	if( total_value ){
-        conlog( most_selling );
 		most_selling.sort(function(a,b){
 			return b.units - a.units;
 		});
@@ -1333,7 +1331,7 @@ $( document ).on( "pageshow", "#dashboard", function() {
 				id:'#chart1',
 				dataset: dtset,
 			};
-            conlog( data );
+            console.log( 'piechart', data );
 			piechart( data );
 		}
 	}
