@@ -210,10 +210,8 @@
 <body>
 
 <div data-role="page" id="dashboard">
-	<div data-role="panel" id="menupanel-1" data-position="left" data-display="overlay" class="ui-panel ui-panel-position-left ui-panel-display-overlay ui-body-c ui-panel-animate ui-panel-closed" data-theme="b" style="background-color: #fff;  ">
+	<div data-role="panel" id="menupanel-1" data-position="left" data-dismissible="true" data-display="overlay"  data-theme="b" style="background-color: #fff;">
 
-			<div class="ui-panel-inner" >
-			
 				<ul data-role="listview" data-theme="b">
 				
 					<li class="lidec"><a data-transition="none" class="ui-btn ui-icon-shop ui-btn-icon-left" href="#sales" data-transition="none"><b>Sales</b></a></li>
@@ -222,10 +220,8 @@
 					<li class="lidec"><a data-transition="none" class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier" data-transition="none"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
 					<li class="lidec"><a data-transition="none" class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notifications" data-transition="none"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
 					<li class="lidec"><a data-transition="none" class="ui-btn ui-icon-gear ui-btn-icon-left" href="#settings" data-transition="none"><b>Settings</b></a></li>
-			
 				</ul>	
 			
-			</div>
 			<div>
 				<img style="margin: 3em 4em !important;" src="css/images/icon.png" />
 			</div>
@@ -727,7 +723,7 @@
 			</div>
 			
 			<div class="ui-block-b">
-				<input type="submit" value="Sign Up" data-theme="b" />
+				<a href="#signup" data-transition="none" data-role="button" data-theme="b" >Sign Up</a>
 			</div>
 		</div>
 		
@@ -1520,7 +1516,7 @@
 		
 		
 		<a href="#menupanel-4" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
-		<a href="#damages" class="ui-btn ui-shadow ui-corner-all ui-icon-minus ui-btn-icon-notext">damages</a>
+		<!--<a href="#damages" class="ui-btn ui-shadow ui-corner-all ui-icon-minus ui-btn-icon-notext">damages</a>-->
 		
 		<h1>Inventory</h1>
 		<div class="notifications-container hidden" data-role="navbar" data-mini="true">
@@ -1925,14 +1921,14 @@
 													 <td>VAT (&#8358;)</td>
 													 <td class="ui-table-priority-2"></td>
 													 <td class="ui-table-priority-3"></td>
-													 <td class="ui-table-priority-1"><span id="checkout-vat">0.00</span></td> 
+													 <td style="text-align:right;" class="ui-table-priority-1"><span id="checkout-vat">0.00</span></td> 
 												</tr>
 												
 												<tr style="border-bottom: none !important; ">
 													 <td>Discount (&#8358;)</td>
 													 <td class="ui-table-priority-2"></td>
 													 <td class="ui-table-priority-3"></td>
-													 <td class="ui-table-priority-1"><span id="checkout-discount">0.00</span></td>
+													 <td style="text-align:right;" class="ui-table-priority-1"><span id="checkout-discount">0.00</span></td>
 												</tr>
 											</tfoot>
                                         </table>
@@ -2052,7 +2048,7 @@
 					<br>
 					<div class="ui-grid-a invt" style="margin: 0.2em;">
 						<div class="ui-block-a" >
-							<a href="#" data-role="button" data-theme="b" data-icon="phone" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>Customer Care</b></a>
+							<a href="http://www.blubird.com.ng" data-rel="external" data-role="button" data-theme="b" data-icon="phone" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>Customer Care</b></a>
 						</div>
 						<div class="ui-block-b">
 							<a href="#mngcategory" data-role="button" data-theme="b" data-icon="tag" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>Manage Category</b></a>
@@ -2064,7 +2060,7 @@
 							<a href="#mngusers" data-role="button" data-theme="b" data-icon="user" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>Manage Users</b></a>
 						</div>
 						<div class="ui-block-b">
-							<a href="#" data-role="button" data-theme="b" data-icon="gear" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>General Settings</b></a>
+							<a href="#" data-role="button" data-theme="b" data-icon="gear" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #f1f1f1 !important; color:#777 !important;"><b>General Settings</b></a>
 						</div>
 					</div><!-- /grid-a -->
 					
@@ -2073,13 +2069,13 @@
 							<a href="#stores" data-role="button" data-theme="b" data-icon="home" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>My Store(s)</b></a>
 						</div>
 						<div class="ui-block-b">
-							<a href="#" data-role="button" data-theme="b" data-icon="gear" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>My Profile</b></a>
+							<a href="#" data-role="button" data-theme="b" data-icon="gear" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #f1f1f1 !important; color:#777 !important;"><b>My Profile</b></a>
 						</div>
 					</div><!-- /grid-a -->
 					
 					<div class="ui-grid-a invt" style="margin: 0.2em;">
 						<div class="ui-block-a" >
-							<a href="#" data-role="button" data-theme="b" data-icon="grid" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>Reports</b></a>
+							<a href="#" data-role="button" data-theme="b" data-icon="grid" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #f1f1f1 !important; color:#777 !important;"><b>Reports</b></a>
 						</div>
 						<div class="ui-block-b">
 							<a href="#" id="sign-out" data-role="button" data-theme="b" data-icon="gear" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>Sign Out</b></a>
