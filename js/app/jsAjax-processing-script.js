@@ -715,6 +715,8 @@ function successful_submit_action( stored ){
 			tempStoreObjects = {};
 			newStock = {};
 			uploadData = {};
+            
+            ga( 'send' , 'pageview' , {'page': '/supply' , 'title': msg } );
 		}else{
 			delete tempStoreObjects[ stored.key ];
 			
@@ -761,7 +763,9 @@ function successful_submit_action( stored ){
 		//storeObjects[ 'sales' ][ stored.key ] = stored;
 		
 		title = 'Sold!';
-		msg = 'Sale was successful';
+		msg = 'Total Items: ' + stored.total_units + '\nTotal Amount: ' + appCurrencyText + stored.total_amount;
+        
+        ga( 'send' , 'pageview' , {'page': '/sale' , 'title': msg } );
 	break;
 	}
 	
@@ -1205,15 +1209,15 @@ $( document ).on( "pageshow", "#dashboard", function() {
 	
 	var today_units = 0;
 	
-	var most_selling = new Array();
-	
+	var most_selling = {};
+	var most_selling_count = 0;
+    
 	var current_timestamp = date.getTime();
 	var week_timestamp = current_timestamp - (7*24*3600000);
 	
 	var week_data = {};
 	
     if( currentStoreID ){
-        console.log('piesales', sales );
         $.each( sales , function( key , value ){
             if( value && value.store_name == currentStoreID ){
                 if( value.subtotal )total_value += parseFloat( value.subtotal );
@@ -1233,14 +1237,14 @@ $( document ).on( "pageshow", "#dashboard", function() {
                 value.day_only = day;
                 value.week_day = weekdays[ date.getDay() ];
                 
-                
                 if( value.day == today ){
+                    console.log('tday-sales', value );
                     today_total_days += parseFloat( value.total_amount );
                     today_cost_price_days += parseFloat( value.total_cost_price );
                     if( value.total_units )today_units += parseFloat( value.total_units );
                     
                     $.each( value.inventory , function( k, v){
-                        console.log('piein', inventory );
+                        //console.log('piein', inventory );
                         if( inventory[k] ){
                             if( most_selling[ k ] ){
                                 var  ini = most_selling[ k ];
@@ -1306,35 +1310,52 @@ $( document ).on( "pageshow", "#dashboard", function() {
 	$('.today-gross-profit')
 	.html( appCurrency + formatNum(today_profit.toFixed(2) ) );
 	
-    console.log( 'piechartmostselling', most_selling );
+    var hidepiechart = true;
 	if( total_value ){
-		most_selling.sort(function(a,b){
-			return b.units - a.units;
-		});
-		
-		var j = 5;
-		if( most_selling.length < j ){
-			j = most_selling.length;
-		}
-		
-		if( j ){
-			var dtset = new Array();
-			var i = 0;
-			for( i = 0; i < j; i++){
-				if( most_selling[i] ){
-					dtset[ i ] = [ most_selling[i].item_desc + ' ( ' + appCurrencyText + most_selling[i].total_amount+')' , most_selling[i].units ];
-				}
-			}
-			
+        var max1 = 0;
+        var max2 = 0;
+        var max3 = 0;
+        var max4 = 0;
+        var max5 = 0;
+        
+        var i = 0;
+        var dtset = new Array();
+        $.each( most_selling, function( k , v ){
+            if( v.units && ( v.units > max1 || v.units > max2 || v.units > max3 || v.units > max4 || v.units > max5 )  ){
+                max5 = max4;
+                max4 = max3;
+                max3 = max2;
+                max2 = max1;
+                max1 = v.units
+                dtset[ i ] = [ v.item_desc + ' ( ' + appCurrencyText + v.total_amount+')' , v.units ];
+                
+                ++i;
+            
+                if( i == 5 )return false;
+            }
+        });
+        
+		if( dtset.length > 0 ){
+            hidepiechart = false;
+            if( $('#dashboard-pie-chart') && $('#dashboard-pie-chart').hasClass('hidden') ){
+                $('#dashboard-pie-chart')
+                .removeClass('hidden');
+            }
+            
 			var data = {
 				id:'#chart1',
 				dataset: dtset,
 			};
-            console.log( 'piechart', data );
+            
 			piechart( data );
 		}
 	}
 	
+    if( hidepiechart && $('#dashboard-pie-chart') && ( ! $('#dashboard-pie-chart').hasClass('hidden') ) ){
+        $('#dashboard-pie-chart')
+        .addClass('hidden');
+    }
+    
     var wLabel = new Array();
     var wSales = new Array();
     var wProfit = new Array();
@@ -2539,7 +2560,7 @@ function downloadFiles(){
                 );
             } );
         }else{
-            
+            return 1;
             //document.location = document.location.origin + document.location.pathname;
             //$.mobile.navigate( "#dashboard", { transition : "none" });
         }
@@ -2550,7 +2571,7 @@ function downloadFiles(){
 			auto_close: 'yes'
 		};
 		display_popup_notice( settings );
-        
+        return 1;
         //document.location = document.location.origin + document.location.pathname;
         //$.mobile.navigate( "#dashboard", { transition : "none" });
     }
@@ -2558,7 +2579,10 @@ function downloadFiles(){
 };
 
 function movePackedFiles(){
-    downloadFiles();
+    var d = downloadFiles();
+    if( d ){
+        document.location = document.location.origin + document.location.pathname;
+    }
 };
 
 function clearFileKeyFromDownloadList(){
@@ -2727,7 +2751,6 @@ $( document ).on( "pageshow", "#stockLevels", function() {
                     max1 = value.timestamp;
                     html += get_inventory_html( key , value );
                 }
-                
             }
         });
 	}
@@ -3426,7 +3449,7 @@ $( document ).on( "pagecreate", "#checkout", function() {
     .on('keyup', function(){
         $(this).change();
     });
-			
+	
 });
 
 $( document ).on( "pageshow", "#checkout", function() {
@@ -3460,13 +3483,14 @@ $( document ).on( "pageshow", "#checkout", function() {
 			//queueUpload( upload );
 			salesData.payment_method = $('#checkout-payment-method').val();
 			
-			$('#amount_tendered-field').val( salesData.total_amount_tendered );
+            var t = salesData.total_amount_tendered;
+			$('#amount_tendered-field').val( t.toFixed(2) );
 			
 			var a = salesData.total_amount;
 			$('#this-sale-total-amount')
 			.val( formatNum( a.toFixed(2) ) );
 			
-			$('#this-sale-checkout-total').html( salesData.total_amount );
+			$('#this-sale-checkout-total').html( formatNum( a ) );
 		}
 	}
 	
@@ -3548,6 +3572,21 @@ $( document ).on( "pagecreate", "#sales", function() {
 		.html('0.00');
 	});
 	
+    $('a.button-scan')
+	.on('click', function(){
+		cordova.plugins.barcodeScanner.scan(
+		  function (result) {
+			$("#sales")
+            .find('#sales-inventory-list-container')
+            .find('input')
+			.val( result.text )
+            .blur();
+		  }, 
+		  function (error) {
+			  alert("Scanning failed: " + error);
+		  }
+	   );
+	});
 });
 
 $( document ).on( "pageshow", "#sales", function() {
@@ -3573,13 +3612,13 @@ $( document ).on( "pageshow", "#sales", function() {
                 value.item_qty = storeStock.item_qty;
                 value.item_sold = storeStock.item_sold;
                 value.selling_price = storeStock.selling_price;
-                value.cost_price = storeStock.selling_price;
+                value.cost_price = storeStock.cost_price;
                 
                 var qty = 0;
                 if(  value.item_qty )qty = parseFloat( value.item_qty );
                 if(  value.item_sold )qty = qty - parseFloat( value.item_sold );
                 
-                if( qty ){
+                if( qty > 0 ){
                     var img = 'icon.png';
                     if( blubirdFileURL ){
                         img = blubirdFileURL + value.item_image;
@@ -3603,6 +3642,11 @@ $( document ).on( "pageshow", "#sales", function() {
 		.on('click', function(e){
 			e.preventDefault();
 			
+			var qty = parseFloat( $(this).attr('max-qty') );
+            if( qty < 0 ){
+                return false;
+            }
+            
 			var amount = parseFloat( $(this).attr('selling-price') );
 			var cost = parseFloat( $(this).attr('cost-price') );
 			var $item = $('#sales-table-body').find('tr#'+$(this).attr('key') );
@@ -3651,6 +3695,13 @@ $( document ).on( "pageshow", "#sales", function() {
 					if( $(this).attr('max') && ( parseFloat( $(this).val() ) > parseFloat( $(this).attr('max') ) ) ){
 						$(this)
 						.val( $(this).attr('max') );
+						
+						$(this).change();
+					}
+                    
+                    if( ( parseFloat( $(this).val() ) < 1 ) ){
+						$(this)
+						.val(1);
 						
 						$(this).change();
 					}
@@ -3746,6 +3797,7 @@ function calculate_total_sales(){
 				key: key,
 				item_desc: $(this).find('td.label').html(),
 				unit_selling_price: parseFloat( $(this).attr('unit-price') ),
+				unit_cost_price: parseFloat( $(this).attr('cost-price') ),
 				unit_ordered: parseFloat( $(this).find('input[type="number"]').val() ),
 			};
 			
@@ -4318,6 +4370,7 @@ function ajaxSuccess( data , store ){
 				var stored = store_record( tempData );
 				
 				if( data.begin_download ){
+                    registration = true;
 					tempDownloadObjects = data.begin_download;
 					$.mobile.navigate( "#update-progress", { transition : "none" } );
 				}else{

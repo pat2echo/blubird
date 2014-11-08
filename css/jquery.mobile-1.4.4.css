@@ -4846,7 +4846,15 @@ padding: 0em !important;
 	border-radius: 5px;
 	background-color: #fff;
 	padding: 10px;
-	margin: 10px;
+	color: #333 !important;
+	text-shadow: none !important;
+ }
+ 
+.panX{
+	border-radius: 5px;
+	background-color: #fff;
+	padding: 10px;
+	margin: 8px;
 	color: #333 !important;
 	text-shadow: none !important;
  }
