@@ -185,3 +185,10 @@
                     max-width:47%;
                 }
             }
+            
+            .small-remarks{
+                font-size:0.7em;
+            }
+            .low-stock, .low-stock td{
+                color:#b30000 !important;
+            }

@@ -204,32 +204,42 @@
     .ui-li-count{
         display:none !important;
     }
+    
+    #menupanel a.active-menu{
+        background-color: #f1f1f1;
+        border-color: #ddd;
+        color: #555;
+    }
 	</style>
 	
 </head>
 <body>
 
-<div data-role="page" id="dashboard">
-	<div data-role="panel" id="menupanel-1" data-position="left" data-dismissible="true" data-display="overlay"  data-theme="b" style="background-color: #fff;">
 
-				<ul data-role="listview" data-theme="b">
-				
-					<li class="lidec"><a data-transition="none" class="ui-btn ui-icon-shop ui-btn-icon-left" href="#sales" data-transition="none"><b>Sales</b></a></li>
-					<li class="lidec"><a data-transition="none" class="ui-btn ui-icon-info ui-btn-icon-left" href="#inventory"><b>Inventory</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
-					<li class="lidec"><a data-transition="none" class="ui-btn ui-icon-calendar ui-btn-icon-left" href="#records" data-transition="none"><b>Records</b></a></li>
-					<li class="lidec"><a data-transition="none" class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier" data-transition="none"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
-					<li class="lidec"><a data-transition="none" class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notifications" data-transition="none"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
-					<li class="lidec"><a data-transition="none" class="ui-btn ui-icon-gear ui-btn-icon-left" href="#settings" data-transition="none"><b>Settings</b></a></li>
-				</ul>	
-			
-			<div>
-				<img style="margin: 3em 4em !important;" src="css/images/icon.png" />
-			</div>
-			
-	</div>
+<div data-role="panel" id="menupanel" data-position="left" data-display="overlay" data-theme="b" style="background-color: #fff;  ">
+
+        <ul data-role="listview" data-theme="b">
+              
+            <li class="lidec"><a class="ui-btn ui-icon-home ui-btn-icon-left" href="#dashboard" data-transition="none"><b>Dashboard</b></a></li>
+            <li  class="lidec"><a class="ui-btn ui-icon-info ui-btn-icon-left" href="#inventory"data-transition="none"><b>Inventory</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
+            <li class="lidec"><a class="ui-btn ui-icon-shop ui-btn-icon-left" href="#sales" data-transition="none"><b>Sales</b></a></li>
+            <li class="lidec"><a class="ui-btn ui-icon-calendar ui-btn-icon-left" href="#records"data-transition="none"><b>Records</b></a></li>
+            <li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier" data-transition="none"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
+            <li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#expenses" data-transition="none"><b>Expenses</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
+            <li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#customers" data-transition="none"><b>Customers</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
+            <li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notifications" data-transition="none"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
+            <li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" data-transition="none" href="#settings" data-transition="none"><b>Settings</b></a></li>
+    
+        </ul>
+    <div>
+        <img style="margin: 3em 4em !important;" src="css/images/icon.png" />
+    </div>
+</div>
+
+<div data-role="page" id="dashboard">
 	<div data-role="header" id="hd" data-position="fixed" data-tap-toggle="false" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  >
 		
-		<a href="#menupanel-1" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
+		<a href="#menupanel" data-rel="panel" class="open-panel ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
 		<a href="index.html" rel="external" class="ui-btn ui-shadow ui-corner-all ui-icon-recycle ui-btn-icon-notext">Refresh</a>
         
 		<h1>Dashboard</h1>
@@ -453,43 +463,18 @@
 	</div><!-- /page -->	
 
 <div data-role="page" id="records">
-    <div data-role="panel" id="menupanel-2" data-position="left" data-display="overlay" class="ui-panel ui-panel-position-left ui-panel-display-overlay ui-body-c ui-panel-animate ui-panel-closed" data-theme="b" style="background-color: #fff; ">
-
-        <div class="ui-panel-inner" >
-        
-            <ul data-role="listview" data-theme="b">
-            
-                <li class="lidec"><a class="ui-btn ui-icon-home ui-btn-icon-left" href="#dashboard" data-transition="none"><b>Dashboard</b></a></li>
-                <li  class="lidec"><a class="ui-btn ui-icon-check ui-btn-icon-left" href="#sales" data-transition="none"><b>Sales</b></a></li>
-                <li class="lidec"><a class="ui-btn ui-icon-gear ui-btn-icon-left" href="#inventory"><b>Inventory</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
-                <li class="lidec"><a class="ui-btn ui-icon-gear ui-btn-icon-left" href="#records" data-transition="none"><b>Records</b></a></li>
-                <li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier" data-transition="none"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
-                <li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notifications" data-transition="none"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
-                <li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" href="#settings" data-transition="none"><b>Settings</b></a></li>
-        
-            </ul>	
-        
-    
-        
-            
-        </div>
-    <div>
-            <img style="margin: 3em 4em !important;" src="css/images/icon.png" />
-        </div>
-        
-    </div>
-
 	<div data-role="header" id="hd" data-theme="b" style="height: 4em;">
 		
-		<a href="#menupanel-2" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
+		<a href="#menupanel" data-rel="panel" class="open-panel ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
 		
-        <h1>Sales Records</h1>
+        <h1>Records</h1>
 		<div class="notifications-container hidden" data-role="navbar" data-mini="true">
 			<ul>
-				<li><a href="#notifications" data-transition="none">
-				<marquee class="rbto notifications-count-with-notifications" behavior="scroll" scrollamount="3" direction="left" > 
-				</marquee>
-				</a></li>
+				<li>
+                    <a href="#notifications" data-transition="none">
+                        <marquee class="rbto notifications-count-with-notifications" behavior="scroll" scrollamount="3" direction="left" > </marquee>
+                    </a>
+                </li>
 			</ul>
         </div><!-- /navbar -->
             
@@ -505,8 +490,19 @@
             </div>
                     
 			<style type="text/css">
+				#expenses-records-container h4{
+                    font-size:1em !important;
+                }
+				#expenses-records-container p{
+                    font-size:1.3em !important;
+                }
+				#expenses-records-container p.ui-li-aside{
+                    float:right;
+                }
+				#expenses-records-container ul li,
 				#sales-records-container ul li a{
-					font-weight: normal; background-color: #4fc1e9;
+					font-weight: normal; background-color: #666;
+					border-color: #444;
 				}
 			</style>
 			
@@ -534,8 +530,90 @@
 						display:none !important;
 					}
 				</style>
-				
-			  
+			
+            <br>            
+            
+			 <div data-role="tabs" id="tabs" >
+              <div data-role="navbar">
+                <ul>
+                  <li><a href="#sales-records-tab" data-ajax="false" class="ui-btn-active">Sales</a></li>
+                  <!--<li><a href="#debts-records-tab" id="debts-records-tab-handle" data-ajax="false">Debts</a></li>-->
+                  <li><a href="#debts-records-tab" id="debts-records-tab-handle" data-ajax="false">Expenses</a></li>
+                </ul>
+              </div>
+              <div id="sales-records-tab" class="ui-body-d ui-content" style="padding:0.3125em;">
+                
+                <!--<h4>Sales</h4>-->
+                <div data-role="collapsible-set" data-theme="b" data-content-theme="a" id="sales-records-container">
+                
+                <div style="" data-role="collapsible" data-theme="b" data-content-theme="a" data-inset="false">
+                    <h5 style="font-weight: 100 !important;">Today<span style="float: right; "><b class="ngdr" id="today-sales-records-days-total">-</b></span></h5>
+                    <div id="today-sales-records">
+                    
+                    </div>
+                </div><!-- /collapsible -->
+                
+                 
+                <div style="" data-role="collapsible" data-theme="b" data-content-theme="a" data-inset="false">
+                    <h5 style="font-weight: 100 !important;">24 hours ago<span style="float: right; "><b class="ngdr" id="one-day-sales-total">-</b></span></h5>
+                    <div id="one-day-records">
+                    
+                    </div>
+                </div><!-- /collapsible -->
+                
+                <div style="" data-role="collapsible" data-theme="b" data-content-theme="a" data-inset="false">
+                    <h5 style="font-weight: 100 !important;">Last Seven days<span style="float: right; "><b class="ngdr" id="two-day-sales-total">-</b></span></h5>
+                    <div id="two-day-records">
+                    
+                    </div>
+                </div><!-- /collapsible -->
+                    
+                <div style="" data-role="collapsible" data-theme="b" data-content-theme="a" data-inset="false">
+                 <h5 style="font-weight: 100 !important;">This Month<span style="float: right;"><b class="ngdr" id="today-sales-records-months-total">0.00</b></span></h5>
+                    <div id="today-sales-records-months">
+                    </div>
+                </div><!-- /collapsible -->
+              </div>
+                
+             </div>
+              
+                <div id="debts-records-tab" class="ui-body-d ui-content" style="padding:0.3125em;">
+                    
+                <div data-role="collapsible-set" data-theme="b" data-content-theme="a" id="expenses-records-container">
+                    
+                    <div style="" data-role="collapsible" data-theme="b" data-content-theme="a" data-inset="false">
+                        <h5 style="font-weight: 100 !important;">Today<span style="float: right; "><b class="ngdr" id="today-expenses-records-days-total">-</b></span></h5>
+                        <div id="today-expenses-records">
+                        
+                        </div>
+                    </div><!-- /collapsible -->
+                    
+                    <div style="" data-role="collapsible" data-theme="b" data-content-theme="a" data-inset="false">
+                        <h5 style="font-weight: 100 !important;">24 hours ago<span style="float: right; "><b class="ngdr" id="one-day-expenses-total">-</b></span></h5>
+                        <div id="expenses-one-day-records">
+                        
+                        </div>
+                    </div><!-- /collapsible -->
+                        
+                    <div style="" data-role="collapsible" data-theme="b" data-content-theme="a" data-inset="false">
+                        <h5 style="font-weight: 100 !important;">Last Seven days<span style="float: right; "><b class="ngdr" id="two-day-expenses-total">-</b></span></h5>
+                        <div id="expenses-two-day-records">
+                        
+                        </div>
+                    </div><!-- /collapsible -->
+                        
+                    <div style="" data-role="collapsible" data-theme="b" data-content-theme="a" data-inset="false">
+                     <h5 style="font-weight: 100 !important;">This Month<span style="float: right;"><b class="ngdr" id="today-expenses-records-months-total">0.00</b></span></h5>
+                        <div id="today-expenses-records-months">
+                        </div>
+                    </div><!-- /collapsible -->
+
+                </div>
+              
+                </div>
+            </div>
+            </div>
+                
 				<div style="  border-radius: 8px; ">
 			
 			<div data-role="popup" id="popupRecords" class="ui-content" style="max-width:280px" >
@@ -588,46 +666,12 @@
 					</tr>
 				</tfoot>
 				</table>
-				
-				
 			</div>
-            <br>
-			<div data-role="collapsible-set" data-theme="b" data-content-theme="a" id="sales-records-container">
-			
-			<div style="" data-role="collapsible" data-theme="b" data-content-theme="a" data-inset="false">
-				<h5 style="font-weight: 100 !important;">Today<span style="float: right; "><b class="ngdr" id="today-sales-records-days-total">-</b></span></h5>
-				<div id="today-sales-records">
-				
-				</div>
-			</div><!-- /collapsible -->
             
-			<div style="" data-role="collapsible" data-theme="b" data-content-theme="a" data-inset="false">
-				<h5 style="font-weight: 100 !important;">24 hours ago<span style="float: right; "><b class="ngdr" id="one-day-sales-total">-</b></span></h5>
-				<div id="one-day-records">
-				
-				</div>
-			</div><!-- /collapsible -->
-                
-			<div style="" data-role="collapsible" data-theme="b" data-content-theme="a" data-inset="false">
-				<h5 style="font-weight: 100 !important;">Last Seven days<span style="float: right; "><b class="ngdr" id="two-day-sales-total">-</b></span></h5>
-				<div id="two-day-records">
-				
-				</div>
-			</div><!-- /collapsible -->
-                
-			<div style="" data-role="collapsible" data-theme="b" data-content-theme="a" data-inset="false">
-			 <h5 style="font-weight: 100 !important;">This Month<span style="float: right;"><b class="ngdr" id="today-sales-records-months-total">0.00</b></span></h5>
-				<div id="today-sales-records-months">
-				</div>
-			</div><!-- /collapsible -->
-
-		</div>
 			</div>
 			 
 			
 	</div>
-	
-	
 
 </div><!--./records-page-->
 
@@ -1002,8 +1046,8 @@
 <div data-role="page" id="damages">
 		
 		<div data-role="header" data-theme="b"  data-position="fixed" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);" >
-				<a href="#inventory" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
-				<h1 >Damages</h1>
+				<a href="#inventory" class="upload-queue ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
+				<h1>Damages</h1>
 		<div class="notifications-container hidden" data-role="navbar" data-mini="true">
 			<ul>
 				<li><a href="#notifications" data-transition="none">
@@ -1016,82 +1060,228 @@
 	</div><!-- /header -->
     <div class="progress-bar-container"></div>
 
-		<div data-role="content" style="background: #fff; ">
-			<div style="background-color: #43a2c4 !important; border-radius: 5px; ">
+        <div role="main" class="ui-content" style="background-color: #f1f1f1;">
+			<div class="hidden update-server-button-container">
+                <a href="#" class="update-server-button ui-btn ui-shadow ui-corner-all ui-icon-forward ui-btn-icon-notext">Update Server</a>
+            </div>
+            
+            <br>
+            
+            <div style="background-color: #43a2c4 !important; border-radius: 5px; ">
+                <form method="post" action="" name="damages" id="damages-form">
+                    <input type="hidden" name="key" id="key-field" value="" data-validate="text" />
 					<div style="padding: 0.5em 1em 0em 1em;">
-						<div class="ui-grid-a" >
+						<div class="ui-grid-a invt">
 							<div class="ui-block-a">
-								
-									<select name="select-choice-a" id="select-choice-a" >
-										<option style="text-shadow: none !important;">Select Category</option>
-										<option value="standard">New Supplier</option>
-										<option value="rush">Mrs Adekeye</option>
-										<option value="express">Mr Obinna</option>
-										<option value="overnight">Miss Aisha</option>
-									</select>
-								
+                                <select id="filter-category-field" >
+									<option value="" style="text-shadow: none !important;">All Categories</option>
+								</select>
 							</div>
 						
 							<div class="ui-block-b">
-								
-									<select name="select-choice-a" id="select-choice-a" >
-										<option style="text-shadow: none !important;">Select Item</option>
-										<option value="standard">New Category</option>
-										<option value="cereal">Cereal</option>
-										<option value="washing liquid">Washing Liquid</option>
-										<option value="beverages">Beverages</option>
-										<option value="beverages">General</option>
-									</select>
-								
+                                <select name="item_barcode" id="item_barcode-field" required data-validate="text" data-error-title="Invalid Item" data-error-msg="Please select a valid item">
+                                    <option style="text-shadow: none !important;">--Select Item--</option>
+                                </select>
 							</div>
 						
 						</div>
 						
-						<p style="text-align: center; font-family: Roboto Thin !important; font-size: 2.2em !important; color: white;">or</p>
-						
-						<div class="ui-grid-a">
-							<div class="ui-block-a" style="width: 50%; padding-right: 3px;">
-								
-								
-								<input type="text"  name="itemBarcode" id="itemBarcode" placeholder="Barcode Number" style="height: 2.65em;">
-							
+						<div class="ui-grid-a invt">
+							<div class="ui-block-a" >
+                                <input type="text"  name="item_barcode_tmp" id="item_barcode_tmp-field" placeholder="Item Barcode"  required data-validate="barcode" data-error-title="Invalid Barcode" data-error-msg="Please provide a valid barcode, barcodes cannot begin with zero(0)" class="item-search-field" />
 							</div>
 						
-							<div class="ui-block-b" style="width: 50%; padding-left: 3px;">
-								<a href="#" data-role="button" data-theme="a" data-icon="camera"  style="background-color:green; border: none; text-shadow: none; color: white !important; " >Scan Barcode</a>
+							<div class="ui-block-b" >
+								<a href="#" class="button-scan" data-role="button" data-theme="c" data-icon="camera"  style="margin-top:8px; background-color:green; border: none; text-shadow: none; color: white !important; " >Scan Barcode</a>
 							</div>
 						
 						</div>
 						
-						
-						<div class="ui-grid-a">
-							<div class="ui-block-a" style="width: 50%; padding-right: 3px;">
-								<input type="text" name="itemDesc" id="itemDesc" placeholder="Item Selling Price" style="height: 2.65em;">	
+						<div class="ui-grid-a invt">
+							<div class="ui-block-a">
+								
+								 <select name="store_name" id="store_name-field" placeholder="Select Store" required data-validate="text" data-error-title="Invalid Store" data-error-msg="Please select a store" class="currently-active-store">
+									
+								 </select>
+
 							</div>
 						
-							<div class="ui-block-b" style="width: 50%; padding-left: 3px;">
-								<input type="number" name="itemQty" id="itemQty" placeholder="Quantity of Items Damaged" style="height: 2.65em;">
+							<div class="ui-block-b">
+                                <input type="number" min="0" step="1" name="damage_qty" id="damage_qty-field" placeholder="Quantity of Items Damaged" required data-validate="number" data-error-title="Invalid Quantity of Items Damaged" data-error-msg="Please provide a valid quantity of items damaged" />
 							</div>
 						
 						</div>
-						<br>
-						<label for="textarea" style="text-shadow: none; font-family: Roboto Thin !important; font-size: 1.7em !important; color: white;">Please describe the damages</label>
-						<textarea cols="40" rows="8" name="textarea" id="textarea" class="ui-input-text ui-shadow-inset ui-body-inherit ui-corner-all ui-textinput-autogrow" style="height: 51px;"></textarea>
+						
+                        <div class="ui-grid-a invt">
+							<div class="ui-block-a">
+								<label for="item_qty-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Nature of damage:</label>
+								<input type="text"  name="damage_desc" id="damage_desc-field" placeholder="Description of Damages" maxlength="200" />
+							</div>
+							<div class="ui-block-b">
+								<label for="date-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Date:</label>
+								<input type="date" name="date" id="date-field" value="" data-validate="date" data-error-title="Invalid Date" data-error-msg="Please provide a valid date" />
+							</div>
+						</div>
+                        
 						
 						<br>
 						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
 						<br>
-						<a href="#" data-role="button" data-theme="a" data-icon="plus"  style="background-color:green; border: none; text-shadow: none; color: white !important; " >Save Damage Report</a>
-						
+						<input type="submit" data-icon="check" data-theme="c" value="Save Damage Report" />
+                        
 						<br>
 					</div>
-					
-				</div>
-					
-				
-				
-				
-				
+				</form>
+			</div>
+			<br><br>
+                <div style="background-color: #43a2c4 !important; padding: 1em ; border-radius: 5px;">
+                    <span class="df" style="font-size: 1.5em; color: white; text-shadow: none !important; "> Recently Reported Damages &darr;</span>
+                        <br>
+                        
+                        <br>
+                        <table data-role="table1" id="damages-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table table-stroke ui-table ui-table-columntoggle">
+                          <thead>
+                            <tr>
+                              <th data-priority="1" data-colstart="1">Item Desc</th>
+                              <th data-colstart="2" data-priority="3">Description of Damages</th>
+                              <th data-colstart="3" data-priority="2">Qty</th>
+                              <th data-colstart="4" data-priority="4">Date</th>
+                            </tr>
+                          </thead>
+                          <tbody id="damages-list-container">
+                            
+                          </tbody>
+                        </table>
+                        
+                        <br>
+                        <p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+                        <br>
+                
+                </div>
+                <br><br>
+                
+		</div><!-- /content -->
+
+		<div data-role="footer">
+			
+		</div><!-- /footer -->
+		
+	</div><!-- /page -->
+
+<div data-role="page" id="transferStock">
+		
+    <div data-role="header" data-theme="b"  data-position="fixed" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);" >
+        <a href="#inventory" class="upload-queue ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
+        <h1>Transfer Stock</h1>
+		<div class="notifications-container hidden" data-role="navbar" data-mini="true">
+			<ul>
+				<li><a href="#notifications" data-transition="none">
+				<marquee class="rbto notifications-count-with-notifications" behavior="scroll" scrollamount="3" direction="left" > 
+				</marquee>
+				</a></li>
+			</ul>
+        </div><!-- /navbar -->
+	</div><!-- /header -->
+    
+    <div class="progress-bar-container"></div>
+
+        <div role="main" class="ui-content" style="background-color: #f1f1f1;">
+			<div class="hidden update-server-button-container">
+                <a href="#" class="update-server-button ui-btn ui-shadow ui-corner-all ui-icon-forward ui-btn-icon-notext">Update Server</a>
+            </div>
+            
+            <br>
+            
+            <div style="background-color: #43a2c4 !important; border-radius: 5px; ">
+                <form method="post" action="" name="transferstock" id="transferstock-form">
+                    <input type="hidden" name="key" id="key-field" value="" data-validate="text" />
+					<div style="padding: 0.5em 1em 0em 1em;">
+						<div class="ui-grid-a invt">
+							<div class="ui-block-a">
+                                <select id="filter-category-field" >
+									<option value="" style="text-shadow: none !important;">All Categories</option>
+								</select>
+							</div>
+						
+							<div class="ui-block-b">
+                                <select name="item_barcode" id="item_barcode-field" required data-validate="text" data-error-title="Invalid Item" data-error-msg="Please select a valid item">
+                                    <option value="" style="text-shadow: none !important;">--Select Item--</option>
+                                </select>
+							</div>
+						
+						</div>
+						
+						<div class="ui-grid-a invt">
+							<div class="ui-block-a" >
+                                <input type="text"  name="item_barcode_tmp" id="item_barcode_tmp-field" placeholder="Item Barcode"  required data-validate="barcode" data-error-title="Invalid Barcode" data-error-msg="Please provide a valid barcode, barcodes cannot begin with zero(0)" class="item-search-field" />
+							</div>
+						
+							<div class="ui-block-b" >
+								<a href="#" class="button-scan do-not-clear" data-role="button" data-theme="c" data-icon="camera"  style="margin-top:8px; background-color:green; border: none; text-shadow: none; color: white !important; " >Scan Barcode</a>
+							</div>
+						
+						</div>
+						
+						<div class="ui-grid-a invt">
+							<div class="ui-block-a">
+								<label for="origin_store_name-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Originating Store:</label>
+								<select name="origin_store_name" id="origin_store_name-field" placeholder="Select Originating Store" required data-validate="text" data-error-title="Invalid Originating Store" data-error-msg="Please select an originating store" class="currently-active-store skip-change-event">
+									
+								 </select>
+
+							</div>
+						
+							<div class="ui-block-b">
+                                <label for="store_name-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Destination Store:</label>
+                                
+                                 <select name="store_name" id="store_name-field" placeholder="Select Destination Store" required data-validate="text" data-error-title="Invalid Destination Store" data-error-msg="Please select a destination store" class="currently-active-store skip-change-event">
+    
+								 </select>
+							</div>
+						
+						</div>
+						<br />
+                        
+                        <label for="transfer_qty-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Transfer Quantity:</label>
+                        <input type="number" min="0" step="1" name="transfer_qty" id="transfer_qty-field" placeholder="Quantity of Items to Transfer" required data-validate="number" data-error-title="Invalid Quantity of Items to Transfer" data-error-msg="Please provide a valid quantity of items to transfer" />
+                        
+						<br>
+						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						<br>
+						<input type="submit" data-icon="check" data-theme="c" value="Transfer Stock" />
+                        
+						<br>
+					</div>
+				</form>
+			</div>
+            
+			<br><br>
+                <div style="background-color: #43a2c4 !important; padding: 1em ; border-radius: 5px;">
+                    <span class="df" style="font-size: 1.5em; color: white; text-shadow: none !important; "> Recently Reported Damages &darr;</span>
+                        <br>
+                        
+                        <br>
+                        <table data-role="table1" id="damages-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table table-stroke ui-table ui-table-columntoggle">
+                          <thead>
+                            <tr>
+                              <th data-priority="1" data-colstart="1">Item Desc</th>
+                              <th data-colstart="2" data-priority="3">Description of Damages</th>
+                              <th data-colstart="3" data-priority="2">Qty</th>
+                              <th data-colstart="4" data-priority="4">Date</th>
+                            </tr>
+                          </thead>
+                          <tbody id="damages-list-container">
+                            
+                          </tbody>
+                        </table>
+                        
+                        <br>
+                        <p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+                        <br>
+                
+                </div>
+                <br><br>
+                
 		</div><!-- /content -->
 
 		<div data-role="footer">
@@ -1162,7 +1352,7 @@
 						<br>
 							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
 						<br>
-						<a href="" data-role="button" data-theme="c" data-icon="arrow-r">Export as email</a>
+						<!--<a href="" data-role="button" data-theme="c" data-icon="arrow-r">Export as email</a>-->
 						
 						
 					</div>
@@ -1175,33 +1365,9 @@
 </div>
 
 <div data-role="page" id="supplier">
-		<div data-role="panel" id="menupanel-3" data-position="left" data-display="overlay" class="ui-panel ui-panel-position-left ui-panel-display-overlay ui-body-c ui-panel-animate ui-panel-closed" data-theme="b" style="background-color: #fff;  ">
-
-			<div class="ui-panel-inner" >
-			
-				<ul data-role="listview" data-theme="b">
-				
-				
-					<li class="lidec"><a class="ui-btn ui-icon-home ui-btn-icon-left" href="#dashboard" data-transition="none"><b>Dashboard</b></a></li>
-					<li  class="lidec"><a class="ui-btn ui-icon-info ui-btn-icon-left" href="#inventory"data-transition="none"><b>Inventory</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-calendar ui-btn-icon-left" href="#records"data-transition="none"><b>Records</b></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-shop ui-btn-icon-left" href="#sales" data-transition="none"><b>Sales</b></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notifications" data-transition="none"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" data-transition="none" href="#settings" data-transition="none"><b>Settings</b></a></li>
-			
-				</ul>	
-			
 		
-			
-				
-			</div>
-			<div>
-				<img style="margin: 3em 4em !important;" src="css/images/icon.png" />
-			</div>
-			
-	</div>
 		<div data-role="header" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  data-position="fixed">
-				<a href="#menupanel-3" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext" data-transition="none">Menu</a>
+				<a href="#menupanel" data-rel="panel" class="open-panel ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
 					<h1 >Supplier</h1>
 		<div class="notifications-container hidden" data-role="navbar" data-mini="true">
 			<ul>
@@ -1221,6 +1387,7 @@
                     <a href="#" class="update-server-button ui-btn ui-shadow ui-corner-all ui-icon-forward ui-btn-icon-notext">Update Server</a>
                 </div>
                 <br>
+                
 				<div style="background-color: #43a2c4 !important; padding: 1em ; border-radius: 5px;">
 					<div >
 					<br>
@@ -1265,34 +1432,8 @@
 				
 				
 			</div>
-				<br><br>
-				<div style="background-color: #43a2c4 !important; padding: 1em ; border-radius: 5px;">
-					<span class="df" style="font-size: 1.5em; color: white; text-shadow: none !important; "><span  id="last-supply-activity-supplier-name"></span> Last supply activity &darr;</span>
-						<br>
-						
-						<br>
-                        <table data-role="table1" id="suppliers-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table table-stroke ui-table ui-table-columntoggle">
-                          <thead>
-                            <tr>
-                              <th data-priority="3" data-colstart="1" class="ui-table-priority-1"></th>
-                              <th data-colstart="2">Item</th>
-                              <th data-priority="2" data-colstart="3" class="ui-table-priority-2">Qty</th>
-                              <th data-priority="3" data-colstart="4" class="ui-table-priority-3">Date</th>
-                            </tr>
-                          </thead>
-                          <tbody id="last-supply-activity-container">
-                            
-                          </tbody>
-                        </table>
-						
-						<br>
-						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
-						<br>
-						<span class="df" style="color: white; text-shadow: none !important; text-align: right;">Oustanding balance owed : <span id="supplier-amount-owed">0.00</span></span>
-						<br>
 				
-				</div>
-				<br>
+                <br>
 				<br>
 				<div style="background-color: #43a2c4 !important; padding: 1em ; border-radius: 5px;">
 						<style type="text/css">
@@ -1333,10 +1474,111 @@
 						
 				</div>
 			
-			
-			
+                <br><br>
+				<div style="background-color: #43a2c4 !important; padding: 1em ; border-radius: 5px;">
+					<span class="df" style="font-size: 1.5em; color: white; text-shadow: none !important; "><span  id="last-supply-activity-supplier-name"></span> Last supply activity &darr;</span>
+						<br>
+						
+						<br>
+                        <table data-role="table1" id="suppliers-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table table-stroke ui-table ui-table-columntoggle">
+                          <thead>
+                            <tr>
+                              <th data-priority="3" data-colstart="1" class="ui-table-priority-1"></th>
+                              <th data-colstart="2">Item</th>
+                              <th data-priority="2" data-colstart="3" class="ui-table-priority-2">Qty</th>
+                              <th data-priority="3" data-colstart="4" class="ui-table-priority-3">Date</th>
+                            </tr>
+                          </thead>
+                          <tbody id="last-supply-activity-container">
+                            
+                          </tbody>
+                        </table>
+						
+						<br>
+						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						<br>
+						<span class="df" style="color: white; text-shadow: none !important; text-align: right;">Oustanding balance owed : <span class="supplier-amount-owed">0.00</span></span>
+						<br>
+				</div>
+                
+                <br><br>
+                
+                <div style="background-color: #43a2c4 !important; padding:0 1em ; border-radius: 5px;">
+                    <div style="" data-role="collapsible" data-theme="b" data-content-theme="a" data-inset="false">
+                        <h5 style="font-weight: 100 !important;">Clear Debts<span style="float: right; "><b class="ngdr supplier-amount-owed">0.00</b></span></h5>
+                        <div>
+                            <form method="post" action="" name="supplierpayments" id="supplierpayments-form">
+                                <input type="hidden" name="key" id="key-field" value="" data-validate="text" />
+                                
+                                <div class="ui-grid-a">
+                                    <div class="ui-block-a" style="padding-left:0;">
+                                        <input type="number" step="any" min="0" name="amount_paid" id="amount_paid-field" data-validate="text" placeholder="Amount Paid" required data-validate="text" data-error-title="Invalid Amount Paid" data-error-msg="Provide a valid Amount Paid"/>
+                                    </div>
+                                    
+                                    <div class="ui-block-b" style="padding-right:0;">
+                                        <input type="text" name="remark" id="remark-field" data-validate="text" placeholder="Remark [optional]" />
+                                    </div>
+                                </div>
+                                
+                                <input type="hidden" name="supplier" id="supplier-field" class="do-not-clear" value="" data-validate="text" placeholder="supplier" required data-error-title="Invalid supplier" data-error-msg="Select a valid supplier" />
+                                
+                                <br>
+                                    <p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+                                <br>
+                                <div class="ui-grid-a">
+                                    <div class="ui-block-a" style="padding-left:0;">
+                                        <input type="date" name="date_of_payment" id="date_of_payment-field" data-validate="text" />
+                                    </div>
+                                    
+                                    <div class="ui-block-b" style="padding-right:0;">
+                                        <select name="payment_method" id="payment_method-field" data-validate="text" required data-validate="text" data-error-title="Invalid Payment Method" data-error-msg="Provide a valid Payment Method">
+                                        <option value="cash">Cash</option>
+                                        <option value="card">Card</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <br>
+                                    <p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+                                <br>
+                                <input type="submit" data-icon="check" data-theme="c" value="Save" />
+                            </form>
+                        </div>
+                    </div><!-- /collapsible -->
+                </div>
+                
+                <br><br>
+                <div style="background-color: #43a2c4 !important; padding: 1em ; border-radius: 5px;">
+                    <span class="df" style="font-size: 1.5em; color: white; text-shadow: none !important; "><span  id="supplier-recent-payment-history-name"></span> Recent Payment History &darr;</span>
+                        <br>
+                        
+                        <br>
+                        <table data-role="table1" id="suppliers-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table table-stroke ui-table ui-table-columntoggle">
+                          <thead>
+                            <tr>
+                              <th data-priority="1" data-colstart="1">Payment ID</th>
+                              <th data-colstart="2" data-priority="2">Amount Paid</th>
+                            </tr>
+                          </thead>
+                          <tbody id="supplier-recent-payment-history-container">
+                            
+                          </tbody>
+                        </table>
+                        
+                        <br>
+                        <p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+                        <br>
+                        <span class="df" style="color: white; text-shadow: none !important; text-align: right;">Total debt paid : <span id="supplier-debt-paid">0.00</span></span>
+                        <br>
+                        <br>
+                        <span class="df" style="color: white; text-shadow: none !important; text-align: right;">Total amount paid : <span id="supplier-total-amount-paid">0.00</span></span>
+                        <br>
+                
+                </div>
+                <br><br>
+                
 			</div>
-		<div data-role="footer"  >
+		
+        <div data-role="footer"  >
 			
 		</div><!-- /footer -->
 		
@@ -1369,10 +1611,7 @@
 				
 					<div style="">
 						<input type="hidden" name="key" id="key-field" value="" />
-						
 						<input type="hidden" name="supply" id="supply-field" value="" />
-						
-						
 						
 						<div class="ui-grid-a invt" >
 							<div class="ui-block-a" style="padding: 0.4em;">
@@ -1431,7 +1670,7 @@
 							</div>
 							<div class="ui-block-b" style="padding-left:0.5em;">
 								<label for="expiry_date-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Expiry Date:</label>
-								<input type="date" name="expiry_date" id="expiry_date-field" value="" data-validate="date" data-error-title="Invalid Expiry Date" data-error-msg="Please provide a valid expiry valid" />
+								<input type="date" name="expiry_date" id="expiry_date-field" value="" data-validate="date" data-error-title="Invalid Expiry Date" data-error-msg="Please provide a valid expiry date" />
 							</div>
 						</div>
 						<br>
@@ -1489,33 +1728,11 @@
 </div>
 
 <div data-role="page" id="inventory">
-	<div data-role="panel" id="menupanel-4" data-position="left" data-display="overlay" class="ui-panel ui-panel-position-left ui-panel-display-overlay ui-body-c ui-panel-animate ui-panel-closed" data-theme="b" style="background-color: #fff; ">
-
-			<div class="ui-panel-inner" >
-			<ul data-role="listview" data-theme="b">
-			
-					<li class="lidec"><a class="ui-btn ui-icon-home ui-btn-icon-left" href="#dashboard" data-transition="none"><b>Dashboard</b></a></li>
-					<li  class="lidec"><a class="ui-btn ui-icon-check ui-btn-icon-left" href="#sales" data-transition="none"><b>Sales</b></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-gear ui-btn-icon-left" href="#records" data-transition="none"><b>Records</b></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier" data-transition="none"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notifications" data-transition="none"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" href="#settings" data-transition="none"><b>Settings</b></a></li>
-			
-			</ul>	
-		
-			
-				
-			</div>
-		<div>
-				<img style="margin: 3em 4em !important;" src="css/images/icon.png" />
-			</div>
-			
-		</div>
 	
-	<div data-role="header" data-theme="b" data-tap-toggle="false"  data-position="fixed" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  >
+	<div data-role="header" data-theme="b" data-tap-toggle="false"  data-position="fixed" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);">
 		
 		
-		<a href="#menupanel-4" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
+		<a href="#menupanel" data-rel="panel" class="open-panel ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
 		<!--<a href="#damages" class="ui-btn ui-shadow ui-corner-all ui-icon-minus ui-btn-icon-notext">damages</a>-->
 		
 		<h1>Inventory</h1>
@@ -1529,6 +1746,7 @@
         </div><!-- /navbar -->
             
 	</div><!-- /header -->
+    
     <div class="progress-bar-container"></div>
         
 	<div role="main" class="ui-content" style="background-color: #f1f1f1;">
@@ -1631,6 +1849,15 @@
 						<br>
 					</div>
 					
+					<div class="ui-grid-a invt">
+						<div class="ui-block-a" style="padding: 0.7em;">
+							<a href="#" hold="#transferStock | background-color: #43a2c4 !important; color:#fff !important;" data-role="button" data-theme="b" data-icon="arrow-r" data-transition="none" style="font-weight: normal !important; text-shadow: none; font-family: Roboto Thin; background-color: #f1f1f1 !important; color:#777 !important;"><b>Transfer Stock</b></a>
+						</div>
+						<div class="ui-block-b" style="padding: 0.7em;">
+							<a href="#damages" data-role="button" data-theme="b" data-icon="minus" data-transition="none" style="font-weight: normal !important; text-shadow: none; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>Damages</b></a>
+						</div>
+					</div><!-- /grid-a -->
+                    
 					<p>&nbsp;<p/>
 					
 	
@@ -1643,35 +1870,9 @@
 </div>
 
 <div data-role="page" id="sales">
-		<div data-role="panel" id="menupanel-6" data-position="left" data-display="overlay" class="ui-panel ui-panel-position-left ui-panel-display-overlay ui-body-c ui-panel-animate ui-panel-closed" data-theme="b" style="background-color: #fff;  ">
-
-			<div class="ui-panel-inner" >
-			
-				<ul data-role="listview" data-theme="b">
-				
-				
-					<li class="lidec"><a class="ui-btn ui-icon-home ui-btn-icon-left" href="#dashboard" data-transition="none"><b>Dashboard</b></a></li>
-					<li  class="lidec"><a class="ui-btn ui-icon-info ui-btn-icon-left" href="#inventory" data-transition="none"><b>Inventory</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-gear ui-btn-icon-left" href="#records" data-transition="none"><b>Records</b></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier" data-transition="none"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notifications" data-transition="none"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" href="#settings" data-transition="none"><b>Settings</b></a></li>
-			
-				</ul>	
-			
-		
-			
-				
-			</div>
-			<div>
-				<img style="margin: 3em 4em !important;" src="css/images/icon.png" />
-			</div>
-			
-		</div>
-		
 
 		<div data-role="header" id="hd" data-tap-toggle="false" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  data-position="fixed" data-tap-toggle="false">
-				<a href="#menupanel-6" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
+				<a href="#menupanel" data-rel="panel" class="open-panel ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
 				<a href="#" class="button-scan ui-btn ui-shadow ui-corner-all ui-icon-camera ui-btn-icon-notext">Scan</a>
 				
 				<h1>Sales</h1>
@@ -1799,7 +2000,7 @@
 												<input type="checkbox"  data-role="flipswitch" name="vat-on-off-switch" id="vat-on-off-switch" checked="checked" />
 												
 											</div>
-											<div class="ui-block-b" style="width: 45% !important; text-align:right; font-size: 1.7em;">
+											<div class="ui-block-b" style="width: 45% !important; text-align:right; font-size: 1.7em; padding-right:0;">
 												<span id="this-sale-total-amount-vat">0.00</span>
 											</div>
 									</div>
@@ -1814,7 +2015,7 @@
 												<span class="mk" for="flip-checkbox-4" style="padding-top: 0.1em; color: white; font-family: Roboto Thin; font-size: 1.5em; text-shadow: none;">Discount</span>
 												
 											</div>
-											<div class="ui-block-b" style="width: 45% !important; text-align:right; font-size: 1.5em;">
+											<div class="ui-block-b" style="width: 45% !important; text-align:right; font-size: 1.5em; padding-right:0;">
 												<span id="this-sale-total-amount-discount">0.00</span>
 											</div>
 										</div>
@@ -1935,10 +2136,26 @@
 									
 								</div>
 								<br>
+                                
+								<div style="background-color: #43a2c4; padding: 10px; border-radius: 5px; text-shadow: none; color: white;">
+									<div class="ui-grid-a">
+										<div class="ui-block-a">
+											<input type="text" name="customer_name" id="customer_name-field" data-validate="text" placeholder="Customers Name"/>
+										</div>
+									
+										<div class="ui-block-b">
+											<input type="tel" name="customer_mobile" id="customer_mobile-field" data-validate="text" placeholder="Customers Mobile">
+										</div>
+								
+									</div>
+									
+								</div>
+								
+								<br>
 							</div>
 						
 						<div class="ui-block-b" style="width: 50%; padding-left: 3px;">
-						
+						        
 								<div style="background-color: #43a2c4; padding: 10px; border-radius: 5px; text-shadow: none; color: white;">
 									<div class="ui-grid-a">
 										<div class="ui-block-a">
@@ -1999,37 +2216,13 @@
 </div><!-- /page -->
 
 <div data-role="page" id="settings">
-	<div data-role="panel" id="menupanel-7" data-position="left" data-display="overlay" class="ui-panel ui-panel-position-left ui-panel-display-overlay ui-body-c ui-panel-animate ui-panel-closed" data-theme="b" style="background-color: #fff; ">
-
-			<div class="ui-panel-inner" >
-			<ul data-role="listview" data-theme="b">
-			
-					<li class="lidec"><a class="ui-btn ui-icon-home ui-btn-icon-left" href="#dashboard" data-transition="none"><b>Dashboard</b></a></li>
-					<li  class="lidec"><a class="ui-btn ui-icon-check ui-btn-icon-left" href="#sales" data-transition="none"><b>Sales</b></a></li>
-                    <li class="lidec"><a data-transition="none" class="ui-btn ui-icon-info ui-btn-icon-left" href="#inventory"><b>Inventory</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-gear ui-btn-icon-left" href="#records" data-transition="none"><b>Records</b></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier" data-transition="none"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notifications" data-transition="none"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" href="#settings" data-transition="none"><b>Settings</b></a></li>
-			
-			</ul>	
-		
-			
-				
-			</div>
-		<div>
-				<img style="margin: 3em 4em !important;" src="css/images/icon.png" />
-			</div>
-			
-		</div>
-	
 	<div data-role="header" data-theme="b" data-tap-toggle="false"  data-position="fixed" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  >
 		
 		
-		<a href="#menupanel-7" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
+		<a href="#menupanel" data-rel="panel" class="open-panel ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
 		<a href="index.html" rel="external" class="ui-btn ui-shadow ui-corner-all ui-icon-recycle ui-btn-icon-notext">Refresh</a>
 		
-		<h1  >Settings</h1>
+		<h1>Settings</h1>
 		
 	<div class="notifications-container hidden" data-role="navbar" data-mini="true">
 			<ul>
@@ -2060,7 +2253,7 @@
 							<a href="#mngusers" data-role="button" data-theme="b" data-icon="user" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>Manage Users</b></a>
 						</div>
 						<div class="ui-block-b">
-							<a href="#" data-role="button" data-theme="b" data-icon="gear" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #f1f1f1 !important; color:#777 !important;"><b>General Settings</b></a>
+							<a href="#general-settings" data-role="button" data-theme="b" data-icon="gear" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>General Settings</b></a>
 						</div>
 					</div><!-- /grid-a -->
 					
@@ -2069,7 +2262,7 @@
 							<a href="#stores" data-role="button" data-theme="b" data-icon="home" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>My Store(s)</b></a>
 						</div>
 						<div class="ui-block-b">
-							<a href="#" data-role="button" data-theme="b" data-icon="gear" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #f1f1f1 !important; color:#777 !important;"><b>My Profile</b></a>
+							<a href="#my-profile" data-role="button" data-theme="b" data-icon="gear" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>My Profile</b></a>
 						</div>
 					</div><!-- /grid-a -->
 					
@@ -2243,7 +2436,7 @@
 								
 								<div class="ui-block-b">
 										<label style="color: white; font-family: Roboto Thin; font-size: 1.5em; text-shadow: none; font-weight:bold;">Confim Password</label>
-										<input type="password" name="cpassword" id="cpassword-field" placeholder="" required data-validate="confirm-password" data-error-title="Non-matching Password" data-error-msg="Passwords must match" />
+										<input type="password" name="cpassword" id="cpassword-field" placeholder="Confirm Password" required data-validate="confirm-password" data-error-title="Non-matching Password" data-error-msg="Passwords must match" />
 								</div>
 							</div>
 							<br>
@@ -2386,13 +2579,13 @@
 									<input type="text" name="street" id="street-field" placeholder="e.g Plot 256 Green Road." required data-validate="text" data-error-title="Invalid Street" data-error-msg="Provide a valid street" />
 								</div>
 								<div class="ui-block-b">
-									<label style="font-family: Roboto Thin; font-size: 1.5em; text-shadow: none; color: white;">Area=</label>
+									<label style="font-family: Roboto Thin; font-size: 1.5em; text-shadow: none; color: white;">City</label>
 									<input type="text" name="city" id="city-field" placeholder="e.g Gwarinpa" required data-validate="text" data-error-title="Invalid City" data-error-msg="Provide a valid city" />
 								</div>
 							</div><!-- /grid-a -->							
 							<div class="ui-grid-a invt">
 								<div class="ui-block-a">
-									<label style="font-family: Roboto Thin; font-size: 1.5em; text-shadow: none; color: white;">City</label>
+									<label style="font-family: Roboto Thin; font-size: 1.5em; text-shadow: none; color: white;">State</label>
 									<input type="text" name="state" id="state-field" placeholder="e.g Abuja (FCT)" required data-validate="text" data-error-title="Invalid State / Province" data-error-msg="Provide a valid state / province" />
 								</div>
 								<div class="ui-block-b" >
@@ -2461,10 +2654,10 @@
 		
 		</div>
 
-<div data-role="page" id="gensettings">
+<div data-role="page" id="general-settings">
 		
-		<div data-role="header" data-theme="b" style="height: 3.5em; border-bottom: 1px solid #fff;">
-				<a href="#settings" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
+	<div data-role="header" data-theme="b" style="height: 3.5em; border-bottom: 1px solid #fff;">
+				<a href="#settings" class="upload-queue ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
 				<h1 >General Settings</h1>
 		<div class="notifications-container hidden" data-role="navbar" data-mini="true">
 			<ul>
@@ -2481,57 +2674,76 @@
 		<div data-role="content" style="background: #f1f1f1;">
 	
 				<div style="background-color: #43a2c4 !important; border-radius: 5px;">
-					<div style="padding: 1em 1em 0em 1em;">
-							
+					<div style="margin:0.5em;">
+						<form method="post" action="" name="generalsettings" id="generalsettings-form">
+                        <input type="hidden" name="key" id="key-field" value="" data-validate="text" class="do-not-clear" />
+                        <input type="hidden" name="created_by" id="created_by-field" value="" data-validate="text" class="do-not-clear" />
+                        
 						<div class="ui-grid-a invt">
 							<div class="ui-block-a" >
-								<label style=" padding-top: 1em; font-size: 1.5em; font-family: Roboto Thin; text-shadow: none; color: white; " for="flip-checkbox-4">Full Name</label>
-							</div><div class="ui-block-b" >
-							
-								<input type="text" name="number" id="" value="" placeholder="Daniel Isa">
+								<label style=" padding-top: 1em; font-size: 1.5em; font-family: Roboto Thin; text-shadow: none; color: white; " for="flip-checkbox-4">VAT(%)</label>
+							</div>
+                            <div class="ui-block-b" >
+								<input type="number" min="0" step="any" name="vat" id="vat-field" placeholder="Percentage VAT" required data-validate="number" data-error-title="Invalid VAT" data-error-msg="Please provide a valid VAT value" class="do-not-clear"/>
 							</div>
 						</div>
-						<br>
 						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
 						<div class="ui-grid-a invt">
 							<div class="ui-block-a" >
-								<label style=" padding-top: 1em; font-size: 1.5em; font-family: Roboto Thin; text-shadow: none; color: white; " for="flip-checkbox-4">Email Address</label>
+								<label style=" padding-top: 1em; font-size: 1.5em; font-family: Roboto Thin; text-shadow: none; color: white; " for="flip-checkbox-4">Discount Type</label>
 							</div>
 							<div class="ui-block-b" >
-								<input type="text" name="number" id="" placeholder="d.isa@blubird.com.ng">
+								<select name="discount_type" id="discount_type-field" data-validate="text" required data-error-title="Invalid Discount Type" data-error-msg="Provide a valid Discount Type" class="do-not-clear">
+                                    <option value="percentage">Percentage of Sale</option>
+                                    <option value="fixed_amount">Fixed Amount</option>
+                                </select>
 							</div>
 						</div>
-						<br>
+						
 						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
 						<div class="ui-grid-a invt">
 							<div class="ui-block-a" >
 								<label style="padding-top: 1em; font-size: 1.5em; font-family: Roboto Thin; text-shadow: none; color: white; " for="flip-checkbox-4">Low Stock Level Notification</label>
 							</div>
 							<div class="ui-block-b">
-								<input type="text" name="number" id="" placeholder="10">
+								<input type="number" min="1" step="any" name="low_stock_level" id="low_stock_level-field" placeholder="Low Stock Level" required data-validate="number" data-error-title="Invalid Low Stock Level" data-error-msg="Please provide a valid Low Stock Level" class="do-not-clear"/>
 							</div>
 						</div>
-						<br>
+						
 						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
 						<div class="ui-grid-a invt">
 							<div class="ui-block-a" >
-								<label style="padding-top: 1em; font-size: 1.5em; font-family: Roboto Thin; text-shadow: none; color: white; " for="flip-checkbox-4">Set VAT(%)</label>
+								<label style="padding-top: 1em; font-size: 1.5em; font-family: Roboto Thin; text-shadow: none; color: white; " for="flip-checkbox-4">Currency</label>
 							</div>
 							<div class="ui-block-b" >
-								<input type="text" name="number" id="" placeholder="5">
+								<select name="currency" id="currency-field" data-validate="text" required data-error-title="Invalid Currency" data-error-msg="Provide a valid Currency" class="do-not-clear">
+                                    <option value="£:::GBP">British Pound</option>
+                                    <option value="&#8373;:::GHS">Ghanian Cedi</option>
+                                    <option value="&#8358;:::NGN">Nigerian Naira</option>
+                                    <option value="$:::USD">United States Dollar</option>
+                                </select>
 							</div>
 						</div>
-						<br>
+						
+                        
+						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						<div class="ui-grid-a invt">
+							<div class="ui-block-a" >
+								<label style="padding-top: 1em; font-size: 1.5em; font-family: Roboto Thin; text-shadow: none; color: white; " for="flip-checkbox-4">Table Records Display Length</label>
+							</div>
+							<div class="ui-block-b">
+								<input type="number" min="1" step="1" max="50" name="table_records_display_length" id="table_records_display_length-field" placeholder="Table Records Display Length" required data-validate="number" data-error-title="Invalid Table Records Display Length" data-error-msg="Please provide a valid Table Records Display Length" class="do-not-clear"/>
+							</div>
+						</div>
+                        
 						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
 						<br>
-						<a href="#receipt" data-role="button" data-theme="c" data-icon="arrow-r" style="font-weight: normal !important; text-shadow: none; border: none;"><b>Update</b></a>					
-						
+						<input type="submit" data-icon="check" data-theme="c" value="Update" />
+                        </form>
+                            
 						<br>
 						
-						
 					</div>
-					
-					
 					
 				</div>
 				
@@ -2541,34 +2753,375 @@
 		
 </div>
 
-<div data-role="page" id="notifications" >
-	<div data-role="panel" id="menupanel-5" data-position="left" data-display="overlay" class="ui-panel ui-panel-position-left ui-panel-display-overlay ui-body-c ui-panel-animate ui-panel-closed" data-theme="b" style="background-color: #fff;  ">
+<div data-role="page" id="my-profile">
+		
+	<div data-role="header" data-theme="b" style="height: 3.5em; border-bottom: 1px solid #fff;">
+				<a href="#settings" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
+				<h1>My Profile</h1>
+		<div class="notifications-container hidden" data-role="navbar" data-mini="true">
+			<ul>
+				<li><a href="#notifications" data-transition="none">
+				<marquee class="rbto notifications-count-with-notifications" behavior="scroll" scrollamount="3" direction="left" > 
+				</marquee>
+				</a></li>
+			</ul>
+        </div><!-- /navbar -->
+            
+	</div><!-- /header -->
+    <div class="progress-bar-container"></div>
+		
+		<div data-role="content" style="background: #f1f1f1;">
+	
+				<div style="background-color: #43a2c4 !important; border-radius: 5px;">
+					<div style="margin:0.5em;">
+						<form method="post" action="?action=app_users&todo=save_user_profile_data" name="app_users" id="app_users-form" remote-storage=1 >
+                            <input type="hidden" name="key" id="key-field" value="" data-validate="text" class="do-not-clear" />
+                            <input type="hidden" name="id" id="id-field" value="" data-validate="text" class="do-not-clear" />
+                        
+                        
+						<div class="ui-grid-a invt">
+							<div class="ui-block-a" >
+								<label style=" padding-top: 1em; font-size: 1.5em; font-family: Roboto Thin; text-shadow: none; color: white; " for="flip-checkbox-4">Full Name</label>
+							</div>
+                            <div class="ui-block-b" >
+								<input type="text" name="name" id="name-field" placeholder="Your Full Name" required data-validate="text" data-error-title="Invalid Name" data-error-msg="Provide a valid name" class="do-not-clear" />
+							</div>
+						</div>
+						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						<div class="ui-grid-a invt">
+							<div class="ui-block-a" >
+								<label style=" padding-top: 1em; font-size: 1.5em; font-family: Roboto Thin; text-shadow: none; color: white; " for="flip-checkbox-4">E-mail</label>
+							</div>
+							<div class="ui-block-b" >
+								<input type="email" name="email" id="email-field" placeholder="Your Email Address" required data-validate="email" data-error-title="Invalid Email" data-error-msg="Provide a valid email" class="do-not-clear" />
+							</div>
+						</div>
+						
+						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						<div class="ui-grid-a invt">
+							<div class="ui-block-a" >
+								<label style="padding-top: 1em; font-size: 1.5em; font-family: Roboto Thin; text-shadow: none; color: white; " for="flip-checkbox-4">Password</label>
+							</div>
+							<div class="ui-block-b">
+								<input type="password" name="password" id="password-field" placeholder="Password" required data-validate="password" data-error-title="Invalid Password" data-error-msg="Passwords must be at least 6 characters" />
+							</div>
+						</div>
+						
+						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						<div class="ui-grid-a invt">
+							<div class="ui-block-a" >
+								<label style="padding-top: 1em; font-size: 1.5em; font-family: Roboto Thin; text-shadow: none; color: white; " for="flip-checkbox-4">Confirm Password</label>
+							</div>
+							<div class="ui-block-b" >
+								<input type="password" name="cpassword" id="cpassword-field" placeholder="Confirm Password" required data-validate="confirm-password" data-error-title="Non-matching Password" data-error-msg="Passwords must match" />
+							</div>
+						</div>
+						
+						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						<br>
+						<input type="submit" data-icon="check" data-theme="c" value="Update" />
+                        </form>
+                            
+						<br>
+						
+					</div>
+					
+				</div>
+				
+			</div>
+			<div data-role="footer" style="background: #fff; border: none;">
+			</div>
+		
+</div>
 
-			<div class="ui-panel-inner" >
-			
-				<ul data-role="listview" data-theme="b">
-				
-					<li class="lidec"><a class="ui-btn ui-icon-shop ui-btn-icon-left" href="#sales" data-transition="none"><b>Sales</b></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-info ui-btn-icon-left" href="#inventory"><b>Inventory</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-calendar ui-btn-icon-left" href="#records" data-transition="none"><b>Records</b></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier" data-transition="none"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notifications" data-transition="none"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
-					<li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" href="#settings" data-transition="none"><b>Settings</b></a></li>
-			
-				</ul>	
-			
+<div data-role="page" id="expenses">
 		
-			
-				
-			</div>
-			<div>
-				<img style="margin: 3em 4em !important;" src="css/images/icon.png" />
-			</div>
-			
-	</div>
-	<div data-role="header" id="hd" data-position="fixed" data-tap-toggle="false" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);" >
+		<div data-role="header" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  data-position="fixed">
+				<a href="#menupanel" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext" data-transition="none">Menu</a>
+					<h1>Expenses</h1>
+		<div class="notifications-container hidden" data-role="navbar" data-mini="true">
+			<ul>
+				<li><a href="#notifications" data-transition="none">
+				<marquee class="rbto notifications-count-with-notifications" behavior="scroll" scrollamount="3" direction="left" > 
+				</marquee>
+				</a></li>
+			</ul>
+        </div><!-- /navbar -->
+            
+	</div><!-- /header -->
+    <div class="progress-bar-container"></div>
 		
-		<a href="#menupanel-5" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
+		<div data-role="content" style="background: #f1f1f1;">
+                
+                <div class="hidden update-server-button-container">
+                    <a href="#" class="update-server-button ui-btn ui-shadow ui-corner-all ui-icon-forward ui-btn-icon-notext">Update Server</a>
+                </div>
+                <br>
+				<div style="background-color: #43a2c4 !important; padding: 1em ; border-radius: 5px;">
+					<div>
+					
+                    <br>
+					<form method="post" action="" name="expenses" id="expenses-form">
+						<input type="hidden" name="key" id="key-field" value="" data-validate="text" />
+						<input type="text" name="description" id="description-field" placeholder="Description of Expense" required data-validate="text" data-error-title="Invalid Description" data-error-msg="Provide a valid Description of Your Expenditure" />
+						<br>
+							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						<br>
+                         <select name="store_name" id="store_name-field" placeholder="Select Store" required data-validate="text" data-error-title="Invalid Item" data-error-msg="Please select a store" class="currently-active-store">
+                            
+                         </select>
+						<br>
+							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						<br>
+						<div class="ui-grid-a invt">
+							<div class="ui-block-a" style="padding-right:0.3125em; padding-left:0;">
+								<label for="item_qty-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Amount:</label>
+								<input type="number" name="amount" id="amount-field" min="0" step="any" placeholder="" required data-validate="number" data-error-title="Invalid Amount" data-error-msg="Please provide a valid Amount" />
+							</div>
+							<div class="ui-block-b" style="padding-left:0.3125em; padding-right:0;">
+								<label for="date-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Date:</label>
+								<input type="date" name="date" id="date-field" value="" data-validate="date" data-error-title="Invalid Date" data-error-msg="Please provide a valid date" />
+							</div>
+						</div>
+						<br>
+						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+                        <br>
+                        <select name="type" id="type-field" placeholder="Type of Expense" required data-validate="text" data-error-title="Invalid Type of Expense" data-error-msg="Please provide a valid type of expense" >
+                            <option value="" style="text-shadow: none !important;"> - Type of Expense - </option>
+                            <option value="employee salary">Employee Salary</option>
+                            <option value="maintenance fee">Maintenance Fee</option>
+                            <option value="payment for service">Payment for Service</option>
+                            <option value="purchase of materials">Purchase of Equipment</option>
+                            <option value="purchase of materials">Purchase of Materials</option>
+                            <option value="rent">Rent</option>
+                            <option value="repairs">Repairs</option>
+                            <option value="transportation">Transportation</option>
+                            <option value="utilities">Utilities</option>
+                            <option value="others">Others</option>
+                        </select>
+                            
+						<br>
+							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						<br>
+                        
+						<input type="submit" data-icon="check" data-theme="c" value="Save" />
+					</form>
+					<br>
+					
+				</div>
+			</div>
+				
+            <br><br>
+            <div style="background-color: #43a2c4 !important; padding: 1em ; border-radius: 5px;">
+                <span class="df" style="font-size: 1.5em; color: white; text-shadow: none !important;"><span id="last-supply-activity-supplier-name"></span>Recent Expenditure &darr; </span>
+                <br>
+                <br>
+                
+                <table data-role="table1" id="suppliers-list-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table table-stroke ui-table ui-table-columntoggle">
+                  <thead>
+                    <tr>
+                      <th data-colstart="1">Expenditure</th>
+                      <th data-priority="2" data-colstart="2" class="ui-table-priority-2">Amount (&#8358;)</th>
+                      <th data-priority="3" data-colstart="3" class="ui-table-priority-3">Modified On</th>
+                    </tr>
+                  </thead>
+                  <tbody id="expenses-list-container">
+                    
+                  </tbody>
+                </table>
+                
+                <br>
+                <br>
+            </div>
+            <br>
+            <br>
+			
+		</div>
+        
+		<div data-role="footer"  >
+			
+		</div><!-- /footer -->
+		
+</div>
+
+<div data-role="page" id="customers">
+		
+		<div data-role="header" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  data-position="fixed">
+				<a href="#menupanel" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext" data-transition="none">Menu</a>
+					<h1>Customers</h1>
+		<div class="notifications-container hidden" data-role="navbar" data-mini="true">
+			<ul>
+				<li><a href="#notifications" data-transition="none">
+				<marquee class="rbto notifications-count-with-notifications" behavior="scroll" scrollamount="3" direction="left" > 
+				</marquee>
+				</a></li>
+			</ul>
+        </div><!-- /navbar -->
+            
+	</div><!-- /header -->
+    <div class="progress-bar-container"></div>
+
+
+    <div data-role="content" style="background: #f1f1f1;">
+        
+        <div class="hidden update-server-button-container">
+            <a href="#" class="update-server-button ui-btn ui-shadow ui-corner-all ui-icon-forward ui-btn-icon-notext">Update Server</a>
+        </div>
+        <br>
+        
+        <div style="background-color: #43a2c4 !important; padding: 1em ; border-radius: 5px;">
+            <div >
+            <br>
+                
+            <select name="customers" id="customers-select-box">
+                <option value="new">Add New Customer</option>
+            </select>
+            <br>
+                    <p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+                <br>
+            <form method="post" action="" name="customers" id="customers-form">
+                <input type="hidden" name="key" id="key-field" value="" data-validate="text" />
+                <input type="text" name="customer_name" id="customer_name-field" data-validate="text" placeholder="Customers Name" required data-validate="text" data-error-title="Invalid Customer Name" data-error-msg="Provide a valid Customer Name"/>
+                
+                <br>
+                    <p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+                <br>
+                <div class="ui-grid-a invt">
+                    <div class="ui-block-a" >
+                        <input type="tel" name="customer_mobile" id="customer_mobile-field" data-validate="tel" placeholder="Customers Mobile" protocol="tel:" placeholder="Mobile" />
+                    </div>
+                    
+                    <div class="ui-block-b" >
+                        <a  href="#" id="customer_mobile-field-link" data-role="button" data-theme="c" data-icon="phone" style="font-weight: normal !important; text-shadow: none; border: none;">Call</a></div>
+                </div>
+                <br>
+                    <p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+                <br>
+                <div class="ui-grid-a invt">
+                    <div class="ui-block-a" ><input type="email" name="customer_email" id="customer_email-field" data-validate="email" placeholder="Email" protocol="mailto:"></div>
+                    <div class="ui-block-b"><a href="#" id="customer_email-field-link" data-role="button" data-theme="c" data-icon="mail" style="font-weight: normal !important; text-shadow: none;  border: none;">Email</a></div>
+                </div>
+                <br>
+                    <p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+                <br>
+                <input type="submit" data-icon="check" data-theme="c" value="Save" />
+            </form>
+            <br>
+            
+            </div>
+        </div>
+        
+        <br><br>
+        <div style="background-color: #43a2c4 !important; padding: 1em ; border-radius: 5px;">
+            <span class="df" style="font-size: 1.5em; color: white; text-shadow: none !important; "><span  id="customer-recent-payment-history-name"></span> Recent Debt Payment History &darr;</span>
+                <br>
+                
+                <br>
+                <table data-role="table1" id="customers-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table table-stroke ui-table ui-table-columntoggle">
+                  <thead>
+                    <tr>
+                      <th data-priority="1" data-colstart="1">Payment ID</th>
+                      <th data-colstart="2" data-priority="2">Amount Paid</th>
+                    </tr>
+                  </thead>
+                  <tbody id="customer-recent-payment-history-container">
+                    
+                  </tbody>
+                </table>
+                
+                <br>
+                <p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+                <br>
+                <span class="df" style="color: white; text-shadow: none !important; text-align: right;">Total debt paid : <span id="customer-debt-paid">0.00</span></span>
+                <br>
+        
+        </div>
+        <br><br>
+        
+        <div style="background-color: #43a2c4 !important; padding:0 1em ; border-radius: 5px;">
+            <div style="" data-role="collapsible" data-theme="b" data-content-theme="a" data-inset="false">
+                <h5 style="font-weight: 100 !important;">Clear Debts<span style="float: right; "><b class="ngdr customer-amount-owed">0.00</b></span></h5>
+                <div>
+                    <form method="post" action="" name="payments" id="payments-form">
+                        <input type="hidden" name="key" id="key-field" value="" data-validate="text" />
+                        
+                        <input type="hidden" name="customer" id="customer-field" class="do-not-clear" value="" data-validate="text" placeholder="Customer" required data-error-title="Invalid Customer" data-error-msg="Select a valid Customer" />
+                        
+                        <div class="ui-grid-a">
+                            <div class="ui-block-a" style="padding-left:0;">
+                                <input type="number" step="any" min="0" name="amount_paid" id="amount_paid-field" data-validate="text" placeholder="Amount Paid" required data-validate="text" data-error-title="Invalid Amount Paid" data-error-msg="Provide a valid Amount Paid"/>
+                            </div>
+                            
+                            <div class="ui-block-b" style="padding-right:0;">
+                                <input type="text" name="remark" id="remark-field" data-validate="text" placeholder="Remark [optional]" />
+                            </div>
+                        </div>
+                        
+                        <br>
+                            <p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+                        <br>
+                        <div class="ui-grid-a">
+                            <div class="ui-block-a" style="padding-left:0;">
+                                <input type="date" name="date_of_payment" id="date_of_payment-field" data-validate="text" />
+                            </div>
+                            
+                            <div class="ui-block-b" style="padding-right:0;">
+                                <select name="payment_method" id="payment_method-field" data-validate="text" required data-validate="text" data-error-title="Invalid Payment Method" data-error-msg="Provide a valid Payment Method">
+                                <option value="cash">Cash</option>
+                                <option value="card">Card</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br>
+                            <p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+                        <br>
+                        <input type="submit" data-icon="check" data-theme="c" value="Save" />
+                    </form>
+                </div>
+            </div><!-- /collapsible -->
+        </div>
+        
+        <br><br>
+        <div style="background-color: #43a2c4 !important; padding: 1em ; border-radius: 5px;">
+            <span class="df" style="font-size: 1.5em; color: white; text-shadow: none !important; "><span  id="customer-recent-purchase-history-name"></span> Recent Purchase History &darr;</span>
+                <br>
+                
+                <br>
+                <table data-role="table1" id="customers-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table table-stroke ui-table ui-table-columntoggle">
+                  <thead>
+                    <tr>
+                      <th data-priority="1" data-colstart="1">Sale ID</th>
+                      <th data-priority="3" data-colstart="2">Amount Due</th>
+                      <th data-priority="2" data-colstart="3">Amount Paid</th>
+                      <th data-priority="4" data-colstart="4">Qty</th>
+                    </tr>
+                  </thead>
+                  <tbody id="customer-recent-purchase-history-container">
+                    
+                  </tbody>
+                </table>
+                
+                <br>
+                <p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+                <br>
+                <span class="df" style="color: white; text-shadow: none !important; text-align: right;">Oustanding balance owed : <span class="customer-amount-owed">0.00</span></span>
+                <br>
+        
+        </div>
+        
+    </div>
+	
+        
+    <div data-role="footer"  >
+        
+    </div><!-- /footer -->
+</div>
+
+<div data-role="page" id="notifications" >
+	
+    <div data-role="header" id="hd" data-position="fixed" data-tap-toggle="false" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);" >
+		
+		<a href="#menupanel" data-rel="panel" class="open-panel ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
 		<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 1.8em !important;">Notifications</h1>
 	       
 	</div><!-- /header -->
@@ -2686,5 +3239,5 @@
 </div><!-- /page -->
 
 </body>
-
+    
 </html>
