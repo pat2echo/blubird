@@ -4646,6 +4646,7 @@ $( document ).on( "pageshow", "#transferStock", function() {
 
 var add_vat_to_sale = appVATValue;
 var salesData = {};
+var connectedDevice = false;
 
 $( document ).on( "pagecreate", "#checkout", function() {
 	test_for_active_user();
@@ -4783,9 +4784,10 @@ $( document ).on( "pagecreate", "#checkout", function() {
             .html( "Disconnecting..." );
             
             bluetoothSerial.disconnect( disconnectedDevice );
+            connectedDevice = false;
         }
         
-        if( connectedDevice && bluetoothSerial ){
+        if( bluetoothSerial ){
             if( device ){
                 //connect
                 $('#statusMessage')
@@ -4879,8 +4881,6 @@ $( document ).on( "pageshow", "#checkout", function() {
 	
 });
 
-var connectedDevice = false;
-
 function disconnectedDevice(){
     $('#statusMessage')
     .html( "Disconnected" );
@@ -4920,6 +4920,10 @@ function gotListOfBluetoothDevices( devices ){
         $('#statusMessage')
         .html( "Found " + devices.length + " device" + (devices.length === 1 ? "." : "s.") );
     } 
+    
+    if( error ){
+        alert(error);
+    }
     
     if( option ){
         $("select#bluetooth-devices-selectbox")
