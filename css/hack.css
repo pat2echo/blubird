@@ -192,3 +192,10 @@
             .low-stock, .low-stock td{
                 color:#b30000 !important;
             }
+ 
+.control-group-class .ui-input-text input{
+    padding: 0;
+    font-size: 1em !important;
+    line-height: 1em;
+    min-height: 1.3em;
+}

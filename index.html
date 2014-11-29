@@ -13,7 +13,7 @@
 	
 	
 	<!-- App 2nd Commit / demo data -->
-	<!--version 1.0.25-->
+	<!--version 1.0.70-->
 	<script src="js/app/amplify.min.js"></script>
 	<script src="js/app/md5.js"></script>
 	<script src="js/app/fastclick.js"></script>
@@ -2026,17 +2026,13 @@
 								<div style="background-color: rgb(112,112,112); padding: 10px; border-radius: 5px; text-shadow: none; color: white; font-family: Roboto Thin; font-size: 1.7em;">
 									Total: &nbsp; <b id="this-sale-total-amount" style="float:right;">0.00</b>
 								</div>
-									<br>
-										<a class="co" href="#" id="cancel-order-button" data-role="button" data-theme="b" data-icon="delete" data-transition="none" style="font-family: Roboto Thin; background-color: #d11141; border: red; font-weight: normal !important; text-shadow: none;"><b>Cancel Order</b></a>
+                                <br>
+                                <a class="co" href="#" id="cancel-order-button" data-role="button" data-theme="b" data-icon="delete" data-transition="none" style="font-family: Roboto Thin; background-color: #d11141; border: red; font-weight: normal !important; text-shadow: none;"><b>Cancel Order</b></a>
+                            
+                                <a class="cho" href="#checkout" id="confirm-this-sale-popup-display-button" data-role="button"  data-theme="b" data-icon="check" data-transition="none" style="font-family: Roboto Thin; font-weight: normal !important; text-shadow: none; background-color: green; border: none;"><b>Check Out</b></a>
 									
-										<a class="cho" href="#checkout" id="confirm-this-sale-popup-display-button" data-role="button"  data-theme="b" data-icon="check" data-transition="none" style="font-family: Roboto Thin; font-weight: normal !important; text-shadow: none; background-color: green; border: none;"><b>Check Out</b></a>
-									
-								
-							
-								
 								<br>
 								<br>
-								
 						
 						</div>
 							
@@ -2074,7 +2070,7 @@
 		<div data-role="content" style="background-color: #f1f1f1;">
 				<br>
 				<div class="ui-grid-a respons">
-							<div class="ui-block-a" style="width: 50%; padding-right: 2.5em; ">
+						<div class="ui-block-a" style="width: 50%; padding-right: 2.5em; ">
 								<div style="background-color: #43a2c4;padding: 10px; border-radius: 5px; text-shadow: none; color: white;">
 										<style type="text/css">
 											#checkout-table-body td{
@@ -2156,7 +2152,7 @@
 						
 						<div class="ui-block-b" style="width: 50%; padding-left: 3px;">
 						        
-								<div style="background-color: #43a2c4; padding: 10px; border-radius: 5px; text-shadow: none; color: white;">
+								<div style="background-color: #43a2c4; padding: 0px; border-radius: 5px; text-shadow: none; color: white;">
 									<div class="ui-grid-a">
 										<div class="ui-block-a">
 											<label for="noner2" style="padding-top: 15px; border-radius: 5px; text-shadow: none; color: white; font-family: Roboto Thin; font-size: 1.7em;">Payment Method</label>
@@ -2174,7 +2170,7 @@
 								</div>
 								
 								<br>
-								<div style="background-color: rgb(112,112,112); padding: 10px; border-radius: 5px; text-shadow: none; color: white; font-family: Roboto Thin; font-size: 1.7em;">
+								<div style="background-color: rgb(112,112,112); padding:10px; border-radius: 5px; text-shadow: none; color: white; font-family: Roboto Thin; font-size: 1.7em;">
 									Total: &nbsp; <b id="this-sale-checkout-total" style="float:right;">0.00</b>
 								</div>
 								<br>
@@ -2182,7 +2178,7 @@
 									Change: &nbsp; <b id="this-sale-change" style="float:right;">0.00</b>
 								</div>
 								<br>
-								<div style="background-color: #43a2c4; padding: 10px; border-radius: 5px; text-shadow: none; color: white;">
+								<div style="background-color: #43a2c4; padding: 0px; border-radius: 5px; text-shadow: none; color: white;">
 			
 									<div class="ui-grid-a invt">
 										<div class="ui-block-a" style=" padding-top: 1em;">
@@ -2195,12 +2191,17 @@
 									
 								</div>
 								<br>
-										
-									<a class="cho" id="confirm-this-sale-button" href="#" data-role="button" data-theme="b" data-icon="check" style="font-weight: normal !important; text-shadow: none; background-color: green; border: none; margin: 0em 0em 0em 0em;"><b>Finish</b></a>
+                                
+								<a class="cho" id="confirm-this-sale-button" href="#" data-role="button" data-theme="b" data-icon="check" style="font-weight: normal !important; text-shadow: none; background-color: green; border: none; margin: 0em 0em 0em 0em;"><b>Finish</b></a>
+								<br>
+                                <div style="background-color: #43a2c4; padding: 10px; border-radius: 5px; text-shadow: none; color: white;">
+                                    <label for="noner2" style="border-radius: 5px; text-shadow: none; color: white; font-family: Roboto Thin; font-size: 1.4em;">Status: <span style="color:#ddd; text-align:right; float:right;" id="statusMessage" data-connected="Connected" data-disconnected="Disconnected" >Disconnected</span></label>
+                                    <select id="bluetooth-devices-selectbox">
+                                        <option value="">--Select Device--</option>
+                                    </select>
+								</div>
 								
 								<br>
-								<br>
-								
 						
 						</div>
 					
@@ -2947,8 +2948,8 @@
 <div data-role="page" id="customers">
 		
 		<div data-role="header" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  data-position="fixed">
-				<a href="#menupanel" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext" data-transition="none">Menu</a>
-					<h1>Customers</h1>
+			<a href="#menupanel" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext" data-transition="none">Menu</a>
+			<h1>Customers</h1>
 		<div class="notifications-container hidden" data-role="navbar" data-mini="true">
 			<ul>
 				<li><a href="#notifications" data-transition="none">
@@ -2988,7 +2989,7 @@
                 <br>
                 <div class="ui-grid-a invt">
                     <div class="ui-block-a" >
-                        <input type="tel" name="customer_mobile" id="customer_mobile-field" data-validate="tel" placeholder="Customers Mobile" protocol="tel:" placeholder="Mobile" />
+                        <input type="tel" name="customer_mobile" id="customer_mobile-field" data-validate="tel" placeholder="Customers Mobile" protocol="tel:" required data-error-title="Invalid Customer Mobile Number" data-error-msg="Provide a valid Customer Mobile Number" />
                     </div>
                     
                     <div class="ui-block-b" >

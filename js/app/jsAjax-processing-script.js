@@ -293,6 +293,10 @@ function store_record( data ){
 		case 'transferstock':
 			perm_storage = false;
 		break;
+		case 'customers':
+            if( data.customer_mobile )
+                data.key = 'c'+data.customer_mobile;
+		break;
 		}
 		
 		var d = {};
@@ -435,10 +439,16 @@ function successful_submit_action( stored ){
 		var upload = {};
 		upload[ stored.key ] = stored.key;
 		queueUpload( upload );
+        
+        if( $('#supplier-select-box') ){
+            $('#supplier-select-box')
+            .selectmenu('refresh');
+        }
 	break;
 	case 'customers':
-		//var suppliers_list = add_to_list_of_suppliers( stored );
-		//update_suppliers_list_on_suppliers_page();
+		add_to_list_of_customers( stored );
+        update_customers_list_on_customers_page();
+        
 		var upload = {};
 		upload[ stored.key ] = stored.key;
 		queueUpload( upload );
@@ -833,7 +843,6 @@ function successful_submit_action( stored ){
         }
 	break;
 	case 'transferstock':
-        console.log('stock-transfer', stored );
         var error = true;
         if( stored.origin_store_name && stored.store_name && stored.item_barcode && stored.transfer_qty ){
             stored.transfer_qty = parseFloat( stored.transfer_qty );
@@ -957,6 +966,14 @@ function successful_submit_action( stored ){
 		title = 'Sold!';
 		msg = 'Total Items: ' + stored.total_units + '\nTotal Amount: ' + appCurrencyText + stored.total_amount;
         
+        //print receipt
+        if( connectedDevice && bluetoothSerial ){
+            var text = "\n" + title + "\n" + msg + "\n\n\n" +"--------------------" + "\n\n\n\n\n\n";
+            bluetoothSerial.write( text , function(){
+                //success
+            } );
+        }
+        
         ga( 'send' , 'pageview' , {'page': '/sale' , 'title': msg } );
 	break;
 	}
@@ -984,6 +1001,16 @@ function add_to_list_of_suppliers( data ){
 	
 	$( '#suppliers-list-container' )
 	.prepend( get_supplier_html( data.key , data ) );
+};
+
+function add_to_list_of_customers( data ){
+	if( storeObjects[ 'customers_list' ] ){
+		storeObjects[ 'customers_list' ];
+	}else{
+		get_list_of_customers();
+	}
+	
+	storeObjects[ 'customers_list' ][ data.key ] = data;
 };
 
 function add_to_list_of_expenses( data ){
@@ -1755,6 +1782,8 @@ $( document ).on( "pagecreate", "#records", function() {
 			var type = $(this).data('type');
 			var key = $(this).data('key');
             
+			var html = '';
+			
             if( type ){
                 switch( type ){
                 case 'expenses':
@@ -1766,9 +1795,9 @@ $( document ).on( "pagecreate", "#records", function() {
                 
                 if( sales_data.inventory ){
                     $.each( sales_data.inventory , function( k , s ){
-                        var inventory = getData( k );
+                       // var inventory = getData( k );
                         
-                        html += get_item_row_for_sales_records( s , inventory );
+                        html += get_item_row_for_sales_records( s );
                     });
                     
                     $(this)
@@ -1800,8 +1829,6 @@ $( document ).on( "pagecreate", "#records", function() {
                 }
 			}
             
-			var html = '';
-			
 		}else{
 			//invalid sales id msg
 		}
@@ -1828,11 +1855,11 @@ function get_item_row_for_sales_records_summary( s ){
 	return '<tr><td><b>'+s.label+'</b></td><td><b>'+s.value+'</b></td></tr>';
 };
 
-function get_item_row_for_sales_records( s , v ){
+function get_item_row_for_sales_records( s ){
 	var a = s.unit_ordered*s.unit_selling_price;
 	
 	var desc = '';
-	if( v &&  v.item_desc )desc = v.item_desc;
+	if( s &&  s.item_desc )desc = s.item_desc;
 	else desc = 'product no longer exists';
 	
 	return '<tr><td>'+desc+'<b>&nbsp;('+s.unit_ordered+')</b></td><td><b>'+formatNum(a.toFixed(2))+'</b></td></tr>';
@@ -1959,6 +1986,7 @@ $( document ).on( "pageshow", "#records", function() {
 	});
 	
     var expenses = get_list_of_expenses();
+    
 	var total_value = 0;
 	var total_items = 0;
 	var total_cost_price = 0;
@@ -1991,6 +2019,7 @@ $( document ).on( "pageshow", "#records", function() {
 	
     if( currentStoreID ){
         $.each( expenses , function( key , value ){
+            
             if( value && value.store_name == currentStoreID ){
                 
                 var date = new Date( value.timestamp );
@@ -2536,6 +2565,7 @@ $( document ).on( "pagecreate", "#supplier", function() {
             
             var payment_html = '';
             if( supplier.payments ){
+                
                 $.each( supplier.payments , function( k , v ){
                     var payment = getData( k );
                     if( payment && payment.timestamp ){
@@ -4055,25 +4085,15 @@ $( document ).on( "pagecreate", "#restock", function() {
 		}
 	});
 	
-	$('#stock-form select#filter-location-field')
-	.add('#stock-form select#filter-category-field')
+	$('#stock-form select#filter-category-field')
 	.on('change', function(){
 		
-		var c1 = '.'+$('#stock-form select#filter-location-field').val().replace(' ','-');
-		var c2 = '.'+$('#stock-form select#filter-category-field').val().replace(' ','-');
+		var c2 = '.'+$(this).val();
 		
 		$('#stock-form')
 		.find('select[name="item_barcode"]')
 		.find('option')
 		.show();
-		
-		if( c1.length > 2 ){
-			$('#stock-form')
-			.find('select[name="item_barcode"]')
-			.find('option')
-			.not(c2)
-			.hide();
-		}
 		
 		if( c2.length > 2 ){
 			$('#stock-form')
@@ -4081,6 +4101,16 @@ $( document ).on( "pagecreate", "#restock", function() {
 			.find('option')
 			.not(c2)
 			.hide();
+            
+            $('#stock-form')
+			.find('select[name="item_barcode"]')
+            .find('option[value=""]')
+            .show();
+            
+            $('#stock-form')
+			.find('select[name="item_barcode"]')
+            .val('')
+            .selectmenu('refresh');
 		}
 		
 	});
@@ -4331,63 +4361,40 @@ $( document ).on( "pagecreate", "#inventory", function() {
 	.find('select#filter-category-field')
 	.on('change', function(){
 		
+        var $itemselect = $("#inventory").find('select#filter-item-field');
+        
 		var c2 = '.'+$("#inventory").find('select#filter-category-field').val().replace(' ','-');
 		
 		$('tbody.stockLevels-container')
 		.find('tr')
 		.show();
 		
+        $itemselect
+        .find('option')
+        .show();
+        
 		if( c2.length > 2 ){
 			$('tbody.stockLevels-container')
 			.find('tr')
 			.not(c2)
 			.hide();
-		}
-		
-	});
-    /*
-    $("#inventory")
-    .find('form.item-search-field-form')
-    .on('submit', function(e){
-        e.preventDefault();
-        
-        //check for barcode
-        var p = false;
-        var content = $(this).find('input.item-search-field').val();
-        if( content && content.length > 5 ){
-            var inventory = getData( content );
-            if( inventory && inventory.item_desc && inventory.key ){
-                p = true;
-                $(this)
-                .find('select#filter-item-field')
-                .val( inventory.key )
-                .change();
-            }
-        }
-        
-        return false;
-    });
-    */
-    /*
-	$('a.button-scan')
-	.on('click', function(){
-		cordova.plugins.barcodeScanner.scan(
-		  function (result) {
-			$("#inventory")
-            .find('input.item-search-field')
-			.val( result.text );
             
-			$("#inventory")
-            .find('select#filter-item-field')
-            .val( result.text )
-            .change();
-		  }, 
-		  function (error) {
-			  alert("Scanning failed: " + error);
-		  }
-	   );
+            $itemselect
+            .find('option')
+            .not(c2)
+			.hide();
+            
+            $itemselect
+            .find('option[value=""]')
+            .show();
+            
+            $itemselect
+            .val('')
+            .selectmenu('refresh');
+            
+		}
 	});
-	*/
+    
     $("#inventory")
 	.find('select#filter-item-field')
 	.on('change', function(){
@@ -4663,7 +4670,6 @@ $( document ).on( "pagecreate", "#checkout", function() {
             }
             
             customers_data = {
-                'id':'c'+$('#customer_mobile-field').val(),
                 'key':'c'+$('#customer_mobile-field').val(),
                 'customer_name':name,
                 'customer_mobile':$('#customer_mobile-field').val(),
@@ -4719,6 +4725,7 @@ $( document ).on( "pagecreate", "#checkout", function() {
                     $('#customer_name-field').val('');
                     $('#customer_mobile-field').val('');
                 }
+                
                 $.mobile.navigate( "#sales", { transition : "none" });
             }else{
                 if( allow_credit_sale ){
@@ -4766,6 +4773,33 @@ $( document ).on( "pagecreate", "#checkout", function() {
         $(this).change();
     });
 	
+    $("select#bluetooth-devices-selectbox")
+    .on( 'change' , function(){
+        var device = $(this).val();
+        
+        //disconnect
+        if( connectedDevice && bluetoothSerial ){
+            $('#statusMessage')
+            .html( "Disconnecting..." );
+            
+            bluetoothSerial.disconnect( disconnectedDevice );
+        }
+        
+        if( connectedDevice && bluetoothSerial ){
+            if( device ){
+                //connect
+                $('#statusMessage')
+                .html( "Connecting..." );
+                
+                bluetoothSerial.connect(device, function(){
+                    $('#statusMessage')
+                    .html( "Connected" );
+                    
+                    connectedDevice = true;
+                }, disconnectedDevice );
+            }
+        }
+    });
 });
 
 $( document ).on( "pageshow", "#checkout", function() {
@@ -4814,10 +4848,85 @@ $( document ).on( "pageshow", "#checkout", function() {
 		html = '<tr><td colspan="4" style="text-align:center;">Empty Cart</td></tr>';
 	}
 	
+    if( ! connectedDevice ){
+        $('#statusMessage')
+        .html( $('#statusMessage').attr('data-disconnected') );
+        
+        //get list of bluetooth devices
+        if( bluetoothSerial ){
+            bluetoothSerial.list( gotListOfBluetoothDevices , function(){
+                var settings = {
+                    message_title:'Bluetooth Error',
+                    message_message: 'Could not get list of devices',
+                    auto_close: 'yes'
+                };
+                display_popup_notice( settings );
+            } );
+        }else{
+            //return error
+            var settings = {
+                message_title:'Bluetooth Error',
+                message_message: 'Plugin failed to initialize',
+                auto_close: 'yes'
+            };
+            display_popup_notice( settings );
+            
+        }  
+    }
+    
 	$('tbody#checkout-table-body')
 	.html( html );
 	
 });
+
+var connectedDevice = false;
+
+function disconnectedDevice(){
+    $('#statusMessage')
+    .html( "Disconnected" );
+}
+
+function gotListOfBluetoothDevices( devices ){
+   var option = '<option value="">--Select Device--</option>';
+   var error = '';
+    
+    devices.forEach(function(device) {
+        var value = '';
+        if (device.hasOwnProperty("uuid")) {
+            value = device.uuid;
+        } else if (device.hasOwnProperty("address")) {
+            value = device.address;
+        } else {
+            error += "ERROR " + JSON.stringify(device);
+        }
+        if( value ){
+            option += '<option value="'+value+'">'+device.name+'</option>';
+        }
+    });
+
+    if (devices.length === 0) {
+        
+        option = '<option value="">--No Bluetooth Devices--</option>';
+        
+        if (cordova.platformId === "ios") { // BLE
+            $('#statusMessage')
+            .html( "No Bluetooth Peripherals Discovered." );
+        } else { // Android
+            $('#statusMessage')
+            .html( "Please Pair a Bluetooth Device." );
+        }
+
+    } else {
+        $('#statusMessage')
+        .html( "Found " + devices.length + " device" + (devices.length === 1 ? "." : "s.") );
+    } 
+    
+    if( option ){
+        $("select#bluetooth-devices-selectbox")
+        .html( option )
+        .selectmenu("refresh");
+    }
+};
 
 $( document ).on( "pagecreate", "#sales", function() {
 	test_for_active_user();
@@ -6152,9 +6261,11 @@ function fail(message) {
   uploadingImageInprogess = 0;
   
   var m = '';
-  $.each( message, function(a,b){
+  if( message ){
+    $.each( message, function(a,b){
     m += a+': '+b+'\n\n';
   });
+  }
   alert(m);
 };
 
