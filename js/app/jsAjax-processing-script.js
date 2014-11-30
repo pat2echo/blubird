@@ -965,9 +965,11 @@ function successful_submit_action( stored ){
 		queueUpload( newSale );
 		//storeObjects[ 'sales' ][ stored.key ] = stored;
 		
+        title = 'Sold!';
+        msg = "\n" + 'Sales ID: #' + stored.key + "\n" + 'Total Items: ' + stored.total_units + "\n" + 'Net Total: ' + appCurrencyText +' '+formatNum(stored.total_amount.toFixed(2));
+        
         ga( 'send' , 'pageview' , {'page': '/sale' , 'title': '#'+stored.key } );
         
-        return true;
 	break;
 	}
 	
@@ -980,7 +982,7 @@ function successful_submit_action( stored ){
 };
 
 function leftandRight( text , txtRight ){
-    var length = 24;
+    var length = 28;
     var tlen = 0;
     
     txtRight = txtRight.toString();
@@ -995,11 +997,11 @@ function leftandRight( text , txtRight ){
     var maxlen = parseInt( length / 2 );
     
     if( tlen > maxlen+1 ){
-        text = text.substring( 0 , ( maxlen - 3) );
+        text = text.substring( 0 , maxlen );
         text += ': ';
         tlen = text.length;
     }else{
-        for( var i = 0; i < ( maxlen - tlen ) + 1; i++ ){
+        for( var i = 0; i < ( maxlen - tlen ) + 3; i++ ){
             spacer1 += ' ';
         }
         tlen = maxlen + 1;
@@ -1020,10 +1022,10 @@ function leftandRight( text , txtRight ){
     return text + spacer1 + spacer + txtRight + "\n";
 };
 
-//alert( leftandRight( 'Total Items: ' , '3' ) + leftandRight( 'Paid: ' , '3,021.29' )  + leftandRight( 'Overflowing from the left hand side Paid: ' , '3,021.29' ) );
+//alert( leftandRight( 'Total Items: ' , '3' ) + leftandRight( 'Paid: ' , '3,021.29' )  + leftandRight( 'Overflowing from the left hand side Paid: ' , 'NGN 3,021.29' ) );
 
 function formatReceiptText( sales_data ){
-    var dash = "------------------------";
+    var dash = "----------------------------";
     var space = "\n\n";
     var space_single = "\n";
     
@@ -1057,7 +1059,8 @@ function formatReceiptText( sales_data ){
 	var hours = date.getHours();
 	var minutes = date.getMinutes();
     
-	store_details += leftandRight( "Date: " , year+'-'+months_of_year[ month ]+'-'+day+' '+hours+':'+minutes );
+	store_details += leftandRight( "Date: " , year+'-'+months_of_year[ month ]+'-'+day );
+	store_details += leftandRight( "Time: " , hours+':'+minutes );
     
     var user = get_user_info();
     
@@ -4874,12 +4877,6 @@ $( document ).on( "pagecreate", "#checkout", function() {
                         //success
                     } );
                 }
-                var settings = {
-                    message_title:'',
-                    message_message: msg,
-                    auto_close: 'yes'
-                };
-                display_popup_notice( settings );
                 
                 $.mobile.navigate( "#sales", { transition : "none" });
             }else{
