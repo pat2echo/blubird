@@ -57,6 +57,7 @@ var appDiscountType = 'percentage';
 var appVATValue = 5;
 var appLowStockLevel = 25;
 var appPrinterCharacterLength = 24;
+var appPrinterSeperatorLength = 28;
 
 var appVersionNumber = '1.1.0';
 
@@ -1029,13 +1030,11 @@ function leftandRight( text , txtRight ){
 
 function formatReceiptText( sales_data ){
     var dash = "----------------------------";
-    if( appPrinterCharacterLength ){
+    if( appPrinterSeperatorLength ){
         dash = "";
-        var j = Math.ceil( appPrinterCharacterLength / 2 ) - 2;
-        for(var i= 0; i < j; i++ ){
+        for(var i= 0; i < appPrinterSeperatorLength; i++ ){
             dash += "-";
         }
-        dash = leftandRight( dash , dash );
     }
     
     var space = "\n\n";
@@ -3153,6 +3152,7 @@ function set_general_settings(){
                 object:object,
                 table_records_display_length:"5",
                 printer_character_length:"24",
+                appPrinterSeperatorLength:"28",
                 receipt_message:"Thank you for your patronage!",
                 vat:"5",
             };
@@ -3200,6 +3200,9 @@ function configure_appsettings(){
             
         if( appSettings.printer_character_length && parseFloat( appSettings.printer_character_length ) )
             appPrinterCharacterLength = parseFloat( appSettings.printer_character_length );
+            
+        if( appSettings.printer_line_seperator_length && parseFloat( appSettings.printer_line_seperator_length ) )
+            appPrinterSeperatorLength = parseFloat( appSettings.printer_line_seperator_length );
     }
 };
 
