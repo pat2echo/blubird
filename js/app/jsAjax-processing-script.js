@@ -1031,6 +1031,13 @@ function leftandRight( text , txtRight ){
 
 function formatReceiptText( sales_data ){
     var dash = "----------------------------";
+    if( appPrinterCharacterLength ){
+        dash = "";
+        for(var i= 0; i < appPrinterCharacterLength; i++ ){
+            dash += "-";
+        }
+    }
+    
     var space = "\n\n";
     var space_single = "\n";
     
@@ -1064,13 +1071,14 @@ function formatReceiptText( sales_data ){
 	var hours = date.getHours();
 	var minutes = date.getMinutes();
     
+    store_details += "Receipt Number: " + space_single + '#'+sales_data.key + space_single + dash + space_single;
+    
 	store_details += leftandRight( "Date: " , year+'-'+months_of_year[ month ]+'-'+day );
 	store_details += leftandRight( "Time: " , hours+':'+minutes );
     
     var user = get_user_info();
     
     if( sales_data && sales_data.key ){
-        store_details += leftandRight( "Receipt No: " , '#'+sales_data.key );
         //user
         if( user && user.name ){
             store_details += leftandRight( "Sales Rep: " , user.name );
