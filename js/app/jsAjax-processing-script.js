@@ -56,6 +56,7 @@ var appCurrency = '&#8358;';
 var appDiscountType = 'percentage';
 var appVATValue = 5;
 var appLowStockLevel = 25;
+var appPrinterCharacterLength = 24;
 
 var appVersionNumber = '1.1.0';
 
@@ -982,7 +983,11 @@ function successful_submit_action( stored ){
 };
 
 function leftandRight( text , txtRight ){
-    var length = 28;
+    if( appPrinterCharacterLength )
+        var length = appPrinterCharacterLength;
+    else
+        var length = 24;
+        
     var tlen = 0;
     
     txtRight = txtRight.toString();
@@ -3139,6 +3144,8 @@ function set_general_settings(){
                 low_stock_level:"10",
                 object:object,
                 table_records_display_length:"5",
+                printer_character_length:"24",
+                receipt_message:"Thank you for your patronage!",
                 vat:"5",
             };
             var stored = store_record( default_settings );
@@ -3182,6 +3189,9 @@ function configure_appsettings(){
             
         if( appSettings.low_stock_level && parseFloat( appSettings.low_stock_level ) )
             appLowStockLevel = parseFloat( appSettings.low_stock_level );
+            
+        if( appSettings.printer_character_length && parseFloat( appSettings.printer_character_length ) )
+            appPrinterCharacterLength = parseFloat( appSettings.printer_character_length );
     }
 };
 
