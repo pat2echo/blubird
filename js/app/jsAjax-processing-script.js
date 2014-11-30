@@ -57,6 +57,8 @@ var appDiscountType = 'percentage';
 var appVATValue = 5;
 var appLowStockLevel = 25;
 
+var appVersionNumber = '1.1.0';
+
 var numOfStores = 1;
 var currentStoreID = '';
 
@@ -963,18 +965,9 @@ function successful_submit_action( stored ){
 		queueUpload( newSale );
 		//storeObjects[ 'sales' ][ stored.key ] = stored;
 		
-		title = 'Sold!';
-		msg = 'Total Items: ' + stored.total_units + '\nTotal Amount: ' + appCurrencyText + stored.total_amount;
+        ga( 'send' , 'pageview' , {'page': '/sale' , 'title': '#'+stored.key } );
         
-        //print receipt
-        if( connectedDevice && bluetoothSerial ){
-            var text = "\n" + title + "\n" + msg + "\n\n\n" +"--------------------" + "\n\n\n\n\n\n";
-            bluetoothSerial.write( text , function(){
-                //success
-            } );
-        }
-        
-        ga( 'send' , 'pageview' , {'page': '/sale' , 'title': msg } );
+        return true;
 	break;
 	}
 	
@@ -984,6 +977,143 @@ function successful_submit_action( stored ){
 		auto_close: 'yes'
 	};
 	display_popup_notice( settings );
+};
+
+function leftandRight( text , txtRight ){
+    var length = 24;
+    var tlen = 0;
+    
+    txtRight = txtRight.toString();
+    
+    if( ! txtRight ){
+        return text+"\n";
+    }
+    if( text )tlen = text.length;
+    else tlen = 0;
+    
+    var spacer1 = ' ';
+    var maxlen = parseInt( length / 2 );
+    
+    if( tlen > maxlen+1 ){
+        text = text.substring( 0 , ( maxlen - 3) );
+        text += ': ';
+        tlen = text.length;
+    }else{
+        for( var i = 0; i < ( maxlen - tlen ) + 1; i++ ){
+            spacer1 += ' ';
+        }
+        tlen = maxlen + 1;
+    }
+    
+    var spacer = ' ';
+    if( tlen < txtRight.length ){
+        for( var i = 0; i < maxlen; i++ ){
+            spacer += ' ';
+        }
+        return text + spacer1 + "\n" + spacer  + txtRight + "\n";
+    }
+    
+    for( var i = 0; i < tlen - txtRight.length; i++ ){
+        spacer += ' ';
+    }
+    
+    return text + spacer1 + spacer + txtRight + "\n";
+};
+
+//alert( leftandRight( 'Total Items: ' , '3' ) + leftandRight( 'Paid: ' , '3,021.29' )  + leftandRight( 'Overflowing from the left hand side Paid: ' , '3,021.29' ) );
+
+function formatReceiptText( sales_data ){
+    var dash = "------------------------";
+    var space = "\n\n";
+    var space_single = "\n";
+    
+    var store_details = space_single + "SALES RECEIPT" + space_single + dash + space_single;
+    
+    if( currentStoreID ){
+        var store = getData( currentStoreID );
+        if( store && Object.getOwnPropertyNames(store).length ){
+            if( store.name ){
+                store_details += store.name + space_single;
+            }
+            
+            if( store.street ){
+                store_details += store.street;
+                if( store.city )store_details += ', '+ store.city;
+                store_details += space_single;
+            }
+            
+            if( store.country ){
+                if( store.state )store_details += store.state + ', ';
+                store_details += store.country + space_single;
+            }
+            store_details += dash + space_single;
+        }
+    }
+    
+    var date = new Date();
+	var day = date.getDate();
+	var month = date.getMonth();
+	var year = date.getFullYear();
+	var hours = date.getHours();
+	var minutes = date.getMinutes();
+    
+	store_details += leftandRight( "Date: " , year+'-'+months_of_year[ month ]+'-'+day+' '+hours+':'+minutes );
+    
+    var user = get_user_info();
+    
+    if( sales_data && sales_data.key ){
+        store_details += leftandRight( "Receipt No: " , '#'+sales_data.key );
+        //user
+        if( user && user.name ){
+            store_details += leftandRight( "Sales Rep: " , user.name );
+        }
+        store_details += dash + space_single;
+        
+        if( sales_data.inventory ){
+            $.each( sales_data.inventory , function( k , s ){
+                store_details += get_item_row_for_sales_records_striped( s );
+            });
+            
+            store_details += space_single;
+        }
+        
+        store_details += leftandRight( 'Total Items: ' , sales_data.total_units );
+        store_details += leftandRight( 'Total: ' , appCurrencyText +' '+formatNum(sales_data.subtotal.toFixed(2)) );
+        store_details += leftandRight( 'VAT: ' , appCurrencyText +' '+formatNum(sales_data.vat.toFixed(2)) );
+        store_details += leftandRight( 'Discount: ' , appCurrencyText +' '+formatNum(sales_data.discount.toFixed(2)) );
+        store_details += leftandRight( 'Net Total: ' , appCurrencyText +' '+formatNum(sales_data.total_amount.toFixed(2)) );
+        
+        var change = sales_data.total_amount_tendered - sales_data.total_amount;
+        var lblChange = "Change";
+        if( change < 0 ){
+            change = Math.abs( change );
+            lblChange = "Debt";
+        }
+        store_details += dash + space_single;
+        store_details += leftandRight( 'Paid: ' , appCurrencyText +' '+formatNum(sales_data.total_amount_tendered.toFixed(2)) );
+        store_details += leftandRight( lblChange+': ' , appCurrencyText + ' ' + formatNum(change.toFixed(2)) );
+        store_details += dash + space_single;
+        
+        if( sales_data.customer ){
+            var c = getData( sales_data.customer );
+            if( c && c.customer_name ){
+                store_details += leftandRight( 'Cus: ' , c.customer_name );
+                store_details += leftandRight( 'Tel: ' , c.customer_mobile );
+                store_details += dash + space_single;
+            }
+        }
+        
+        store_details += space_single;
+        if( appSettings && appSettings.receipt_message ){
+            store_details += appSettings.receipt_message + space;
+            store_details += dash + space_single;
+        }
+        
+        store_details += 'BLUBIRD v'+appVersionNumber;
+        store_details += space + space + space;
+    }
+    
+    return store_details;
 };
 
 function add_to_list_of_suppliers( data ){
@@ -1863,6 +1993,16 @@ function get_item_row_for_sales_records( s ){
 	else desc = 'product no longer exists';
 	
 	return '<tr><td>'+desc+'<b>&nbsp;('+s.unit_ordered+')</b></td><td><b>'+formatNum(a.toFixed(2))+'</b></td></tr>';
+};
+
+function get_item_row_for_sales_records_striped( s ){
+	var a = s.unit_ordered*s.unit_selling_price;
+	
+	var desc = '';
+	if( s &&  s.item_desc )desc = s.item_desc;
+	else desc = 'product no longer exists';
+	
+	return leftandRight( desc+' ('+s.unit_ordered+'): ' , appCurrencyText +' '+formatNum( a.toFixed(2) ) );
 };
 
 $( document ).on( "pageshow", "#records", function() {
@@ -3021,7 +3161,7 @@ function set_general_settings(){
 
 function configure_appsettings(){
     if( appSettings && Object.getOwnPropertyNames(appSettings).length ){
-        console.log('appset', appSettings);
+        
         if( appSettings.currency ){
             var currency = appSettings.currency.split(':::');
             if( currency[0] )appCurrency = currency[0];
@@ -4716,8 +4856,8 @@ $( document ).on( "pagecreate", "#checkout", function() {
                         customers_data.sale[ stored.key ] = stored.key;
                     }
                     
-                    var stored = store_record( customers_data );
-                    successful_submit_action( stored );
+                    var stored_cus = store_record( customers_data );
+                    successful_submit_action( stored_cus );
                 }
                 salesData = {};
                 
@@ -4726,6 +4866,20 @@ $( document ).on( "pagecreate", "#checkout", function() {
                     $('#customer_name-field').val('');
                     $('#customer_mobile-field').val('');
                 }
+                
+                msg = formatReceiptText( stored );
+                //print receipt
+                if( connectedDevice && bluetoothSerial ){
+                    bluetoothSerial.write( msg , function(){
+                        //success
+                    } );
+                }
+                var settings = {
+                    message_title:'',
+                    message_message: msg,
+                    auto_close: 'yes'
+                };
+                display_popup_notice( settings );
                 
                 $.mobile.navigate( "#sales", { transition : "none" });
             }else{
