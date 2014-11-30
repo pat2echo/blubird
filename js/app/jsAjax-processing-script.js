@@ -1027,21 +1027,21 @@ function leftandRight( text , txtRight ){
     return text + spacer1 + spacer + txtRight + "\n";
 };
 
-//alert( leftandRight( 'Total Items: ' , '3' ) + leftandRight( 'Paid: ' , '3,021.29' )  + leftandRight( 'Overflowing from the left hand side Paid: ' , 'NGN 3,021.29' ) );
-
 function formatReceiptText( sales_data ){
     var dash = "----------------------------";
     if( appPrinterCharacterLength ){
         dash = "";
-        for(var i= 0; i < appPrinterCharacterLength; i++ ){
+        var j = Math.ceil( appPrinterCharacterLength / 2 ) - 2;
+        for(var i= 0; i < j; i++ ){
             dash += "-";
         }
+        dash = leftandRight( dash , dash );
     }
     
     var space = "\n\n";
     var space_single = "\n";
     
-    var store_details = space_single + "SALES RECEIPT" + space_single + dash + space_single;
+    var store_details = space + "SALES RECEIPT" + space_single + dash + space_single;
     
     if( currentStoreID ){
         var store = getData( currentStoreID );
