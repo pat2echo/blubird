@@ -396,6 +396,8 @@ function handle_form_submission( $form ){
 			
 			if( $(this).attr('remote-storage') ){
 				local_store = 0;
+                internetConnection = true;
+                
 				post_form_data( $(this) );
 				tempData = data;
 			}
