@@ -13,7 +13,7 @@
 	
 	
 	<!-- App 2nd Commit / demo data -->
-	<!--version 1.0.70-->
+	<!--version 1.0.78-->
 	<script src="js/app/amplify.min.js"></script>
 	<script src="js/app/md5.js"></script>
 	<script src="js/app/fastclick.js"></script>
@@ -885,7 +885,7 @@
 				<br>
 				<div class="ui-grid-a invt" >
 					<div class="ui-block-a" >
-						<button href="#inventory" data-role="button" data-theme="a" data-icon="arrow-r" style=" background-color:#d11141;  border: green; text-shadow: none; color: white !important;" ><b>Discard Changes</b></button>
+						<button href="#" data-role="button" data-theme="a" data-icon="arrow-r" style=" background-color:#d11141;  border: green; text-shadow: none; color: white !important;" id="set-inventory-pricing-discard-changes"><b>Discard Changes</b></button>
 					</div>
 					
 					<div class="ui-block-b">
@@ -1031,7 +1031,6 @@
                             
                             <p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
                         
-                        
             </div>          
 							
 		</div>
@@ -1101,7 +1100,8 @@
 						
 						<div class="ui-grid-a invt">
 							<div class="ui-block-a">
-								
+								<label for="store_name-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Store:</label>
+                                
 								 <select name="store_name" id="store_name-field" placeholder="Select Store" required data-validate="text" data-error-title="Invalid Store" data-error-msg="Please select a store" class="currently-active-store">
 									
 								 </select>
@@ -1109,6 +1109,7 @@
 							</div>
 						
 							<div class="ui-block-b">
+                                <label for="damage_qty-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Qty damaged:</label>
                                 <input type="number" min="0" step="1" name="damage_qty" id="damage_qty-field" placeholder="Quantity of Items Damaged" required data-validate="number" data-error-title="Invalid Quantity of Items Damaged" data-error-msg="Please provide a valid quantity of items damaged" />
 							</div>
 						
@@ -1144,10 +1145,10 @@
                         <table data-role="table1" id="damages-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table table-stroke ui-table ui-table-columntoggle">
                           <thead>
                             <tr>
-                              <th data-priority="1" data-colstart="1">Item Desc</th>
-                              <th data-colstart="2" data-priority="3">Description of Damages</th>
-                              <th data-colstart="3" data-priority="2">Qty</th>
-                              <th data-colstart="4" data-priority="4">Date</th>
+                              <th data-priority="1" data-colstart="1" class="ui-table-priority-1">Item Desc</th>
+                              <th data-colstart="2" data-priority="3" class="ui-table-priority-3">Description of Damages</th>
+                              <th data-colstart="3" data-priority="2" class="ui-table-priority-2">Qty</th>
+                              <th data-colstart="4" data-priority="4" class="ui-table-priority-4">Date</th>
                             </tr>
                           </thead>
                           <tbody id="damages-list-container">
@@ -1720,13 +1721,18 @@
 						<br>
 					</div>
 			</form>
+                <div data-role="controlgroup" data-type="horizontal" >
+                    <a href="#inventory" id="retock-bottom-back-button" data-transition="none" class="upload-queue ui-btn ui-corner-all ui-icon-arrow-l ui-btn-icon-left ui-btn-icon-notext" style="font-weight: normal !important; text-shadow: none; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;">Go Back</a>
+                    
+                    <a href="#" id="retock-bottom-next-button" class="ui-btn ui-corner-all ui-icon-arrow-u ui-btn-icon-left ui-btn-icon-notext" style="font-weight: normal !important; text-shadow: none; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;">New Supply</a>
+                </div>
+                <br>
 			</div>
 			
+			<br>
 			
+                <br>
 			</div>
-			
-			
-		
 </div>
 
 <div data-role="page" id="inventory">
@@ -2031,7 +2037,7 @@
                                 <br>
                                 <a class="co" href="#" id="cancel-order-button" data-role="button" data-theme="b" data-icon="delete" data-transition="none" style="font-family: Roboto Thin; background-color: #d11141; border: red; font-weight: normal !important; text-shadow: none;"><b>Cancel Order</b></a>
                             
-                                <a class="cho" href="#checkout" id="confirm-this-sale-popup-display-button" data-role="button"  data-theme="b" data-icon="check" data-transition="none" style="font-family: Roboto Thin; font-weight: normal !important; text-shadow: none; background-color: green; border: none;"><b>Check Out</b></a>
+                                <a class="cho" href="#checkout" id="confirm-this-sale-popup-display-button" data-role="button"  data-theme="b" data-icon="check" data-transition="none" style="font-family: Roboto Thin; font-weight: normal !important; text-shadow: none; background-color: green; border: none; color:#fff !important;"><b>Check Out</b></a>
 									
 								<br>
 								<br>
@@ -2054,8 +2060,7 @@
 	<div data-role="header" id="hd" data-tap-toggle="false" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  data-position="fixed" data-tap-toggle="false">
 		
 		<a href="#sales" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">back</a>
-				
-				
+		
 		<h1>Check Out</h1>
 		<div class="notifications-container hidden" data-role="navbar" data-mini="true">
 			<ul>

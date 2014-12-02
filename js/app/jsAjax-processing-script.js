@@ -824,6 +824,8 @@ function successful_submit_action( stored ){
                 inventory.store[stored.store_name] = store;
                 putData( stored.item_barcode , inventory );
                 
+                add_to_list_of_inventory( inventory );
+                
                 var upload = {};
                 upload[ stored.key ] = stored.key;
                 queueUpload( upload );
@@ -1574,7 +1576,7 @@ function get_damages_html( key , value ){
     var inventory = getData( value.item_barcode );
     if( inventory && inventory.item_desc )desc = inventory.item_desc;
     
-	return '<tr id="'+key+'" timestamp="'+value.timestamp+'"><td>'+desc+'</td><td class="ui-table-priority-3">'+value.damage_desc+'</td><td class="ui-table-priority-2">'+formatNum( q )+'</td><td class="ui-table-priority-4">'+year+'-'+months_of_year[ month ]+'-'+day+' '+hours+':'+minutes+'</td></tr>';
+	return '<tr id="'+key+'" timestamp="'+value.timestamp+'"><td class="ui-table-priority-1">'+desc+'</td><td class="ui-table-priority-3">'+value.damage_desc+'</td><td class="ui-table-priority-2">'+formatNum( q )+'</td><td class="ui-table-priority-4">'+year+'-'+months_of_year[ month ]+'-'+day+' '+hours+':'+minutes+'</td></tr>';
 };
 
 function get_category_html( key , value ){
@@ -3565,8 +3567,16 @@ function unQueueUpload( data ){
 };
 
 var uploadDataSize = 0;
+var internetConnection = true;
 
 function uploadData(){
+    //check for internet connection
+    if( ! internetConnection ){
+        //display no internet connection message
+        $('div.progress-bar-container')
+		.html('<div class="no-internet-bar"><div class="progress-bar"></div></div>');
+        return false;
+    }
 	var a = getData( uploadDataKey );
     if( a && Object.getOwnPropertyNames(a).length ){
         var b = '';
@@ -3729,6 +3739,8 @@ function activate_manual_upload_data_button_click_event( $page ){
         $(this)
         .parents('.update-server-button-container')
         .addClass('hidden');
+        
+        internetConnection = true;
         
         uploadData();
     });
@@ -4012,6 +4024,13 @@ $( document ).on( "pagecreate", "#setPricing", function() {
 	.on('click', function( e ){
 		$.mobile.navigate( "#cnfrmPricing", { transition : "none" });
 	});
+    
+    
+	$('#set-inventory-pricing-discard-changes')
+	.on('click', function( e ){
+        pricingData = {};
+		$.mobile.navigate( "#inventory", { transition : "none" });
+	});
 	
 	$("#setPricing")
 	.find('select#filter-category-field')
@@ -4123,6 +4142,9 @@ $( document ).on( "pageshow", "#setPricing", function() {
     for( var i = 0; i < dataLimit; i++ )
         maxs[i] = 0;
     
+    populate_category_select_box( $('#setPricing').find('#filter-category-field') );
+	populate_stores_select_box( $('#setPricing').find('#filter-stores-field') );
+    
     if( currentStoreID ){
         $.each( inventory , function( key , value ){
             if( value && value.store && value.store[ currentStoreID ] ){
@@ -4162,7 +4184,9 @@ $( document ).on( "pageshow", "#setPricing", function() {
 		
 		$('#setPricing')
 		.find('#filter-item-field')
-		.html( html2 );
+		.html( html2 )
+        .find('option')
+        .tsort();
 		
 		$("#setPricing")
 		.find('input.inventory-pricing-input')
@@ -4176,8 +4200,7 @@ $( document ).on( "pageshow", "#setPricing", function() {
 			}
 		});
 	}
-	populate_category_select_box( $('#setPricing').find('#filter-category-field') );
-	populate_stores_select_box( $('#setPricing').find('#filter-stores-field') );
+	
 });
 
 $( document ).on( "pagecreate", "#restock", function() {
@@ -4191,6 +4214,7 @@ $( document ).on( "pagecreate", "#restock", function() {
 	handle_form_submission( $('form#supply-form') );
 	
 	$('#manage-inventory-back-button')
+    .add('#retock-bottom-back-button')
 	.on('click', function(){
 		if( newStock && Object.getOwnPropertyNames(newStock).length && tempStoreObjects && Object.getOwnPropertyNames(tempStoreObjects).length ){
 			var r = confirm("Do you want to save changes made to your inventory" );
@@ -4315,6 +4339,13 @@ $( document ).on( "pagecreate", "#restock", function() {
 		$(this).change();
 	});
 	
+    $('#retock-bottom-next-button')
+    .on('click', function(e){
+        e.preventDefault();
+        
+        $( 'form#stock-form #cost_price-field' )
+        .focus();
+    });
     /*
     $('a.button-scan')
 	.on('click', function(){
@@ -4707,7 +4738,9 @@ function display_table_on_inventory_page( inventory, $tbody, $page, include_summ
         if( include_summary ){
             $page
             .find('#filter-item-field')
-            .html( html2 );
+            .html( html2 )
+            .find('option')
+            .tsort();
         }
 	}
     
@@ -4761,7 +4794,9 @@ $( document ).on( "pageshow", "#restock", function() {
 	if( html ){
 		$('#stock-form')
 		.find('select[name="item_barcode"]')
-		.html( html );
+		.html( html )
+        .find('option')
+        .tsort();
 	}
 	
 	populate_category_select_box( $('#stock-form').find('#filter-category-field') );
@@ -4774,18 +4809,25 @@ $( document ).on( "pageshow", "#damages", function() {
 	//Update inventory list
 	var inventory = get_list_of_inventory();
 	var html = '<option value="">--Select Item--</option>';
-	$.each( inventory , function( key , value ){
-		html += '<option value="'+key+'" class="'+value.category+'">'+value.item_desc+'</option>';
-	});
-	
+    
+    populate_category_select_box( $('#damages-form').find('#filter-category-field') );
+    populate_stores_select_box( $('#damages-form').find('select.currently-active-store') );
+    
+    if( currentStoreID ){
+        $.each( inventory , function( key , value ){
+            if( value && value.store && value.store[ currentStoreID ] ){
+                html += '<option value="'+key+'" class="'+value.category+'">'+value.item_desc+'</option>';
+            }
+        });
+	}
+    
 	if( html ){
 		$('#damages-form')
 		.find('select[name="item_barcode"]')
-		.html( html );
+		.html( html )
+        .find('option')
+        .tsort();
 	}
-	
-	populate_category_select_box( $('#damages-form').find('#filter-category-field') );
-    populate_stores_select_box( $('#damages-form').find('select.currently-active-store') );
 });
 
 $( document ).on( "pageshow", "#transferStock", function() {
@@ -6172,6 +6214,8 @@ function progress_bar_change(){
 					auto_close: 'no'
 				};
 				display_popup_notice( settings );
+                
+                internetConnection = false;
 			}else{
 				//display retrying msg
 				

@@ -10,6 +10,7 @@
             z-index:1000;
             left:0px;
 		}
+		.no-internet-bar,
 		.progress-bar-container-complete,
 		.virtual-progress-bar{
 			height:3.5px;
@@ -25,6 +26,17 @@
 			/*background:#f6e492;background:#43A2C5;*/
             background:#54e854;
             background:linear-gradient(to right, rgb(84, 232, 84), #4fc1e9);
+			/*
+			border-top:2px solid #f6e492;
+			border-bottom:1px solid #978634;*/
+			/*background:linear-gradient(to bottom, #978634, #6d5c0a);*/
+		}
+		.no-internet-bar .progress-bar{
+			height:100%;
+			/*background:#f6e492;background:#43A2C5;*/
+            background:rgb(232, 84, 84);
+            background:linear-gradient(to right, rgb(213, 67, 67), #ff0000);
+            width:30%;
 			/*
 			border-top:2px solid #f6e492;
 			border-bottom:1px solid #978634;*/
