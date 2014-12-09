@@ -225,7 +225,7 @@
             <li class="lidec"><a class="ui-btn ui-icon-shop ui-btn-icon-left" href="#sales" data-transition="none"><b>Sales</b></a></li>
             <li class="lidec"><a class="ui-btn ui-icon-calendar ui-btn-icon-left" href="#records"data-transition="none"><b>Records</b></a></li>
             <li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier" data-transition="none"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
-            <li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#expenses" data-transition="none"><b>Expenses</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
+            <li class="lidec"><a class="ui-btn ui-icon-action ui-btn-icon-left" href="#expenses" data-transition="none"><b>Expenses</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
             <li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#customers" data-transition="none"><b>Customers</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
             <li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notifications" data-transition="none"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
             <li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" data-transition="none" href="#settings" data-transition="none"><b>Settings</b></a></li>
@@ -543,6 +543,7 @@
                   <li><a href="#debts-records-tab" id="debts-records-tab-handle" data-ajax="false">Expenses</a></li>
                 </ul>
               </div>
+              <br />
               <div id="sales-records-tab" class="ui-body-d ui-content" style="padding:0.3125em;">
                 
                 <!--<h4>Sales</h4>-->
@@ -619,7 +620,7 @@
 				<div style="  border-radius: 8px; ">
 			
 			<div data-role="popup" id="popupRecords" class="ui-content" style="max-width:280px" >
-				<table data-role="table" id="table-column-toggle" data-mode="" class="ui-responsive table-stroke">
+				<table data-role="table" id="table-column-toggle" data-mode="" class="ui-responsive ">
 				<thead>
 					<tr style=" font-size: 0.8em; font-weight: bold; color: #fff; background-color: #333; line-height: 1.4em; text-shadow: none">
 						<td style="width: 60%;">Item</td>
@@ -857,7 +858,7 @@
 							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
 						<br>
 						<div style="margin-left: 0.3125em; margin-right: 0.3125em;">
-                        <table data-role="table1" id="setpricing-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table table-stroke ui-table ui-table-columntoggle">
+                        <table data-role="table1" id="setpricing-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table  ui-table ui-table-columntoggle">
                           <thead>
                             <tr>
                               <th data-priority="3" data-colstart="1" class="ui-table-priority-3">#</th>
@@ -1016,7 +1017,7 @@
 			<div style="background-color: #43a2c4 !important; border-radius: 5px; padding: 1em;">
 				
                         <br>
-                            <table data-role="table1" id="newinventory-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table table-stroke ui-table ui-table-columntoggle">
+                            <table data-role="table1" id="newinventory-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table  ui-table ui-table-columntoggle">
                               <thead>
                                 <tr style="font-family: Roboto Thin !important;">
                                   <th data-priority="3" data-colstart="1" class="ui-table-priority-1"></th>
@@ -1142,7 +1143,7 @@
                         <br>
                         
                         <br>
-                        <table data-role="table1" id="damages-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table table-stroke ui-table ui-table-columntoggle">
+                        <table data-role="table1" id="damages-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table  ui-table ui-table-columntoggle">
                           <thead>
                             <tr>
                               <th data-priority="1" data-colstart="1" class="ui-table-priority-1">Item Desc</th>
@@ -1264,7 +1265,7 @@
                         <br>
                         
                         <br>
-                        <table data-role="table1" id="damages-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table table-stroke ui-table ui-table-columntoggle">
+                        <table data-role="table1" id="damages-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table  ui-table ui-table-columntoggle">
                           <thead>
                             <tr>
                               <th data-priority="1" data-colstart="1">Item Desc</th>
@@ -1314,28 +1315,36 @@
 				<br><br>
 				<div style="background-color: #43a2c4 !important; border-radius: 5px;">
 					<div style="padding: 1em 1em 0em 1em;">
-					
-						<div class="ui-grid-a invt" >
-							<div class="ui-block-a">
-								<select class="currently-active-store" id="filter-stores-field">
-									<option style="text-shadow: none !important;">Select Store</option>
-								</select>
-
-							</div>
-							
-							<div class="ui-block-b">
-								<select id="filter-category-field" >
-									<option value="" style="text-shadow: none !important;">All Categories</option>
-								</select>
-							</div>
-						
-						</div>
+                        
+                        
+                    <div class="ui-grid-a currently-active-store-container hidden" >
+                        <select class="currently-active-store" data-mini="true">
+                            <option></option>
+                        </select>
+                    </div>
+                    
+					<div class="ui-grid-a invt">
+                        <div class="ui-block-a">
+                            <select id="filter-category-field" >
+                                <option value="" style="text-shadow: none !important;">All Categories</option>
+                            </select>
+                        </div>
+                    
+                        <div class="ui-block-b">
+                            
+                            <select id="filter-item-field" >
+                                <option style="text-shadow: none !important;">Select Item</option>
+                            </select>
+                            
+                        </div>
+                    </div>
+                    
 						<br>
 							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
 						<br>
 						<div style="">
 						
-                 <table data-role="table1" id="inventory-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table table-stroke ui-table ui-table-columntoggle">
+                 <table data-role="table1" id="inventory-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table  ui-table ui-table-columntoggle">
 	              <thead>
 	                <tr>
 	                  <th data-priority="2" data-colstart="1" class="ui-table-priority-2"></th>
@@ -1463,7 +1472,7 @@
 								max-height:4em;
 							}
 						</style>
-						<table data-role="table1" id="suppliers-list-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table table-stroke ui-table ui-table-columntoggle">
+						<table data-role="table1" id="suppliers-list-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table  ui-table ui-table-columntoggle">
                           <thead>
                             <tr>
                               <th data-colstart="1">Suppliers</th>
@@ -1483,7 +1492,7 @@
 						<br>
 						
 						<br>
-                        <table data-role="table1" id="suppliers-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table table-stroke ui-table ui-table-columntoggle">
+                        <table data-role="table1" id="suppliers-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table  ui-table ui-table-columntoggle">
                           <thead>
                             <tr>
                               <th data-priority="3" data-colstart="1" class="ui-table-priority-1"></th>
@@ -1555,7 +1564,7 @@
                         <br>
                         
                         <br>
-                        <table data-role="table1" id="suppliers-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table table-stroke ui-table ui-table-columntoggle">
+                        <table data-role="table1" id="suppliers-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table  ui-table ui-table-columntoggle">
                           <thead>
                             <tr>
                               <th data-priority="1" data-colstart="1">Payment ID</th>
@@ -1839,7 +1848,7 @@
 						</div>
                         
 						<div style="margin-left:0.3125em; margin-right:0.3125em; ">
-                        <table data-role="table1" id="current-inventory-table-column-toggle" data-mode="columntoggle" class="inventory inventory-table ui-responsive table-stroke ui-table ui-table-columntoggle">
+                        <table data-role="table1" id="current-inventory-table-column-toggle" data-mode="columntoggle" class="inventory inventory-table ui-responsive  ui-table ui-table-columntoggle">
                           <thead>
                             <tr>
                               <th data-priority="2" data-colstart="1" class="ui-table-priority-2">#</th>
@@ -1976,7 +1985,7 @@
 													color:#fff;
 												}
 											</style>
-                                        <table data-role="table1" id="sales-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table table-stroke ui-table ui-table-columntoggle">
+                                        <table data-role="table1" id="sales-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table  ui-table ui-table-columntoggle">
                                           <thead>
                                             <tr>
                                               <th data-colstart="1">Item</th>
@@ -2108,7 +2117,7 @@
                                                 color:#fff;
                                             }
 										</style>
-                                        <table data-role="table1" id="checkout-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table table-stroke ui-table ui-table-columntoggle">
+                                        <table data-role="table1" id="checkout-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table  ui-table ui-table-columntoggle">
                                           <thead>
                                             <tr>
                                               <th data-colstart="1">Item</th>
@@ -2276,7 +2285,7 @@
 					
 					<div class="ui-grid-a invt" style="margin: 0.2em;">
 						<div class="ui-block-a" >
-							<a href="#" data-role="button" data-theme="b" data-icon="grid" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #f1f1f1 !important; color:#777 !important;"><b>Reports</b></a>
+							<a href="#reports-page" data-role="button" data-theme="b" data-icon="grid" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>Reports</b></a>
 						</div>
 						<div class="ui-block-b">
 							<a href="#" id="sign-out" data-role="button" data-theme="b" data-icon="gear" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>Sign Out</b></a>
@@ -2366,7 +2375,7 @@
 							}
 						</style>
 						
-                        <table data-role="table1" id="category-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table table-stroke ui-table ui-table-columntoggle">
+                        <table data-role="table1" id="category-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table  ui-table ui-table-columntoggle">
                           <thead>
                             <tr>
                               <th data-colstart="1">Category</th>
@@ -2514,7 +2523,7 @@
 							}
 						</style>
 						
-                        <table data-role="table1" id="users-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table table-stroke ui-table ui-table-columntoggle">
+                        <table data-role="table1" id="users-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table  ui-table ui-table-columntoggle">
                           <thead>
                             <tr>
                               <th data-colstart="1">Username</th>
@@ -2638,7 +2647,7 @@
 							}
 						</style>
 						
-                        <table data-role="table1" id="store-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table table-stroke ui-table ui-table-columntoggle">
+                        <table data-role="table1" id="store-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table  ui-table ui-table-columntoggle">
                           <thead>
                             <tr>
                               <th data-colstart="1">Store</th>
@@ -2934,6 +2943,7 @@
                             <option value="maintenance fee">Maintenance Fee</option>
                             <option value="payment for service">Payment for Service</option>
                             <option value="purchase of materials">Purchase of Equipment</option>
+                            <option value="purchase of goods">Purchase of Goods</option>
                             <option value="purchase of materials">Purchase of Materials</option>
                             <option value="rent">Rent</option>
                             <option value="repairs">Repairs</option>
@@ -2959,7 +2969,7 @@
                 <br>
                 <br>
                 
-                <table data-role="table1" id="suppliers-list-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table table-stroke ui-table ui-table-columntoggle">
+                <table data-role="table1" id="suppliers-list-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table  ui-table ui-table-columntoggle">
                   <thead>
                     <tr>
                       <th data-colstart="1">Expenditure</th>
@@ -3059,7 +3069,7 @@
                 <br>
                 
                 <br>
-                <table data-role="table1" id="customers-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table table-stroke ui-table ui-table-columntoggle">
+                <table data-role="table1" id="customers-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table  ui-table ui-table-columntoggle">
                   <thead>
                     <tr>
                       <th data-priority="1" data-colstart="1">Payment ID</th>
@@ -3129,7 +3139,7 @@
                 <br>
                 
                 <br>
-                <table data-role="table1" id="customers-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table table-stroke ui-table ui-table-columntoggle">
+                <table data-role="table1" id="customers-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table  ui-table ui-table-columntoggle">
                   <thead>
                     <tr>
                       <th data-priority="1" data-colstart="1">Sale ID</th>
@@ -3159,44 +3169,8 @@
     </div><!-- /footer -->
 </div>
 
-<div data-role="page" id="notifications" >
-	
-    <div data-role="header" id="hd" data-position="fixed" data-tap-toggle="false" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);" >
-		
-		<a href="#menupanel" data-rel="panel" class="open-panel ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
-		<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 1.8em !important;">Notifications</h1>
-	       
-	</div><!-- /header -->
-    <div class="progress-bar-container"></div>
 
-	<div role="main" class="ui-content" style="background-color: #f1f1f1;">
-		<style type="text/css">
-			#notifications-container h4{
-				font-size:0.8em !important;
-			}
-			#notifications-container p{
-				font-size:0.7em !important;
-			}
-			#notifications-container p.ui-li-aside{
-				font-size:0.6em !important;
-			}
-		</style>
-		<div style="margin:5px 15px;">
-            <ul id="notifications-container" class="ui-listview ui-listview-inset ui-corner-all ui-shadow">
-                
-            </ul>
-		<br>
-	</div><!-- /content -->
-
-	
-		<div data-role="footer" style="background: #fff; border: none;">
-			
-			
-		</div><!-- /footer -->
-		
-</div><!-- /page -->
-
-<div data-role="page" id="reports" >
+<div data-role="page" id="reports-page">
 	
 	<div data-role="header" id="hd" data-position="fixed" data-tap-toggle="false" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);" >
 		
@@ -3226,6 +3200,13 @@
 						<form method="post" action="?action=generate_report&todo=generate_app_report" name="generate-report" id="generate-report-form" remote-storage=1>
                             <input type="hidden" name="key" id="key-field" value="generate-report" />
 							
+                            <div class="ui-grid-a currently-active-store-container hidden" >
+                                <label for="store_name-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Store:</label>
+                                    
+                                 <select name="store_name" id="store_name-field" placeholder="Select Store" required data-validate="text" data-error-title="Invalid Store" data-error-msg="Please select a store" class="currently-active-store">
+                                    
+                                 </select>
+                            </div>
                             
                             <div class="ui-grid-a invt" >
                                 <div class="ui-block-a" style="padding: 0.5em;" >
@@ -3266,17 +3247,58 @@
                  </div>
             </div>
             <br>
-            
+            <div style="background-color: #43a2c4 !important; border-radius: 5px; ">
+                
+                <div id="reports-preview" style="padding: 1.5em;">
+                    
+                </div>
+            </div>
         <br>
         
         <br>
 					
 	</div><!-- /content -->
+		
+</div><!-- /page -->
 
-    <div data-role="footer" style="background: #fff; border: none;">
-        
-        
-    </div><!-- /footer -->
+<div data-role="page" id="notifications" >
+	
+    <div data-role="header" id="hd" data-position="fixed" data-tap-toggle="false" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);" >
+		
+		<a href="#menupanel" data-rel="panel" class="open-panel ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
+		<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 1.8em !important;">Notifications</h1>
+	       
+	</div><!-- /header -->
+    <div class="progress-bar-container"></div>
+
+	<div role="main" class="ui-content" style="background-color: #f1f1f1;">
+		<style type="text/css">
+			#notifications-container h4{
+				font-size:1em !important;
+			}
+			#notifications-container p{
+				font-size:1.3em !important;
+			}
+			#notifications-container p.ui-li-aside{
+				font-size:0.6em !important;
+			}
+            #notifications-container ul li{
+                font-weight: normal; background-color: #666;
+                border-color: #444; color:#fff;
+            }
+		</style>
+		<div style="margin:5px 15px;">
+            <div data-role="collapsible-set" data-theme="b" data-content-theme="a" id="notifications-container">
+                
+            </div>
+		<br>
+	</div><!-- /content -->
+
+	
+		<div data-role="footer" style="background: #fff; border: none;">
+			
+			
+		</div><!-- /footer -->
 		
 </div><!-- /page -->
 
