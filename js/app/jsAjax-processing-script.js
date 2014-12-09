@@ -3291,6 +3291,11 @@ $( document ).on( "pageshow", "#notifications", function() {
 	//reset notifications counter
     activate_menu();
     prepare_notifications_for_display( 1 );
+    
+    if( $('#notifications-container') ){
+        $('#notifications-container')
+        .collapsibleset( "refresh" );
+    }
 });
 
 $( document ).on( "pagecreate", "#settings", function() {
@@ -5721,8 +5726,7 @@ function prepare_notifications_for_display( type ){
         
         if( notifications_html ){
             $('#notifications-container')
-            .html( notifications_html )
-            .collapsibleset( "refresh" );
+            .html( notifications_html );
             
             $('#notifications-container')
             .find('a.clear-notifications')
