@@ -1921,9 +1921,16 @@
 					#sales-table-body td.label{
 						cursor:pointer;
 					}
+                    @media (max-width: 600px){
+                        .invt-s .ui-block-b,
+                        .invt-s .ui-block-a {
+                        width: 100%;
+                        display: block;
+                        padding: 0em !important;
+                        }
+                    }
 				</style>
-				<div class="ui-grid-a respons">
-                        <div class="hidden1">
+                <div class="hidden1">
                             <div class="ui-grid-a currently-active-store-container hidden" >
                                 <select class="currently-active-store" data-mini="true">
                                     <option></option>
@@ -1931,7 +1938,8 @@
                             </div>
                         </div>
                         
-						<div class="ui-block-a" style="margin-right:0.5%; width:49%;">
+				<div class="ui-grid-a invt-s">
+                        <div class="ui-block-a" >
                             <div  id="sales-inventory-list-container" class="products">
                                 <ul data-role="listview"  data-filter="true" data-filter-placeholder="Search" data-inset="true">
                                 
@@ -1940,7 +1948,7 @@
                             </div>
                         </div>
 						
-						<div class="ui-block-b" style="margin-left:0.5%; width:49%;">
+						<div class="ui-block-b" >
                         
 								<div style="background-color: #43a2c4; margin-top: 0.5em ;padding: 10px; border-radius: 5px; text-shadow: none; color: white;">
 										<span style=" float: left; line-height: 2em;color: white; font-family: Roboto Thin; font-size: 1.4em !important; font-weight: 300;">Shopping Cart  (<span id="items-in-cart">0</span> items)</span>
