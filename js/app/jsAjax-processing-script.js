@@ -4,6 +4,8 @@
  * Created By: Ogbuitepu O. Patrick
  *
  *pageshow
+ --kiosk --kiosk-printing
+ chrome://appcache-internals/
 */
 
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -12,8 +14,8 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 })(window,document,'script','js/app/analytics.js','ga');
 
 var storedObjectsA = amplify.store();
-	
-console.log('all',  storedObjectsA );
+
+//console.log('all',  storedObjectsA );
 
 var customUUIDkey = 'custom-uuid';
 var customUUID = getData( customUUIDkey );
@@ -47,6 +49,7 @@ function onDeviceReady(){
 };
 
 var blubirdFileURL = '';
+var blubirdWebbased = 0;
 
 var gfileSystem;
 
@@ -161,7 +164,7 @@ function validate( $element , unfocused ){
 			}
 			var c = $element.val();
 			if( c.charAt(0) == '0' ){
-				err = true;
+                err = true;
 			}
 		break;
 		case 'email':
@@ -263,11 +266,22 @@ var newSupplyID = 0;
 var tempStoreObjects = {};
 var tempDownloadObjects = {};
 
+var $itemSelectBox;
+var $allItemSelectBox;
+var $categorySelectBox;
+var selectItemOption = '<option value="">--Select Item--</option>';
+
+var lastKey;
+
 function store_record( data ){
 	if( data.object ){
 		var launch_date = new Date();
 		var key = launch_date.getTime();
 		
+        if( lastKey && lastKey == key )++key;
+        
+        lastKey = key;
+        
 		var perm_storage = true;
 		
         if( data.temp )perm_storage = false;
@@ -302,6 +316,9 @@ function store_record( data ){
 		case 'customers':
             if( data.customer_mobile )
                 data.key = 'c'+data.customer_mobile;
+		break;
+		case 'generalsettings':
+            key = 'gs'+key;
 		break;
 		}
 		
@@ -1075,6 +1092,10 @@ function leftandRight( text , txtRight ){
     return text + spacer1 + spacer + txtRight + "\n";
 };
 
+function leftandRightHTML( text , txtRight ){
+    return '<span style="float:left; width:49%; overflow:hidden; text-overflow:ellipisis; white-space:nowrap;">' + text +':</span>&nbsp;<span style="float:right; text-align:right; width:49%; overflow:hidden; text-overflow:ellipisis; white-space:nowrap;">'+ txtRight + "</span><br />";
+};
+
 function formatReceiptText( sales_data ){
     var dash = "----------------------------";
     if( appPrinterSeperatorLength ){
@@ -1161,6 +1182,105 @@ function formatReceiptText( sales_data ){
             if( c && c.customer_name ){
                 store_details += leftandRight( 'Cus: ' , c.customer_name );
                 store_details += leftandRight( 'Tel: ' , c.customer_mobile );
+                store_details += dash + space_single;
+            }
+        }
+        
+        store_details += space_single;
+        if( appSettings && appSettings.receipt_message ){
+            store_details += appSettings.receipt_message + space;
+            store_details += dash + space_single;
+        }
+        
+        store_details += 'BLUBIRD v'+appVersionNumber;
+        store_details += space + space + space;
+    }
+    
+    return store_details;
+};
+
+function formatReceiptHTML( sales_data ){
+    var dash = "<hr />";
+    
+    var appCurrencyTextPrint = appCurrency;
+    
+    var space = "<br /><br />";
+    var space_single = "<br />";
+    
+    var store_details = space + "SALES RECEIPT" + space_single + dash + space_single;
+    
+    if( currentStoreID ){
+        var store = getData( currentStoreID );
+        if( store && Object.getOwnPropertyNames(store).length ){
+            if( store.name ){
+                store_details += store.name + space_single;
+            }
+            
+            if( store.street ){
+                store_details += store.street;
+                if( store.city )store_details += ', '+ store.city;
+                store_details += space_single;
+            }
+            
+            if( store.country ){
+                if( store.state )store_details += store.state + ', ';
+                store_details += store.country + space_single;
+            }
+            store_details += dash + space_single;
+        }
+    }
+    
+    var date = new Date();
+	var day = date.getDate();
+	var month = date.getMonth();
+	var year = date.getFullYear();
+	var hours = date.getHours();
+	var minutes = date.getMinutes();
+    
+    store_details += "Receipt Number: " + space_single + '#'+sales_data.key + space_single + dash + space_single;
+    
+	store_details += leftandRightHTML( "Date: " , year+'-'+months_of_year[ month ]+'-'+day );
+	store_details += leftandRightHTML( "Time: " , hours+':'+minutes );
+    
+    var user = get_user_info();
+    
+    if( sales_data && sales_data.key ){
+        //user
+        if( user && user.name ){
+            store_details += leftandRightHTML( "Sales Rep: " , user.name );
+        }
+        store_details += dash + space_single;
+        
+        if( sales_data.inventory ){
+            $.each( sales_data.inventory , function( k , s ){
+                store_details += get_item_row_for_sales_records_stripedHTML( s );
+            });
+            
+            store_details += space_single;
+        }
+        
+        store_details += leftandRightHTML( 'Total Items: ' , sales_data.total_units );
+        store_details += leftandRightHTML( 'Total: ' , appCurrencyTextPrint +' '+formatNum(sales_data.subtotal.toFixed(2)) );
+        store_details += leftandRightHTML( 'VAT: ' , appCurrencyTextPrint +' '+formatNum(sales_data.vat.toFixed(2)) );
+        store_details += leftandRightHTML( 'Discount: ' , appCurrencyTextPrint +' '+formatNum(sales_data.discount.toFixed(2)) );
+        store_details += leftandRightHTML( 'Net Total: ' , appCurrencyTextPrint +' '+formatNum(sales_data.total_amount.toFixed(2)) );
+        
+        var change = sales_data.total_amount_tendered - sales_data.total_amount;
+        var lblChange = "Change";
+        if( change < 0 ){
+            change = Math.abs( change );
+            lblChange = "Debt";
+        }
+        store_details += dash + space_single;
+        store_details += leftandRightHTML( 'Paid: ' , appCurrencyTextPrint +' '+formatNum(sales_data.total_amount_tendered.toFixed(2)) );
+        store_details += leftandRightHTML( lblChange+': ' , appCurrencyTextPrint + ' ' + formatNum(change.toFixed(2)) );
+        store_details += dash + space_single;
+        
+        if( sales_data.customer ){
+            var c = getData( sales_data.customer );
+            if( c && c.customer_name ){
+                store_details += leftandRightHTML( 'Customer: ' , c.customer_name );
+                store_details += leftandRightHTML( 'Phone No: ' , c.customer_mobile );
                 store_details += dash + space_single;
             }
         }
@@ -1516,7 +1636,10 @@ function get_inventory_html( key , value ){
     if( value.image && value.item_image == value.image ){
         img = 'imagebank/'+value.item_image;
     }
-    
+    if( blubirdWebbased ){
+        img = 'imagebank/'+value.item_image;
+    }
+   
 	var html = '<tr id="'+key+'" class="'+value.category+low_stock_class+'" timestamp="'+value.timestamp+'"><td class="ui-table-priority-2 image-container"><img src="' + img + '" class="ui-li-thumb" /></td><td>'+value.item_desc+'</td><td class="ui-table-priority-1">'+formatNum( qty )+'</td><td class="ui-table-priority-3">'+formatNum( value.selling_price )+'</td>';
 	
     html += '<td class="ui-table-priority-4">';
@@ -1553,7 +1676,9 @@ function get_new_inventory_html( key , value ){
     if( value.image && value.item_image == value.image ){
         img = 'imagebank/'+value.item_image;
     }
-    
+    if( blubirdWebbased ){
+        img = 'imagebank/'+value.item_image;
+    }
 	return '<tr id="'+key+'" class="'+value.category+'" timestamp="'+value.timestamp+'"><td class="ui-table-priority-1 image-container"><img src="'+ img +'" class="ui-li-thumb"></td><td>'+value.item_desc+'</td><td class="ui-table-priority-2">'+year+'-'+months_of_year[ month ]+'-'+day+' '+hours+':'+minutes+'</td></tr>';
 };
 
@@ -1572,7 +1697,9 @@ function get_inventory_set_pricing_html( key , value ){
     if( value.image && value.item_image == value.image ){
         img = 'imagebank/'+value.item_image;
     }
-    
+    if( blubirdWebbased ){
+        img = 'imagebank/'+value.item_image;
+    }
 	return '<tr id="'+key+'" class="'+value.category+'" timestamp="'+value.timestamp+'"><td class="ui-table-priority-3 image-container"><img src="'+ img +'" class="ui-li-thumb"></td><td>'+value.item_desc+'</td><td class="ui-table-priority-2">'+formatNum( qty )+'</td><td class="ui-table-priority-4">'+formatNum( cp.toFixed(2) )+'</td><td class="ui-table-priority-1"><div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset"><input type="number" min="0" step="any" value="'+value.selling_price+'" default-value="'+value.selling_price+'" item="'+value.item_desc+'" class="inventory-pricing-input" key="'+key+'" cost-price="'+value.cost_price+'" /></div></td></tr>';
 };
 
@@ -1601,7 +1728,7 @@ function get_expenses_html( key , value ){
     if( value.amount )
         a = parseFloat( value.amount );
     
-	return '<tr id="'+key+'" timestamp="'+value.timestamp+'"><td>'+value.description+' <br /><i>incured on: '+value.date+'</i></td><td class="ui-table-priority-2">'+formatNum( a.toFixed(2) )+'</td><td class="ui-table-priority-2">'+year+'-'+months_of_year[ month ]+'-'+day+' '+hours+':'+minutes+'</td></tr>';
+	return '<tr id="'+key+'" timestamp="'+value.timestamp+'"><td class="ui-table-priority-1">'+value.description+' <br /><i>incured on: '+value.date+'</i></td><td class="ui-table-priority-2">'+formatNum( a.toFixed(2) )+'</td><td class="ui-table-priority-3">'+year+'-'+months_of_year[ month ]+'-'+day+' '+hours+':'+minutes+'</td></tr>';
 };
 
 function get_damages_html( key , value ){
@@ -1697,6 +1824,12 @@ $( document ).on( "pagecreate", "#dashboard", function() {
     activate_manual_upload_data_button_click_event( $("#dashboard") );
     
     activate_panel_navigation( $("#dashboard") );
+    
+    $('a.app-refresh-button')
+    .on('click', function(e){
+        e.preventDefault();
+        document.location = document.location.origin + document.location.pathname + document.location.search;
+    });
 });
 
 function initFileSystem( persistentFileSys ) {
@@ -1889,31 +2022,22 @@ $( document ).on( "pageshow", "#dashboard", function() {
 	
     var hidepiechart = true;
 	if( total_value ){
-        var maxs = new Array();
+        var max1 = max2 = max3 = max4 = max5 = i = 0;
         var maxs_html = new Array();
-        var maxs_html_count = 0;
-        for( var i = 0; i < dataLimit; i++ )
-            maxs[i] = 0;
         
-        var ii = 0;
         var dtset = new Array();
         $.each( most_selling, function( k , v ){
-            if( v.units ){
-                for( var i = 0; i < dataLimit; i++ ){
-                    if( v.units > maxs[i] ){
-                        var k = i + 1;
-                        for( var j = k; j < dataLimit; j++ ){
-                            maxs[j] = maxs[j - 1];
-                            maxs_html[ dataLimit - j ] = maxs_html[ dataLimit - j - 1];
-                        }
-                        maxs[i] = parseFloat( v.units ) - 1;
-                        maxs_html[i] = [ v.item_desc + ' ( ' + appCurrencyText + v.total_amount+')' , v.units ];
-                        break;
-                    }
-                }
+            if( v.units && ( v.units > max1 || v.units > max2 || v.units > max3 || v.units > max4 || v.units > max5 )  ){
+                max5 = max4;
+                max4 = max3;
+                max3 = max2;
+                max2 = max1;
+                max1 = v.units;
+                maxs_html[i++] = [ v.item_desc + ' ( ' + appCurrencyText + v.total_amount+')' , v.units ];
             }
         });
         dtset = maxs_html;
+        console.log(dtset);
         
 		if( dtset.length > 0 ){
             hidepiechart = false;
@@ -2065,6 +2189,16 @@ function get_item_row_for_sales_records_striped( s ){
 	else desc = 'product no longer exists';
 	
 	return leftandRight( desc+' ('+s.unit_ordered+'): ' , appCurrencyText +' '+formatNum( a.toFixed(2) ) );
+};
+
+function get_item_row_for_sales_records_stripedHTML( s ){
+	var a = s.unit_ordered*s.unit_selling_price;
+	
+	var desc = '';
+	if( s &&  s.item_desc )desc = s.item_desc;
+	else desc = 'product no longer exists';
+	
+	return leftandRightHTML( desc+' ('+s.unit_ordered+')' , appCurrency +' '+formatNum( a.toFixed(2) ) );
 };
 
 $( document ).on( "pageshow", "#records", function() {
@@ -2616,7 +2750,7 @@ function update_inventory_list_on_inventory_page(){
                 max1 = value.timestamp;
                 html += get_new_inventory_html( key , value );
             }
-			html2 += '<option value="'+key+'">'+value.item_desc+'</option>';
+			html2 += '<option value="'+key+'" class="'+value.category+'">'+value.item_desc+'</option>';
 		}
 	});
 	
@@ -2625,6 +2759,10 @@ function update_inventory_list_on_inventory_page(){
 		.html( html2 )
 		.find('option')
 		.tsort();
+        
+        if( ! $allItemSelectBox ){
+            $allItemSelectBox = $('#item-select-field').clone();
+        }
 	}	
     
 	if( html ){
@@ -2867,6 +3005,22 @@ $( document ).on( "pagecreate", "#supplier", function() {
         }
     });
     
+    $( '#supplierpayments-form' )
+    .find('#amount_paid-field')
+    .on('blur', function(){
+        var max = parseFloat( $(this).attr('max') );
+        if( $(this).val() && $(this).val() > max ){
+            $(this).val( max );
+            
+            var settings = {
+                message_title:'Invalid Amount',
+                message_message: 'Suppliers cannot be repaid debts greater than what they are owed',
+                auto_close: 'yes'
+            };
+            display_popup_notice( settings );
+        }
+    });
+    
     $('#suppliers-form #mobile-field')
     .add( '#suppliers-form #email-field' )
     .on('blur', function(){
@@ -3038,6 +3192,22 @@ $( document ).on( "pagecreate", "#customers", function() {
             $( '#payments-form' )
             .find('input')
             .val( '' );
+        }
+    });
+    
+    $( '#payments-form' )
+    .find('#amount_paid-field')
+    .on('blur', function(){
+        var max = parseFloat( $(this).attr('max') );
+        if( $(this).val() && $(this).val() > max ){
+            $(this).val( max );
+            
+            var settings = {
+                message_title:'Invalid Amount',
+                message_message: 'Customers cannot repay debts greater than what they owe',
+                auto_close: 'yes'
+            };
+            display_popup_notice( settings );
         }
     });
     
@@ -3310,7 +3480,7 @@ $( document ).on( "pagecreate", "#settings", function() {
         //check for data to upload
         var a = getData( uploadDataKey );
         if( a && Object.getOwnPropertyNames(a).length ){
-            var r = confirm('Do you want to save your updates on our servers before proceeding?');
+            var r = confirm('Do you want to save your updates on our servers before proceeding?\n\nNOTE: Failure to update might lead to loss of data');
 			if( r == true ){
                 signOut = true;
                 uploadData();
@@ -3361,7 +3531,12 @@ function get_last_supply_activity_html( stock ){
 	
     if( ! stock.item_image )stock.item_image = '';
     
-	return '<tr timestamp="'+stock.creationtimestamp+'"><td class="ui-table-priority-1"><img src="'+blubirdFileURL+stock.item_image+'" class="ui-li-thumb"></td><td>'+stock.item_desc+'</td><td class="ui-table-priority-2">'+stock.item_qty+'</td><td class="ui-table-priority-3">'+stock.date+'</td></tr>';
+    var img = blubirdFileURL+stock.item_image;
+    if( blubirdWebbased ){
+        img = 'imagebank/'+stock.item_image;
+    }    
+    
+	return '<tr timestamp="'+stock.creationtimestamp+'"><td class="ui-table-priority-1"><img src="'+img+'" class="ui-li-thumb"></td><td>'+stock.item_desc+'</td><td class="ui-table-priority-2">'+stock.item_qty+'</td><td class="ui-table-priority-3">'+stock.date+'</td></tr>';
 	
 };
 
@@ -3424,6 +3599,14 @@ function get_supplier_recent_debt_payments_html( payment ){
 	
 };
 
+function prefixZeroBarcodes( barcode ){
+    var c = barcode;
+    if( c.charAt(0) == '0' ){
+        return 'z' + c;
+    }
+    return barcode;
+};
+
 $( document ).on( "pagecreate", "#newInventory", function() {
 	test_for_active_user();
 	
@@ -3433,7 +3616,7 @@ $( document ).on( "pagecreate", "#newInventory", function() {
 		  function (result) {
 			 $('form#inventory-form')
 			.find( 'input#item_barcode-field' )
-			.val( result.text );
+			.val( prefixZeroBarcodes( result.text ) );
 			
 			 alert( "Barcode: " + result.text + "\n" +
 					"Format: " + result.format + "\n" );
@@ -3450,57 +3633,25 @@ $( document ).on( "pagecreate", "#newInventory", function() {
 	//registered
 	handle_form_submission( $('form#inventory-form') );
 	
-	$('form#inventory-form')
-	.find('#selling_price-field')
-	.add( 'form#inventory-form #cost_price-field' )
-	.on('change', function(){
-		var cp = parseFloat( $('form#inventory-form #cost_price-field').val() );
-		var sp = parseFloat( $('form#inventory-form #selling_price-field').val() );
-		
-		if( ! cp )cp = 0;
-		
-		var m = 0;
-		if( sp )m = ( ( sp - cp ) / sp ) * 100;
-		
-		$('#inventory-gross-margin').text( m.toFixed(1) + '%' );
-		
-		switch( $(this).attr('id') ){
-		case 'cost_price-field':
-			var q = parseFloat( $('form#inventory-form #item_qty-field').val() );
-			var tcp = cp * q;
-			
-			if( ! tcp )tcp = 0;
-			
-			$('form#inventory-form #dummy-totalCostPrice').val( $('form#inventory-form #dummy-totalCostPrice').attr('placeholder')+formatNum( tcp.toFixed(2) ) );
-		break;
-		}
-	})
-	.on('keyup', function(){
-		$(this).change();
-	});
-	
-	$('form#inventory-form')
-	.find('#amount_paid-field')
-	.on('change', function(){
-		var ap = parseFloat( $(this).val() );
-		
-		var q = parseFloat( $('form#inventory-form #item_qty-field').val() );
-		var cp = parseFloat( $('form#inventory-form #cost_price-field').val() );
-		
-		var tcp = cp * q;
-			
-		if( ! tcp )tcp = 0;
-		if( ! ap )ap = 0;
-		
-		var ao = tcp - ap;
-		
-		$('form#inventory-form #amount_owed-field').val( ao );
-		$('form#inventory-form #dummy-amntOwed').val( $('form#inventory-form #dummy-amntOwed').attr('placeholder')+formatNum( ao.toFixed(2) ) );
-	})
-	.on('keyup', function(){
-		$(this).change();
-	});
-	
+    $('form#inventory-form')
+	.find( 'input#item_barcode-field' )
+	.on('blur', function(){
+        var v = prefixZeroBarcodes( $(this).val() );
+        
+        $(this).val( v );
+        
+        if( v.length > 5 ){
+            d = getData( v );
+            if( d && d.key ){
+                $('#newInventory')
+                .find('select#item-select-field')
+                .val( d.key )
+                .change();
+            }
+        }
+        
+    });
+    
 	$('#newInventory')
 	.find('select#item-select-field')
 	.on('change', function(){
@@ -3521,10 +3672,13 @@ $( document ).on( "pagecreate", "#newInventory", function() {
             if( inventory.image && inventory.item_image == inventory.image ){
                 img = 'imagebank/'+inventory.item_image;
             }
+            if( blubirdWebbased ){
+                img = 'imagebank/'+inventory.item_image;
+            }
             
             $('form#inventory-form')
             .find('#myImage')
-            .attr('src' , img );
+            .attr( 'src' , img );
             
 		}else{
 			$('form#inventory-form')
@@ -3559,6 +3713,27 @@ $( document ).on( "pagecreate", "#newInventory", function() {
          }
 	 });
 	 
+    $('#newInventory')
+    .find('select[name="category"]')
+    .on('change', function(){
+		var c2 = '.'+$(this).val();
+		
+        var $items = $allItemSelectBox.clone();
+        
+		if( c2.length > 2 ){
+			$items
+			.find('option')
+			.not(c2)
+			.remove();
+        }
+		
+        $('#newInventory')
+        .find('select#item-select-field')
+        .html( '<option value="new">--Select Item--</option>' + $items.html() )
+        .val('')
+        .selectmenu('refresh');    
+    });
+    
 	update_inventory_list_on_inventory_page();
 });
 
@@ -3953,7 +4128,7 @@ function populate_suppliers_select_box( $element ){
 function populate_category_select_box( $element ){
 	//Update Suppliers Combo
 	var suppliers = get_list_of_category();
-	var html = '<option value=""> - Select Category - </option>';
+	var html = '<option value="">--Select Category--</option>';
 	$.each( suppliers , function( key , value ){
 		html += '<option value="'+key+'">'+value.category+'</option>';
 	});
@@ -4020,7 +4195,7 @@ $( document ).on( "pagecreate", "#stockLevels", function() {
 	test_for_active_user();
     activate_update_of_current_store( $("#stockLevels") );
     
-	activate_item_filtering();
+	activate_item_filtering( "stockLevels" );
 });
 
 $( document ).on( "pageshow", "#stockLevels", function() {
@@ -4054,7 +4229,7 @@ $( document ).on( "pagecreate", "#setPricing", function() {
 		$.mobile.navigate( "#inventory", { transition : "none" });
 	});
 	
-	activate_item_filtering();
+	activate_item_filtering( "setPricing" );
 
 });
 
@@ -4171,7 +4346,8 @@ $( document ).on( "pagecreate", "#restock", function() {
 		}
 	});
 	
-	$('select[name="item_barcode"]')
+    $('form#stock-form')
+	.find('select[name="item_barcode"]')
 	.on('change' , function(){
 		if( $(this).val() ){
 			var key = $(this).val();
@@ -4212,34 +4388,26 @@ $( document ).on( "pagecreate", "#restock", function() {
 		}
 	});
 	
-	$('#stock-form select#filter-category-field')
+    $('form#stock-form')
+	.find('select#filter-category-field')
 	.on('change', function(){
 		
 		var c2 = '.'+$(this).val();
 		
-		$('#stock-form')
-		.find('select[name="item_barcode"]')
-		.find('option')
-		.show();
-		
+        var $items = $allItemSelectBox.clone();
+        
 		if( c2.length > 2 ){
-			$('#stock-form')
-			.find('select[name="item_barcode"]')
+			$items
 			.find('option')
 			.not(c2)
-			.hide();
-            
-            $('#stock-form')
-			.find('select[name="item_barcode"]')
-            .find('option[value=""]')
-            .show();
-            
-            $('#stock-form')
-			.find('select[name="item_barcode"]')
-            .val('')
-            .selectmenu('refresh');
-		}
+			.remove();
+        }
 		
+        $('#stock-form')
+        .find('select[name="item_barcode"]')
+        .html( selectItemOption + $items.html() )
+        .val('')
+        .selectmenu('refresh');
 	});
 	
 	$('form#stock-form')
@@ -4292,7 +4460,7 @@ $( document ).on( "pagecreate", "#restock", function() {
 		  function (result) {
 			$("#restock")
             .find('input.item-search-field')
-			.val( result.text );
+			.val( prefixZeroBarcodes( result.text ) );
             
 			$("#restock")
             .find('select[name="item_barcode"]')
@@ -4323,6 +4491,58 @@ $( document ).on( "pagecreate", "#restock", function() {
         }
     });
     */
+    
+    $('form#stock-form')
+	.find('#selling_price-field')
+	.add( 'form#stock-form #cost_price-field' )
+	.on('change', function(){
+		var cp = parseFloat( $('form#stock-form #cost_price-field').val() );
+		var sp = parseFloat( $('form#stock-form #selling_price-field').val() );
+		
+		if( ! cp )cp = 0;
+		
+		var m = 0;
+		if( sp )m = ( ( sp - cp ) / sp ) * 100;
+		
+		$('#inventory-gross-margin').text( m.toFixed(2) + '%' );
+		
+		switch( $(this).attr('id') ){
+		case 'cost_price-field':
+			var q = parseFloat( $('form#stock-form #item_qty-field').val() );
+			var tcp = cp * q;
+			
+			if( ! tcp )tcp = 0;
+			
+			$('form#stock-form #dummy-totalCostPrice').val( $('form#stock-form #dummy-totalCostPrice').attr('placeholder')+formatNum( tcp.toFixed(2) ) );
+		break;
+		}
+	})
+	.on('keyup', function(){
+		$(this).change();
+	});
+	
+	$('form#inventory-form')
+	.find('#amount_paid-field')
+	.on('change', function(){
+		var ap = parseFloat( $(this).val() );
+		
+		var q = parseFloat( $('form#inventory-form #item_qty-field').val() );
+		var cp = parseFloat( $('form#inventory-form #cost_price-field').val() );
+		
+		var tcp = cp * q;
+			
+		if( ! tcp )tcp = 0;
+		if( ! ap )ap = 0;
+		
+		var ao = tcp - ap;
+		
+		$('form#inventory-form #amount_owed-field').val( ao );
+		$('form#inventory-form #dummy-amntOwed').val( $('form#inventory-form #dummy-amntOwed').attr('placeholder')+formatNum( ao.toFixed(2) ) );
+	})
+	.on('keyup', function(){
+		$(this).change();
+	});
+    
 });
 
 $( document ).on( "pagecreate", "#damages", function() {
@@ -4348,23 +4568,21 @@ $( document ).on( "pagecreate", "#damages", function() {
 	$('#damages-form select#filter-category-field')
 	.on('change', function(){
 		
-		var c2 = '.'+$('#damages-form select#filter-category-field').val().replace(' ','-');
+        var c2 = '.'+$(this).val();
 		
-		$('#damages-form')
-		.find('select[name="item_barcode"]')
-		.find('option')
-		.show();
-		
+        var $items = $itemSelectBox.clone();
+        
 		if( c2.length > 2 ){
-			$('#damages-form')
-			.find('select[name="item_barcode"]')
+			$items
 			.find('option')
 			.not(c2)
-			.hide();
-		}
-        
-		$('#damages-form')
-		.find('select[name="item_barcode"]')
+			.remove();
+        }
+		
+        $('#damages-form')
+        .find('select[name="item_barcode"]')
+        .html( selectItemOption + $items.html() )
+        .val('')
         .selectmenu('refresh');
 	});
 	
@@ -4374,11 +4592,11 @@ $( document ).on( "pagecreate", "#damages", function() {
 		  function (result) {
 			$("#damages")
             .find('input.item-search-field')
-			.val( result.text );
+			.val( prefixZeroBarcodes( result.text ) );
             
 			$("#damages")
             .find('select[name="item_barcode"]')
-            .val( result.text )
+            .val( prefixZeroBarcodes( result.text ) )
             .selectmenu("refresh")
             .change();
 		  }, 
@@ -4437,11 +4655,11 @@ $( document ).on( "pagecreate", "#transferStock", function() {
 		  function (result) {
 			$("#transferStock")
             .find('input.item-search-field')
-			.val( result.text );
+			.val( prefixZeroBarcodes( result.text ) );
             
 			$("#transferStock")
             .find('select[name="item_barcode"]')
-            .val( result.text )
+            .val( prefixZeroBarcodes( result.text ) )
             .selectmenu("refresh")
             .change();
 		  }, 
@@ -4491,7 +4709,7 @@ $( document ).on( "pagecreate", "#inventory", function() {
 	test_for_active_user();
     activate_panel_navigation( $("#inventory") );
     
-    activate_item_filtering();
+    activate_item_filtering( "inventory" );
     
     activate_update_of_current_store( $("#inventory") );
     activate_manual_upload_data_button_click_event( $("#inventory") );
@@ -4532,8 +4750,10 @@ $( document ).on( "pageshow", "#inventory", function() {
     */
 });
 
-function activate_item_filtering(){
-    var page = get_active_page_id();
+function activate_item_filtering( page ){
+    if( ! page ){
+        var page = get_active_page_id();
+    }
     
 	$("#"+page)
 	.find('select#filter-category-field')
@@ -4548,31 +4768,37 @@ function activate_item_filtering(){
 		.find('tr')
 		.show();
 		
-        $itemselect
-        .find('option')
-        .show();
-        
 		if( c2.length > 2 ){
-			$("#"+page)
-            .find('tbody.stockLevels-container')
-			.find('tr')
+            var $items = $itemSelectBox.clone();
+            
+            $items
+			.find('option')
 			.not(c2)
-			.hide();
-            
-            $itemselect
+			.remove();
+			
+            var tempInventory = {};
+            $items
             .find('option')
-            .not(c2)
-			.hide();
+            .each(function(){
+                var i = getData( $(this).val() );
+                if( i && i.key ){
+                    tempInventory[i.key] = i;
+                }
+            });
             
-            $itemselect
-            .find('option[value=""]')
-            .show();
-            
-            $itemselect
-            .val('')
-            .selectmenu('refresh');
-            
+            if( tempInventory && Object.getOwnPropertyNames( tempInventory ).length ){
+                display_table_on_inventory_page( tempInventory, $("#"+page).find('tbody.stockLevels-container') , $("#"+page) , 0, 0 , 0 , 0 );
+            }else{
+                $("#"+page)
+                .find('tbody.stockLevels-container')
+                .html('<tr><td colspan="5">No Item in Stock</td></tr>');
+            }
 		}
+        
+        $itemselect
+        .html( selectItemOption + $items.html() )
+        .val('')
+        .selectmenu('refresh');
 	});
     
     $("#"+page)
@@ -4592,8 +4818,9 @@ function activate_item_filtering(){
             }
         }
         
-        var inventory = get_list_of_inventory();
-        display_table_on_inventory_page( inventory, $("#"+page).find('tbody.stockLevels-container') , $("#"+page) , 0, 0 , 0 , 0 );
+        $("#"+page)
+        .find('select#filter-category-field')
+        .change();
         
 	});
     
@@ -4611,8 +4838,8 @@ function display_table_on_inventory_page( inventory, $tbody, $page, include_summ
 	var total_value = 0;
 	var total_items = 0;
     
-	var html2 = '<option value="">--Select Item--</option>';
-	
+	var html2 = selectItemOption;
+    
     var maxs = new Array();
     var maxs_html = new Array();
     var maxs_html_count = 0;
@@ -4712,6 +4939,10 @@ function display_table_on_inventory_page( inventory, $tbody, $page, include_summ
             .selectmenu("refresh")
             .find('option')
             .tsort();
+            
+            if( ! $itemSelectBox ){
+                $itemSelectBox = $page.find('#filter-item-field').clone();
+            }
         }
         
         switch(page){
@@ -4774,7 +5005,7 @@ $( document ).on( "pageshow", "#restock", function() {
 	
 	//Update inventory list
 	var inventory = get_list_of_inventory();
-	var html = '<option value="">--Select Item--</option>';
+	var html = selectItemOption;
 	$.each( inventory , function( key , value ){
 		html += '<option value="'+key+'" class="'+value.category+'">'+value.item_desc+'</option>';
 	});
@@ -4785,6 +5016,10 @@ $( document ).on( "pageshow", "#restock", function() {
 		.html( html )
         .find('option')
         .tsort();
+        
+        if( ! $allItemSelectBox ){
+            $allItemSelectBox = $('#stock-form').find('select[name="item_barcode"]').clone();
+        }
 	}
 	
 	populate_category_select_box( $('#stock-form').find('#filter-category-field') );
@@ -4796,7 +5031,7 @@ $( document ).on( "pageshow", "#damages", function() {
 	
 	//Update inventory list
 	var inventory = get_list_of_inventory();
-	var html = '<option value="">--Select Item--</option>';
+	var html = selectItemOption;
     
     populate_category_select_box( $('#damages-form').find('#filter-category-field') );
     populate_stores_select_box( $('#damages-form').find('select.currently-active-store') );
@@ -4815,6 +5050,10 @@ $( document ).on( "pageshow", "#damages", function() {
 		.html( html )
         .find('option')
         .tsort();
+        
+        if( ! $itemSelectBox ){
+            $itemSelectBox = $('#damages-form').find('select[name="item_barcode"]').clone();
+        }
 	}
 });
 
@@ -4841,6 +5080,8 @@ $( document ).on( "pageshow", "#transferStock", function() {
 var add_vat_to_sale = appVATValue;
 var salesData = {};
 var connectedDevice = false;
+var bluetoothDevice = true;
+var desktopPrinter = false;
 
 $( document ).on( "pagecreate", "#checkout", function() {
 	test_for_active_user();
@@ -4921,12 +5162,22 @@ $( document ).on( "pagecreate", "#checkout", function() {
                     $('#customer_mobile-field').val('');
                 }
                 
-                msg = formatReceiptText( stored );
+                
                 //print receipt
-                if( connectedDevice && bluetoothSerial ){
-                    bluetoothSerial.write( msg , function(){
-                        //success
-                    } );
+                if( desktopPrinter ){
+                    msg = formatReceiptHTML( stored );
+                    var x=window.open();
+                    x.document.open();
+                    x.document.write( '<link href="'+ $('#print-css').attr('href') +'" rel="stylesheet" /><style ="text/css">body{font-size:12px;}</style><script type="text/javascript"> window.onload=function(){ window.print(); setTimeout(function(){ window.close(); }, 300 ); };</script>' + '<body style="padding:0;">' + msg + '</body>' );
+                    //x.document.write( '<link href="'+ $('#print-css').attr('href') +'" rel="stylesheet" /><script type="text/javascript">setTimeout( function(){ window.print(); window.onfocus=function(){ window.close();} }, 400 );</script>' + '<body style="padding:0;">' + msg + '</body>' );
+                    x.document.close();
+                }else{
+                    msg = formatReceiptText( stored );
+                    if( connectedDevice && bluetoothSerial ){
+                        bluetoothSerial.write( msg , function(){
+                            //success
+                        } );
+                    }
                 }
                 
                 $.mobile.navigate( "#sales", { transition : "none" });
@@ -4979,6 +5230,12 @@ $( document ).on( "pagecreate", "#checkout", function() {
     $("select#bluetooth-devices-selectbox")
     .on( 'change' , function(){
         var device = $(this).val();
+        
+        desktopPrinter = false;
+        if( device == 'desktop' ){
+            desktopPrinter = true;
+            return false;
+        }
         
         //disconnect
         if( connectedDevice && bluetoothSerial ){
@@ -5057,7 +5314,7 @@ $( document ).on( "pageshow", "#checkout", function() {
         .html( $('#statusMessage').attr('data-disconnected') );
         
         //get list of bluetooth devices
-        if( bluetoothSerial ){
+        if( typeof( bluetoothSerial ) !== 'undefined' ){
             bluetoothSerial.list( gotListOfBluetoothDevices , function(){
                 var settings = {
                     message_title:'Bluetooth Error',
@@ -5067,14 +5324,17 @@ $( document ).on( "pageshow", "#checkout", function() {
                 display_popup_notice( settings );
             } );
         }else{
-            //return error
-            var settings = {
-                message_title:'Bluetooth Error',
-                message_message: 'Plugin failed to initialize',
-                auto_close: 'yes'
-            };
-            display_popup_notice( settings );
-            
+            if( bluetoothDevice ){
+                bluetoothDevice = false;
+                
+                //return error
+                var settings = {
+                    message_title:'Bluetooth Error',
+                    message_message: 'Plugin failed to initialize',
+                    auto_close: 'yes'
+                };
+                display_popup_notice( settings );
+            }
         }  
     }
     
@@ -5089,7 +5349,7 @@ function disconnectedDevice(){
 }
 
 function gotListOfBluetoothDevices( devices ){
-   var option = '<option value="">--Select Device--</option>';
+   var option = '<option value="">--Select Device--</option><option value="desktop">Regular PC Printer</option>';
    var error = '';
     
     devices.forEach(function(device) {
@@ -5133,6 +5393,9 @@ function gotListOfBluetoothDevices( devices ){
         .selectmenu("refresh");
     }
 };
+
+var salesInventory = {};
+var salesInventoryOriginal = {};
 
 $( document ).on( "pagecreate", "#sales", function() {
 	test_for_active_user();
@@ -5212,7 +5475,7 @@ $( document ).on( "pagecreate", "#sales", function() {
 			$("#sales")
             .find('#sales-inventory-list-container')
             .find('input')
-			.val( result.text )
+			.val( prefixZeroBarcodes( result.text ) )
             .blur();
 		  }, 
 		  function (error) {
@@ -5220,6 +5483,100 @@ $( document ).on( "pagecreate", "#sales", function() {
 		  }
 	   );
 	});
+    
+     $( "#sales-inventory-list" ).on( "filterablebeforefilter", function ( e, data ) {
+        var $ul = $( this ),
+        $input = $( data.input ),
+        v = $input.val(),
+        html = "";
+       
+        if( v.length > 5 ){
+            d = getData( v );
+            if( d && d.key ){
+                //add item to cart
+                addtocart( d.key );
+                
+                $input.val('');
+                return false;
+            }
+        }
+        
+        if ( v && v.length > 1 ) {
+            //Update inventory list
+            if( ! ( salesInventory && Object.getOwnPropertyNames(salesInventory).length ) ){
+                salesInventory = $.extend(true, {}, get_list_of_inventory() );
+            }
+            var html = '';
+            
+            if( currentStoreID ){
+                $.each( salesInventory , function( key , value ){
+                    if( value && value.store && value.store[ currentStoreID ] ){
+                        //test regular exp
+                        
+                        var t = new RegExp(v, "i");
+                        var vl = '';
+                        if( value.item_desc )vl = value.item_desc;
+                        
+                        if( ! ( t.test(vl) ) ){
+                            delete salesInventory[key];
+                            return;
+                        }
+                        
+                        var storeStock = value.store[ currentStoreID ];
+                        if( ! storeStock.item_sold )storeStock.item_sold = 0;
+                        if( ! storeStock.item_damaged )storeStock.item_damaged = 0;
+                        
+                        value.item_qty = storeStock.item_qty;
+                        value.item_sold = storeStock.item_sold;
+                        value.selling_price = storeStock.selling_price;
+                        value.cost_price = storeStock.cost_price;
+                        value.item_damaged = storeStock.item_damaged;
+                        
+                        var qty = 0;
+                        if(  value.item_qty )qty = parseFloat( value.item_qty );
+                        if(  value.item_sold )qty = qty - parseFloat( value.item_sold );
+                        if(  value.item_damaged )qty = qty - parseFloat( value.item_damaged );
+                        
+                        if( qty > 0 ){
+                            var img = 'icon.png';
+                            if( blubirdFileURL ){
+                                img = blubirdFileURL + value.item_image;
+                            }
+                            if( value.image && value.item_image == value.image )
+                                img = 'imagebank/' + value.item_image;
+                            
+                            if( blubirdWebbased ){
+                                img = 'imagebank/'+value.item_image;
+                            }
+                            
+                            html += '<li><a href="#" id="item-link-'+key+'" key="'+key+'" max-qty="'+qty+'" selling-price="'+value.selling_price+'" cost-price="'+value.cost_price+'"><img src="' + img + '" class="ui-li-thumb" /><p>'+value.item_desc+'</p></a></li>';
+                        }
+                    }
+                });
+            }
+            
+            $ul.html( html );
+            $ul.listview( "refresh" );
+            $ul.trigger( "updatelayout");
+            
+            if( html ){
+                $('#sales-inventory-list')
+                .find('a')
+                .on('click', function(e){
+                    e.preventDefault();
+                    addtocart( $(this).attr('key') );
+                });
+            }
+        }else{
+            salesInventory = $.extend(true, {}, get_list_of_inventory() );
+        }
+    });
+    
+    $('#sales-inventory-list-container')
+    .find('input')
+    .on('keydown', function(){
+        salesInventory = {};
+    });
 });
 
 $( document ).on( "pageshow", "#sales", function() {
@@ -5244,171 +5601,14 @@ $( document ).on( "pageshow", "#sales", function() {
     break;
     }
     
-	//Update inventory list
-	var inventory = get_list_of_inventory();
-	var html = '';
-	if( currentStoreID ){
-        $.each( inventory , function( key , value ){
-            if( value && value.store && value.store[ currentStoreID ] ){
-                var storeStock = value.store[ currentStoreID ];
-                if( ! storeStock.item_sold )storeStock.item_sold = 0;
-                if( ! storeStock.item_damaged )storeStock.item_damaged = 0;
-                
-                value.item_qty = storeStock.item_qty;
-                value.item_sold = storeStock.item_sold;
-                value.selling_price = storeStock.selling_price;
-                value.cost_price = storeStock.cost_price;
-                value.item_damaged = storeStock.item_damaged;
-                
-                var qty = 0;
-                if(  value.item_qty )qty = parseFloat( value.item_qty );
-                if(  value.item_sold )qty = qty - parseFloat( value.item_sold );
-                if(  value.item_damaged )qty = qty - parseFloat( value.item_damaged );
-                
-                if( qty > 0 ){
-                    var img = 'icon.png';
-                    if( blubirdFileURL ){
-                        img = blubirdFileURL + value.item_image;
-                    }
-                    if( value.image && value.item_image == value.image )
-                        img = 'imagebank/' + value.item_image;
-                    
-                    html += '<li><a href="#" id="item-link-'+key+'" key="'+key+'" max-qty="'+qty+'" selling-price="'+value.selling_price+'" cost-price="'+value.cost_price+'"><img src="' + img + '" class="ui-li-thumb" /><p>'+value.item_desc+'</p></a></li>';
-                }
-            }
-        });
-    }   
-    
+    var html = '';
 	if( html ){
-		$('#sales-inventory-list-container')
-		.html( '<ul data-role="listview" data-filter="true" data-filter-reveal="false" data-filter-placeholder="Scan/Search Product" id="sales-inventory-list" data-inset="true">' + html + '</ul>' )
-		.trigger('create');
-		
-		$('#sales-inventory-list')
-		.find('a')
-		.on('click', function(e){
-			e.preventDefault();
-			
-			var qty = parseFloat( $(this).attr('max-qty') );
-            if( qty < 0 ){
-                return false;
-            }
-            
-			var amount = parseFloat( $(this).attr('selling-price') );
-			var cost = parseFloat( $(this).attr('cost-price') );
-			var $item = $('#sales-table-body').find('tr#'+$(this).attr('key') );
-			
-			var units = 0;
-			
-			if( $item && $item.is(':visible') ){
-				var $input = $item.find( 'input' );
-				if( $input.attr('max') && parseFloat( $input.val() ) < parseFloat( $input.attr('max') ) ){
-					units = parseFloat( $input.val() ) + 1;
-					
-					$input.val( units );
-					
-					amount *= units;
-					
-					$item
-					.find('td.price')
-					.attr('total', amount )
-					.attr('units', units )
-					.find('.price-val')
-					.html( formatNum( amount.toFixed(2) ) );
-				}
-			}else{
-				$('#sales-table-body')
-				.prepend( '<tr id="'+$(this).attr('key')+'" unit-price="'+amount+'" cost-price="'+cost+'" class="item-for-sale"><td class="label">'+$(this).text()+'</td><td class="input"><input type="number" min="1" step="1" max="'+$(this).attr('max-qty')+'" value="1" /></td><td class="price" total="'+amount+'" units="1"><span class="price-val">' + formatNum( amount.toFixed(2) ) + '</span></td><td class="ui-table-priority-2"><a href="#" class="ui-btn ui-btn-inline ui-icon-delete ui-btn-icon-notext ui-theme-a ui-corner-all remove-item-button">remove</a></td></tr>' );
-				
-				$('#sales-table-body')
-				.find('tr#'+$(this).attr('key')+' input[type="number"]' )
-				.bind('change', function(){
-					var $tr = $(this).parents('tr');
-					
-					var amount = parseFloat( $tr.attr('unit-price') );
-					
-					var units = parseFloat( $(this).val() );
-					amount *= units;
-					
-					$tr
-					.find('td.price')
-					.attr('total', amount )
-					.attr('units', units )
-					.find('.price-val')
-					.html( formatNum( amount.toFixed(2) ) );
-					
-					calculate_total_sales();
-				}).bind('blur', function(){
-					if( $(this).attr('max') && ( parseFloat( $(this).val() ) > parseFloat( $(this).attr('max') ) ) ){
-						$(this)
-						.val( $(this).attr('max') );
-						
-						$(this).change();
-					}
-                    
-                    if( ( parseFloat( $(this).val() ) < 1 ) ){
-						$(this)
-						.val(1);
-						
-						$(this).change();
-					}
-				});
-				
-				$('#sales-table-body')
-				.find('tr a.remove-item-button' )
-				.bind('click', function(){
-					$(this).parents('tr').remove();
-					calculate_total_sales();
-				});
-				
-				$('#sales-table-body')
-				.find('td.label' )
-				.bind('click', function(){
-					$('a#item-link-'+$(this).parent('tr').attr('id'))
-					.click();
-				});
-				
-				/*
-				$('#sales-table-body')
-				.find('tr')
-				.on( "swipeleft", function(e){
-					$(this)
-					.find('a')
-					.fadeIn();
-				})
-				.on( "swiperight", function(e){
-					$(this)
-					.find('a')
-					.fadeOut();
-				});
-				*/
-				units = 1;
-			}
-			
-			if( units ){
-				calculate_total_sales();
-			}
-			
-		});
-		
-		$('#sales-inventory-list-container')
-		.find('form.ui-filterable')
-		.on('submit', function(e){
-			if( $(this).find('input').val().length > 5 ){
-				d = getData( $(this).find('input').val() );
-				if( d && d.key ){
-					//add item to cart
-					$('a#item-link-'+d.key)
-					.click();
-					
-					$(this).find('input').val('');
-				}
-			}
-			return false;
-		});
-		
-		var $search = $('#sales-inventory-list-container').find('input');
+		//$('#sales-inventory-list-container')
+		//.html( '<ul data-role="listview" data-filter="true" data-filter-reveal="false" data-filter-placeholder="Scan/Search Product" id="sales-inventory-list" data-inset="true">' + html + '</ul>' )
+		//.trigger('create');
         
+        /*
+		var $search = $('#sales-inventory-list-container').find('input');
         
         $('<input type="text" id="hack-search" style="margin-top:-'+$search.outerHeight()+'px; background:#fff !important;" placeholder="'+$search.attr('placeholder')+'" />')
         .insertAfter( $search );
@@ -5456,10 +5656,139 @@ $( document ).on( "pageshow", "#sales", function() {
             .val('')
             .change();
         });
+        */
+        
 	}
 	
 });
 
+function addtocart( key ){
+    var qty = 0;
+    
+    if( key ){
+        d = getData( key );
+        
+        var storeStock = d.store[ currentStoreID ];
+        if( ! storeStock.item_sold )storeStock.item_sold = 0;
+        if( ! storeStock.item_damaged )storeStock.item_damaged = 0;
+        
+        d.item_qty = storeStock.item_qty;
+        d.item_sold = storeStock.item_sold;
+        d.selling_price = storeStock.selling_price;
+        d.cost_price = storeStock.cost_price;
+        d.item_damaged = storeStock.item_damaged;
+        
+        
+        if( d.item_qty )qty = parseFloat( d.item_qty );
+        if( d.item_sold )qty = qty - parseFloat( d.item_sold );
+        if( d.item_damaged )qty = qty - parseFloat( d.item_damaged );
+    }        
+    
+    if( ! ( d && d.key ) )return false;
+    
+    if( ! ( qty > 0 ) ){
+        return false;
+    }
+    
+    var amount = parseFloat( d.selling_price );
+    var cost = parseFloat( d.cost_price );
+    var $item = $('#sales-table-body').find('tr#'+d.key );
+    
+    var units = 0;
+    
+    if( $item && $item.is(':visible') ){
+        var $input = $item.find( 'input' );
+        if( $input.attr('max') && parseFloat( $input.val() ) < parseFloat( $input.attr('max') ) ){
+            units = parseFloat( $input.val() ) + 1;
+            
+            $input.val( units );
+            
+            amount *= units;
+            
+            $item
+            .find('td.price')
+            .attr('total', amount )
+            .attr('units', units )
+            .find('.price-val')
+            .html( formatNum( amount.toFixed(2) ) );
+        }
+    }else{
+        $('#sales-table-body')
+        .prepend( '<tr id="'+d.key+'" unit-price="'+amount+'" cost-price="'+cost+'" class="item-for-sale"><td class="label">'+d.item_desc+'</td><td class="input"><input type="number" min="1" step="1" max="'+qty+'" value="1" /></td><td class="price" total="'+amount+'" units="1"><span class="price-val">' + formatNum( amount.toFixed(2) ) + '</span></td><td class="ui-table-priority-2"><a href="#" class="ui-btn ui-btn-inline ui-icon-delete ui-btn-icon-notext ui-theme-a ui-corner-all remove-item-button">remove</a></td></tr>' );
+        
+        $('#sales-table-body')
+        .find('tr#'+d.key+' input[type="number"]' )
+        .off('change');
+        
+        $('#sales-table-body')
+        .find('tr#'+d.key+' input[type="number"]' )
+        .on('change', function(){
+            var $tr = $(this).parents('tr');
+            
+            var amount = parseFloat( $tr.attr('unit-price') );
+            
+            var units = parseFloat( $(this).val() );
+            amount *= units;
+            
+            $tr
+            .find('td.price')
+            .attr('total', amount )
+            .attr('units', units )
+            .find('.price-val')
+            .html( formatNum( amount.toFixed(2) ) );
+            
+            calculate_total_sales();
+        }).bind('blur', function(){
+            if( $(this).attr('max') && ( parseFloat( $(this).val() ) > parseFloat( $(this).attr('max') ) ) ){
+                $(this)
+                .val( $(this).attr('max') );
+                
+                $(this).change();
+            }
+            
+            if( ( parseFloat( $(this).val() ) < 1 ) ){
+                $(this)
+                .val(1);
+                
+                $(this).change();
+            }
+        });
+        
+        $('#sales-table-body')
+        .find('tr a.remove-item-button' )
+        .off('click');
+        
+        $('#sales-table-body')
+        .find('tr a.remove-item-button' )
+        .on('click', function(){
+            $(this).parents('tr').remove();
+            calculate_total_sales();
+        });
+        
+        $('#sales-table-body')
+        .find('td.label' )
+        .off('click');
+        
+        $('#sales-table-body')
+        .find('td.label' )
+        .on('click', function(){
+            //$('a#item-link-'+$(this).parent('tr').attr('id')).click();
+            var $n = $(this).parents('tr').find('input[type="number"]');
+            var u = parseFloat( $n.val() );
+            var m = parseFloat( $n.attr('max') );
+            
+            if( ++u < m ){
+                $n.val( u ).change();
+            }
+        });
+        
+        units = 1;
+    }
+    
+    if( units ){
+        calculate_total_sales();
+    }
+};
 function calculate_total_sales(){
 	if( $('#sales-table-body') ){
 		var total_price = 0;
@@ -5587,6 +5916,12 @@ $( document ).on( "pagecreate", "#update-progress", function() {
 	}else{
 		cannot_initiate_app();
 	}
+    
+    $('#go-to-dashboard')
+    .on('click', function(e){
+        e.preventDefault();
+        document.location = document.location.origin + document.location.pathname + document.location.search;
+    });
 });
 
 $( document ).on( "pageshow", "#update-progress", function() {
@@ -5906,6 +6241,7 @@ function ajax_send(){
 		dataType:ajax_data_type,
 		type:form_method,
 		data:ajax_data,
+        crossDomain:true,
 		url: pagepointer+'php/app_request_processor.php'+ajax_get_url,
 		timeout:60000,
 		beforeSend:function(){
@@ -6048,7 +6384,7 @@ function ajaxSuccess( data , store ){
 				update_users_list_on_users_page();
 				
 				tempData = {};
-				console.log( 'user created' , stored );
+				//console.log( 'user created' , stored );
 				
 				data.typ = '';
 			}
@@ -6110,11 +6446,13 @@ function ajaxSuccess( data , store ){
             prepare_notifications_for_display();
             
             //start downloading images that don't exists
-            if( registration ){
-                registration = false;
-                movePackedFiles();
-            }else{
-                downloadFiles();
+            if( ! blubirdWebbased ){
+                if( registration ){
+                    registration = false;
+                    movePackedFiles();
+                }else{
+                    downloadFiles();
+                }
             }
 			//store data
 			ga( 'send' , 'pageview' , {'page': '/data-download-complete' , 'title': 'Data Download Complete '+customUUID } );
@@ -6204,8 +6542,11 @@ function progress_bar_change(){
 	var total = 60;
 	var step = 1;
 	
+    if( progress_bar_timer_id )
+        clearTimeout(progress_bar_timer_id);
+        
 	if(function_click_process==0){
-		var $progress = $('.virtual-progress-bar').find('.progress-bar');
+		var $progress = $('.virtual-progress-bar:visible').find('.progress-bar');
 		
 		if($progress.data('step') && $progress.data('step')!='undefined'){
 			step = $progress.data('step');
@@ -6259,7 +6600,6 @@ function progress_bar_change(){
 				ajax_send();
 				
 			}
-			
 			
 		}else{
 			$progress

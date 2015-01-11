@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html><!--manifest="manifest1420990250.appcache"-->
 <head>
 	<title>Blubird</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,9 +11,7 @@
 	<script src="js/iscroll.js" ></script>
 	<script src="js/jquery.mobile.iscrollview.js" ></script>
 	
-	
-	<!-- App 2nd Commit / demo data -->
-	<!--version 1.0.85-->
+	<!--version 1.0.86-->
 	<script src="js/app/amplify.min.js"></script>
 	<script src="js/app/md5.js"></script>
 	<script src="js/app/fastclick.js"></script>
@@ -30,6 +28,9 @@
     
 	
 	<style>
+        .text-size-2{
+            font-size:1.2em;
+        }
 		.products .ui-listview li .ui-btn p {
 		color: #fff;
 	}
@@ -60,10 +61,10 @@
 		}
 		.products .ui-listview li.ui-li-has-thumb .ui-li-thumb {
 			
-			/*margin: 0.5em 0.5em !important;*/
-			height: auto; /* To keep aspect ratio. */
-			max-width: 100% !important; /* 33.3333% incl. 2 x 1.2% margin */
-			max-height: 100%; /* 232p */
+            max-width: 100% !important;
+            height: 120px;
+            margin: auto;
+            position: relative;
 		}
 	   
 		.products .ui-listview li,
@@ -242,7 +243,7 @@
 	<div data-role="header" id="hd" data-position="fixed" data-tap-toggle="false" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  >
 		
 		<a href="#menupanel" data-rel="panel" class="open-panel ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
-		<a href="index.html" rel="external" class="ui-btn ui-shadow ui-corner-all ui-icon-recycle ui-btn-icon-notext">Refresh</a>
+		<a href="#" rel="external" class="app-refresh-button ui-btn ui-shadow ui-corner-all ui-icon-recycle ui-btn-icon-notext">Refresh</a>
         
 		<h1>Dashboard</h1>
 		<div class="notifications-container hidden" data-role="navbar" data-mini="true">
@@ -766,11 +767,11 @@
 			
 			<div class="ui-grid-a invt">
 			<div class="ui-block-a">
-				<input type="submit" value="Login" data-theme="c" />
+				<a href="#signup" data-transition="none" data-role="button" data-theme="b" >Sign Up</a>
 			</div>
 			
 			<div class="ui-block-b">
-				<a href="#signup" data-transition="none" data-role="button" data-theme="b" >Sign Up</a>
+                <input type="submit" value="Login" data-theme="c" />
 			</div>
 		</div>
 		
@@ -803,7 +804,7 @@
 		
         <br />
         <br />
-        <a href="index.html" rel="external" data-role="button" data-theme="b" data-icon="home" data-transition="none" style="font-weight: normal !important; text-shadow: none; border: none;">Go To Dashboard</a>
+        <a href="#" id="go-to-dashboard" rel="external" data-role="button" data-theme="b" data-icon="home" data-transition="none" style="font-weight: normal !important; text-shadow: none; border: none;">Go To Dashboard</a>
         <br />
         <br />
 	</div><!-- /content -->
@@ -942,7 +943,7 @@
 							<div class="ui-block-a">
 								
 									<select id="item-select-field" >
-										<option style="text-shadow: none !important;">Select Item Description</option>
+										<option style="text-shadow: none !important;">--Select Item--</option>
 									</select>
 								
 							</div>
@@ -950,7 +951,7 @@
 							<div class="ui-block-b">
 								
 								<select name="category" id="category-field" placeholder="Category" required data-validate="text" data-error-title="Invalid Category" data-error-msg="Please provide a valid category" >
-									<option value="" style="text-shadow: none !important;">Select Item Category</option>
+									<option value="" style="text-shadow: none !important;">--Select Category--</option>
 								</select>
 								
 							</div>
@@ -983,7 +984,7 @@
 						<div class="ui-grid-a invt">
 							<div class="ui-block-a" >
 								
-							<p style="text-align: center;"><img src="icon.png" id="myImage" style="horizontal-align: middle; width:120px; max-height:120px;"></p>
+							<p style="text-align: center;"><img src="icon.png" id="myImage" style="horizontal-align: middle; max-width:120px; max-height:120px;"></p>
 							</div>
 						
 							<div class="ui-block-b" >
@@ -1412,8 +1413,10 @@
 						<br>
 					<form method="post" action="" name="suppliers" id="suppliers-form">
 						<input type="hidden" name="key" id="key-field" value="" data-validate="text" />
+                        <label for="supplier-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Supplier Name:</label>
 						<input type="text" name="supplier" id="supplier-field" placeholder="Supplier Name" required data-validate="text" data-error-title="Invalid supplier" data-error-msg="Provide a valid Supplier Name" />
 						<br>
+                        <label for="location-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Supplier Location:</label>
 						<input type="text" name="location" id="location-field" placeholder="Supplier Location" required data-validate="text" data-error-title="Invalid Supplier Location" data-error-msg="Provide a valid supplier location" />
 						<br>
 							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
@@ -1509,7 +1512,7 @@
 						<br>
 						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
 						<br>
-						<span class="df" style="color: white; text-shadow: none !important; text-align: right;">Oustanding balance owed : <span class="supplier-amount-owed">0.00</span></span>
+						<span class="df text-size-2" style="color: white; text-shadow: none !important; text-align: right;">Oustanding balance owed : <span class="supplier-amount-owed">0.00</span></span>
 						<br>
 				</div>
                 
@@ -1524,10 +1527,12 @@
                                 
                                 <div class="ui-grid-a">
                                     <div class="ui-block-a" style="padding-left:0;">
-                                        <input type="number" step="any" min="0" name="amount_paid" id="amount_paid-field" data-validate="text" placeholder="Amount Paid" required data-validate="text" data-error-title="Invalid Amount Paid" data-error-msg="Provide a valid Amount Paid"/>
+                                        <label for="amount_paid-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Amount Paid:</label>
+                                        <input type="number" step="any" min="0" name="amount_paid" id="amount_paid-field" placeholder="Amount Paid" required data-validate="text" data-error-title="Invalid Amount Paid" data-error-msg="Provide a valid Amount Paid"/>
                                     </div>
                                     
                                     <div class="ui-block-b" style="padding-right:0;">
+                                        <label for="remark-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Remark:</label>
                                         <input type="text" name="remark" id="remark-field" data-validate="text" placeholder="Remark [optional]" />
                                     </div>
                                 </div>
@@ -1539,11 +1544,13 @@
                                 <br>
                                 <div class="ui-grid-a">
                                     <div class="ui-block-a" style="padding-left:0;">
+                                        <label for="date_of_payment-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Date of Payment:</label>
                                         <input type="date" name="date_of_payment" id="date_of_payment-field" data-validate="text" />
                                     </div>
                                     
                                     <div class="ui-block-b" style="padding-right:0;">
-                                        <select name="payment_method" id="payment_method-field" data-validate="text" required data-validate="text" data-error-title="Invalid Payment Method" data-error-msg="Provide a valid Payment Method">
+                                        <label for="payment_method-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Payment Method:</label>
+                                        <select name="payment_method" id="payment_method-field" data-validate="text" required data-error-title="Invalid Payment Method" data-error-msg="Provide a valid Payment Method">
                                         <option value="cash">Cash</option>
                                         <option value="card">Card</option>
                                         </select>
@@ -1579,10 +1586,10 @@
                         <br>
                         <p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
                         <br>
-                        <span class="df" style="color: white; text-shadow: none !important; text-align: right;">Total debt paid : <span id="supplier-debt-paid">0.00</span></span>
+                        <span class="df text-size-2" style="color: white; text-shadow: none !important; text-align: right;">Total debt paid : <span id="supplier-debt-paid">0.00</span></span>
                         <br>
                         <br>
-                        <span class="df" style="color: white; text-shadow: none !important; text-align: right;">Total amount paid : <span id="supplier-total-amount-paid">0.00</span></span>
+                        <span class="df text-size-2" style="color: white; text-shadow: none !important; text-align: right;">Total amount paid : <span id="supplier-total-amount-paid">0.00</span></span>
                         <br>
                 
                 </div>
@@ -1672,6 +1679,14 @@
 							<div class="ui-block-b" class="df" style="padding-left:0.5em;">
 								<label for="selling_price-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Unit Selling Price ( &#8358; ):</label>
 								<input type="number" name="selling_price" id="selling_price-field" min="0" step="any" placeholder="" required data-validate="number" data-error-title="Invalid Selling Price" data-error-msg="Please provide a valid Selling Price" />
+							</div>
+						</div>
+						<div class="ui-grid-a invt">
+							<div class="ui-block-a" style="padding-right:0.5em;">
+							</div>
+							<div class="ui-block-b" style="padding-left:0.5em; font-weight:bold;">
+                                <span style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Gross Margin:</span>
+                                <span id="inventory-gross-margin" style="float:right; font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">00.00%</span>
 							</div>
 						</div>
 						<br />
@@ -1917,6 +1932,8 @@
 					}
 					#sales-inventory-list-container li a{
 						background-color: #fff !important; border:1px solid #4bb2cf;
+                        text-align: center;
+                        padding: 5px 0;
 					}
 					#sales-table-body td.label{
 						cursor:pointer;
@@ -1941,10 +1958,7 @@
 				<div class="ui-grid-a invt-s">
                         <div class="ui-block-a" >
                             <div  id="sales-inventory-list-container" class="products">
-                                <ul data-role="listview"  data-filter="true" data-filter-placeholder="Search" data-inset="true">
-                                
-                                    
-                                </ul>
+                                <ul id="sales-inventory-list" data-role="listview" data-inset="true" data-filter="true" data-filter-placeholder="Scan/Search Product" data-filter-theme="a"></ul>
                             </div>
                         </div>
 						
@@ -1980,6 +1994,10 @@
 													padding:0.2em;
 													border-radius:4px;
 													border: #43a2c4;
+                                                    color:#fff;
+                                                    font-weight:bold;
+                                                    text-align:center;
+                                                    background:rgb(112,112,112);
 												}
 												.ui-flipswitch{
 													padding-top: 1px; padding-bottom: 8px; padding-right: 8px;
@@ -2098,14 +2116,14 @@
 												font-size: 1.2em; font-weight: bold ;
 												vertical-align:middle;
 											}
+											#checkout-table-column-toggle tfoot td{
+												font-size: 1.2em; font-weight: bold ;
+											}
 											#checkout-table-body td:nth-child(2){
 												text-align:center;
 											}
+                                            #checkout-table-body td:nth-child(4),
 											#checkout-table-body td:nth-child(3){
-												text-align:right;
-												position:relative;
-											}
-											#checkout-table-body td:nth-child(4){
 												text-align:right;
 												position:relative;
 											}
@@ -2127,8 +2145,8 @@
                                             <tr>
                                               <th data-colstart="1">Item</th>
                                               <th data-priority="2" data-colstart="2" class="ui-table-priority-2">Qty</th>
-                                              <th data-priority="3" data-colstart="3" class="ui-table-priority-3">Unit Price (&#8358;)</th>
-                                              <th data-priority="1" data-colstart="4" class="ui-table-priority-1">Total Price (&#8358;)</th>
+                                              <th data-priority="3" data-colstart="3" class="ui-table-priority-3" style="text-align:right;">Unit Price (&#8358;)</th>
+                                              <th data-priority="1" data-colstart="4" class="ui-table-priority-1" style="text-align:right;">Total Price (&#8358;)</th>
                                             </tr>
                                           </thead>
                                           <tbody id="checkout-table-body">
@@ -2157,11 +2175,13 @@
 								<div style="background-color: #43a2c4; padding: 10px; border-radius: 5px; text-shadow: none; color: white;">
 									<div class="ui-grid-a">
 										<div class="ui-block-a">
-											<input type="text" name="customer_name" id="customer_name-field" data-validate="text" placeholder="Customers Name"/>
+                                            <label style="color: white; font-family: Roboto Thin; font-size: 1.5em; text-shadow: none; font-weight:bold;">Customers Name</label>
+											<input type="text" name="customer_name" id="customer_name-field" data-validate="text" placeholder="Eg: Grace Yusuf" />
 										</div>
 									
 										<div class="ui-block-b">
-											<input type="tel" name="customer_mobile" id="customer_mobile-field" data-validate="text" placeholder="Customers Mobile">
+                                            <label style="color: white; font-family: Roboto Thin; font-size: 1.5em; text-shadow: none; font-weight:bold;">Customers Mobile</label>
+											<input type="tel" name="customer_mobile" id="customer_mobile-field" data-validate="text" placeholder="08052529580" />
 										</div>
 								
 									</div>
@@ -2219,6 +2239,7 @@
                                     <label for="noner2" style="border-radius: 5px; text-shadow: none; color: white; font-family: Roboto Thin; font-size: 1.4em;">Status: <span style="color:#ddd; text-align:right; float:right;" id="statusMessage" data-connected="Connected" data-disconnected="Disconnected" >Disconnected</span></label>
                                     <select id="bluetooth-devices-selectbox">
                                         <option value="">--Select Device--</option>
+                                        <option value="desktop">Regular PC Printer</option>
                                     </select>
 								</div>
 								
@@ -2919,10 +2940,12 @@
                     <br>
 					<form method="post" action="" name="expenses" id="expenses-form">
 						<input type="hidden" name="key" id="key-field" value="" data-validate="text" />
+                        <label for="description-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Description of Expense:</label>
 						<input type="text" name="description" id="description-field" placeholder="Description of Expense" required data-validate="text" data-error-title="Invalid Description" data-error-msg="Provide a valid Description of Your Expenditure" />
 						<br>
 							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
 						<br>
+                        <label for="store_name-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Store Name:</label>
                          <select name="store_name" id="store_name-field" placeholder="Select Store" required data-validate="text" data-error-title="Invalid Item" data-error-msg="Please select a store" class="currently-active-store">
                             
                          </select>
@@ -2942,6 +2965,7 @@
 						<br>
 						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
                         <br>
+                        <label for="type-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Type of Expense:</label>
                         <select name="type" id="type-field" placeholder="Type of Expense" required data-validate="text" data-error-title="Invalid Type of Expense" data-error-msg="Please provide a valid type of expense" >
                             <option value="" style="text-shadow: none !important;"> - Type of Expense - </option>
                             <option value="employee salary">Employee Salary</option>
@@ -2977,7 +3001,7 @@
                 <table data-role="table1" id="suppliers-list-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table  ui-table ui-table-columntoggle">
                   <thead>
                     <tr>
-                      <th data-colstart="1">Expenditure</th>
+                      <th data-colstart="1" data-priority="1" class="ui-table-priority-1">Expenditure</th>
                       <th data-priority="2" data-colstart="2" class="ui-table-priority-2">Amount (&#8358;)</th>
                       <th data-priority="3" data-colstart="3" class="ui-table-priority-3">Modified On</th>
                     </tr>
@@ -3038,6 +3062,7 @@
                 <br>
             <form method="post" action="" name="customers" id="customers-form">
                 <input type="hidden" name="key" id="key-field" value="" data-validate="text" />
+                <label for="customer_name-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Customer Name:</label>
                 <input type="text" name="customer_name" id="customer_name-field" data-validate="text" placeholder="Customers Name" required data-validate="text" data-error-title="Invalid Customer Name" data-error-msg="Provide a valid Customer Name"/>
                 
                 <br>
@@ -3089,7 +3114,7 @@
                 <br>
                 <p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
                 <br>
-                <span class="df" style="color: white; text-shadow: none !important; text-align: right;">Total debt paid : <span id="customer-debt-paid">0.00</span></span>
+                <span class="df text-size-2" style="color: white; text-shadow: none !important; text-align: right;">Total debt paid : <span id="customer-debt-paid">0.00</span></span>
                 <br>
         
         </div>
@@ -3106,10 +3131,12 @@
                         
                         <div class="ui-grid-a">
                             <div class="ui-block-a" style="padding-left:0;">
-                                <input type="number" step="any" min="0" name="amount_paid" id="amount_paid-field" data-validate="text" placeholder="Amount Paid" required data-validate="text" data-error-title="Invalid Amount Paid" data-error-msg="Provide a valid Amount Paid"/>
+                                <label for="amount_paid-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Amount Paid:</label>
+                                <input type="number" step="any" min="0" name="amount_paid" id="amount_paid-field" placeholder="Amount Paid" required data-validate="text" data-error-title="Invalid Amount Paid" data-error-msg="Provide a valid Amount Paid"/>
                             </div>
                             
                             <div class="ui-block-b" style="padding-right:0;">
+                                <label for="remark-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Remark:</label>
                                 <input type="text" name="remark" id="remark-field" data-validate="text" placeholder="Remark [optional]" />
                             </div>
                         </div>
@@ -3119,10 +3146,12 @@
                         <br>
                         <div class="ui-grid-a">
                             <div class="ui-block-a" style="padding-left:0;">
+                                <label for="date_of_payment-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Date of Payment:</label>
                                 <input type="date" name="date_of_payment" id="date_of_payment-field" data-validate="text" />
                             </div>
                             
                             <div class="ui-block-b" style="padding-right:0;">
+                                <label for="payment_method-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Payment Method:</label>
                                 <select name="payment_method" id="payment_method-field" data-validate="text" required data-validate="text" data-error-title="Invalid Payment Method" data-error-msg="Provide a valid Payment Method">
                                 <option value="cash">Cash</option>
                                 <option value="card">Card</option>
@@ -3161,7 +3190,7 @@
                 <br>
                 <p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
                 <br>
-                <span class="df" style="color: white; text-shadow: none !important; text-align: right;">Oustanding balance owed : <span class="customer-amount-owed">0.00</span></span>
+                <span class="df text-size-2" style="color: white; text-shadow: none !important; text-align: right;">Oustanding balance owed : <span class="customer-amount-owed">0.00</span></span>
                 <br>
         
         </div>
