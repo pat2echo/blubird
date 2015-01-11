@@ -107,6 +107,23 @@ var storeObjects = {};
 var unreadNotificationsCount = 0;
 
 function test_for_active_user(){
+    var ld = new Date();
+    var lastCompileDate = getData('last-compile-time');
+    if( ! lastCompileDate ){
+        lastCompileDate = ld.getTime() - 1;
+        putData( 'last-compile-time', lastCompileDate );
+    }
+	if( lastCompileDate > ld.getTime() ){
+        var settings = {
+            message_title:'Invalid Device Date & Time',
+            message_message: 'To obtain accurate results, please set your device date & time and restart the application',
+            auto_close: 'no'
+        };
+        display_popup_notice( settings );
+    }else{
+        putData( 'last-compile-time', ld.getTime() );
+    }
+    
     if( customUUID ){
         //check for registered user details
         var userInfo = get_user_info();
@@ -2451,7 +2468,7 @@ function get_expenses_records_html( data , format ){
 	if( data.amount ){
 		a = parseFloat( data.amount );
 	}
-	return '<li><h4>'+data.description+'</h4><p>'+appCurrency+' '+ formatNum( a.toFixed(2) ) +'</p><p class="ui-li-aside">'+date+data.time+'</p></li>';
+	return '<li><h4>'+data.description+'</h4><p class="date">'+date+data.time+'</p><p class="amount">'+appCurrency+' '+ formatNum( a.toFixed(2) ) +'</p></li>';
 };
 
 function get_sales_records_html( data , format ){
@@ -2591,29 +2608,33 @@ function update_expenses_list_on_expenses_page(){
     var maxs_html_count = 0;
     for( var i = 0; i < dataLimit; i++ )
         maxs[i] = 0;
-        
-	$.each( expenses , function( key , value ){
-        if( value.timestamp ){
-            var sort_field = value.timestamp;
-            for( var i = 0; i < dataLimit; i++ ){
-                if( sort_field > maxs[i] ){
-                    var k = i + 1;
-                    for( var j = k; j < dataLimit; j++ ){
-                        maxs[j] = maxs[j - 1];
-                        maxs_html[ dataLimit - j ] = maxs_html[ dataLimit - j - 1];
+    
+    if( currentStoreID ){
+        $.each( expenses , function( key , value ){
+            if( value.store_name && currentStoreID == value.store_name ){
+                if( value.timestamp ){
+                    var sort_field = value.timestamp;
+                    for( var i = 0; i < dataLimit; i++ ){
+                        if( sort_field > maxs[i] ){
+                            var k = i + 1;
+                            for( var j = k; j < dataLimit; j++ ){
+                                maxs[j] = maxs[j - 1];
+                                maxs_html[ dataLimit - j ] = maxs_html[ dataLimit - j - 1];
+                            }
+                            
+                            maxs[i] = parseFloat( sort_field ) - 1;
+                            
+                            maxs_html[i] = get_expenses_html( key , value );
+                            
+                            break;
+                        }
                     }
-                    
-                    maxs[i] = parseFloat( sort_field ) - 1;
-                    
-                    maxs_html[i] = get_expenses_html( key , value );
-                    
-                    break;
                 }
+                html = maxs_html.join(" ");
             }
-        }
-		html = maxs_html.join(" ");
-	});
-	
+        });
+	}
+    
 	$( '#expenses-list-container' )
 	.html( html )
 	.find('tr')
@@ -3046,6 +3067,15 @@ $( document ).on( "pagecreate", "#expenses", function() {
     update_expenses_list_on_expenses_page();
     
     activate_manual_upload_data_button_click_event( $("#expenses") );
+    
+    $('#expenses-form')
+    .find('select#store_name-field')
+    .on('change', function(){
+        if( $(this).val() ){
+            currentStoreID = $(this).val();
+            update_expenses_list_on_expenses_page();
+        }
+    });
 });
 
 $( document ).on( "pageshow", "#customers", function() {
@@ -4787,7 +4817,11 @@ function activate_item_filtering( page ){
             });
             
             if( tempInventory && Object.getOwnPropertyNames( tempInventory ).length ){
-                display_table_on_inventory_page( tempInventory, $("#"+page).find('tbody.stockLevels-container') , $("#"+page) , 0, 0 , 0 , 0 );
+                var include_supplier = 0;
+                if( page == 'inventory' ){
+                    include_supplier = 1;
+                }
+                display_table_on_inventory_page( tempInventory, $("#"+page).find('tbody.stockLevels-container') , $("#"+page) , 0, include_supplier , 0 , 1 );
             }else{
                 $("#"+page)
                 .find('tbody.stockLevels-container')
@@ -4806,13 +4840,18 @@ function activate_item_filtering( page ){
 	.on('change', function(){
         var content = $(this).val();
         
+        var include_supplier = 0;
+        if( page == 'inventory' ){
+            include_supplier = 1;
+        }
+
         if( content ){
             var inventory = getData( content );
             if( inventory && inventory.item_desc && inventory.key ){
                 
                 var i = {};
                 i[ inventory.key ] = inventory;
-                display_table_on_inventory_page( i , $("#"+page).find('tbody.stockLevels-container') , $("#"+page) , 0 , 0 , 0, 1 );
+                display_table_on_inventory_page( i , $("#"+page).find('tbody.stockLevels-container') , $("#"+page) , 0 , include_supplier , 0, 1 );
                 
                 return false;
             }

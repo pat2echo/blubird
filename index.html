@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html><!--manifest="manifest1420990250.appcache"-->
+<html> <!--manifest="manifest1420990250.appcache"<html manifest="manifest1420990250.appcache">-->
 <head>
 	<title>Blubird</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,7 +11,7 @@
 	<script src="js/iscroll.js" ></script>
 	<script src="js/jquery.mobile.iscrollview.js" ></script>
 	
-	<!--version 1.0.86-->
+	<!--version 1.0.87-->
 	<script src="js/app/amplify.min.js"></script>
 	<script src="js/app/md5.js"></script>
 	<script src="js/app/fastclick.js"></script>
@@ -496,11 +496,13 @@
 				#expenses-records-container h4{
                     font-size:1em !important;
                 }
-				#expenses-records-container p{
+				#expenses-records-container p.amount{
                     font-size:1.3em !important;
                 }
-				#expenses-records-container p.ui-li-aside{
-                    float:right;
+				#expenses-records-container p.date{
+                    float:right; 
+                    font-size:1em !important;
+                    margin-top: 5px !important;
                 }
 				#expenses-records-container ul li,
 				#sales-records-container ul li a{
@@ -767,11 +769,11 @@
 			
 			<div class="ui-grid-a invt">
 			<div class="ui-block-a">
-				<a href="#signup" data-transition="none" data-role="button" data-theme="b" >Sign Up</a>
+				<input type="submit" value="Login" data-theme="c" />
 			</div>
 			
 			<div class="ui-block-b">
-                <input type="submit" value="Login" data-theme="c" />
+                <a href="#signup" data-transition="none" data-role="button" data-theme="b" >Sign Up</a>
 			</div>
 		</div>
 		
@@ -1809,27 +1811,9 @@
 						
 					</div>
 					
-					<div class="ui-grid-a invt" >
-						<div class="ui-block-a" style="padding: 0.7em;" >
-							<a href="#newInventory" data-role="button" data-theme="b" data-icon="plus" data-transition="none" style="font-weight: normal !important; text-shadow: none;  font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>New Item</b></a>
-						</div>
-						<div class="ui-block-b" style="padding: 0.7em;">
-							<a href="#restock" data-role="button" data-theme="b" data-icon="forward" data-transition="none" style="font-weight: normal !important; text-shadow: none;  font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>New Inventory</b></a>
-						</div>
-					</div><!-- /grid-a -->
-					
-					<div class="ui-grid-a invt">
-						<div class="ui-block-a" style="padding: 0.7em;">
-							<a href="#stockLevels" data-role="button" data-theme="b" data-icon="eye" data-transition="none" style="font-weight: normal !important; text-shadow: none; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>View Stock Levels</b></a>
-						</div>
-						<div class="ui-block-b" style="padding: 0.7em;">
-							<a href="#setPricing" data-role="button" data-theme="b" data-icon="tag" data-transition="none" style="font-weight: normal !important; text-shadow: none; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>Set Pricing</b></a>
-						</div>
-					</div><!-- /grid-a -->
-					
-					<br>
-					
-					<div data-role="collapsible" data-theme="b" data-collapsed="false" data-collapsed-icon="carat-d" data-expanded-icon="carat-u" class="invtr">
+                    <br />
+                    <!--class="invtr"-->
+                    <div data-role="collapsible" data-theme="b" data-collapsed="false" data-collapsed-icon="carat-d" data-expanded-icon="carat-u">
 					
 						<h3 style="color: white; font-size: 1em !important; font-weight: 100 !important; text-shadow: none !important; text-align: center !important;">Current inventory listing <span class="ui-li-count ui-btn-corner-all"><strong class="total-unique-items">-</strong></span></h3>
 					
@@ -1880,6 +1864,24 @@
                         </div>
 						<br>
 					</div>
+                    
+					<div class="ui-grid-a invt" >
+						<div class="ui-block-a" style="padding: 0.7em;" >
+							<a href="#newInventory" data-role="button" data-theme="b" data-icon="plus" data-transition="none" style="font-weight: normal !important; text-shadow: none;  font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>New Item</b></a>
+						</div>
+						<div class="ui-block-b" style="padding: 0.7em;">
+							<a href="#restock" data-role="button" data-theme="b" data-icon="forward" data-transition="none" style="font-weight: normal !important; text-shadow: none;  font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>New Inventory</b></a>
+						</div>
+					</div><!-- /grid-a -->
+					
+					<div class="ui-grid-a invt">
+						<div class="ui-block-a" style="padding: 0.7em;">
+							<a href="#stockLevels" data-role="button" data-theme="b" data-icon="eye" data-transition="none" style="font-weight: normal !important; text-shadow: none; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>View Stock Levels</b></a>
+						</div>
+						<div class="ui-block-b" style="padding: 0.7em;">
+							<a href="#setPricing" data-role="button" data-theme="b" data-icon="tag" data-transition="none" style="font-weight: normal !important; text-shadow: none; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>Set Pricing</b></a>
+						</div>
+					</div><!-- /grid-a -->
 					
 					<div class="ui-grid-a invt">
 						<div class="ui-block-a" style="padding: 0.7em;">
