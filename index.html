@@ -12,7 +12,7 @@
 	<script src="js/iscroll.js" ></script>
 	<script src="js/jquery.mobile.iscrollview.js" ></script>
 	
-	<!--version 1.0.89-->
+	<!--version 1.0.90-->
 	<script src="js/app/amplify.min.js"></script>
 	<script src="js/app/md5.js"></script>
 	<script src="js/app/fastclick.js"></script>
@@ -1514,26 +1514,36 @@
                 </div>
                 <br>
                 
-				<div style="background-color: #43a2c4 !important; padding: 1em ; border-radius: 5px;">
-					<div >
-					<br>
-						
+				<div style="background-color: #43a2c4 !important; padding: 1em 1em 0 1em ; border-radius: 5px;">
 					<select name="supplier" id="supplier-select-box">
 						<option value="new">Add New Supplier</option>
 					</select>
 					<br>
-							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
-						<br>
+                    
+                    <div style="" data-role="collapsible" data-theme="b" data-content-theme="a" data-inset="false">
+                        <h5 style="font-weight: 100 !important;">New Supplier Form</h5>
+                        <div>
+					<br>
+						
 					<form method="post" action="" name="suppliers" id="suppliers-form">
 						<input type="hidden" name="key" id="key-field" value="" data-validate="text" />
-                        <label for="supplier-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Supplier Name:</label>
-						<input type="text" name="supplier" id="supplier-field" placeholder="Supplier Name" required data-validate="text" data-error-title="Invalid supplier" data-error-msg="Provide a valid Supplier Name" />
-						<br>
-                        <label for="location-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Supplier Location:</label>
-						<input type="text" name="location" id="location-field" placeholder="Supplier Location" required data-validate="text" data-error-title="Invalid Supplier Location" data-error-msg="Provide a valid supplier location" />
+                        
+						<div class="ui-grid-a invt">
+							<div class="ui-block-a" >
+                                <label for="supplier-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Supplier Name:</label>
+                                <input type="text" name="supplier" id="supplier-field" placeholder="Supplier Name" required data-validate="text" data-error-title="Invalid supplier" data-error-msg="Provide a valid Supplier Name" />
+                            </div>
+							
+							<div class="ui-block-b" >
+                                <label for="location-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Supplier Location:</label>
+                                <input type="text" name="location" id="location-field" placeholder="Supplier Location" required data-validate="text" data-error-title="Invalid Supplier Location" data-error-msg="Provide a valid supplier location" />
+                            </div>
+						</div>
+                        
 						<br>
 							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
 						<br>
+                        
 						<div class="ui-grid-a invt">
 							<div class="ui-block-a" ><input type="tel" name="mobile" id="mobile-field" data-validate="tel" placeholder="Mobile" protocol="tel:"></div>
 							
@@ -1553,6 +1563,7 @@
 					</form>
 					<br>
 					
+					</div>
 					</div>
 					
 					
@@ -3022,8 +3033,10 @@
                     <a href="#" class="update-server-button ui-btn ui-shadow ui-corner-all ui-icon-forward ui-btn-icon-notext">Update Server</a>
                 </div>
                 <br>
-				<div style="background-color: #43a2c4 !important; padding: 1em ; border-radius: 5px;">
-					<div>
+				<div style="background-color: #43a2c4 !important; padding: 0 1em ; border-radius: 5px;">
+					<div style="" data-role="collapsible" data-theme="b" data-content-theme="a" data-inset="false">
+                    <h5 style="font-weight: 100 !important;">Capture Expenses</h5>
+                    <div>
 					
                     <br>
 					<form method="post" action="" name="expenses" id="expenses-form">
@@ -3078,6 +3091,7 @@
 					<br>
 					
 				</div>
+				</div>
 			</div>
 				
             <br><br>
@@ -3130,15 +3144,16 @@
         </div>
         <br>
         
-        <div style="background-color: #43a2c4 !important; padding: 1em ; border-radius: 5px;">
-            <div >
-            <br>
-                
+        <div style="background-color: #43a2c4 !important; padding: 1em 1em 0 1em; border-radius: 5px;">
             <select name="customers" id="customers-select-box">
                 <option value="new">Add New Customer</option>
             </select>
             <br>
-                <p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+            <div style="" data-role="collapsible" data-theme="b" data-content-theme="a" data-inset="false">
+                <h5 style="font-weight: 100 !important;">New Customer Form</h5>
+                <div>
+            <br>
+            
             <br>
             <form method="post" action="" name="customers" id="customers-form">
                 <input type="hidden" name="key" id="key-field" value="" data-validate="text" />
@@ -3170,6 +3185,7 @@
             </form>
             <br>
             
+            </div>
             </div>
         </div>
         
