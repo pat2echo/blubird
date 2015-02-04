@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html> <!--manifest="manifest1420990250.appcache"<html manifest="manifest1420990250.appcache">-->
+<html>
+<!--<html manifest="manifest142099025012345.appcache">-->
 <head>
 	<title>Blubird</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,7 +12,7 @@
 	<script src="js/iscroll.js" ></script>
 	<script src="js/jquery.mobile.iscrollview.js" ></script>
 	
-	<!--version 1.0.87-->
+	<!--version 1.0.89-->
 	<script src="js/app/amplify.min.js"></script>
 	<script src="js/app/md5.js"></script>
 	<script src="js/app/fastclick.js"></script>
@@ -19,6 +20,7 @@
 	<script src="js/app/jsAjax-processing-script.js"></script>
 	<!-- ./commit -->
 	
+	<!--<script type="text/javascript" src="cordova.js"></script>-->
 	<script type="text/javascript" src="cordova.js"></script>
 	
     <link rel="stylesheet" href="css/jquery.mobile-1.4.4.css" rel="stylesheet" type="text/css"/>
@@ -38,7 +40,14 @@
 		color: #eee;
 	}
 
-		
+		hr{
+            background-color: rgba(0,0,0,.175);
+            color: rgba(0,0,0,.175);
+            border: none;
+            height: 1px;
+            margin-top:20px;
+            margin-bottom:20px;
+        }
 		.products .ui-content {
 		overflow: scroll !important;
 			padding:0 0 0 2em; /* 9px */
@@ -48,9 +57,10 @@
 			position: relative;
 			display: inline-table;
 			float:left;
-			width: 8em !important; /* 33.3333% incl. 2 x 1.2% margin */
-			height: 11em; /* 232p */
-			margin: 0.5em;
+			margin-right: 2%;
+            width: 23%;
+            margin-top: 2%;
+			height: 11em;
 		}
 		.products .ui-listview li > .ui-btn {
 			-webkit-box-sizing: border-box; /* include padding and border in height so we can set it to 100% */
@@ -211,11 +221,41 @@
         border-color: #ddd;
         color: #555;
     }
+    .controlgroup-textinput{
+        padding-top:0;
+        padding-bottom:0;
+    }
+    .ui-controlgroup-controls{
+        width:100%;
+    }
+    .controlgroup-textinput input[type="text"]{
+        font-size:1.04em !important;
+    }
+    
+    .ui-controlgroup-controls .controlgroup-textinput{
+        width:80%;
+    }
+    .ui-controlgroup-controls .ui-select{
+        width:10%;
+    }
+    
+    /*
+    @media (min-width: 768px) and (max-width: 979px) {
+    @media (min-width: 481px) and (max-width: 667px) {
+    @media (max-width: 480px) {
+    @media (max-width: 1025px) {
+    */
+    #filter-item-field-button > span{
+        width:100%;
+        min-width:4px !important;
+        overflow:hidden;
+        text-overflow:ellipsis;
+        white-space:nowrap;
+    }
 	</style>
 	
 </head>
 <body>
-
 
 <div data-role="panel" id="menupanel" data-position="left" data-display="overlay" data-theme="b" style="background-color: #fff;  ">
 
@@ -224,12 +264,12 @@
             <li class="lidec"><a class="ui-btn ui-icon-home ui-btn-icon-left" href="#dashboard" data-transition="none"><b>Dashboard</b></a></li>
             <li  class="lidec"><a class="ui-btn ui-icon-info ui-btn-icon-left" href="#inventory"data-transition="none"><b>Inventory</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
             <li class="lidec"><a class="ui-btn ui-icon-shop ui-btn-icon-left" href="#sales" data-transition="none"><b>Sales</b></a></li>
-            <li class="lidec"><a class="ui-btn ui-icon-calendar ui-btn-icon-left" href="#records"data-transition="none"><b>Records</b></a></li>
+            <li class="lidec"><a class="ui-btn ui-icon-calendar ui-btn-icon-left" href="#all-records"data-transition="none"><b>Records</b></a></li>
             <li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier" data-transition="none"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
             <li class="lidec"><a class="ui-btn ui-icon-action ui-btn-icon-left" href="#expenses" data-transition="none"><b>Expenses</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
             <li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#customers" data-transition="none"><b>Customers</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
             <li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notifications" data-transition="none"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
-            <li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" data-transition="none" href="#settings" data-transition="none"><b>Settings</b></a></li>
+            <li class="lidec"><a class="ui-btn ui-icon-gear ui-btn-icon-left" data-transition="none" href="#settings" data-transition="none"><b>Settings</b></a></li>
     
         </ul>
     <div>
@@ -237,23 +277,13 @@
     </div>
 </div>
 
-
-
 <div data-role="page" id="dashboard">
 	<div data-role="header" id="hd" data-position="fixed" data-tap-toggle="false" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  >
 		
 		<a href="#menupanel" data-rel="panel" class="open-panel ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
 		<a href="#" rel="external" class="app-refresh-button ui-btn ui-shadow ui-corner-all ui-icon-recycle ui-btn-icon-notext">Refresh</a>
         
-		<h1>Dashboard</h1>
-		<div class="notifications-container hidden" data-role="navbar" data-mini="true">
-			<ul>
-				<li><a href="#notifications" data-transition="none">
-				<marquee class="rbto notifications-count-with-notifications" behavior="scroll" scrollamount="3" direction="left" > 
-				</marquee>
-				</a></li>
-			</ul>
-        </div><!-- /navbar -->
+		<h1 class="notifications-title" default-title="Dashboard">Dashboard</h1>
             
 	</div><!-- /header -->
     <div class="progress-bar-container"></div>
@@ -263,12 +293,11 @@
                     <a href="#" class="update-server-button ui-btn ui-shadow ui-corner-all ui-icon-forward ui-btn-icon-notext">Update Server</a>
                 </div>
                 
-                <div class="ui-grid-a currently-active-store-container hidden" >
+                <div class="ui-grid-a currently-active-store-container hidden">
                     <select class="currently-active-store" data-mini="true">
                         <option></option>
                     </select>
                 </div>
-				<br /><br />
                 <div class="ui-grid-a dash" >
                     <div class="ui-block-a">
                         <div class="panl">
@@ -465,21 +494,87 @@
 		
 	</div><!-- /page -->	
 
-<div data-role="page" id="records">
-	<div data-role="header" id="hd" data-theme="b" style="height: 4em;">
-		
+<div data-role="page" id="all-records">
+	
+	<div data-role="header" data-theme="b" data-tap-toggle="false"  data-position="fixed" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);">	
 		<a href="#menupanel" data-rel="panel" class="open-panel ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
 		
-        <h1>Records</h1>
-		<div class="notifications-container hidden" data-role="navbar" data-mini="true">
-			<ul>
-				<li>
-                    <a href="#notifications" data-transition="none">
-                        <marquee class="rbto notifications-count-with-notifications" behavior="scroll" scrollamount="3" direction="left" > </marquee>
-                    </a>
-                </li>
-			</ul>
-        </div><!-- /navbar -->
+        <h1 class="notifications-title" default-title="All Records">All Records</h1>
+            
+	</div><!-- /header -->
+    <div class="progress-bar-container"></div>
+		
+	<div data-role="content" style="background-color: #f1f1f1;">
+		<div style="background-color: #43a2c4 !important; border-radius: 5px; padding: 1em;">
+        <div class="ui-grid-a currently-active-store-container hidden" >
+            <select class="currently-active-store" data-mini="true">
+                <option></option>
+            </select>
+            <br>
+        </div>
+        <table data-role="table" id="all-records-summary-table" data-mode="columntoggle" class="ui-responsive table-stroke">
+     <thead>
+       <tr>
+         <th width="25%"> </th>
+         <th data-priority="1">Sales</th>
+         <th data-priority="2">Expenses</th>
+         <th data-priority="3">Stock</th>
+         <th data-priority="4">Damages</th>
+       </tr>
+     </thead>
+     <tbody>
+       <tr class="total-row" id="today-records">
+         <th class="custom-button" data-format="today"><a class="ui-icon-carat-d">Today</a></th>
+         <td id="today-records-sales-total"> - </td>
+         <td id="today-records-expenses-total"> - </td>
+         <td id="today-records-stock-total"> - </td>
+         <td id="today-records-damages-total"> - </td>
+       </tr>
+       
+       <tr class="total-row" id="last24hours-records">
+         <th class="custom-button" data-format="last24hours"><a class="ui-icon-carat-d">24 hours ago</a></th>
+         <td id="last24hours-records-sales-total"> - </td>
+         <td id="last24hours-records-expenses-total"> - </td>
+         <td id="last24hours-records-stock-total"> - </td>
+         <td id="last24hours-records-damages-total"> - </td>
+       </tr>
+       <tr class="total-row" id="last7days-records">
+         <th class="custom-button" data-format="last7days"><a class="ui-icon-carat-d">Last seven days</a></th>
+         <td id="last7days-records-sales-total"> - </td>
+         <td id="last7days-records-expenses-total"> - </td>
+         <td id="last7days-records-stock-total"> - </td>
+         <td id="last7days-records-damages-total"> - </td>
+       </tr>
+       <tr class="total-row" id="thismonth-records">
+         <th class="custom-button" data-format="thismonth"><a class="ui-icon-carat-d">This month</a></th>
+         <td id="thismonth-records-sales-total"> - </td>
+         <td id="thismonth-records-expenses-total"> - </td>
+         <td id="thismonth-records-stock-total"> - </td>
+         <td id="thismonth-records-damages-total"> - </td>
+       </tr>
+       <tr class="total-row" id="thisyear-records">
+         <th class="custom-button" data-format="thisyear"><a class="ui-icon-carat-d">This year</a></th>
+         <td id="thisyear-records-sales-total"> - </td>
+         <td id="thisyear-records-expenses-total"> - </td>
+         <td id="thisyear-records-stock-total"> - </td>
+         <td id="thisyear-records-damages-total"> - </td>
+       </tr>
+     </tbody>
+   </table>
+   </div>
+   
+        <br />
+        <br />
+	</div>
+
+</div><!--./records-page-->
+
+<div data-role="page" id="records">
+	
+	<div data-role="header" data-theme="b" data-tap-toggle="false"  data-position="fixed" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);">	
+		<a href="#menupanel" data-rel="panel" class="open-panel ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
+		
+        <h1 class="notifications-title" default-title="Records">Records</h1>
             
 	</div><!-- /header -->
     <div class="progress-bar-container"></div>
@@ -511,7 +606,6 @@
 				}
 			</style>
 			
-			  
 			  <style type="text/css">	
 					#sales-record-pop-container td:nth-child(1),
 					#sales-record-pop-container td:nth-child(2){
@@ -619,8 +713,7 @@
                 </div>
             </div>
             
-                
-				<div style="  border-radius: 8px; ">
+			<div style="border-radius: 8px; ">
 			
 			<div data-role="popup" id="popupRecords" class="ui-content" style="max-width:280px" >
 				<table data-role="table" id="table-column-toggle" data-mode="" class="ui-responsive ">
@@ -675,7 +768,6 @@
 			</div>
             
 			</div>
-			 
 			
 	</div>
 
@@ -709,24 +801,14 @@
 							
 							<input type="password" name="cpassword" id="cpassword-field" placeholder="Confirm Password" required data-validate="confirm-password" data-error-title="Non-matching Password" data-error-msg="Passwords must match" />
 							
+                            <label>
+                                <input type="checkbox" name="checkbox-1a" id="checkbox-1a" checked="" style="height: 2em;">
+                                I agree to the <a href="#privacy-policy" style="text-decoration: none;">Terms of Service</a>
+                            </label>
+                                
 							<br>
-							
-							<div class="panl3">
-								<div class="ui-grid-a">
-									<div class="ui-block-a" style="width: 15%; height: 2em;">
-										<input type="checkbox" name="checkbox-1a" id="checkbox-1a" checked="" style="height: 2em;">
-									</div>
-									
-									<div class="ui-block-b" style="width: 85%; float: left; font-size: 1em; padding-top: 0.7em;">
-										I agree to the <a href="policy.pdf" style="text-decoration: none;">Terms of Service</a>
-									</div>
-								</div>
-								<input type="submit" value="Sign Up" data-theme="b" />
-							</div>
-							
-							
+							<input type="submit" value="Sign Up" data-theme="b" />
 							<br>
-							
 							
 							<label style="text-align:center;">Already have an account?</label>
 							<a href="#login" data-theme="c" data-transition="none" data-role="button">Login</a>
@@ -817,21 +899,13 @@
 		
 		<div data-role="header" id="hd" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);" >
             <a href="#inventory" data-transition="none" class="upload-queue ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext">Menu</a>
-			<h1 >Set Pricing</h1>
-		<div class="notifications-container hidden" data-role="navbar" data-mini="true">
-			<ul>
-				<li><a href="#notifications" data-transition="none">
-				<marquee class="rbto notifications-count-with-notifications" behavior="scroll" scrollamount="3" direction="left" > 
-				</marquee>
-				</a></li>
-			</ul>
-        </div><!-- /navbar -->
-            
+			<h1 class="notifications-title" default-title="Set Pricing">Set Pricing</h1>
+		
 	</div><!-- /header -->
     <div class="progress-bar-container"></div>
     
 	<div data-role="content" style="background-color: #f1f1f1; ">
-				<br>
+				
 				<div style="background-color: #43a2c4 !important; border-radius: 5px; ">
 					<div style="padding: 1em 1em 0em 1em;">
 					
@@ -839,28 +913,36 @@
                         <select class="currently-active-store" data-mini="true">
                             <option></option>
                         </select>
+                        <br />
                     </div>
                     
-					<div class="ui-grid-a invt">
-							<div class="ui-block-a">
-								<select id="filter-category-field" >
-									<option value="" style="text-shadow: none !important;">Select Category</option>
-								</select>
-							</div>
-						
-							<div class="ui-block-b">
-								
-								<select id="filter-item-field" >
-									<option style="text-shadow: none !important;">Select Item</option>
-								</select>
-								
-							</div>
-						
-						</div>
+					<div class="ui-grid-a invt" >
+                        <div class="ui-block-a" style="padding:0 0.7em 0 0;" id="search-item-desc-barcode">
+                            <div data-filter="true" data-filter-placeholder="Scan/Search Product" >
+                                
+                            </div>
+                        </div>
+                    
+                        <div class="ui-block-b" style="padding:0;">
+                            <div class="ui-grid-a invt" >
+                                <div class="ui-block-a" style="padding:0;">
+                                    <select id="filter-category-field">
+                                        <option value="" style="text-shadow: none !important;">All Categories</option>
+                                    </select>
+                                </div>
+                                <div class="ui-block-b" style="padding:0 0 0 0.7em;">
+                                    <select id="filter-item-field">
+                                        <option style="text-shadow: none !important;"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    
+                    </div>
 						<br>
 							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
 						<br>
-						<div style="margin-left: 0.3125em; margin-right: 0.3125em;">
+						<div >
                         <table data-role="table1" id="setpricing-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table  ui-table ui-table-columntoggle">
                           <thead>
                             <tr>
@@ -879,20 +961,16 @@
                 
 					<br>
 						
-					<br>
 					</div>
-				
-				
-				
 				
 				</div>
 				<br>
 				<div class="ui-grid-a invt" >
-					<div class="ui-block-a" >
+					<div class="ui-block-a" style="padding: 0 0.35em 0 0;">
 						<button href="#" data-role="button" data-theme="a" data-icon="arrow-r" style=" background-color:#d11141;  border: green; text-shadow: none; color: white !important;" id="set-inventory-pricing-discard-changes"><b>Discard Changes</b></button>
 					</div>
 					
-					<div class="ui-block-b">
+					<div class="ui-block-b" style="padding: 0 0 0 0.35em;">
 						<button id="set-inventory-pricing-1" href="#" data-role="button" data-theme="a" data-icon="arrow-r" style=" background-color:green; border: green; text-shadow: none; color: white !important;" ><b>Finish</b></button>
 					</div>
 				</div>
@@ -903,19 +981,88 @@
 			</div>
 		</div>
 	
+<div data-role="page" id="refunds" >
+		
+		<div data-role="header" id="hd" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);" >
+            <a href="#inventory" data-transition="none" class="upload-queue ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext">Menu</a>
+			<h1 class="notifications-title" default-title="Returns / Refunds">Returns / Refunds</h1>
+		
+	</div><!-- /header -->
+    <div class="progress-bar-container"></div>
+    
+	<div data-role="content" style="background-color: #f1f1f1; ">
+				
+				<div style="background-color: #43a2c4 !important; border-radius: 5px; ">
+					<div style="padding: 1em 1em 1em 1em;">
+					
+                    <div class="ui-grid-a currently-active-store-container hidden">
+                        <select class="currently-active-store" data-mini="true">
+                            <option></option>
+                        </select>
+                        <br />
+                    </div>
+                            
+                    <div class="ui-grid-a invt">
+						<div class="ui-block-a" style="padding: 0 0.35em 0 0;">
+							<label style="font-family: 'Roboto Thin'; color:#fff; font-size: 1.5em; margin:0;" id="date-filter-field-label"></label>
+						</div>
+						<div class="ui-block-b" style="padding: 0 0 0 0.35em; ">
+							<label style="float:right; font-family: 'Roboto Thin'; color:#fff; font-size: 1.5em; margin:0;" id="total-value-filter-field-label">0.00</label>
+						</div>
+					</div><!-- /grid-a -->
+                    
+					<div class="ui-grid-a invt" >
+                        <div class="ui-block-a" style="padding:0 0.7em 0 0;" id="search-item-desc-barcode">
+                            <input type="date" id="date-select-filter" />
+                        </div>
+                        
+                        <div class="ui-block-b" style="padding:0;">
+                            <div class="ui-grid-a invt" >
+                                <div class="ui-block-a" style="padding:0;">
+                                    
+                                    <div data-filter="true" data-filter-placeholder="Search by ID">
+                                        
+                                    </div>
+                                </div>
+                                <div class="ui-block-b" style="padding:0 0 0 0.7em;">
+                                    
+                                    <select id="filter-return-refund-type">
+                                        <option value="sales">Sales Refunds</option>
+                                        <option value="stock">Supplied Stock Returns</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    
+                    </div>
+						
+					</div>
+				
+				</div>
+				
+			</div>
+            <style type="text/css">
+                table.custom-more-details{
+                    width:100%;
+                }
+                table.custom-more-details tr td{
+                    padding:1em;
+                }
+            </style>
+            <div style="margin:0 0.36em;">
+            <div id="refunds-container" data-role="collapsible-set" data-theme="b" data-content-theme="a" data-collapsed-icon="carat-d" data-expanded-icon="carat-u" >
+                
+            </div>
+            </div>
+
+            
+		</div>
+	
 <div data-role="page" id="newInventory">
 		
 		<div data-role="header" data-theme="b"  data-position="fixed" data-toggle="false" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);" >
-				<a href="#inventory" class="upload-queue ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
-				<h1 >New Item</h1>
-		<div class="notifications-container hidden" data-role="navbar" data-mini="true">
-			<ul>
-				<li><a href="#notifications" data-transition="none">
-				<marquee class="rbto notifications-count-with-notifications" behavior="scroll" scrollamount="3" direction="left" > 
-				</marquee>
-				</a></li>
-			</ul>
-        </div><!-- /navbar -->
+            <a href="#inventory" class="upload-queue ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
+            <h1>New Item</h1>
             
 		</div><!-- /header -->
     
@@ -923,96 +1070,76 @@
 
 		<div data-role="content" style="background: #f1f1f1; ">
 			<br>
-			<br>
 			<div style="background-color: #43a2c4 !important; border-radius: 5px; padding: 1em;">
 					
-						
-						
-						<form id="inventory-form" name="inventory" method="post" action="">
-						<input type="hidden" name="key" id="key-field" value="" />
-						
-						
-						
-									<label for="item_desc-field" style=" text-shadow: none; font-size: 1.5em; color: white; padding-top: 0.8em;">Item Description</label>
-							
-									<input type="text" name="item_desc" id="item_desc-field" placeholder="e.g Coca Cola - 35cl" required data-validate="text" data-error-title="Invalid Item Description" data-error-msg="Please provide a valid item description"/>
-							
-						
-							<br>
-								<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
-                            <br>	
-						<div class="ui-grid-a invt" >
-							<div class="ui-block-a">
-								
-									<select id="item-select-field" >
-										<option style="text-shadow: none !important;">--Select Item--</option>
-									</select>
-								
-							</div>
-						
-							<div class="ui-block-b">
-								
-								<select name="category" id="category-field" placeholder="Category" required data-validate="text" data-error-title="Invalid Category" data-error-msg="Please provide a valid category" >
-									<option value="" style="text-shadow: none !important;">--Select Category--</option>
-								</select>
-								
-							</div>
-						
-						</div>
-						<div style="margin-left: 0.3125em; margin-right: 0.3125em;">
-						<br>
-						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
-						<br>
+                <form id="inventory-form" name="inventory" method="post" action="">
+                <input type="hidden" name="key" id="key-field" value="" />
+                
+                    <label for="item_desc-field" style=" text-shadow: none; font-size: 1.5em; color: white;">Description of New Item</label>
+                    
+                    <input type="text" name="item_desc" id="item_desc-field" placeholder="e.g Coca Cola - 35cl" required data-validate="text" data-error-title="Invalid Item Description" data-error-msg="Please provide a valid item description"/>
+                
+                <hr />
+                <div class="ui-grid-a invt" >
+                    <div class="ui-block-a" style="padding:0 0.7em 0 0;">
+                        <label for="item-select-field" style=" text-shadow: none; font-size: 1.5em; color: white;">Select an Item to Edit</label>
+                        <select id="item-select-field" >
+                            <option style="text-shadow: none !important;">- Select Item -</option>
+                        </select>
+                    </div>
+                
+                    <div class="ui-block-b" style="padding:0;">
+                        <div class="ui-grid-a invt" >
+                            <div class="ui-block-a" style="padding:0;">
+                                <label for="category-field" style=" text-shadow: none; font-size: 1.5em; color: white;">Select Category</label>
+                                <select name="category" id="category-field" placeholder="Category" required data-validate="text" data-error-title="Invalid Category" data-error-msg="Please provide a valid category" >
+                                    <option value="" style="text-shadow: none !important;">- Select Category -</option>
+                                </select>
+                            </div>
+                            <div class="ui-block-b" style="padding:0 0 0 0.7em;">
+                                <label style=" text-shadow: none; font-size: 1.5em; color: white;">&nbsp;</label>
+                                <a href="#mngcategory" data-role="button" data-theme="a" data-icon="tag" data-transition="none" style="font-weight: normal !important; text-shadow: none; padding: 0.7em; font-size: 2em; font-family: Roboto Thin;"><b>Manage Categories</b></a>
+                            </div>
                         </div>
-						<div class="ui-grid-a invt">
-							<div class="ui-block-a">
-								<input type="text"  name="item_barcode" id="item_barcode-field" placeholder=""  required data-validate="barcode" data-error-title="Invalid Barcode" data-error-msg="Please provide a valid barcode, barcodes cannot begin with zero(0)" />
-                                
-							</div>
-							<div class="ui-block-b" >
-								<div style="margin-left:0.3125em; margin-right:0.3125em; ">
-                                    
-									<a href="#" class="button-scan" data-role="button" data-theme="c" data-icon="camera"  style="background-color:green; border: none; text-shadow: none; color: white !important; " >Scan Barcode</a>
-									
-									
-                                </div>
-							</div>
-						</div>
-                        <div style="margin-left: 0.3125em; margin-right: 0.3125em;">
-						<br>
-						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
-						<br>
-                        </div>
-						<div class="ui-grid-a invt">
-							<div class="ui-block-a" >
-								
-							<p style="text-align: center;"><img src="icon.png" id="myImage" style="horizontal-align: middle; max-width:120px; max-height:120px;"></p>
-							</div>
-						
-							<div class="ui-block-b" >
-								<a href="#" id="capture-image-button" data-role="button" data-theme="c" data-icon="camera"  style="background-color:green; border: none; text-shadow: none; color: white !important; " >Take Picture</a>
-							</div>
-						</div>
+                    </div>
+                </div>
+                <hr />
+                <div class="ui-grid-a invt">
+                    <div class="ui-block-a" style="padding:0 0.35em 0 0;">
+                        <input type="text"  name="item_barcode" id="item_barcode-field" placeholder="Item Barcode"  required data-validate="barcode" data-error-title="Invalid Barcode" data-error-msg="Please provide a valid barcode, barcodes cannot begin with zero(0)" />
                         
-							<br>
-								<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
-                            <br>
-							
-                            <input type="hidden" name="item_image" id="item_image-field" placeholder="Item Image" />
-                            
-                            <input type="hidden" name="image" id="image-field" placeholder="Image" />
-                            
-                            <br />
-                            
-                            
-                            <input type="submit" data-theme="c" data-icon="check" value="Save Item" />
-                            
-                            <br>
-                       
+                    </div>
+                    <div class="ui-block-b" style="padding:0 0 0 0.35em;">
+                        <a href="#" class="button-scan" data-role="button" data-theme="c" data-icon="camera"  style="background-color:green; border: none; text-shadow: none; color: white !important; " >Scan Barcode</a>
+                    </div>
+                </div>
+                <hr />
+                <div class="ui-grid-a invt">
+                    <div class="ui-block-a" >
                         
-                        </form>
+                    <p style="text-align: center;"><img src="icon.png" id="myImage" style="horizontal-align: middle; max-width:120px; height:90px;"></p>
+                    </div>
+                
+                    <div class="ui-block-b" >
+                        <a href="#" id="capture-image-button" data-role="button" data-theme="c" data-icon="camera"  style="background-color:green; border: none; text-shadow: none; color: white !important; " >Take Picture</a>
                         
-						<br>
+                        <label>
+                            <input type="checkbox" name="item_stock_type" id="item_stock_type-field" data-validate="text" data-mini="true" value="on"/>Infinite Item (this item will always be in-stock e.g services / food items)
+                        </label>
+                    </div>
+                </div>
+                
+                    <hr />
+                    
+                    <input type="hidden" name="item_image" id="item_image-field" placeholder="Item Image" />
+                    
+                    <input type="hidden" name="image" id="image-field" placeholder="Image" />
+                    
+                    <input type="submit" data-theme="c" data-icon="check" value="Save Item" />
+                    
+                
+                </form>
+                
 						
 			</div>
 			<br>
@@ -1038,10 +1165,7 @@
             </div>          
 							
 		</div>
-				<br>
-				
-	
-
+		<br>
 		<div data-role="footer" >
 			
 		</div><!-- /footer -->
@@ -1050,17 +1174,10 @@
 
 <div data-role="page" id="damages">
 		
-		<div data-role="header" data-theme="b"  data-position="fixed" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);" >
-				<a href="#inventory" class="upload-queue ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
-				<h1>Damages</h1>
-		<div class="notifications-container hidden" data-role="navbar" data-mini="true">
-			<ul>
-				<li><a href="#notifications" data-transition="none">
-				<marquee class="rbto notifications-count-with-notifications" behavior="scroll" scrollamount="3" direction="left" > 
-				</marquee>
-				</a></li>
-			</ul>
-        </div><!-- /navbar -->
+	<div data-role="header" data-theme="b"  data-position="fixed" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);" >
+        <a href="#inventory" class="upload-queue ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
+        <h1 class="notifications-title" default-title="Damages">Damages</h1>
+        <a href="#" class="button-scan ui-btn ui-shadow ui-corner-all ui-icon-camera ui-btn-icon-notext">Scan</a>
             
 	</div><!-- /header -->
     <div class="progress-bar-container"></div>
@@ -1070,77 +1187,87 @@
                 <a href="#" class="update-server-button ui-btn ui-shadow ui-corner-all ui-icon-forward ui-btn-icon-notext">Update Server</a>
             </div>
             
-            <br>
-            
-            <div style="background-color: #43a2c4 !important; border-radius: 5px; ">
-                <form method="post" action="" name="damages" id="damages-form">
-                    <input type="hidden" name="key" id="key-field" value="" data-validate="text" />
-					<div style="padding: 0.5em 1em 0em 1em;">
-						<div class="ui-grid-a invt">
-							<div class="ui-block-a">
-                                <select id="filter-category-field" >
-									<option value="" style="text-shadow: none !important;">All Categories</option>
-								</select>
-							</div>
-						
-							<div class="ui-block-b">
-                                <select name="item_barcode" id="item_barcode-field" required data-validate="text" data-error-title="Invalid Item" data-error-msg="Please select a valid item">
-                                    <option style="text-shadow: none !important;">--Select Item--</option>
+            <div style="background-color: #43a2c4 !important; border-radius: 5px; padding:0.5em 1em;">
+				       
+                <div class="ui-grid-a invt" >
+                    <div class="ui-block-a" style="padding:0 0.7em 0 0;" id="search-item-desc-barcode">
+                        <div data-filter="true" data-filter-placeholder="Scan/Search Product" >
+                            
+                        </div>
+                    </div>
+                
+                    <div class="ui-block-b" style="padding:0;">
+                        <div class="ui-grid-a invt" >
+                            <div class="ui-block-a" style="padding:0;">
+                                <select id="filter-category-field">
+                                    <option value="" style="text-shadow: none !important;">All Categories</option>
                                 </select>
-							</div>
-						
-						</div>
-						
-						<div class="ui-grid-a invt">
-							<div class="ui-block-a" >
-                                <input type="text"  name="item_barcode_tmp" id="item_barcode_tmp-field" placeholder="Item Barcode"  required data-validate="barcode" data-error-title="Invalid Barcode" data-error-msg="Please provide a valid barcode, barcodes cannot begin with zero(0)" class="item-search-field" />
-							</div>
-						
-							<div class="ui-block-b" >
-								<a href="#" class="button-scan" data-role="button" data-theme="c" data-icon="camera"  style="margin-top:8px; background-color:green; border: none; text-shadow: none; color: white !important; " >Scan Barcode</a>
-							</div>
-						
-						</div>
-						
-						<div class="ui-grid-a invt">
-							<div class="ui-block-a">
-								<label for="store_name-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Store:</label>
-                                
-								 <select name="store_name" id="store_name-field" placeholder="Select Store" required data-validate="text" data-error-title="Invalid Store" data-error-msg="Please select a store" class="currently-active-store">
-									
-								 </select>
-
-							</div>
-						
-							<div class="ui-block-b">
-                                <label for="damage_qty-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Qty damaged:</label>
-                                <input type="number" min="0" step="1" name="damage_qty" id="damage_qty-field" placeholder="Quantity of Items Damaged" required data-validate="number" data-error-title="Invalid Quantity of Items Damaged" data-error-msg="Please provide a valid quantity of items damaged" />
-							</div>
-						
-						</div>
-						
-                        <div class="ui-grid-a invt">
-							<div class="ui-block-a">
-								<label for="item_qty-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Nature of damage:</label>
-								<input type="text"  name="damage_desc" id="damage_desc-field" placeholder="Description of Damages" maxlength="200" />
-							</div>
-							<div class="ui-block-b">
-								<label for="date-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Date:</label>
-								<input type="date" name="date" id="date-field" value="" data-validate="date" data-error-title="Invalid Date" data-error-msg="Please provide a valid date" />
-							</div>
-						</div>
-                        
-						
-						<br>
-						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
-						<br>
-						<input type="submit" data-icon="check" data-theme="c" value="Save Damage Report" />
-                        
-						<br>
-					</div>
-				</form>
+                            </div>
+                            <div class="ui-block-b" style="padding:0 0 0 0.7em;">
+                                <select id="filter-item-field">
+                                    <option style="text-shadow: none !important;"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                
+                </div>
 			</div>
-			<br><br>
+            <!-- ./collapsible -->
+            <br />
+            <div data-role="collapsible" data-theme="b" data-collapsed="true" data-collapsed-icon="carat-d" data-expanded-icon="carat-u" style="margin:0;">
+                <h3 style="color: white; font-size: 1em !important; font-weight: 100 !important; text-shadow: none !important; text-align: center !important;">Report Damage</h3>
+                
+                    <form method="post" action="" name="damages" id="damages-form">
+                        <input type="hidden" name="key" id="key-field" value="" data-validate="text" />
+                        
+                            <select name="item_barcode" id="item_barcode-field" required data-validate="text" data-error-title="Invalid Item" data-error-msg="Please select a valid item">
+                                <option style="text-shadow: none !important;">- Select Item -</option>
+                            </select>
+                            
+                            <br >
+                            <div class="ui-grid-a invt">
+                                <div class="ui-block-a" style="padding:0 0.35em 0 0;">
+                                    <label for="store_name-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Store:</label>
+                                    
+                                     <select name="store_name" id="store_name-field" placeholder="Select Store" required data-validate="text" data-error-title="Invalid Store" data-error-msg="Please select a store" class="currently-active-store">
+                                        
+                                     </select>
+
+                                </div>
+                            
+                                <div class="ui-block-b" style="padding:0 0 0 0.35em;">
+                                    <label for="damage_qty-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Qty damaged:</label>
+                                    <input type="number" min="0" step="1" name="damage_qty" id="damage_qty-field" placeholder="Quantity of Items Damaged" required data-validate="number" data-error-title="Invalid Quantity of Items Damaged" data-error-msg="Please provide a valid quantity of items damaged" />
+                                </div>
+                            
+                            </div>
+                            <br >
+                            <div class="ui-grid-a invt">
+                                <div class="ui-block-a" style="padding:0 0.35em 0 0;">
+                                    <label for="item_qty-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Nature of damage:</label>
+                                    <input type="text"  name="damage_desc" id="damage_desc-field" placeholder="Description of Damages" maxlength="200" />
+                                </div>
+                                <div class="ui-block-b" style="padding:0 0 0 0.35em;">
+                                    <label for="date-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Date Occurred:</label>
+                                    <input type="date" name="date" id="date-field" value="" data-validate="date" data-error-title="Invalid Date" data-error-msg="Please provide a valid date" />
+                                </div>
+                            </div>
+                            
+                            
+                            <br>
+                            <p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+                            <br>
+                            <input type="submit" data-icon="check" data-theme="c" value="Save Damage Report" />
+                            
+                            <br>
+                        
+                    </form>
+                
+            </div>
+            <!-- ./collapsible -->
+            
+			<br>
                 <div style="background-color: #43a2c4 !important; padding: 1em ; border-radius: 5px;">
                     <span class="df" style="font-size: 1.5em; color: white; text-shadow: none !important; "> Recently Reported Damages &darr;</span>
                         <br>
@@ -1152,7 +1279,7 @@
                               <th data-priority="1" data-colstart="1" class="ui-table-priority-1">Item Desc</th>
                               <th data-colstart="2" data-priority="3" class="ui-table-priority-3">Description of Damages</th>
                               <th data-colstart="3" data-priority="2" class="ui-table-priority-2">Qty</th>
-                              <th data-colstart="4" data-priority="4" class="ui-table-priority-4">Date</th>
+                              <th data-colstart="4" data-priority="4" class="ui-table-priority-4">Reported On</th>
                             </tr>
                           </thead>
                           <tbody id="damages-list-container">
@@ -1179,15 +1306,8 @@
 		
     <div data-role="header" data-theme="b"  data-position="fixed" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);" >
         <a href="#inventory" class="upload-queue ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
-        <h1>Transfer Stock</h1>
-		<div class="notifications-container hidden" data-role="navbar" data-mini="true">
-			<ul>
-				<li><a href="#notifications" data-transition="none">
-				<marquee class="rbto notifications-count-with-notifications" behavior="scroll" scrollamount="3" direction="left" > 
-				</marquee>
-				</a></li>
-			</ul>
-        </div><!-- /navbar -->
+        <h1 class="notifications-title" default-title="Transfer Stock">Transfer Stock</h1>
+		
 	</div><!-- /header -->
     
     <div class="progress-bar-container"></div>
@@ -1212,7 +1332,7 @@
 						
 							<div class="ui-block-b">
                                 <select name="item_barcode" id="item_barcode-field" required data-validate="text" data-error-title="Invalid Item" data-error-msg="Please select a valid item">
-                                    <option value="" style="text-shadow: none !important;">--Select Item--</option>
+                                    <option value="" style="text-shadow: none !important;">- Select Item -</option>
                                 </select>
 							</div>
 						
@@ -1300,22 +1420,14 @@
 <div data-role="page" id="stockLevels">
 		
 		<div data-role="header" id="hd" data-theme="b" style="height: 3.5em;">
-				<a href="#inventory" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
-				<h1 >Item Stock Levels</h1>
-		<div class="notifications-container hidden" data-role="navbar" data-mini="true">
-			<ul>
-				<li><a href="#notifications" data-transition="none">
-				<marquee class="rbto notifications-count-with-notifications" behavior="scroll" scrollamount="3" direction="left" > 
-				</marquee>
-				</a></li>
-			</ul>
-        </div><!-- /navbar -->
-            
+            <a href="#inventory" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
+            <h1 class="notifications-title" default-title="Item Stock Levels">Item Stock Levels</h1>
+		    
 	</div><!-- /header -->
     <div class="progress-bar-container"></div>
 		
 		<div data-role="content" style="background: #f1f1f1;">
-				<br><br>
+				
 				<div style="background-color: #43a2c4 !important; border-radius: 5px;">
 					<div style="padding: 1em 1em 0em 1em;">
                         
@@ -1324,26 +1436,34 @@
                         <select class="currently-active-store" data-mini="true">
                             <option></option>
                         </select>
+                        <br />
                     </div>
                     
-					<div class="ui-grid-a invt">
-                        <div class="ui-block-a">
-                            <select id="filter-category-field" >
-                                <option value="" style="text-shadow: none !important;">All Categories</option>
-                            </select>
+                    <div class="ui-grid-a invt" >
+                        <div class="ui-block-a" style="padding:0 0.7em 0 0;" id="search-item-desc-barcode">
+                            <div data-filter="true" data-filter-placeholder="Scan/Search Product" >
+                                
+                            </div>
                         </div>
                     
-                        <div class="ui-block-b">
-                            
-                            <select id="filter-item-field" >
-                                <option style="text-shadow: none !important;">Select Item</option>
-                            </select>
-                            
+                        <div class="ui-block-b" style="padding:0;">
+                            <div class="ui-grid-a invt" >
+                                <div class="ui-block-a" style="padding:0;">
+                                    <select id="filter-category-field">
+                                        <option value="" style="text-shadow: none !important;">All Categories</option>
+                                    </select>
+                                </div>
+                                <div class="ui-block-b" style="padding:0 0 0 0.7em;">
+                                    <select id="filter-item-field">
+                                        <option style="text-shadow: none !important;"></option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
+                    
                     </div>
-                    
-						<br>
-							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+                        <br>
+                        <p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
 						<br>
 						<div style="">
 						
@@ -1382,17 +1502,8 @@
 <div data-role="page" id="supplier">
 		
 		<div data-role="header" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  data-position="fixed">
-				<a href="#menupanel" data-rel="panel" class="open-panel ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
-					<h1 >Supplier</h1>
-		<div class="notifications-container hidden" data-role="navbar" data-mini="true">
-			<ul>
-				<li><a href="#notifications" data-transition="none">
-				<marquee class="rbto notifications-count-with-notifications" behavior="scroll" scrollamount="3" direction="left" > 
-				</marquee>
-				</a></li>
-			</ul>
-        </div><!-- /navbar -->
-            
+            <a href="#menupanel" data-rel="panel" class="open-panel ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
+            <h1 class="notifications-title" default-title="Supplier">Supplier</h1>
 	</div><!-- /header -->
     <div class="progress-bar-container"></div>
 		
@@ -1610,24 +1721,31 @@
 		
 		<div data-role="header" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);" >
 			<a href="#inventory" id="manage-inventory-back-button" class="upload-queue ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
-			<h1>New Inventory</h1>
-		<div class="notifications-container hidden" data-role="navbar" data-mini="true">
-			<ul>
-				<li><a href="#notifications" data-transition="none">
-				<marquee class="rbto notifications-count-with-notifications" behavior="scroll" scrollamount="3" direction="left" > 
-				</marquee>
-				</a></li>
-			</ul>
-        </div><!-- /navbar -->
+			<h1 class="notifications-title" default-title="New Inventory">New Inventory</h1>
             
 	</div><!-- /header -->
 		
 		<div class="progress-bar-container"></div>
 
 		<div data-role="content" style="background-color: #f1f1f1;">
-				<br>
-				<br>
-			<div style="background-color: #43a2c4 !important; border-radius: 5px; padding: 1em; ">
+				
+			<div style="background-color: #43a2c4 !important; border-radius: 5px; padding:0.5em 1em;">
+                <div class="ui-grid-a invt" >
+                    <div class="ui-block-a" style="padding:0 0.35em 0 0;" id="search-item-desc-barcode">
+                        <div data-filter="true" data-filter-placeholder="Scan/Search Product" >
+                            
+                        </div>
+                    </div>
+                
+                    <div class="ui-block-b" style="padding:0 0 0 0.35em;">
+                        <select id="filter-category-field">
+                            <option value="" style="text-shadow: none !important;">All Categories</option>
+                        </select>
+                    </div>
+                
+                </div>
+                <br />
+                        
 				<form action="" method="post" name="stock" id="stock-form">
 				
 					<div style="">
@@ -1635,36 +1753,29 @@
 						<input type="hidden" name="supply" id="supply-field" value="" />
 						
 						<div class="ui-grid-a invt" >
-							<div class="ui-block-a" style="padding: 0.4em;">
+							<div class="ui-block-a" style="padding:0 0.35em 0 0;">
 								
 								 <select name="store_name" id="store_name-field" placeholder="Select Store" required data-validate="text" data-error-title="Invalid Item" data-error-msg="Please select a store" class="currently-active-store">
 									
 								 </select>
 
 							</div>
-							<div class="ui-block-b" style="padding: 0.4em;">
+							<div class="ui-block-b" style="padding:0 0 0 0.35em;">
 									<select name="supplier" id="supplier-field" placeholder="Select Supplier" required data-validate="text" data-error-title="Invalid supplier" data-error-msg="Select a valid Supplier" >
 							<option value="" style="text-shadow: none !important;">Select Supplier</option>
 						</select>							
 								
 							</div>
 						</div>
-						
-                        <div class="ui-grid-a invt" >
-							<div class="ui-block-a" style="padding: 0.7em;">
-								
-                                <select id="filter-category-field">
-                                    <option value="" style="text-shadow: none !important;">All Categories</option>
+						<br >
+                        
+                        
+                        <div >
+							<label for="item_barcode-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Item</label>
+                            <select name="item_barcode" id="item_barcode-field" required data-validate="text" data-error-title="Invalid Item" data-error-msg="Please select a valid item">
+                                    <option style="text-shadow: none !important;">- Select Item -</option>
                                 </select>
-								
-							</div>
-						
-							<div class="ui-block-b" style="padding: 0.7em;">
-                                <select name="item_barcode" id="item_barcode-field" required data-validate="text" data-error-title="Invalid Item" data-error-msg="Please select a valid item">
-                                    <option style="text-shadow: none !important;">--Select Item--</option>
-                                </select>
-							</div>
-						
+							
 						</div>
 						
 						<br>
@@ -1674,32 +1785,32 @@
 						<br>
 						
 						<div class="ui-grid-a invt">
-							<div class="ui-block-a" class="df" style="padding-right:0.5em;">
+							<div class="ui-block-a" class="df" style="padding:0 0.35em 0 0;">
 								<label for="cost_price-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Unit Cost Price ( &#8358; ):</label>
 								<input type="number" name="cost_price" id="cost_price-field" min="0" step="any" placeholder="" required data-validate="number" data-error-title="Invalid Cost Price" data-error-msg="Please provide a valid Cost Price" />
 							</div>
-							<div class="ui-block-b" class="df" style="padding-left:0.5em;">
+							<div class="ui-block-b" class="df" style="padding:0 0 0 0.35em;">
 								<label for="selling_price-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Unit Selling Price ( &#8358; ):</label>
 								<input type="number" name="selling_price" id="selling_price-field" min="0" step="any" placeholder="" required data-validate="number" data-error-title="Invalid Selling Price" data-error-msg="Please provide a valid Selling Price" />
 							</div>
 						</div>
 						<div class="ui-grid-a invt">
-							<div class="ui-block-a" style="padding-right:0.5em;">
+							<div class="ui-block-a" style="padding:0 0.35em 0 0;">
 							</div>
-							<div class="ui-block-b" style="padding-left:0.5em; font-weight:bold;">
+							<div class="ui-block-b" style="padding:0 0 0 0.35em; font-weight:bold;">
                                 <span style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Gross Margin:</span>
                                 <span id="inventory-gross-margin" style="float:right; font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">00.00%</span>
 							</div>
 						</div>
 						<br />
 						<div class="ui-grid-a invt">
-							<div class="ui-block-a" style="padding-right:0.5em;">
+							<div class="ui-block-a" style="padding:0 0.35em 0 0;">
 								<label for="item_qty-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Item Quantity:</label>
 								<input type="number" name="item_qty" id="item_qty-field" min="0" step="1" placeholder="" required data-validate="number" data-error-title="Invalid Quantity" data-error-msg="Please provide a quantity" />
 							</div>
-							<div class="ui-block-b" style="padding-left:0.5em;">
+							<div class="ui-block-b" style="padding:0 0 0 0.35em;">
 								<label for="expiry_date-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Expiry Date:</label>
-								<input type="date" name="expiry_date" id="expiry_date-field" value="" data-validate="date" data-error-title="Invalid Expiry Date" data-error-msg="Please provide a valid expiry date" />
+								<input type="date" name="expiry_date" id="expiry_date-field" value="" data-validate="date" data-error-title="Invalid Expiry Date" data-error-msg="Please provide a valid expiry date" style="padding-bottom:0.4em;" />
 							</div>
 						</div>
 						<br>
@@ -1711,21 +1822,21 @@
 			</form>
 			</div>
 			
-			<br><br>
+			<br>
 			
-			<div style="background-color: #43a2c4 !important; border-radius: 5px; padding: 1em; ">
+			<div style="background-color: #43a2c4 !important; border-radius: 5px; padding:0.5em 1em; ">
+                <br>
 				<form action="" method="post" name="supply" id="supply-form">
 				<div style="">
 						
-						<br>
 						<div class="ui-grid-a invt" >
-							<div class="ui-block-a" style="padding-right:0.5em;">
+							<div class="ui-block-a" style="padding:0 0.35em 0 0;">
 								<label style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Cost of Supplied Items :</label>
 								<input type="hidden" name="key" id="key-field" value="" required data-validate="text" data-error-title="No Items were Supplied!" data-error-msg="Please add items to stock first" />
 								<input type="text" id="total_amount-dummy" placeholder="" data-placeholder="Total Cost of all Items Supplied : " disabled="true" />
 							</div>
 							
-							<div class="ui-block-b" style="padding-left:0.5em;">
+							<div class="ui-block-b" style="padding:0 0 0 0.35em;">
 								<label style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Amount Paid to Supplier :</label>
 								<input type="number" name="total_amount_paid" id="total_amount_paid-field" min="0" step="any" value="" placeholder="" />
 							</div>
@@ -1767,18 +1878,10 @@
 		
 		
 		<a href="#menupanel" data-rel="panel" class="open-panel ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
-		<!--<a href="#damages" class="ui-btn ui-shadow ui-corner-all ui-icon-minus ui-btn-icon-notext">damages</a>-->
+		<!--<a href="#damages" class="ui-btn ui-shadow ui-corner-all ui-icon-minus ui-btn-icon-notext">damages</a><h1>Inventory</h1>-->
 		
-		<h1>Inventory</h1>
-		<div class="notifications-container hidden" data-role="navbar" data-mini="true">
-			<ul>
-				<li><a href="#notifications" data-transition="none">
-				<marquee class="rbto notifications-count-with-notifications" behavior="scroll" scrollamount="3" direction="left" > 
-				</marquee>
-				</a></li>
-			</ul>
-        </div><!-- /navbar -->
-            
+		<h1 class="notifications-title" default-title="Inventory">Inventory</h1>
+		    
 	</div><!-- /header -->
     
     <div class="progress-bar-container"></div>
@@ -1787,22 +1890,24 @@
 				<div class="hidden update-server-button-container">
                     <a href="#" class="update-server-button ui-btn ui-shadow ui-corner-all ui-icon-forward ui-btn-icon-notext">Update Server</a>
                 </div>
-                
-                    <div class="ui-grid-a currently-active-store-container hidden" >
+                    
+                    
+                    <div class="ui-grid-a currently-active-store-container hidden">
                         <select class="currently-active-store" data-mini="true">
                             <option></option>
                         </select>
+                        <br>
                     </div>
-                    <br>
+                    
                     <div class="ui-grid-a invt" >
-						<div class="ui-block-a">
+						<div class="ui-block-a" style="padding: 0 0.35em 0 0;">
 							<div class="panl">
 								<h3>Total inventory value</h3>
 								<h6 class="total-value-of-inventory">0.00</h6>
 							</div>
 						</div>
 						
-						<div class="ui-block-b">
+						<div class="ui-block-b" style="padding: 0 0 0 0.35em;">
 							<div class="panl">
 								<h3>Total number of items</h3>
 								<h6 class="total-items-in-stock">0</h6>
@@ -1811,9 +1916,9 @@
 						
 					</div>
 					
-                    <br />
+                    <br>
                     <!--class="invtr"-->
-                    <div data-role="collapsible" data-theme="b" data-collapsed="false" data-collapsed-icon="carat-d" data-expanded-icon="carat-u">
+                    <div data-role="collapsible" data-theme="b" data-collapsed="false" data-collapsed-icon="carat-d" data-expanded-icon="carat-u" style="margin:0;">
 					
 						<h3 style="color: white; font-size: 1em !important; font-weight: 100 !important; text-shadow: none !important; text-align: center !important;">Current inventory listing <span class="ui-li-count ui-btn-corner-all"><strong class="total-unique-items">-</strong></span></h3>
 					
@@ -1830,23 +1935,31 @@
                         </form>
                         -->
 						<div class="ui-grid-a invt" >
-							<div class="ui-block-a" style="padding: 0.7em;">
-								
-                                <select id="filter-category-field">
-                                    <option value="" style="text-shadow: none !important;">All Categories</option>
-                                </select>
-								
+							<div class="ui-block-a" style="padding:0 0.7em 0 0;" id="search-item-desc-barcode">
+                                <div data-filter="true" data-filter-placeholder="Scan/Search Product" >
+                                    
+                                </div>
 							</div>
 						
-							<div class="ui-block-b" style="padding: 0.7em;">
-                                <select id="filter-item-field">
-                                    <option style="text-shadow: none !important;">--Select Item--</option>
-                                </select>
+							<div class="ui-block-b" style="padding:0;">
+                                <div class="ui-grid-a invt" >
+                                    <div class="ui-block-a" style="padding:0;">
+                                        <select id="filter-category-field">
+                                            <option value="" style="text-shadow: none !important;">All Categories</option>
+                                        </select>
+                                    </div>
+                                    <div class="ui-block-b" style="padding:0 0 0 0.7em;">
+                                        <select id="filter-item-field">
+                                            <option style="text-shadow: none !important;"></option>
+                                        </select>
+                                    </div>
+                                </div>
 							</div>
 						
 						</div>
+                        <br>
                         
-						<div style="margin-left:0.3125em; margin-right:0.3125em; ">
+						<div >
                         <table data-role="table1" id="current-inventory-table-column-toggle" data-mode="columntoggle" class="inventory inventory-table ui-responsive  ui-table ui-table-columntoggle">
                           <thead>
                             <tr>
@@ -1865,29 +1978,35 @@
 						<br>
 					</div>
                     
+                    <br>
 					<div class="ui-grid-a invt" >
-						<div class="ui-block-a" style="padding: 0.7em;" >
+						<div class="ui-block-a" style="padding: 0 0.35em 0 0;">
 							<a href="#newInventory" data-role="button" data-theme="b" data-icon="plus" data-transition="none" style="font-weight: normal !important; text-shadow: none;  font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>New Item</b></a>
 						</div>
-						<div class="ui-block-b" style="padding: 0.7em;">
+						<div class="ui-block-b" style="padding: 0 0 0 0.35em;">
 							<a href="#restock" data-role="button" data-theme="b" data-icon="forward" data-transition="none" style="font-weight: normal !important; text-shadow: none;  font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>New Inventory</b></a>
 						</div>
 					</div><!-- /grid-a -->
 					
+                    <br>
 					<div class="ui-grid-a invt">
-						<div class="ui-block-a" style="padding: 0.7em;">
+						<div class="ui-block-a" style="padding: 0 0.35em 0 0;">
+                            <!--
 							<a href="#stockLevels" data-role="button" data-theme="b" data-icon="eye" data-transition="none" style="font-weight: normal !important; text-shadow: none; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>View Stock Levels</b></a>
+                            -->
+                            <a href="#refunds" data-role="button" data-theme="b" data-icon="minus" data-transition="none" style="font-weight: normal !important; text-shadow: none; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>Returns / Refunds</b></a>
 						</div>
-						<div class="ui-block-b" style="padding: 0.7em;">
+						<div class="ui-block-b" style="padding: 0 0 0 0.35em;">
 							<a href="#setPricing" data-role="button" data-theme="b" data-icon="tag" data-transition="none" style="font-weight: normal !important; text-shadow: none; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>Set Pricing</b></a>
 						</div>
 					</div><!-- /grid-a -->
 					
+                    <br>
 					<div class="ui-grid-a invt">
-						<div class="ui-block-a" style="padding: 0.7em;">
+						<div class="ui-block-a" style="padding: 0 0.35em 0 0;">
 							<a href="#" hold="#transferStock | background-color: #43a2c4 !important; color:#fff !important;" data-role="button" data-theme="b" data-icon="arrow-r" data-transition="none" style="font-weight: normal !important; text-shadow: none; font-family: Roboto Thin; background-color: #f1f1f1 !important; color:#777 !important;"><b>Transfer Stock</b></a>
 						</div>
-						<div class="ui-block-b" style="padding: 0.7em;">
+						<div class="ui-block-b" style="padding: 0 0 0 0.35em;">
 							<a href="#damages" data-role="button" data-theme="b" data-icon="minus" data-transition="none" style="font-weight: normal !important; text-shadow: none; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>Damages</b></a>
 						</div>
 					</div><!-- /grid-a -->
@@ -1909,21 +2028,19 @@
 				<a href="#menupanel" data-rel="panel" class="open-panel ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
 				<a href="#" class="button-scan ui-btn ui-shadow ui-corner-all ui-icon-camera ui-btn-icon-notext">Scan</a>
 				
-				<h1>Sales</h1>
-		<div class="notifications-container hidden" data-role="navbar" data-mini="true">
-			<ul>
-				<li><a href="#notifications" data-transition="none">
-				<marquee class="rbto notifications-count-with-notifications" behavior="scroll" scrollamount="3" direction="left" > 
-				</marquee>
-				</a></li>
-			</ul>
-        </div><!-- /navbar -->
+				<h1 class="notifications-title" default-title="Sales">Sales</h1>
             
 	</div><!-- /header -->
     <div class="progress-bar-container"></div>
-
-		<div data-role="content" style="background-color: #f1f1f1;">
-		<br>
+    
+		<div data-role="content" style="background-color: #f1f1f1; position:relative;">
+        <div class="ui-popup-container ui-popup-active" id="popupSales" tabindex="0" style="width: 20%; position:absolute; top:0; left:40%; text-align:center; display:none;">
+            <div class="ui-content ui-popup ui-body-b ui-corner-all">
+            <p id="popupSales-text" style="font-weight:bold; font-size:1em;"></p>
+            </div>
+        </div>
+            
+		
 			<div class="hidden update-server-button-container">
                     <a href="#" class="update-server-button ui-btn ui-shadow ui-corner-all ui-icon-forward ui-btn-icon-notext">Update Server</a>
                 </div>
@@ -1932,6 +2049,21 @@
 					#sales-inventory-list-container li p{
 						background-color: #43A2C4; font-family: Roboto Thin !important; font-size: 0.6em !important; font-weight: bold !important; text-decoration: none; text-align: center; box-shadow: none; padding-top: 0.4em; color: #fff; opacity: 0.9;
 					}
+                    #sales-categories-container li{
+                        float:left;
+                        margin-right: 2%;
+                        width: 23%;
+                        margin-top: 2%;
+                        border-bottom: 1px solid #ddd;
+                    }
+                    #sales-categories-container li .ui-btn-icon-right{
+                        padding-right:0.5em;
+                        padding-left:0.5em;
+                        text-align:center;
+                    }
+                    #sales-categories-container li .ui-btn-icon-right:after{
+                        display:none;
+                    }
 					#sales-inventory-list-container li a{
 						background-color: #fff !important; border:1px solid #4bb2cf;
                         text-align: center;
@@ -1940,7 +2072,7 @@
 					#sales-table-body td.label{
 						cursor:pointer;
 					}
-                    @media (max-width: 600px){
+                    @media (max-width: 620px){
                         .invt-s .ui-block-b,
                         .invt-s .ui-block-a {
                         width: 100%;
@@ -1949,18 +2081,28 @@
                         }
                     }
 				</style>
-                <div class="hidden1">
-                            <div class="ui-grid-a currently-active-store-container hidden" >
-                                <select class="currently-active-store" data-mini="true">
-                                    <option></option>
-                                </select>
-                            </div>
-                        </div>
-                        
+                
+                <div class="ui-grid-a currently-active-store-container hidden" >
+                    <select class="currently-active-store" data-mini="true">
+                        <option></option>
+                    </select>
+                    <br>
+                </div>
+                
 				<div class="ui-grid-a invt-s">
                         <div class="ui-block-a" >
+                            <!--data-filter="true" data-filter-placeholder="Scan/Search Product" data-filter-theme="a"-->
+                            <form id="sales-inventory-list-filter-form">
+                                <input type="search" placeholder="Scan/Search Product" id="sales-inventory-list-filter" />
+                            </form>
                             <div  id="sales-inventory-list-container" class="products">
-                                <ul id="sales-inventory-list" data-role="listview" data-inset="true" data-filter="true" data-filter-placeholder="Scan/Search Product" data-filter-theme="a"></ul>
+                                <ul id="sales-inventory-list" data-role="listview" data-inset="true" ></ul>
+                            </div>
+                            
+                            <div class="products-1" style="margin-top:-10px; clear:both;">
+                                <ul data-role="listview" data-inset="true" data-theme="a" id="sales-categories-container">
+                                
+                                </ul>
                             </div>
                         </div>
 						
@@ -2037,32 +2179,34 @@
 								<form>
 								<div style="background-color: #43a2c4; padding: 10px; border-radius: 5px; text-shadow: none; color: white;">
 									<div class="ui-grid-a">
-											<div class="ui-block-a" style="width: 55% !important;">
-												<label style="font-family: Roboto Thin; font-size: 1.5em; ">VAT</label>
-												
+											<div class="ui-block-a" style="width: 55% !important; padding:0 0.5em 0 0;">
+												<label style="font-family: Roboto Thin; font-size: 1.5em; margin:0;">VAT</label>
+                                                <span style="display:none;">
 												<input type="checkbox"  data-role="flipswitch" name="vat-on-off-switch" id="vat-on-off-switch" checked="checked" />
-												
+                                                </span>
 											</div>
-											<div class="ui-block-b" style="width: 45% !important; text-align:right; font-size: 1.7em; padding-right:0;">
+											<div class="ui-block-b" style="width: 45% !important; text-align:right; font-size: 1.5em; padding:0 0 0 0;">
 												<span id="this-sale-total-amount-vat">0.00</span>
 											</div>
 									</div>
-									
-									
 								</div>
-								<br>
+								<br />
 								<div style="background-color: #43a2c4; padding: 10px; border-radius: 5px; text-shadow: none; color: white;">
 			
 										<div class="ui-grid-a">
-											<div class="ui-block-a" style="width: 55% !important;">
-												<span class="mk" for="flip-checkbox-4" style="padding-top: 0.1em; color: white; font-family: Roboto Thin; font-size: 1.5em; text-shadow: none;">Discount</span>
-												
+											<div class="ui-block-a" style="width: 60% !important; padding:0 0.5em 0 0;">
+                                                <div>
+												<span class="mk" for="flip-checkbox-4" style="padding-top: 0.1em; color: white; font-family: Roboto Thin; font-size: 1.5em; text-shadow: none; float:left; line-height:49px; margin-right:10px;">Discount</span>
+                                                <div style="display:inline-block; float:left;">
+                                                    <input id="percentage-discount" type="number" min="0" step="any" max="99" value="" placeholder="%" data-mini="true" data-inline="true" />
+                                                </div>
+                                                </div>
 											</div>
-											<div class="ui-block-b" style="width: 45% !important; text-align:right; font-size: 1.5em; padding-right:0;">
+											<div class="ui-block-b" style="width: 40% !important; text-align:right; font-size: 1.5em; padding-right:0; padding-bottom:0;">
 												<span id="this-sale-total-amount-discount">0.00</span>
 											</div>
 										</div>
-									<input id="percentage-discount" type="number" min="0" step="any" max="99" value="" placeholder="%" data-mini="true" data-inline="true" />
+									
 								</div>
 								</form>	
 								<br>
@@ -2070,9 +2214,11 @@
 									Total: &nbsp; <b id="this-sale-total-amount" style="float:right;">0.00</b>
 								</div>
                                 <br>
+                                <a class="cho" href="#checkout" id="confirm-this-sale-popup-display-button" data-role="button"  data-theme="b" data-icon="check" data-transition="none" style="font-family: Roboto Thin; font-weight: normal !important; text-shadow: none; background-color: green; border: none; color:#fff !important;"><b>Check Out</b></a>
+                                
                                 <a class="co" href="#" id="cancel-order-button" data-role="button" data-theme="b" data-icon="delete" data-transition="none" style="font-family: Roboto Thin; background-color: #d11141; border: red; font-weight: normal !important; text-shadow: none;"><b>Cancel Order</b></a>
                             
-                                <a class="cho" href="#checkout" id="confirm-this-sale-popup-display-button" data-role="button"  data-theme="b" data-icon="check" data-transition="none" style="font-family: Roboto Thin; font-weight: normal !important; text-shadow: none; background-color: green; border: none; color:#fff !important;"><b>Check Out</b></a>
+                                
 									
 								<br>
 								<br>
@@ -2081,12 +2227,8 @@
 							
 				</div>
 			
-				<!---->
-				
 		</div><!-- /content -->
 
-		
-		
 </div><!-- /page -->
 
 <div data-role="page" id="checkout">
@@ -2096,15 +2238,7 @@
 		<a href="#sales" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">back</a>
 		
 		<h1>Check Out</h1>
-		<div class="notifications-container hidden" data-role="navbar" data-mini="true">
-			<ul>
-				<li><a href="#notifications" data-transition="none">
-				<marquee class="rbto notifications-count-with-notifications" behavior="scroll" scrollamount="3" direction="left" > 
-				</marquee>
-				</a></li>
-			</ul>
-        </div><!-- /navbar -->
-            
+		
 	</div><!-- /header -->
     <div class="progress-bar-container"></div>
 
@@ -2115,11 +2249,11 @@
 								<div style="background-color: #43a2c4;padding: 10px; border-radius: 5px; text-shadow: none; color: white;">
 										<style type="text/css">
 											#checkout-table-body td{
-												font-size: 1.2em; font-weight: bold ;
+												font-size: 1.2em; font-weight: 600 ;
 												vertical-align:middle;
 											}
 											#checkout-table-column-toggle tfoot td{
-												font-size: 1.2em; font-weight: bold ;
+												font-size: 1.2em;
 											}
 											#checkout-table-body td:nth-child(2){
 												text-align:center;
@@ -2267,17 +2401,8 @@
 		<a href="#menupanel" data-rel="panel" class="open-panel ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
 		<a href="index.html" rel="external" class="ui-btn ui-shadow ui-corner-all ui-icon-recycle ui-btn-icon-notext">Refresh</a>
 		
-		<h1>Settings</h1>
-		
-	<div class="notifications-container hidden" data-role="navbar" data-mini="true">
-			<ul>
-				<li><a href="#notifications" data-transition="none">
-				<marquee class="rbto notifications-count-with-notifications" behavior="scroll" scrollamount="3" direction="left" > 
-				</marquee>
-				</a></li>
-			</ul>
-        </div><!-- /navbar -->
-            
+		<h1 class="notifications-title" default-title="Settings">Settings</h1>
+		    
 	</div><!-- /header -->
     <div class="progress-bar-container"></div>
 
@@ -2286,10 +2411,10 @@
 					<br>
 					<div class="ui-grid-a invt" style="margin: 0.2em;">
 						<div class="ui-block-a" >
-							<a href="http://www.blubird.com.ng" data-rel="external" data-role="button" data-theme="b" data-icon="phone" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>Customer Care</b></a>
+							<a href="#" data-role="button" data-theme="a" data-icon="info" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin;"><b>About Blubird</b></a>
 						</div>
 						<div class="ui-block-b">
-							<a href="#mngcategory" data-role="button" data-theme="b" data-icon="tag" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>Manage Category</b></a>
+							<a href="http://www.blubird.com.ng" data-rel="external" data-role="button" data-theme="b" data-icon="phone" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>Customer Care</b></a>
 						</div>
 					</div><!-- /grid-a -->
 					
@@ -2334,17 +2459,8 @@
 <div data-role="page" id="mngcategory">
 		
 		<div data-role="header" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  data-position="fixed">
-				<a href="#settings" class="upload-queue ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
-					<h1 >Manage Category</h1>
-		<div class="notifications-container hidden" data-role="navbar" data-mini="true">
-			<ul>
-				<li><a href="#notifications" data-transition="none">
-				<marquee class="rbto notifications-count-with-notifications" behavior="scroll" scrollamount="3" direction="left" > 
-				</marquee>
-				</a></li>
-			</ul>
-        </div><!-- /navbar -->
-            
+            <a href="#newInventory" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
+            <h1>Manage Category</h1>
 	</div><!-- /header -->
     <div class="progress-bar-container"></div>
 		
@@ -2431,16 +2547,8 @@
 		
 	
 		<div data-role="header" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  data-position="fixed">
-				<a href="#settings" class="upload-queue ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
-					<h1 >Manage Users</h1>
-		<div class="notifications-container hidden" data-role="navbar" data-mini="true">
-			<ul>
-				<li><a href="#notifications" data-transition="none">
-				<marquee class="rbto notifications-count-with-notifications" behavior="scroll" scrollamount="3" direction="left" > 
-				</marquee>
-				</a></li>
-			</ul>
-        </div><!-- /navbar -->
+            <a href="#settings" class="upload-queue ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
+            <h1>Manage Users</h1>
             
 	</div><!-- /header -->
     <div class="progress-bar-container"></div>
@@ -2580,17 +2688,8 @@
 <div data-role="page" id="stores">
 	
 		<div data-role="header" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  data-position="fixed">
-				<a href="#settings" class="upload-queue ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
-					<h1 >Manage Stores</h1>
-		<div class="notifications-container hidden" data-role="navbar" data-mini="true">
-			<ul>
-				<li><a href="#notifications" data-transition="none">
-				<marquee class="rbto notifications-count-with-notifications" behavior="scroll" scrollamount="3" direction="left" > 
-				</marquee>
-				</a></li>
-			</ul>
-        </div><!-- /navbar -->
-            
+			<a href="#settings" class="upload-queue ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
+			<h1>Manage Stores</h1>
 	</div><!-- /header -->
     <div class="progress-bar-container"></div>
 		
@@ -2702,17 +2801,8 @@
 <div data-role="page" id="general-settings">
 		
 	<div data-role="header" data-theme="b" style="height: 3.5em; border-bottom: 1px solid #fff;">
-				<a href="#settings" class="upload-queue ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
-				<h1 >General Settings</h1>
-		<div class="notifications-container hidden" data-role="navbar" data-mini="true">
-			<ul>
-				<li><a href="#notifications" data-transition="none">
-				<marquee class="rbto notifications-count-with-notifications" behavior="scroll" scrollamount="3" direction="left" > 
-				</marquee>
-				</a></li>
-			</ul>
-        </div><!-- /navbar -->
-            
+        <a href="#settings" class="upload-queue ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
+        <h1>General Settings</h1>
 	</div><!-- /header -->
     <div class="progress-bar-container"></div>
 		
@@ -2726,6 +2816,19 @@
                         
 						<div class="ui-grid-a invt">
 							<div class="ui-block-a" >
+								<label style=" padding-top: 1em; font-size: 1.5em; font-family: Roboto Thin; text-shadow: none; color: white; " for="flip-checkbox-4">Mode</label>
+							</div>
+                            <div class="ui-block-b" >
+								<select name="app_mode" id="app_mode-field" data-validate="text" required data-error-title="Invalid App Mode" data-error-msg="Select a valid Mode" class="do-not-clear">
+                                    <option value="retail">Retail</option>
+                                    <option value="restaurant">Restaurant</option>
+                                </select>
+							</div>
+						</div>
+						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+                        
+						<div class="ui-grid-a invt">
+							<div class="ui-block-a" >
 								<label style=" padding-top: 1em; font-size: 1.5em; font-family: Roboto Thin; text-shadow: none; color: white; " for="flip-checkbox-4">VAT(%)</label>
 							</div>
                             <div class="ui-block-b" >
@@ -2733,6 +2836,7 @@
 							</div>
 						</div>
 						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+                        
 						<div class="ui-grid-a invt">
 							<div class="ui-block-a" >
 								<label style=" padding-top: 1em; font-size: 1.5em; font-family: Roboto Thin; text-shadow: none; color: white; " for="flip-checkbox-4">Discount Type</label>
@@ -2835,17 +2939,8 @@
 <div data-role="page" id="my-profile">
 		
 	<div data-role="header" data-theme="b" style="height: 3.5em; border-bottom: 1px solid #fff;">
-				<a href="#settings" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
-				<h1>My Profile</h1>
-		<div class="notifications-container hidden" data-role="navbar" data-mini="true">
-			<ul>
-				<li><a href="#notifications" data-transition="none">
-				<marquee class="rbto notifications-count-with-notifications" behavior="scroll" scrollamount="3" direction="left" > 
-				</marquee>
-				</a></li>
-			</ul>
-        </div><!-- /navbar -->
-            
+        <a href="#settings" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
+        <h1>My Profile</h1>
 	</div><!-- /header -->
     <div class="progress-bar-container"></div>
 		
@@ -2916,17 +3011,8 @@
 <div data-role="page" id="expenses">
 		
 		<div data-role="header" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  data-position="fixed">
-				<a href="#menupanel" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext" data-transition="none">Menu</a>
-					<h1>Expenses</h1>
-		<div class="notifications-container hidden" data-role="navbar" data-mini="true">
-			<ul>
-				<li><a href="#notifications" data-transition="none">
-				<marquee class="rbto notifications-count-with-notifications" behavior="scroll" scrollamount="3" direction="left" > 
-				</marquee>
-				</a></li>
-			</ul>
-        </div><!-- /navbar -->
-            
+            <a href="#menupanel" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext" data-transition="none">Menu</a>
+			<h1 class="notifications-title" default-title="Expenses">Expenses</h1>
 	</div><!-- /header -->
     <div class="progress-bar-container"></div>
 		
@@ -2960,7 +3046,7 @@
 								<input type="number" name="amount" id="amount-field" min="0" step="any" placeholder="" required data-validate="number" data-error-title="Invalid Amount" data-error-msg="Please provide a valid Amount" />
 							</div>
 							<div class="ui-block-b" style="padding-left:0.3125em; padding-right:0;">
-								<label for="date-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Date:</label>
+								<label for="date-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Date Incurred:</label>
 								<input type="date" name="date" id="date-field" value="" data-validate="date" data-error-title="Invalid Date" data-error-msg="Please provide a valid date" />
 							</div>
 						</div>
@@ -3005,7 +3091,7 @@
                     <tr>
                       <th data-colstart="1" data-priority="1" class="ui-table-priority-1">Expenditure</th>
                       <th data-priority="2" data-colstart="2" class="ui-table-priority-2">Amount (&#8358;)</th>
-                      <th data-priority="3" data-colstart="3" class="ui-table-priority-3">Modified On</th>
+                      <th data-priority="3" data-colstart="3" class="ui-table-priority-3">Reported On</th>
                     </tr>
                   </thead>
                   <tbody id="expenses-list-container">
@@ -3031,16 +3117,8 @@
 		
 		<div data-role="header" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  data-position="fixed">
 			<a href="#menupanel" class="ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext" data-transition="none">Menu</a>
-			<h1>Customers</h1>
-		<div class="notifications-container hidden" data-role="navbar" data-mini="true">
-			<ul>
-				<li><a href="#notifications" data-transition="none">
-				<marquee class="rbto notifications-count-with-notifications" behavior="scroll" scrollamount="3" direction="left" > 
-				</marquee>
-				</a></li>
-			</ul>
-        </div><!-- /navbar -->
-            
+			<h1 class="notifications-title" default-title="Customers">Customers</h1>
+		    
 	</div><!-- /header -->
     <div class="progress-bar-container"></div>
 
@@ -3060,8 +3138,8 @@
                 <option value="new">Add New Customer</option>
             </select>
             <br>
-                    <p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
-                <br>
+                <p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+            <br>
             <form method="post" action="" name="customers" id="customers-form">
                 <input type="hidden" name="key" id="key-field" value="" data-validate="text" />
                 <label for="customer_name-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Customer Name:</label>
@@ -3212,17 +3290,8 @@
 		
 		<a href="#settings" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">back</a>
 		
-		<h1 >Reports</h1>
-		
-		<div class="notifications-container hidden" data-role="navbar" data-mini="true">
-			<ul>
-				<li><a href="#notifications" data-transition="none">
-				<marquee class="rbto notifications-count-with-notifications" behavior="scroll" scrollamount="3" direction="left" > 
-				</marquee>
-				</a></li>
-			</ul>
-        </div><!-- /navbar -->
-            
+		<h1>Reports</h1>
+		 
 	</div><!-- /header -->
     <div class="progress-bar-container"></div>
     
@@ -3302,7 +3371,7 @@
     <div data-role="header" id="hd" data-position="fixed" data-tap-toggle="false" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);" >
 		
 		<a href="#menupanel" data-rel="panel" class="open-panel ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
-		<h1 style=" margin-top: 0.2em !important; padding: 0em !important; font-family: Roboto Thin; font-size: 1.8em !important;">Notifications</h1>
+		<h1>Notifications</h1>
 	       
 	</div><!-- /header -->
     <div class="progress-bar-container"></div>
