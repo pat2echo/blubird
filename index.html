@@ -20,7 +20,6 @@
 	<script src="js/app/jsAjax-processing-script.js"></script>
 	<!-- ./commit -->
 	
-	<!--<script type="text/javascript" src="cordova.js"></script>-->
 	<script type="text/javascript" src="cordova.js"></script>
 	
     <link rel="stylesheet" href="css/jquery.mobile-1.4.4.css" rel="stylesheet" type="text/css"/>
@@ -875,7 +874,7 @@
 	<div role="main" class="ui-content" style="background-color: #fff;">
 		
 		<p style="text-align:center">
-			<img align="center" src="css/images/icon2.png" />
+			<img align="center" src="css/images/icon.png" />
 		</p>
 		<h1 style="color: rgb(112,112,112); text-align: center;">Data Transfer Progress...</h1>
 		<div class="progress-bar-container"></div>
@@ -1027,8 +1026,8 @@
                                 <div class="ui-block-b" style="padding:0 0 0 0.7em;">
                                     
                                     <select id="filter-return-refund-type">
-                                        <option value="sales">Sales Refunds</option>
                                         <option value="stock">Supplied Stock Returns</option>
+                                        <option value="sales">Sales Refunds</option>
                                     </select>
                                 </div>
                             </div>
@@ -1220,7 +1219,8 @@
                 
                     <form method="post" action="" name="damages" id="damages-form">
                         <input type="hidden" name="key" id="key-field" value="" data-validate="text" />
-                        
+                            
+                            <label for="item_barcode-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Item:</label>
                             <select name="item_barcode" id="item_barcode-field" required data-validate="text" data-error-title="Invalid Item" data-error-msg="Please select a valid item">
                                 <option style="text-shadow: none !important;">- Select Item -</option>
                             </select>
@@ -1649,7 +1649,7 @@
                             <form method="post" action="" name="supplierpayments" id="supplierpayments-form">
                                 <input type="hidden" name="key" id="key-field" value="" data-validate="text" />
                                 
-                                <div class="ui-grid-a">
+                                <div class="ui-grid-a invt">
                                     <div class="ui-block-a" style="padding-left:0;">
                                         <label for="amount_paid-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Amount Paid:</label>
                                         <input type="number" step="any" min="0" name="amount_paid" id="amount_paid-field" placeholder="Amount Paid" required data-validate="text" data-error-title="Invalid Amount Paid" data-error-msg="Provide a valid Amount Paid"/>
@@ -1666,7 +1666,7 @@
                                 <br>
                                     <p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
                                 <br>
-                                <div class="ui-grid-a">
+                                <div class="ui-grid-a invt">
                                     <div class="ui-block-a" style="padding-left:0;">
                                         <label for="date_of_payment-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Date of Payment:</label>
                                         <input type="date" name="date_of_payment" id="date_of_payment-field" data-validate="text" />
@@ -3225,7 +3225,7 @@
                         
                         <input type="hidden" name="customer" id="customer-field" class="do-not-clear" value="" data-validate="text" placeholder="Customer" required data-error-title="Invalid Customer" data-error-msg="Select a valid Customer" />
                         
-                        <div class="ui-grid-a">
+                        <div class="ui-grid-a invt">
                             <div class="ui-block-a" style="padding-left:0;">
                                 <label for="amount_paid-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Amount Paid:</label>
                                 <input type="number" step="any" min="0" name="amount_paid" id="amount_paid-field" placeholder="Amount Paid" required data-validate="text" data-error-title="Invalid Amount Paid" data-error-msg="Provide a valid Amount Paid"/>
@@ -3240,7 +3240,7 @@
                         <br>
                             <p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
                         <br>
-                        <div class="ui-grid-a">
+                        <div class="ui-grid-a invt">
                             <div class="ui-block-a" style="padding-left:0;">
                                 <label for="date_of_payment-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Date of Payment:</label>
                                 <input type="date" name="date_of_payment" id="date_of_payment-field" data-validate="text" />

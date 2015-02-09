@@ -218,6 +218,12 @@ body{
     min-height: 1.3em;
 }
 
+.custom-more-details td,
+.custom-more-details th,
+#all-records-summary-table td,
+#all-records-summary-table th{
+    font-family:Roboto;
+}
 #all-records-summary-table tbody tr,
 #all-records-summary-table tbody tr td{
     text-shadow:none;
