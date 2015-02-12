@@ -774,53 +774,19 @@
 
 <div data-role="page" id="signup">
 	<div data-role="header" id="hd" data-position="fixed" data-tap-toggle="false" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  >
-			
 		<h1>Sign Up</h1>
-		
 	</div><!-- /header -->
 	
 	<div role="main" class="ui-content" style="background-color: #f1f1f1;">
 		<div class="progress-bar-container">
 		
 		</div>
-				
-					
-					<br>
-									
-					
-					
-						<form method="post" action="?action=app_users&todo=save_signup_data" name="sign-up" id="sign-up-form" remote-storage=1 >
-							<input type="hidden" name="key" id="key-field" value="" />
-							
-							<input type="text" name="name" id="name-field" placeholder="Your Full Name" required data-validate="text" data-error-title="Invalid Name" data-error-msg="Provide a valid name" />
-							
-							<input type="email" name="email" id="email-field" placeholder="Your Email Address" required data-validate="email" data-error-title="Invalid Email" data-error-msg="Provide a valid email" />
-							
-							<input type="password" name="password" id="password-field" placeholder="Password" required data-validate="password" data-error-title="Invalid Password" data-error-msg="Passwords must be at least 6 characters" />
-							
-							<input type="password" name="cpassword" id="cpassword-field" placeholder="Confirm Password" required data-validate="confirm-password" data-error-title="Non-matching Password" data-error-msg="Passwords must match" />
-							
-                            <label>
-                                <input type="checkbox" name="checkbox-1a" id="checkbox-1a" checked="" style="height: 2em;">
-                                I agree to the <a href="#privacy-policy" style="text-decoration: none;">Terms of Service</a>
-                            </label>
-                                
-							<br>
-							<input type="submit" value="Sign Up" data-theme="b" />
-							<br>
-							
-							<label style="text-align:center;">Already have an account?</label>
-							<a href="#login" data-theme="c" data-transition="none" data-role="button">Login</a>
-						</form>
-						
-						<br>
-					<br>
-					<br>
-					<br>
-					<br>
-					<br>
-					<br>
-					
+        <br>
+            <label for="item_desc-field" style=" text-shadow: none; font-size: 1.5em;">Demo Account Details:</label>
+            <label for="item_desc-field" style=" text-shadow: none; font-size: 1em;">Email: wineshop@blubird.com.ng</label>
+            <label for="item_desc-field" style=" text-shadow: none; font-size: 1em;">Password: qweasd</label>
+            <a href="#login" data-role="button" data-theme="b" data-icon="home" data-transition="none" style="font-weight: normal !important; text-shadow: none; border: none;">Proceed to Login</a>
+        <br>
 	</div><!-- /content -->
 	
 </div><!-- /page -->
@@ -841,29 +807,16 @@
 		<form method="post" action="?action=app_users&todo=login" name="login" id="login-form" remote-storage=1 >
 			<input type="hidden" name="key" id="key-field" value="" />
 			
-			<input type="email" name="email" id="email-field" placeholder="Your Email Address" required data-validate="email" data-error-title="Invalid Email" data-error-msg="Provide a valid email" />
+			<input type="email" name="email" id="email-field" placeholder="Your Email Address" required data-validate="email" data-error-title="Invalid Email" data-error-msg="Provide a valid email" value="wineshop@blubird.com.ng" />
 			
-			<input type="password" name="password" id="password-field" placeholder="Password" required data-validate="password" data-error-title="Invalid Password" data-error-msg="Passwords must be at least 6 characters" />
-			
+			<input type="password" name="password" id="password-field" placeholder="Password" required data-validate="password" data-error-title="Invalid Password" data-error-msg="Passwords must be at least 6 characters" value="qweasd" />
 			<br>
-		
-			
-			<div class="ui-grid-a invt">
-			<div class="ui-block-a">
-				<input type="submit" value="Login" data-theme="c" />
-			</div>
-			
-			<div class="ui-block-b">
-                <a href="#signup" data-transition="none" data-role="button" data-theme="b" >Sign Up</a>
-			</div>
-		</div>
-		
+            <input type="submit" value="Login" data-theme="c" />
+			<br />
+            <label for="item_desc-field" style=" text-shadow: none; font-size: 1.5em;">Demo Account Details:</label>
+            <label for="item_desc-field" style=" text-shadow: none; font-size: 1em;">Email: wineshop@blubird.com.ng</label>
+            <label for="item_desc-field" style=" text-shadow: none; font-size: 1em;">Password: qweasd</label>
 		</form>
-			
-		<br>
-		<br>
-		<br>
-		<br>
 		<br>
 	</div><!-- /content -->
 	

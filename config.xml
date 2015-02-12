@@ -3,7 +3,7 @@
 <widget xmlns     = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
         id        = "ng.com.blubird.blubird"
-        version   = "test.1.0.91">
+        version   = "test.1.0.92">
 
     <name>Blubird</name>
 
