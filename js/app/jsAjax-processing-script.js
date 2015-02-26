@@ -50,23 +50,25 @@ window.addEventListener('load', function() {
 
 document.addEventListener("deviceready", onDeviceReady, false);
 
+var pushNotification;
+
 function onDeviceReady(){
     window.requestFileSystem( LocalFileSystem.PERSISTENT, 0, initFileSystem, fail );
+    pushNotification = window.plugins.pushNotification;   
+    pushNotification.register( errorHandler, errorHandler, { 'senderID':'628773795445', 'ecb':'onNotificationGCM' });
 };
 
-var pushNotification = window.plugins.pushNotification;   
-pushNotification.register( errorHandler, errorHandler, { 'senderID':'628773795445', 'ecb':'onNotificationGCM' });
-function errorHandler(error) { console.log('Error: '+ error); };
+function errorHandler(error) { alert('Error: '+ error); };
 
-function onNotificationGCM(e) { 
+function onNotificationGCM(e) {
     switch(e.event){ 
     case 'registered': if (e.regid.length > 0){ alert('registration id = '+e.regid); } break;
     case 'message': alert('message = '+e.message); break;
-    case 'error': console.log('Error: ' + e.msg); break;
-    default: console.log('An unknown event was received'); break;
+    case 'error': alert('Error: ' + e.msg); break;
+    default: alert('An unknown event was received'); break;
     }
 };
-
+    
 var blubirdFileURL = '';
 var blubirdWebbased = 0;
 
