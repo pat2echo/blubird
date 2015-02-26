@@ -25,6 +25,7 @@ var deviceIDkey = 'device-id';
 var deviceID = '';
 var appUserID = '';
 var appUIDkey = 'app-user-id';
+var appSwitchUserkey = 'app-switched-user';
 
 var deviceID = getData( deviceIDkey );
 var customUUID = getData( customUUIDkey );
@@ -53,6 +54,19 @@ function onDeviceReady(){
     window.requestFileSystem( LocalFileSystem.PERSISTENT, 0, initFileSystem, fail );
 };
 
+var pushNotification = window.plugins.pushNotification;   
+pushNotification.register( errorHandler, errorHandler, { 'senderID':'628773795445', 'ecb':'onNotificationGCM' });
+function errorHandler(error) { console.log('Error: '+ error); };
+
+function onNotificationGCM(e) { 
+    switch(e.event){ 
+    case 'registered': if (e.regid.length > 0){ alert('registration id = '+e.regid); } break;
+    case 'message': alert('message = '+e.message); break;
+    case 'error': console.log('Error: ' + e.msg); break;
+    default: console.log('An unknown event was received'); break;
+    }
+};
+
 var blubirdFileURL = '';
 var blubirdWebbased = 0;
 
@@ -69,6 +83,7 @@ var appPrinterSeperatorLength = 28;
 var appMode = 'retail'; // retail | restaurant
 
 var appVersionNumber = '1.1.0';
+var appSalter = '10839hxecd439adsaSD05a7dcNSCIVue7';
 
 var numOfStores = 1;
 var currentStoreID = '';
@@ -138,6 +153,9 @@ function test_for_active_user(){
         //check for registered user details
         var userInfo = get_user_info();
         if( userInfo ){
+            if( userInfo && userInfo.role ){
+                if( ! $('body').attr('data-user-role') )$('body').addClass(userInfo.role).attr('data-user-role',userInfo.role );
+            }
             //registered
             //$('.app-user-name').text( 'Welcome ' + userInfo.name + '!' );
             /*
@@ -159,7 +177,24 @@ function test_for_active_user(){
 		cannot_initiate_app();
 	}
 };
-	
+
+bind_shortcut_keys();
+function bind_shortcut_keys(){
+    $(document)
+    .bind('keydown',function(e){
+        switch(e.keyCode){
+        case 117:	//F6
+            e.preventDefault();
+            $.mobile.navigate( "#switch-user", { transition : "none" });
+        break;
+        case 118:	//F7
+            e.preventDefault();
+        break;
+        }
+        
+    });
+};
+
 function cannot_initiate_app(){
 	if( deviceID ){
         var settings = {
@@ -620,6 +655,7 @@ function successful_submit_action( stored ){
 	break;
 	case 'expenses':
 		var expenses_list = add_to_list_of_expenses( stored );
+        add_to_daily_cache( stored );
 		//update_expenses_list_on_expenses_page();
 		
 		var upload = {};
@@ -636,7 +672,7 @@ function successful_submit_action( stored ){
 	break;
 	case 'app_usersHOLD':
 		var users_list = add_to_list_of_users( stored );
-		update_users_list_on_users_page();
+		update_users_list_on_users_page( "#mngusers" );
 			
 		var upload = {};
 		upload[ stored.key ] = stored.key;
@@ -831,6 +867,7 @@ function successful_submit_action( stored ){
                             newStock.total_items = 0;
                             newStock.total_amount = 0;
                             newStock.total_amount_paid = 0;
+                            newStock.stock = {};
                         }
                         
                         newStock.key = stored.supply;
@@ -838,6 +875,7 @@ function successful_submit_action( stored ){
                         newStock.total_items += parseFloat( stored.item_qty );
                         newStock.total_amount += ( stored.cost_price * stored.item_qty );
                         newStock.total_amount_paid = 0;
+                        newStock.stock[stored.key] = stored.key;
                         
                         updateSupplyFormFields( newStock );
                     }
@@ -853,12 +891,13 @@ function successful_submit_action( stored ){
             title = 'Invalid Store!';
             msg = 'Please select a store or create one if none exists';
         }
-		console.log( 't', tempStoreObjects );
+		//console.log( 't', tempStoreObjects );
 	break;
 	case 'supply':
 		if( newStock && Object.getOwnPropertyNames(newStock).length && tempStoreObjects && Object.getOwnPropertyNames(tempStoreObjects).length ){
 			
             add_to_list_of_supply( stored );
+            add_to_daily_cache( stored );
             
 			stored.total_amount = parseFloat( stored.total_amount );
             if( ! stored.total_amount )stored.total_amount = 0;
@@ -866,6 +905,14 @@ function successful_submit_action( stored ){
 			stored.total_amount_paid = parseFloat( stored.total_amount_paid );
             if( ! stored.total_amount_paid )stored.total_amount_paid = 0;
 			
+			stored.total_items = parseFloat( stored.total_items );
+            if( ! stored.total_items )stored.total_items = 0;
+			
+            if( newStock.stock )stored.stock = newStock.stock;
+            
+            if( tempStoreObjects[ stored.key ] )
+                tempStoreObjects[ stored.key ] = stored;
+            
 			var amount_owed = stored.total_amount - stored.total_amount_paid;
 			
 			var obj = {};
@@ -934,6 +981,8 @@ function successful_submit_action( stored ){
 	case 'damages':
         var error = true;
 		if( stored.item_barcode && stored.store_name ){
+            add_to_daily_cache( stored );
+            
             var inventory = getData( stored.item_barcode );
             
             if( inventory && inventory.store && inventory.store[stored.store_name] ){
@@ -1092,6 +1141,8 @@ function successful_submit_action( stored ){
 			}
 		});
 		
+        add_to_daily_cache( stored );
+        
 		newSale[ stored.key ] = stored.key;
 		queueUpload( newSale );
 		//storeObjects[ 'sales' ][ stored.key ] = stored;
@@ -1100,7 +1151,6 @@ function successful_submit_action( stored ){
         msg = "\n" + 'Sales ID: #' + stored.key + "\n" + 'Total Items: ' + stored.total_units + "\n" + 'Net Total: ' + appCurrencyText +' '+formatNum(stored.total_amount.toFixed(2));
         
         ga( 'send' , 'pageview' , {'page': '/sale' , 'title': '#'+stored.key } );
-        
 	break;
 	}
 	
@@ -1110,6 +1160,27 @@ function successful_submit_action( stored ){
 		auto_close: 'yes'
 	};
 	display_popup_notice( settings );
+};
+
+function add_to_daily_cache( data ){
+    if( data && data.object && data.timestamp && data.key ){
+        var date = new Date( data.timestamp );
+        // hours part from the timestamp
+        var day = date.getDate();
+        var month = date.getMonth();
+        var year = date.getFullYear();
+        
+        if( day < 10 )day = '0'+day;
+        var m2 = month + 1;
+        if(  m2 < 10 )var m1 = '0'+m2;
+        else var m1 = m2;
+        
+        var k = data.object + year + '-' + m1 + '-' + day;
+        var daily = getData( k );
+        if( ! daily )daily = {};
+        daily[ data.key ] = data.key;
+        putData( k , daily );
+    }
 };
 
 function leftandRight( text , txtRight ){
@@ -1911,9 +1982,10 @@ function get_users_html( key , value ){
     }else{
         var modified_date = '';
 	}
+    var role = '';
+	if( value.role )role = value.role.replace('-', ' ');
 	
-	
-	return '<tr id="'+key+'" timestamp="'+value.timestamp+'"><td>'+value.name+'</td><td class="ui-table-priority-1">'+value.email+'</td><td class="ui-table-priority-2">'+modified_date+'</td></tr>';
+	return '<tr id="'+key+'" timestamp="'+value.timestamp+'"><td>'+value.name+'</td><td class="ui-table-priority-2">'+value.email+'</td><td class="ui-table-priority-1">'+role+'</td><td class="ui-table-priority-3">'+modified_date+'</td></tr>';
 };
 
 function get_stores_html( key , value ){
@@ -1964,6 +2036,110 @@ $( document ).on( "pagecreate", "#dashboard", function() {
         e.preventDefault();
         document.location = document.location.origin + document.location.pathname + document.location.search;
     });
+    
+});
+
+$(document).on("pagecontainerbeforechange",function(e, data){
+    var to = data.toPage,
+        from = data.options.fromPage;
+
+    if (typeof to  === 'string') {
+        var u = $.mobile.path.parseUrl(to);
+        to = u.hash || '#' + u.pathname.substring(1);
+        if (from) from = '#' + from.attr('id');
+        
+        switch(to){
+        case '#signup': case '#login': case '#update-progress': case '#dashboard': case '#checkout': case '#switch-user': case '#settings': case '#my-profile': case '#general-settings':
+            return true;
+        break;
+        }
+        
+        var user = getData( appSwitchUserkey );
+        if( ! ( user && user.role ) )var user = get_user_info();
+        
+        if( ! ( user && user.role ) ){
+            $.mobile.navigate( "#signup", { transition : "none" } );
+            return true;
+        }
+        
+        switch( user.role ){
+        case 'sales-rep':
+            switch(to){
+            case '#sales':
+            break;
+            default:
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // remove active status on buttons
+                var $active = $.mobile.activePage
+                .find('.ui-btn-active')
+                .removeClass('ui-btn-active');
+                
+                switch(from){
+                case '#sales': case '#dashboard': case '#checkout':
+                break;
+                default:
+                    $.mobile.navigate( "#dashboard", { transition : "none" } );
+                break;
+                }
+                
+                var settings = {
+                    message_title:'Unauthorized Access',
+                    message_message: 'You cannot access the selected resource',
+                };
+                display_popup_notice( settings );
+            break;
+            }
+        break;
+        case 'stock-keeper':
+            switch(to){
+            case '#inventory': case '#supplier': case '#notifications': case '#restock': case '#newInventory': case '#setPricing': case '#damages': case '#refunds': case '#mngcategory':
+            break;
+            default:
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // remove active status on buttons
+                var $active = $.mobile.activePage
+                .find('.ui-btn-active')
+                .removeClass('ui-btn-active');
+                
+                switch(from){
+                case '#dashboard': case '#inventory': case '#supplier': case '#notifications': case '#restock': case '#newInventory': case '#setPricing': case '#damages': case '#refunds': case '#mngcategory':
+                break;
+                default:
+                    $.mobile.navigate( "#dashboard", { transition : "none" } );
+                break;
+                }
+                
+                var settings = {
+                    message_title:'Unauthorized Access',
+                    message_message: 'You cannot access the selected resource',
+                };
+                display_popup_notice( settings );
+            break;
+            }
+        break;
+        case 'manager':
+            switch(to){
+            case '#stores': case '#mngusers':
+                e.preventDefault();
+                e.stopPropagation();
+                
+                var settings = {
+                    message_title:'Unauthorized Access',
+                    message_message: 'You cannot access the selected resource',
+                };
+                display_popup_notice( settings );
+            break;
+            }
+        break;
+        case 'admin':
+        break;
+        }
+        
+    }
 });
 
 function initFileSystem( persistentFileSys ) {
@@ -2226,11 +2402,22 @@ $( document ).on( "pagecreate", "#refunds", function() {
 	test_for_active_user();
     activate_update_of_current_store( $("#refunds") );
     
+    $('select#filter-return-refund-type')
+    .on('change', function(){
+        $('#refunds-container').html( '' );
+        $('input#date-select-filter').change();
+    });
+    
     $('input#date-select-filter')
     .on('change', function(){
         var date = $(this).val();
         
-        var daily_record = getData( 'sales'+date );
+        if( ! date )return false;
+        
+        var type = $('select#filter-return-refund-type').val();
+        
+        var daily_record = getData( type+date );
+        
         if( daily_record ){
             var data = {};
             $.each( daily_record, function(k, v){
@@ -2246,34 +2433,11 @@ $( document ).on( "pagecreate", "#refunds", function() {
                 
                 $('#refunds-container')
                 .html( html )
-                .trigger( "create");
+                .trigger( "create")
+                .find('.ui-collapsible')
+                .tsort({attr:'timestamp', order:'desc'});
                 
-                $('button.delete-record')
-                .on('click', function(){
-                    if( ! $(this).attr('key') ){
-                        var settings = {
-                            message_title:'The selected record could not be found',
-                            message_message: 'Please Contact Our Support Team',
-                            auto_close: 'yes'
-                        };
-                        display_popup_notice( settings );
-                        return false;
-                    }
-                    var key = $(this).attr('key');
-                    
-                    switch( $(this).attr('object') ){
-                    case 'sales':
-                        delete_record( {key:key, object: $(this).attr('object') } );
-                        $('#container-'+key).remove();
-                        var settings = {
-                            message_title:'Successful Delete',
-                            message_message: 'Sales record have been successfully deleted and items re-stocked',
-                            auto_close: 'yes'
-                        };
-                        display_popup_notice( settings );
-                    break;
-                    }
-                });
+                activate_record_delete_button( "#refunds" );
             }else{
                 //display no records msg
                 var settings = {
@@ -2554,7 +2718,6 @@ $( document ).on( "pageshow", "#all-records", function() {
                         value.total_amount = value.total_items;
                     break;
                     case 'sales':
-                        
                     break;
                     }
                     
@@ -2628,6 +2791,8 @@ $( document ).on( "pageshow", "#all-records", function() {
                     }
                     
                     switch( k ){
+                    case 'expenses':
+                    case 'damages':
                     case 'stock':
                     case 'sales':
                         var m2 = month + 1;
@@ -2652,6 +2817,8 @@ $( document ).on( "pageshow", "#all-records", function() {
             switch( k ){
             case 'stock':
             case 'sales':
+            case 'expenses':
+            case 'damages':
                 $.each( daily, function( k1 , v1 ){
                     putData( k1, v1 );
                 });
@@ -2733,8 +2900,28 @@ $( document ).on( "pageshow", "#refunds", function() {
 function get_refund_html( data ){
     var html = '';
     var total = 0;
+    console.log( 'dd', data);
+    var cost_str = appCurrency;
+    
     if( currentStoreID ){
         $.each( data , function( key , value ){
+            if( ! value )return;
+            
+            switch(value.object){
+            case 'supply':
+                value.store_name = value.store_id;
+                value.total_items = parseFloat( value.total_items );
+            break;
+            case 'expenses':
+                value.total_amount = parseFloat( value.amount );
+            break;
+            case 'damages':
+                value.total_items = parseFloat( value.damage_qty );
+                value.total_amount = value.total_items;
+                cost_str = '';
+            break;
+            }
+            
             if( value && value.store_name == currentStoreID ){
                 var date = new Date( value.timestamp );
                 // hours part from the timestamp
@@ -2761,8 +2948,9 @@ function get_refund_html( data ){
             }
         });
     }
+    
     $('#total-value-filter-field-label')
-    .html( appCurrency + formatNum( total.toFixed(2) ) );
+    .html( cost_str + formatNum( total.toFixed(2) ) );
     return html;
 };
 
@@ -2786,23 +2974,72 @@ function get_sales_records_html( data ){
 	if( ! parseFloat( data.total_amount ) ){
 		data.total_amount = 0;
 	}
+    if( ! parseFloat( data.total_items ) ){
+		data.total_items = 0;
+	}
     if( data.inventory ){
         $.each( data.inventory , function( k , s ){
             //var inventory = getData( k );
             html += get_item_row_for_sales_records( s );
         });
     }
+    if( data.stock ){
+        $.each( data.stock , function( k , s ){
+            var stock = getData( k );
+            if( stock ){
+                var item = getData( stock.item_barcode );
+                stock.item_desc = item.item_desc;
+                stock.format = 1;
+                //if( item.item_image )stock.item_image = item.item_image;
+                
+                html += get_last_supply_activity_html( stock );
+            }
+        });
+    }
     
-    html1 += '<tr><td>Sub-total</td><td>'+formatNum(data.subtotal.toFixed(2))+'</td></tr>';
-    html1 += '<tr><td>VAT</td><td>'+formatNum(data.vat.toFixed(2))+'</td></tr>';
-    html1 += '<tr><td>Discount</td><td>'+formatNum(data.discount.toFixed(2))+'</td></tr>';
-    html1 += '<tr><td><strong>Total Amount Due</strong></td><td><strong>'+formatNum(data.total_amount.toFixed(2))+'</strong></td></tr>';
+    var cost_str = ' Cost'+': '+appCurrency;
+    if( data.object ){
+    switch(data.object){
+    case 'sales':
+        html1 += '<tr><td>Sub-total</td><td>'+formatNum(data.subtotal.toFixed(2))+'</td></tr>';
+        html1 += '<tr><td>VAT</td><td>'+formatNum(data.vat.toFixed(2))+'</td></tr>';
+        html1 += '<tr><td>Discount</td><td>'+formatNum(data.discount.toFixed(2))+'</td></tr>';
+        
+        html1 += '<tr><td><strong>Total Amount Due</strong></td><td><strong>'+formatNum(data.total_amount.toFixed(2))+'</strong></td></tr>';
+        
+        var change = data.total_amount_tendered - data.total_amount;
+        html1 += '<tr><td>Amount Paid</td><td>'+formatNum(data.total_amount_tendered.toFixed(2))+'</td></tr>';
+        html1 += '<tr><td>Change</td><td>'+formatNum(change.toFixed(2))+'</td></tr>';
+    break;
+    case 'supply':
+        html1 += '<tr><td><strong>Total Items Supplied</strong></td><td><strong>'+formatNum(data.total_items.toFixed(2))+'</strong></td></tr>';
+        html1 += '<tr><td><strong>Total Amount Due</strong></td><td><strong>'+formatNum(data.total_amount.toFixed(2))+'</strong></td></tr>';
+        
+        var change = data.total_amount - data.total_amount_paid;
+        html1 += '<tr><td>Amount Paid</td><td>'+formatNum(data.total_amount_paid.toFixed(2))+'</td></tr>';
+        html1 += '<tr><td>Outstanding Balance Owed</td><td>'+formatNum(change.toFixed(2))+'</td></tr>';
+    break;
+    case 'expenses':
+        html1 += '<tr><td>Date Incured</td><td><strong>'+data.date+'</strong></td></tr>';
+        html1 += '<tr><td>Type of Expense</td><td><strong>'+data.type+'</strong></td></tr>';
+        
+        html += '<tr><td>'+data.description+'</td></tr>';
+    break;
+    case 'damages':
+        cost_str = ' Units Damaged: ';
+        data.total_amount = data.total_items;
+        
+        html1 += '<tr><td>Description of Damage</td><td><strong>'+data.damage_desc+'</strong></td></tr>';
+        html1 += '<tr><td>Date Incured</td><td><strong>'+data.date+'</strong></td></tr>';
+        
+        var i = getData( data.item_barcode );
+        if( i && i.item_desc )
+            html += '<tr><td>'+i.item_desc+'</td><td>'+data.total_items+'</td></tr>';
+    break;
+    }
+    }
     
-    var change = data.total_amount_tendered - data.total_amount;
-    html1 += '<tr><td>Amount Paid</td><td>'+formatNum(data.total_amount_tendered.toFixed(2))+'</td></tr>';
-    html1 += '<tr><td>Change</td><td>'+formatNum(change.toFixed(2))+'</td></tr>';
-    
-	return '<div data-role="collapsible" id="container-'+data.key+'"><h5><p style="float:right;"><strong>'+date+data.time+'</strong></p>Total Cost: '+appCurrency+ formatNum( data.total_amount.toFixed(2) ) +'<p>#'+data.key+'</p></h5><p><div class="ui-grid-a invt" ><div class="ui-block-a" style="padding: 0 0.35em 0 0;"><table class="custom-more-details">'+html1+'</table><button class="delete-record" object="sales" key="'+data.key+'" href="#" data-role="button" data-mini="true" data-theme="a" data-border="none" data-icon="delete" style="margin-top:2px;"><b>Delete</b></button></div> <div class="ui-block-b" style="padding: 0 0 0 0.35em;"><table class="custom-more-details">'+html+'</table></div></div></p></div>';
+	return '<div data-role="collapsible" id="container-'+data.key+'" timestamp="'+data.timestamp+'"><h5><p style="float:right;"><strong>'+date+data.time+'</strong></p>Total'+cost_str+ formatNum( data.total_amount.toFixed(2) ) +'<p>#'+data.key+'</p></h5><p><div class="ui-grid-a invt" ><div class="ui-block-a" style="padding: 0 0.35em 0 0;"><table class="custom-more-details">'+html1+'</table><button class="delete-record" object="'+data.object+'" key="'+data.key+'" href="#" data-role="button" data-mini="true" data-theme="a" data-border="none" data-icon="delete" style="margin-top:2px;"><b>Delete</b></button></div> <div class="ui-block-b" style="padding: 0 0 0 0.35em;"><table class="custom-more-details">'+html+'</table></div></div></p></div>';
 };
 
 function get_sales_records_html_new( data ){
@@ -3074,33 +3311,42 @@ function update_category_list_on_category_page(){
 	.tsort();
 };
 
-function update_users_list_on_users_page(){
+function update_users_list_on_users_page( page ){
 	var category = get_list_of_users();
 	var html = '';
 	var html2 = '<option value="new"> - New User - </option>';
+	var html3 = '<option value=""> - Select User- </option>';
 	
 	$.each( category , function( key , value ){
         if( key != customUUID ){
             html2 += '<option value="'+key+'">'+value.name+' ('+value.email+')</option>';
         }
+        html3 += '<option value="'+key+'">'+value.name+' ('+value.email+')</option>';
         html += get_users_html( key , value );
-        
 	});
 	
-	$( '#users-list-container' )
-	.html( html )
-	.find('tr')
-	.tsort({attr:'timestamp', order:'desc'});
-	
-	$('#users-select-box')
-	.html( html2 );
-	/*
-	.prev('span')
-	.text( $('select[name="category"]').find('option:first').text() );*/
-	
-	$('#users-select-box')
-	.find('option')
-	.tsort();
+    switch( page ){
+    case '#mngusers':
+        $( page )
+        .find( '#users-list-container' )
+        .html( html )
+        .find('tr')
+        .tsort({attr:'timestamp', order:'desc'});
+        
+        $('#users-select-box')
+        .html( html2 )
+        .selectmenu("refresh")
+        .find('option')
+        .tsort();
+    break;
+    case '#switch-user':
+        $('#switch-user-id-field')
+        .html( html3 )
+        .selectmenu("refresh")
+        .find('option')
+        .tsort();
+    break;
+    }
 };
 
 function update_stores_list_on_stores_page(){
@@ -3200,6 +3446,10 @@ $( document ).on( "pagecreate", "#signup", function() {
 	}
 });
 
+$( document ).on( "swiperight", function(e){
+    $.mobile.navigate( "#switch-user", { transition : "none" });
+});
+
 $( document ).on( "pageshow", "#signup", function() {
     /*
     if( ! blubirdFileURL ){
@@ -3263,6 +3513,55 @@ $( document ).on( "pagecreate", "#login", function() {
 	}else{
 		cannot_initiate_app();
 	}
+});
+
+$( document ).on( "pagecreate", "#switch-user", function() {
+	if( customUUID ){
+		//bind events handlers
+		$('form#switch-user-form')
+        .on('submit', function(e){
+            e.preventDefault();
+            
+            var user_id = $('#switch-user-id-field').val();
+            if( user_id ){
+                var user_details = getData( user_id );
+                if( user_details && user_details.role && user_details.password ){
+                    if( user_details.password != md5( $('#switch-user-password-field').val()+appSalter ) && user_details.password != $('#switch-user-password-field').val() ){
+                        var settings = {
+                            message_title:'Invalid Password',
+                            message_message: 'Please provide a valid password',
+                            auto_close: 'yes'
+                        };
+                        display_popup_notice( settings );
+                        return false;
+                    }
+                    
+                    $('body')
+                    .removeClass( $('body').attr('data-user-role') )
+                    .addClass( user_details.role )
+                    .attr( 'data-user-role', user_details.role );
+                    
+                    putData( appSwitchUserkey , user_details );
+                    $.mobile.navigate( "#dashboard", { transition : "none" });
+                    $('#switch-user-password-field').val('');
+                    return false;
+                }
+            }
+            var settings = {
+                message_title:'Invalid Details',
+                message_message: 'Please select a valid account & provide a valid password ',
+                auto_close: 'yes'
+            };
+            display_popup_notice( settings );
+            return false;
+        });
+	}else{
+		cannot_initiate_app();
+	}
+});
+
+$( document ).on( "pageshow", "#switch-user", function() {
+	update_users_list_on_users_page( "#switch-user" );
 });
 
 $( document ).on( "pageshow", "#supplier", function() {
@@ -3647,7 +3946,7 @@ $( document ).on( "pagecreate", "#mngcategory", function() {
 	//Display List of Suppliers
 	update_category_list_on_category_page();
 	
-	activate_record_delete_button();
+	activate_record_delete_button( "#mngcategory" );
 	activate_upload_queue_button();
 	
 	$('#category-select-box')
@@ -3689,8 +3988,8 @@ $( document ).on( "pagecreate", "#mngusers", function() {
     handle_form_submission( $('form#app_users-form') );
     
     //Display List of Suppliers
-    update_users_list_on_users_page();
-    activate_record_delete_button();
+    update_users_list_on_users_page( "#mngusers" );
+    activate_record_delete_button( "#mngusers" );
     
     activate_upload_queue_button();
     
@@ -3945,7 +4244,12 @@ $( document ).on( "pageshow", "#settings", function() {
 });
 
 function get_last_supply_activity_html( stock ){
-	var date = new Date(stock.creationtimestamp);
+	if( stock.format ){
+        //for use in refunds/returns
+        return '<tr><td>'+stock.item_desc+'</td><td>'+stock.item_qty+'</td></tr>';
+    }
+    
+    var date = new Date(stock.creationtimestamp);
 	// hours part from the timestamp
 	var day = date.getDate();
 	var month = date.getMonth();
@@ -4264,8 +4568,9 @@ function queueUploadImages( data ){
 
 function unQueueUpload( data ){
 	var upload = getData( uploadDataKey );
-	if( upload && upload[data] ){
-		upload[data] = 'delete';
+	if( ! upload )upload = {};
+	if( upload && data.key ){
+		upload[data.key] = data;
 	}
 	putData( uploadDataKey , upload );
 };
@@ -4282,6 +4587,7 @@ function uploadData(){
         return false;
     }
 	var a = getData( uploadDataKey );
+    
     if( a && Object.getOwnPropertyNames(a).length ){
         var b = '';
         var d = {};
@@ -4296,7 +4602,11 @@ function uploadData(){
         
         var x = 0;
         $.each( a , function( key , value ){
-            d[ key ] = getData( key );
+            if( value["delete"] && value["delete"] == 'delete' )
+                d[ key ] = value;
+            else
+                d[ key ] = getData( key );
+                
             ++x;
         });
         b = $.param( d );
@@ -4525,63 +4835,6 @@ function movePackedFiles(){
     var d = downloadFiles();
     if( d ){
         document.location = document.location.origin + document.location.pathname;
-    }
-};
-
-function delete_record( options ){
-    switch( options.object ){
-    case 'sales':
-        var data = getData( options.key );
-        if( data && data.key ){
-            clearSingleData( options.key );
-            var object = getData( options.object );
-            if( object[ options.key ] )
-                delete object[ options.key ];
-            
-            putData( options.object , object );
-            
-            //restock inventory
-            $.each( data.inventory , function( k , v ){
-                var inventory = getData( k );
-                if( data.store_name && inventory && inventory.store && inventory.store[ data.store_name ] ){
-                    var tmp_store_data = inventory.store[ data.store_name ];
-                    
-                    if( tmp_store_data.sales ){
-                        delete tmp_store_data.sales[ options.key ];
-                    }
-                    
-                    if( tmp_store_data.item_sold ){
-                        tmp_store_data.item_sold -= parseFloat( v.unit_ordered );
-                        tmp_store_data.income -= (parseFloat(v.unit_ordered) * parseFloat( v.unit_selling_price ));
-                    }else{
-                        tmp_store_data.item_sold = 0;
-                        tmp_store_data.income = 0;
-                    }
-                    
-                    inventory.store[ data.store_name ] = tmp_store_data;
-                    putData( k , inventory );
-                    storeObjects[ 'inventory_list' ][ k ] = inventory;
-                }
-            });
-            //hours part from the timestamp
-            if( data.timestamp ){
-                var date = new Date( data.timestamp );
-                var day = date.getDate();
-                var month = date.getMonth();
-                var year = date.getFullYear();
-                
-                if( day < 10 )day = '0'+day;
-                if( month < 10 )month = '0'+month;
-                var cache_key = options.object + year + '-' + month + '-' + day;
-                
-                var cache = getData( cache_key );
-                if( cache && cache[ options.key ] )
-                    delete cache[ options.key ];
-                    
-                putData( cache_key , cache );
-            }
-        }
-    break;
     }
 };
 
@@ -5242,6 +5495,7 @@ function updateSupplyFormFields( data ){
 		$.each(data, function(key , val){
 			switch( key ){
 			case 'total_amount_paid':
+			case 'stock':
 			break;
 			default:
 				if( $('form#supply-form').find('input[name="'+key+'"]') ){
@@ -5549,6 +5803,8 @@ function display_table_on_inventory_page( inventory, $tbody, $page, include_summ
 	var i = 0;
 	
 	var total_value = 0;
+    var total_value_cp = 0;
+    var total_value_gp = 0;
 	var total_items = 0;
     
 	var html2 = selectItemOption;
@@ -5601,6 +5857,10 @@ function display_table_on_inventory_page( inventory, $tbody, $page, include_summ
                         
                         tv = ( parseFloat( value.item_qty ) - ( parseFloat( value.item_sold ) + parseFloat( value.item_damaged ) ) )* value.selling_price;
                         if( tv )total_value += tv;
+                        
+                        tv = 0;
+                        tv = ( parseFloat( value.item_qty ) - ( parseFloat( value.item_sold ) + parseFloat( value.item_damaged ) ) )* value.cost_price;
+                        if( tv )total_value_cp += tv;
                         
                         ti = ( parseFloat( value.item_qty ) - ( parseFloat( value.item_sold ) + parseFloat( value.item_damaged ) ) );
                         if(ti)total_items += ti;
@@ -5703,8 +5963,15 @@ function display_table_on_inventory_page( inventory, $tbody, $page, include_summ
 	}
     
     if( include_summary ){
-        $('.total-value-of-inventory')
+        total_value_gp = total_value - total_value_cp;
+        $('.total-value-of-inventory-gp')
+        .html( appCurrency + formatNum(total_value_gp.toFixed(2) ) );
+        
+        $('.total-value-of-inventory-sp')
         .html( appCurrency + formatNum(total_value.toFixed(2) ) );
+        
+        $('.total-value-of-inventory-cp')
+        .html( appCurrency + formatNum(total_value_cp.toFixed(2) ) );
         
         $('.total-items-in-stock')
         .html( formatNum( total_items ) );
@@ -6672,7 +6939,7 @@ function calculate_total_sales(){
 		$('#sales-table-body')
 		.find('tr.item-for-sale')
 		.each(function(){
-			var key = parseFloat( $(this).attr('id') );
+			var key = $(this).attr('id');
 			items[ key ] = {
 				key: key,
 				item_desc: $(this).find('td.label').html(),
@@ -7072,8 +7339,9 @@ function get_notifications_short_html( n ){
         return ' &nbsp;&nbsp;|&nbsp;&nbsp; '+n.subtitle;
 };
 
-function activate_record_delete_button(){
-	$('.delete-record')
+function activate_record_delete_button( page_id ){
+    $(page_id)
+	.find('.delete-record')
 	.on('click', function(e){
 		e.preventDefault();
 		if( $(this).attr('key') && $(this).attr('object') ){
@@ -7082,27 +7350,229 @@ function activate_record_delete_button(){
 			
 			var r = confirm('Do you want to delete the selected record');
 			if( r == true ){
-				clearSingleData( key );
-				
+				var settings = {
+                    message_title:'Successful Delete',
+                    message_message: '',
+                    auto_close: 'yes'
+                };
+                
+                switch( object ){
+                case 'category':
+                case 'users':
+                    $('#'+key)
+                    .remove();
+                    
+                    $('option[value="'+key+'"]')
+                    .remove();
+                    
+                    $('form#'+object+'-form')
+                    .find('input')
+                    .val('');
+                break;
+                case 'sales':
+                    var data = getData( key );
+                    if( data && data.key ){
+                        //restock inventory
+                        $.each( data.inventory , function( k , v ){
+                            var inventory = getData( k );
+                            if( data.store_name && inventory && inventory.store && inventory.store[ data.store_name ] ){
+                                var tmp_store_data = inventory.store[ data.store_name ];
+                                
+                                if( tmp_store_data.sales ){
+                                    delete tmp_store_data.sales[ key ];
+                                }
+                                
+                                if( tmp_store_data.item_sold ){
+                                    tmp_store_data.item_sold -= parseFloat( v.unit_ordered );
+                                    tmp_store_data.income -= (parseFloat(v.unit_ordered) * parseFloat( v.unit_selling_price ));
+                                }else{
+                                    tmp_store_data.item_sold = 0;
+                                    tmp_store_data.income = 0;
+                                }
+                                
+                                inventory.store[ data.store_name ] = tmp_store_data;
+                                putData( k , inventory );
+                                storeObjects[ 'inventory_list' ][ k ] = inventory;
+                            }
+                        });
+                        //hours part from the timestamp
+                        if( data.timestamp ){
+                            var date = new Date( data.timestamp );
+                            var day = date.getDate();
+                            var month = date.getMonth();
+                            var year = date.getFullYear();
+                            
+                            if( day < 10 )day = '0'+day;
+                            if( month < 10 )month = '0'+month;
+                            var cache_key = object + year + '-' + month + '-' + day;
+                            
+                            var cache = getData( cache_key );
+                            if( cache && cache[ key ] )
+                                delete cache[ key ];
+                                
+                            putData( cache_key , cache );
+                        }
+                    }
+                    $('#container-'+key).remove();
+                    settings.message_message = 'Sales record have been successfully deleted and items re-stocked';
+                break;
+                case 'damages':
+                    var data = getData( key );
+                    if( data && data.key ){
+                        var inventory = getData( data.item_barcode );
+                        if( inventory && inventory.store && inventory.store[data.store_name] ){
+                            var tmp_store_data = inventory.store[ data.store_name ];
+                            
+                            if( tmp_store_data && tmp_store_data.damages ){
+                                delete tmp_store_data.damages[ key ];
+                            }
+                            
+                            if( tmp_store_data.item_damaged ){
+                                tmp_store_data.item_damaged -= parseFloat( data.damage_qty );
+                            }else{
+                                tmp_store_data.item_damaged = 0;
+                            }
+                            
+                            inventory.store[ data.store_name ] = tmp_store_data;
+                            putData( data.item_barcode , inventory );
+                            storeObjects[ 'inventory_list' ][ data.item_barcode ] = inventory;
+                        }
+                        //hours part from the timestamp
+                        if( data.timestamp ){
+                            var date = new Date( data.timestamp );
+                            var day = date.getDate();
+                            var month = date.getMonth();
+                            var year = date.getFullYear();
+                            
+                            if( day < 10 )day = '0'+day;
+                            if( month < 10 )month = '0'+month;
+                            var cache_key = object + year + '-' + month + '-' + day;
+                            
+                            var cache = getData( cache_key );
+                            if( cache && cache[ key ] )
+                                delete cache[ key ];
+                                
+                            putData( cache_key , cache );
+                        }
+                        
+                        if( storeObjects && storeObjects[ 'damages_list' ] && storeObjects[ 'damages_list' ][ data.key ] )
+                            delete storeObjects[ 'damages_list' ][ data.key ];
+                            
+                        $('#damages')
+                        .find( 'tbody#damages-list-container' )
+                        .find('#'+data.key)
+                        .remove();
+                    }
+                    $('#container-'+key).remove();
+                    settings.message_message = 'The record have been successfully deleted';
+                break;
+                case 'expenses':
+                    var data = getData( key );
+                    if( data && data.key ){
+                        //hours part from the timestamp
+                        if( data.timestamp ){
+                            var date = new Date( data.timestamp );
+                            var day = date.getDate();
+                            var month = date.getMonth();
+                            var year = date.getFullYear();
+                            
+                            if( day < 10 )day = '0'+day;
+                            if( month < 10 )month = '0'+month;
+                            var cache_key = object + year + '-' + month + '-' + day;
+                            
+                            var cache = getData( cache_key );
+                            if( cache && cache[ key ] )
+                                delete cache[ key ];
+                                
+                            putData( cache_key , cache );
+                        }
+                    }
+                    $('#container-'+key).remove();
+                    settings.message_message = 'The record have been successfully deleted';
+                break;
+                case 'supply':
+                    var data = getData( key );
+                    if( ( ! data.store_name ) && data.store_id )data.store_name = data.store_id;
+                    
+                    if( data && data.key && data.stock ){
+                        //restock inventory
+                        $.each( data.stock , function( k , v ){
+                            var stock = getData( k );
+                            if( stock ){
+                                var inventory = getData( stock.item_barcode );
+                                if( data.store_name && inventory && inventory.store && inventory.store[ data.store_name ] ){
+                                    var tmp_store_data = inventory.store[ data.store_name ];
+                                    
+                                    if( tmp_store_data.stock ){
+                                        delete tmp_store_data.stock[ key ];
+                                    }
+                                    
+                                    if( tmp_store_data.item_qty ){
+                                        tmp_store_data.item_qty -= parseFloat( stock.item_qty );
+                                        
+                                        tmp_store_data.item_available = tmp_store_data.item_qty;
+                                        if( tmp_store_data.item_sold )
+                                            tmp_store_data.item_available -= tmp_store_data.item_sold;
+                                    }else{
+                                        tmp_store_data.item_qty = 0;
+                                        tmp_store_data.item_available = 0;
+                                    }
+                                    
+                                    inventory.store[ data.store_name ] = tmp_store_data;
+                                    putData( stock.item_barcode , inventory );
+                                    if( ! storeObjects[ 'inventory_list' ] )storeObjects[ 'inventory_list' ] = {};
+                                    storeObjects[ 'inventory_list' ][ stock.item_barcode ] = inventory;
+                                }
+                                clearSingleData( k );
+                                var obj1 = getData( stock.object );
+                                if( obj1[ k ] ){
+                                    delete obj1[ k ];
+                                }
+                                putData( stock.object , obj1 );
+                                unQueueUpload( {key:k, object:stock.object, "delete":"delete" } );
+                                
+                                clearSingleData( 'e'+k );
+                                var obj1 = getData( 'expenses' );
+                                if( obj1[ 'e'+k ] ){
+                                    delete obj1[ 'e'+k ];
+                                }
+                                putData( 'expenses' , obj1 );
+                                unQueueUpload( {key:'e'+k, object:'expenses', "delete":"delete" } );
+                            }
+                        });
+                        //hours part from the timestamp
+                        if( data.timestamp ){
+                            var date = new Date( data.timestamp );
+                            var day = date.getDate();
+                            var month = date.getMonth();
+                            var year = date.getFullYear();
+                            
+                            if( day < 10 )day = '0'+day;
+                            if( month < 10 )month = '0'+month;
+                            var cache_key = 'stock' + year + '-' + month + '-' + day;
+                            
+                            var cache = getData( cache_key );
+                            if( cache && cache[ key ] )
+                                delete cache[ key ];
+                                
+                            putData( cache_key , cache );
+                        }
+                    }
+                    $('#container-'+key).remove();
+                    settings.message_message = 'Supply record have been successfully deleted and items removed from stocked';
+                break;
+                }
+                
+                clearSingleData( key );
 				var obj = getData( object );
 				if( obj[ key ] ){
 					delete obj[ key ];
 				}
 				putData( object , obj );
 				
-				unQueueUpload( key );
-				
-				$('form#'+object+'-form')
-				.find('input')
-				.val('');
-				
-				$('#'+key)
-				.remove();
-				
-				$('option[value="'+key+'"]')
-				.remove();
-				
-				unQueueUpload( key );
+				unQueueUpload( {key:key, object:object, "delete":"delete" } );
+                
+                display_popup_notice( settings );
 			}
 		}else{
 			var settings = {
@@ -7349,8 +7819,10 @@ function ajaxSuccess( data , store ){
 				var stored = store_record( tempData );
 				successful_submit_action( stored );
 				
+                if( stored && stored.role )$('body').addClass(stored.role).attr('data-user-role', stored.role );
+                
 				var users_list = add_to_list_of_users( stored );
-				update_users_list_on_users_page();
+				update_users_list_on_users_page( "#mngusers" );
 				
 				tempData = {};
 				//console.log( 'user created' , stored );
@@ -7380,6 +7852,8 @@ function ajaxSuccess( data , store ){
                     tempData = data.user_details;
                     
                     var stored = store_record( tempData );
+                    
+                    if( stored && stored.role )$('body').addClass(stored.role).attr('data-user-role', stored.role );
                     
                     if( data.begin_download ){
                         registration = true;
@@ -7460,8 +7934,10 @@ function ajaxSuccess( data , store ){
 					if( a[key] )delete a[key];
 					
 					var d = getData( key );
-					if( d.key )d.id = id;
-					putData( key , d );
+					if( d.key && d.id ){
+                        d.id = id;
+                        putData( key , d );
+                    }
 				});
 				
 				putData( uploadDataKey , a );

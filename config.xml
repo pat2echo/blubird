@@ -3,12 +3,12 @@
 <widget xmlns     = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
         id        = "ng.com.blubird.blubird"
-        version   = "test.1.0.92">
+        version   = "1.0.92">
 
     <name>Blubird</name>
 
     <description>
-        Blubird is an innovative and affordable retail management platform that is transforming retail businesses across Africa's fastest growing economy.
+        Blubird is an innovative and affordable retail management platform that is transforming retail businesses across Africa's fastest growing economies.
     </description>
 
     <author href="http://www.blubird.com.ng" email="d.isa@blubird.com.ng">
@@ -61,7 +61,8 @@
     <gap:plugin name="org.apache.cordova.network-information" />
     <gap:plugin name="org.apache.cordova.splashscreen" />
     <gap:plugin name="com.megster.cordova.bluetoothserial" version="0.3.3" />
-
+    <gap:plugin name="com.phonegap.plugins.pushplugin" version="2.4.0" />
+    
     <!-- Third party plugins -->
     <!-- A list of available plugins are available at https://build.phonegap.com/plugins -->
     <!-- 

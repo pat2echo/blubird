@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<!--<html manifest="manifest142099025012345.appcache">-->
+<!--<html manifest="manifest1420990250123456.appcache">-->
 <head>
 	<title>Blubird</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,10 +18,12 @@
 	<script src="js/app/fastclick.js"></script>
 	<script src="js/app/jquery.tinysort.min.js"></script>
 	<script src="js/app/jsAjax-processing-script.js"></script>
+    
 	<!-- ./commit -->
 	
-	<script type="text/javascript" src="cordova.js"></script>
-	
+	<!--<script type="text/javascript" src="cordova.js"></script>-->
+	<script type="text/javascript" src="js/PushNotification.js"></script>
+    
     <link rel="stylesheet" href="css/jquery.mobile-1.4.4.css" rel="stylesheet" type="text/css"/>
 	<link href="css/hack.css" media="screen" rel="stylesheet" type="text/css" />
 	<link href="css/jquery.mobile.iscrollview.css" media="screen" rel="stylesheet" type="text/css" />
@@ -251,24 +253,42 @@
         text-overflow:ellipsis;
         white-space:nowrap;
     }
+    
+    body.manager #settings .users-stores-manager,
+    body.stock-keeper #settings .reports-manager,
+    body.stock-keeper #settings .users-stores-manager,
+    body.stock-keeper #menupanel .sales-menu-link,
+    body.stock-keeper #menupanel .records-menu-link,
+    body.stock-keeper #menupanel .expenses-menu-link,
+    body.stock-keeper #menupanel .customers-menu-link,
+    body.sales-rep #settings .reports-manager,
+    body.sales-rep #settings .users-stores-manager,
+    body.sales-rep #menupanel .inventory-menu-link,
+    body.sales-rep #menupanel .records-menu-link,
+    body.sales-rep #menupanel .supplier-menu-link,
+    body.sales-rep #menupanel .expenses-menu-link,
+    body.sales-rep #menupanel .customers-menu-link,
+    body.sales-rep #menupanel .notifications-menu-link{
+        display:none;
+    }
 	</style>
 	
 </head>
-<body>
+<body class="">
 
-<div data-role="panel" id="menupanel" data-position="left" data-display="overlay" data-theme="b" style="background-color: #fff;  ">
+<div data-role="panel" id="menupanel" data-position="left" data-display="overlay" data-theme="b" style="background-color: #fff;">
 
         <ul data-role="listview" data-theme="b">
               
-            <li class="lidec"><a class="ui-btn ui-icon-home ui-btn-icon-left" href="#dashboard" data-transition="none"><b>Dashboard</b></a></li>
-            <li  class="lidec"><a class="ui-btn ui-icon-info ui-btn-icon-left" href="#inventory"data-transition="none"><b>Inventory</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
-            <li class="lidec"><a class="ui-btn ui-icon-shop ui-btn-icon-left" href="#sales" data-transition="none"><b>Sales</b></a></li>
-            <li class="lidec"><a class="ui-btn ui-icon-calendar ui-btn-icon-left" href="#all-records"data-transition="none"><b>Records</b></a></li>
-            <li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier" data-transition="none"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
-            <li class="lidec"><a class="ui-btn ui-icon-action ui-btn-icon-left" href="#expenses" data-transition="none"><b>Expenses</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
-            <li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#customers" data-transition="none"><b>Customers</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
-            <li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notifications" data-transition="none"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
-            <li class="lidec"><a class="ui-btn ui-icon-gear ui-btn-icon-left" data-transition="none" href="#settings" data-transition="none"><b>Settings</b></a></li>
+            <li class="lidec dashboard-menu-link"><a class="ui-btn ui-icon-home ui-btn-icon-left" href="#dashboard" data-transition="none"><b>Dashboard</b></a></li>
+            <li class="lidec inventory-menu-link"><a class="ui-btn ui-icon-info ui-btn-icon-left" href="#inventory"data-transition="none"><b>Inventory</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
+            <li class="lidec sales-menu-link"><a class="ui-btn ui-icon-shop ui-btn-icon-left" href="#sales" data-transition="none"><b>Sales</b></a></li>
+            <li class="lidec records-menu-link"><a class="ui-btn ui-icon-calendar ui-btn-icon-left" href="#all-records"data-transition="none"><b>Records</b></a></li>
+            <li class="lidec supplier-menu-link"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier" data-transition="none"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
+            <li class="lidec expenses-menu-link"><a class="ui-btn ui-icon-action ui-btn-icon-left" href="#expenses" data-transition="none"><b>Expenses</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
+            <li class="lidec customers-menu-link"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#customers" data-transition="none"><b>Customers</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
+            <li class="lidec notifications-menu-link"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notifications" data-transition="none"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
+            <li class="lidec settings-menu-link"><a class="ui-btn ui-icon-gear ui-btn-icon-left" data-transition="none" href="#settings" data-transition="none"><b>Settings</b></a></li>
     
         </ul>
     <div>
@@ -774,19 +794,54 @@
 
 <div data-role="page" id="signup">
 	<div data-role="header" id="hd" data-position="fixed" data-tap-toggle="false" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  >
+			
 		<h1>Sign Up</h1>
+		
 	</div><!-- /header -->
 	
 	<div role="main" class="ui-content" style="background-color: #f1f1f1;">
 		<div class="progress-bar-container">
 		
 		</div>
-        <br>
-            <label for="item_desc-field" style=" text-shadow: none; font-size: 1.5em;">Demo Account Details:</label>
-            <label for="item_desc-field" style=" text-shadow: none; font-size: 1em;">Email: wineshop@blubird.com.ng</label>
-            <label for="item_desc-field" style=" text-shadow: none; font-size: 1em;">Password: qweasd</label>
-            <a href="#login" data-role="button" data-theme="b" data-icon="home" data-transition="none" style="font-weight: normal !important; text-shadow: none; border: none;">Proceed to Login</a>
-        <br>
+				
+					
+					<br>
+									
+					
+					
+						<form method="post" action="?action=app_users&todo=save_signup_data" name="sign-up" id="sign-up-form" remote-storage=1 >
+							<input type="hidden" name="key" id="key-field" value="" />
+                            <input name="role" id="role-field" value="admin" type="hidden" />
+                            
+							<input type="text" name="name" id="name-field" placeholder="Your Full Name" required data-validate="text" data-error-title="Invalid Name" data-error-msg="Provide a valid name" />
+							
+							<input type="email" name="email" id="email-field" placeholder="Your Email Address" required data-validate="email" data-error-title="Invalid Email" data-error-msg="Provide a valid email" />
+							
+							<input type="password" name="password" id="password-field" placeholder="Password" required data-validate="password" data-error-title="Invalid Password" data-error-msg="Passwords must be at least 6 characters" />
+							
+							<input type="password" name="cpassword" id="cpassword-field" placeholder="Confirm Password" required data-validate="confirm-password" data-error-title="Non-matching Password" data-error-msg="Passwords must match" />
+							
+                            <label>
+                                <input type="checkbox" name="checkbox-1a" id="checkbox-1a" checked="" style="height: 2em;">
+                                I agree to the <a href="#privacy-policy" style="text-decoration: none;">Terms of Service</a>
+                            </label>
+                                
+							<br>
+							<input type="submit" value="Sign Up" data-theme="b" />
+							<br>
+							
+							<label style="text-align:center;">Already have an account?</label>
+							<a href="#login" data-theme="c" data-transition="none" data-role="button">Login</a>
+						</form>
+						
+						<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+					
 	</div><!-- /content -->
 	
 </div><!-- /page -->
@@ -807,16 +862,71 @@
 		<form method="post" action="?action=app_users&todo=login" name="login" id="login-form" remote-storage=1 >
 			<input type="hidden" name="key" id="key-field" value="" />
 			
-			<input type="email" name="email" id="email-field" placeholder="Your Email Address" required data-validate="email" data-error-title="Invalid Email" data-error-msg="Provide a valid email" value="wineshop@blubird.com.ng" />
+			<input type="email" name="email" id="email-field" placeholder="Your Email Address" required data-validate="email" data-error-title="Invalid Email" data-error-msg="Provide a valid email" />
 			
-			<input type="password" name="password" id="password-field" placeholder="Password" required data-validate="password" data-error-title="Invalid Password" data-error-msg="Passwords must be at least 6 characters" value="qweasd" />
+			<input type="password" name="password" id="password-field" placeholder="Password" required data-validate="password" data-error-title="Invalid Password" data-error-msg="Passwords must be at least 6 characters" />
+			
 			<br>
-            <input type="submit" value="Login" data-theme="c" />
-			<br />
-            <label for="item_desc-field" style=" text-shadow: none; font-size: 1.5em;">Demo Account Details:</label>
-            <label for="item_desc-field" style=" text-shadow: none; font-size: 1em;">Email: wineshop@blubird.com.ng</label>
-            <label for="item_desc-field" style=" text-shadow: none; font-size: 1em;">Password: qweasd</label>
+		
+			
+			<div class="ui-grid-a invt">
+			<div class="ui-block-a" style="padding:0 0.7em 0 0;">
+				<input type="submit" value="Login" data-theme="c" />
+			</div>
+			
+			<div class="ui-block-b" style="padding:0 0 0 0.7em;">
+                <a href="#signup" data-transition="none" data-role="button" data-theme="b" >Sign Up</a>
+			</div>
+		</div>
+		
 		</form>
+			
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+	</div><!-- /content -->
+	
+</div><!-- /page -->
+
+<div data-role="page" id="switch-user">
+	<div data-role="header" id="hd" data-position="fixed" data-tap-toggle="false" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  >
+			
+		<h1>Switch User</h1>
+		
+	</div><!-- /header -->
+	<div role="main" class="ui-content" style="background-color: #f1f1f1;">
+		
+		<div class="progress-bar-container">
+            
+		</div>
+		<br>
+        <form id="switch-user-form">
+            <select id="switch-user-id-field" required>
+                
+            </select>
+            
+			<input type="password" id="switch-user-password-field" placeholder="Password" required />
+			
+			<br>
+		
+			<div class="ui-grid-a invt">
+			<div class="ui-block-a" style="padding:0 0.7em 0 0;">
+				<input type="submit" value="Switch User" data-theme="c" />
+			</div>
+			
+			<div class="ui-block-b" style="padding:0 0 0 0.7em;">
+                <a href="#dashboard" data-transition="none" data-role="button" data-theme="b"  style="font-family: Roboto Thin; background-color: #d11141; border: red; font-weight: normal !important; text-shadow: none;"><b>Cancel</b></a>
+			</div>
+		</div>
+		
+		</form>	
+        
+		<br>
+		<br>
+		<br>
+		<br>
 		<br>
 	</div><!-- /content -->
 	
@@ -979,6 +1089,8 @@
                                 <div class="ui-block-b" style="padding:0 0 0 0.7em;">
                                     
                                     <select id="filter-return-refund-type">
+                                        <option value="damages">Damages</option>
+                                        <option value="expenses">Expenses</option>
                                         <option value="stock">Supplied Stock Returns</option>
                                         <option value="sales">Sales Refunds</option>
                                     </select>
@@ -1866,14 +1978,33 @@
                     <div class="ui-grid-a invt" >
 						<div class="ui-block-a" style="padding: 0 0.35em 0 0;">
 							<div class="panl">
-								<h3>Total inventory value</h3>
-								<h6 class="total-value-of-inventory">0.00</h6>
+								<h3>Total Inventory C.P</h3>
+								<h6 class="total-value-of-inventory-cp">0.00</h6>
 							</div>
 						</div>
 						
 						<div class="ui-block-b" style="padding: 0 0 0 0.35em;">
 							<div class="panl">
-								<h3>Total number of items</h3>
+								<h3>Total Inventory S.P</h3>
+								<h6 class="total-value-of-inventory-sp">0</h6>
+							</div>
+						</div>
+						
+					</div>
+					
+                    <br />
+                    
+                    <div class="ui-grid-a invt" >
+						<div class="ui-block-a" style="padding: 0 0.35em 0 0;">
+							<div class="panl">
+								<h3>Total Gross Profit</h3>
+								<h6 class="total-value-of-inventory-gp">0.00</h6>
+							</div>
+						</div>
+						
+						<div class="ui-block-b" style="padding: 0 0 0 0.35em;">
+							<div class="panl">
+								<h3>Total Number of Items</h3>
 								<h6 class="total-items-in-stock">0</h6>
 							</div>
 						</div>
@@ -2384,24 +2515,25 @@
 					
 					<div class="ui-grid-a invt" style="margin: 0.2em;">
 						<div class="ui-block-a" >
-							<a href="#mngusers" data-role="button" data-theme="b" data-icon="user" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>Manage Users</b></a>
-						</div>
-						<div class="ui-block-b">
-							<a href="#general-settings" data-role="button" data-theme="b" data-icon="gear" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>General Settings</b></a>
-						</div>
-					</div><!-- /grid-a -->
-					
-					<div class="ui-grid-a invt" style="margin: 0.2em;">
-						<div class="ui-block-a" >
-							<a href="#stores" data-role="button" data-theme="b" data-icon="home" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>My Store(s)</b></a>
+                            <a href="#general-settings" data-role="button" data-theme="b" data-icon="gear" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>General Settings</b></a>
 						</div>
 						<div class="ui-block-b">
 							<a href="#my-profile" data-role="button" data-theme="b" data-icon="gear" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>My Profile</b></a>
 						</div>
 					</div><!-- /grid-a -->
 					
-					<div class="ui-grid-a invt" style="margin: 0.2em;">
+					<div class="ui-grid-a invt users-stores-manager" style="margin: 0.2em;">
 						<div class="ui-block-a" >
+							<a href="#stores" data-role="button" data-theme="b" data-icon="home" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>My Store(s)</b></a>
+						</div>
+						<div class="ui-block-b">
+							
+                            <a href="#mngusers" data-role="button" data-theme="b" data-icon="user" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>Manage Users</b></a>
+						</div>
+					</div><!-- /grid-a -->
+					
+					<div class="ui-grid-a invt" style="margin: 0.2em;">
+						<div class="ui-block-a reports-manager" >
 							<a href="#reports-page" data-role="button" data-theme="b" data-icon="grid" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>Reports</b></a>
 						</div>
 						<div class="ui-block-b">
@@ -2627,8 +2759,9 @@
                           <thead>
                             <tr>
                               <th data-colstart="1">Username</th>
-                              <th data-priority="1" data-colstart="2" class="ui-table-priority-1">Email</th>
-                              <th data-priority="2" data-colstart="3" class="ui-table-priority-2">Modified On</th>
+                              <th data-priority="2" data-colstart="2" class="ui-table-priority-2">Email</th>
+                              <th data-priority="1" data-colstart="3" class="ui-table-priority-1">Role</th>
+                              <th data-priority="3" data-colstart="4" class="ui-table-priority-3">Modified On</th>
                             </tr>
                           </thead>
                           <tbody id="users-list-container">
