@@ -59,40 +59,6 @@ var blubirdWebbased = 0;
 
 var gfileSystem;
 
-var pushNotification;
-var pushNotificationID = '';
-
-function onDeviceReady(){
-    window.requestFileSystem( LocalFileSystem.PERSISTENT, 0, initFileSystem, fail );
-    
-    if( ! blubirdWebbased ){
-        setTimeout( function(){
-            pushNotification = window.plugins.pushNotification;   
-            pushNotification.register( function(){}, errorHandler, { 'senderID':'628773795445', 'ecb':'onNotificationGCM' });
-        }, 2000 );
-    }
-};
-
-function errorHandler(error) { alert('Push Notification Reg Error\n\n'+ error); };
-
-function onNotificationGCM(e) {
-    switch(e.event){ 
-    case 'registered': if (e.regid.length > 0){ pushNotificationID = e.regid; } break;
-    case 'message': 
-        if( e.key ){
-            var notifications1 = getData( 'notifications' );
-            if( ! notifications1 )notifications1 = {};
-            notifications1[e.key] = e.key;
-            putData( 'notifications', notifications1 );
-            putData( e.key, e );
-            prepare_notifications_for_display();
-        }
-    break;
-    case 'error': alert('Push Notification Msg Error\n\n'+ error); break;
-    default: alert('An unknown event was received'); break;
-    }
-};
-
 var appSettings = {};
 var appCurrencyText = 'NGN';
 var appCurrency = '&#8358;';
@@ -123,6 +89,42 @@ var activePage = true;
 var tempCategoryHTML = new Array();
 
 var requestRetryCount = 0;
+
+
+var pushNotification;
+var pushNotificationID = '';
+
+function onDeviceReady(){
+    window.requestFileSystem( LocalFileSystem.PERSISTENT, 0, initFileSystem, fail );
+    
+    if( ! blubirdWebbased ){
+        setTimeout( function(){
+            pushNotification = window.plugins.pushNotification;   
+            pushNotification.register( function(){}, errorHandler, { 'senderID':'628773795445', 'ecb':'onNotificationGCM' });
+        }, 2000 );
+    }
+};
+
+function errorHandler(error) { alert('Push Notification Reg Error\n\n'+ error); };
+
+function onNotificationGCM(e) {
+    switch(e.event){ 
+    case 'registered': if (e.regid.length > 0){ pushNotificationID = e.regid; } break;
+    case 'message': 
+        var launch_date = new Date();
+
+        var n = {'key': 'pn'+launch_date.getTime(), 'detailed_message':e.message, 'object':"notifications", 'store_id':currentStoreID, 'store_owner':currentStoreID, 'subtitle':e.title, 'page_id': "", 'send_email': "", 'status': "", 'target_user': "", 'timestamp': launch_date.getTime(), 'type': "", 'creationtimestamp':launch_date.getTime(), 'created_by':appUserID };
+        var notifications1 = getData( 'notifications' );
+        if( ! notifications1 )notifications1 = {};
+        notifications1[n.key] = n.key;
+        putData( 'notifications', notifications1 );
+        putData( n.key, n );
+        prepare_notifications_for_display();
+    break;
+    case 'error': alert('Push Notification Msg Error\n\n'+ error); break;
+    default: alert('An unknown event was received'); break;
+    }
+};
 
 //var pagepointer = 'http://localhost/blubird/server/engine/';
 //var pagepointer = 'http://192.168.1.7/blubird/server/engine/';
