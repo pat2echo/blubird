@@ -65,7 +65,7 @@ var pushNotificationID = '';
 function onDeviceReady(){
     window.requestFileSystem( LocalFileSystem.PERSISTENT, 0, initFileSystem, fail );
     
-    if( window.plugins && window.plugins.pushNotification ){
+    if( ! blubirdWebbased ){
         setTimeout( function(){
             pushNotification = window.plugins.pushNotification;   
             pushNotification.register( function(){}, errorHandler, { 'senderID':'628773795445', 'ecb':'onNotificationGCM' });
