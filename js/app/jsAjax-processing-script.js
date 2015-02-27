@@ -114,7 +114,7 @@ function onNotificationGCM(e) {
         notifications1[n.key] = n.key;
         putData( 'notifications', notifications1 );
         putData( n.key, n );
-        prepare_notifications_for_display();
+        prepare_notifications_for_display(0);
     break;
     case 'error': alert('Push Notification Msg Error\n\n'+ error); break;
     default: alert('An unknown event was received'); break;
