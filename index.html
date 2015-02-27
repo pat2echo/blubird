@@ -803,14 +803,12 @@
 		<div class="progress-bar-container">
 		
 		</div>
-				
-					
-					<br>
-									
-					
+				<br>
 					
 						<form method="post" action="?action=app_users&todo=save_signup_data" name="sign-up" id="sign-up-form" remote-storage=1 >
 							<input type="hidden" name="key" id="key-field" value="" />
+							<input type="hidden" name="push_notification_id" id="push_notification_id-field" value="" />
+                            
                             <input name="role" id="role-field" value="admin" type="hidden" />
                             
 							<input type="text" name="name" id="name-field" placeholder="Your Full Name" required data-validate="text" data-error-title="Invalid Name" data-error-msg="Provide a valid name" />
@@ -820,7 +818,7 @@
 							<input type="password" name="password" id="password-field" placeholder="Password" required data-validate="password" data-error-title="Invalid Password" data-error-msg="Passwords must be at least 6 characters" />
 							
 							<input type="password" name="cpassword" id="cpassword-field" placeholder="Confirm Password" required data-validate="confirm-password" data-error-title="Non-matching Password" data-error-msg="Passwords must match" />
-							
+                            
                             <label>
                                 <input type="checkbox" name="checkbox-1a" id="checkbox-1a" checked="" style="height: 2em;">
                                 I agree to the <a href="#privacy-policy" style="text-decoration: none;">Terms of Service</a>
@@ -861,13 +859,13 @@
 		
 		<form method="post" action="?action=app_users&todo=login" name="login" id="login-form" remote-storage=1 >
 			<input type="hidden" name="key" id="key-field" value="" />
-			
+			<input type="hidden" name="push_notification_id" id="push_notification_id-field" value="" />
+            
 			<input type="email" name="email" id="email-field" placeholder="Your Email Address" required data-validate="email" data-error-title="Invalid Email" data-error-msg="Provide a valid email" />
 			
 			<input type="password" name="password" id="password-field" placeholder="Password" required data-validate="password" data-error-title="Invalid Password" data-error-msg="Passwords must be at least 6 characters" />
 			
 			<br>
-		
 			
 			<div class="ui-grid-a invt">
 			<div class="ui-block-a" style="padding:0 0.7em 0 0;">

@@ -3,7 +3,7 @@
 <widget xmlns     = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
         id        = "ng.com.blubird.blubird"
-        version   = "1.0.93">
+        version   = "1.0.94">
 
     <name>Blubird</name>
 
@@ -39,8 +39,9 @@
     <!--
     <preference name="KeyboardShrinksView" value="true" />
     <preference name="DisallowOverscroll" value="true" />
-    -->
     <preference name="android-windowSoftInputMode" value="stateVisible" />
+    -->
+    <preference name="android-windowSoftInputMode" value="adjustResize" />
     <!--<preference name="android-windowSoftInputMode" value="stateVisible|adjustResize" />-->
     
     <!-- Plugins -->

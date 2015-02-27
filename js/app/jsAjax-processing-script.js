@@ -49,30 +49,34 @@ window.addEventListener('load', function() {
 }, false);
 
 document.addEventListener("deviceready", onDeviceReady, false);
+    
+var blubirdFileURL = '';
+var blubirdWebbased = 0;
+
+var gfileSystem;
 
 var pushNotification;
+var pushNotificationID = '';
 
 function onDeviceReady(){
     window.requestFileSystem( LocalFileSystem.PERSISTENT, 0, initFileSystem, fail );
-    pushNotification = window.plugins.pushNotification;   
-    pushNotification.register( errorHandler, errorHandler, { 'senderID':'628773795445', 'ecb':'onNotificationGCM' });
+    
+    setTimeout( function(){
+        pushNotification = window.plugins.pushNotification;   
+        pushNotification.register( errorHandler, errorHandler, { 'senderID':'628773795445', 'ecb':'onNotificationGCM' });
+    }, 2000 );
 };
 
 function errorHandler(error) { alert('Error: '+ error); };
 
 function onNotificationGCM(e) {
     switch(e.event){ 
-    case 'registered': if (e.regid.length > 0){ alert('registration id = '+e.regid); } break;
+    case 'registered': if (e.regid.length > 0){ pushNotificationID = e.regid; alert('registration id = '+e.regid); } break;
     case 'message': alert('message = '+e.message); break;
     case 'error': alert('Error: ' + e.msg); break;
     default: alert('An unknown event was received'); break;
     }
 };
-    
-var blubirdFileURL = '';
-var blubirdWebbased = 0;
-
-var gfileSystem;
 
 var appSettings = {};
 var appCurrencyText = 'NGN';
@@ -3453,11 +3457,11 @@ $( document ).on( "swiperight", function(e){
 });
 
 $( document ).on( "pageshow", "#signup", function() {
-    /*
-    if( ! blubirdFileURL ){
-        window.requestFileSystem( LocalFileSystem.PERSISTENT, 0, initFileSystem, fail );
-    }
-    */
+    $("#signup").find('input[name="push_notification_id"]').val( pushNotificationID );
+});
+
+$( document ).on( "pageshow", "#login", function() {
+    $("#login").find('input[name="push_notification_id"]').val( pushNotificationID );
 });
 
 $( document ).on( "pagecreate", "#reports-page", function() {
