@@ -108,7 +108,7 @@ function onNotificationGCM(e) {
     case 'registered': if (e.regid.length > 0){ pushNotificationID = e.regid; } break;
     case 'message': 
         var launch_date = new Date();
-        var n = {'key': 'pn'+launch_date.getTime(), 'detailed_message':e.message, 'object':"notifications", 'store_id':currentStoreID, 'store_owner':currentStoreID, 'subtitle':e.title,  'title':e.title, 'page_id': "", 'send_email': "", 'status': "", 'target_user': "", 'timestamp': launch_date.getTime(), 'type': "", 'creationtimestamp':launch_date.getTime(), 'created_by':appUserID };
+        var n = {'key': 'pn'+launch_date.getTime(), 'detailed_message':e.message, 'object':"notifications", 'store_id':currentStoreID, 'store_owner':currentStoreID, 'subtitle':e.message, 'title':e.message, 'page_id': "", 'send_email': "", 'status': "", 'target_user': "", 'timestamp': launch_date.getTime(), 'type': "", 'creationtimestamp':launch_date.getTime(), 'created_by':appUserID };
         var notifications1 = getData( 'notifications' );
         if( ! notifications1 )notifications1 = {};
         notifications1[n.key] = n.key;
