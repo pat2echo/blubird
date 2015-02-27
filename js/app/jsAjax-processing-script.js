@@ -49,6 +49,10 @@ window.addEventListener('load', function() {
 }, false);
 
 document.addEventListener("deviceready", onDeviceReady, false);
+
+var months_of_year = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+var full_months_of_year = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+var weekdays = [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ];
     
 var blubirdFileURL = '';
 var blubirdWebbased = 0;
@@ -61,19 +65,30 @@ var pushNotificationID = '';
 function onDeviceReady(){
     window.requestFileSystem( LocalFileSystem.PERSISTENT, 0, initFileSystem, fail );
     
-    setTimeout( function(){
-        pushNotification = window.plugins.pushNotification;   
-        pushNotification.register( errorHandler, errorHandler, { 'senderID':'628773795445', 'ecb':'onNotificationGCM' });
-    }, 2000 );
+    if( window.plugins && window.plugins.pushNotification ){
+        setTimeout( function(){
+            pushNotification = window.plugins.pushNotification;   
+            pushNotification.register( function(){}, errorHandler, { 'senderID':'628773795445', 'ecb':'onNotificationGCM' });
+        }, 2000 );
+    }
 };
 
-function errorHandler(error) { alert('Error: '+ error); };
+function errorHandler(error) { alert('Push Notification Reg Error\n\n'+ error); };
 
 function onNotificationGCM(e) {
     switch(e.event){ 
-    case 'registered': if (e.regid.length > 0){ pushNotificationID = e.regid; alert('registration id = '+e.regid); } break;
-    case 'message': alert('message = '+e.message); break;
-    case 'error': alert('Error: ' + e.msg); break;
+    case 'registered': if (e.regid.length > 0){ pushNotificationID = e.regid; } break;
+    case 'message': 
+        if( e.key ){
+            var notifications1 = getData( 'notifications' );
+            if( ! notifications1 )notifications1 = {};
+            notifications1[e.key] = e.key;
+            putData( 'notifications', notifications1 );
+            putData( e.key, e );
+            prepare_notifications_for_display();
+        }
+    break;
+    case 'error': alert('Push Notification Msg Error\n\n'+ error); break;
     default: alert('An unknown event was received'); break;
     }
 };
@@ -1853,10 +1868,6 @@ function get_inventory_html( key , value ){
 	
 	return html;
 };
-
-var months_of_year = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-var full_months_of_year = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-var weekdays = [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ];
 
 function get_new_inventory_html( key , value ){
 	var date = new Date( value.timestamp );
@@ -7992,11 +8003,6 @@ function ajaxSuccess( data , store ){
 			}
 		break;
 		}
-	}
-	
-	//CHECK FOR NOTIFICATION
-	if(data.notification){
-		check_for_and_display_notifications(data.notification);
 	}
 	
 };
