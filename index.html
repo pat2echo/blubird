@@ -14,13 +14,13 @@
 	
 	<!--version 1.0.90-->
 	<script src="js/app/amplify.min.js"></script>
+	<script src="js/app/dexie.min.js"></script>
 	<script src="js/app/md5.js"></script>
 	<script src="js/app/fastclick.js"></script>
 	<script src="js/app/jquery.tinysort.min.js"></script>
 	<script src="js/app/jsAjax-processing-script.js"></script>
     
 	<!-- ./commit -->
-	
 	<script type="text/javascript" src="cordova.js"></script>
 	<script type="text/javascript" src="PushNotification.js"></script>
     
@@ -2539,6 +2539,12 @@
 						</div>
 					</div><!-- /grid-a -->
 					
+					<div class="ui-grid-a invt" style="margin: 0.2em;">
+						<div class="ui-block-a" >
+							<a href="#restore-points" data-role="button" data-theme="b" data-icon="grid" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>Restore Points</b></a>
+						</div>
+					</div><!-- /grid-a -->
+					
 					<br>
 					
 	</div><!-- /content -->
@@ -2549,6 +2555,54 @@
 		</div><!-- /footer -->
 		
 </div><!-- /page -->
+
+<div data-role="page" id="restore-points">
+		
+		<div data-role="header" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  data-position="fixed">
+            <a href="#settings" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
+            <h1>Restore Points</h1>
+	</div><!-- /header -->
+    <div class="progress-bar-container"></div>
+		
+		<div data-role="content" style="background: #f1f1f1;">
+		
+				<div style="background-color: #43a2c4 !important; border-radius: 5px; padding:0 1em;">
+					
+                    <div class="ui-grid-a invt">
+                        <div class="ui-block-a" style="padding-left:0;">
+                            <input type="button" id="create-restore-points" data-icon="check" data-theme="c" value="Create Restore Point" data-role="button" />
+                        </div>
+                        <div class="ui-block-b" style="padding-right:0;">
+                            <a href="#" id="clear-all-restore-points" data-role="button" data-theme="c" data-icon="delete" style="font-weight: normal !important; text-shadow: none;  background-color: #d11141; border: none; color: white;"><b>Clear All Restore Points</b></a>
+                        </div>
+                    </div>
+					
+			</div>
+		<br>
+				<div style="background-color: #43a2c4 !important; border-radius: 5px; padding:0 1em;">
+				<br>
+                    <table data-role="table1" id="restore-points-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table  ui-table ui-table-columntoggle">
+                      <thead>
+                        <tr>
+                          <th data-colstart="1">Size</th>
+                          <th data-colstart="2">Date</th>
+                          <th data-priority="1" data-colstart="3" class="ui-table-priority-1">Restore</th>
+                        </tr>
+                      </thead>
+                      <tbody id="restore-points-list-container">
+                        
+                      </tbody>
+                    </table>
+                    
+                    <br>
+				</div>
+		</div>
+		<div data-role="footer" >
+			
+		</div><!-- /footer -->
+		
+		
+		</div>
 
 <div data-role="page" id="mngcategory">
 		
@@ -3009,6 +3063,29 @@
 							</div>
 						</div>
                         
+						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						<div class="ui-grid-a invt">
+							<div class="ui-block-a" >
+								<label style="padding-top: 1em; font-size: 1.5em; font-family: Roboto Thin; text-shadow: none; color: white; " for="flip-checkbox-4">Data Upload Interval in Seconds</label>
+							</div>
+							<div class="ui-block-b">
+								<input type="number" min="1" step="1" max="82800" name="time_to_upload_data" id="time_to_upload_data-field" required data-validate="number" data-error-title="Invalid Data Upload Interval in Seconds" data-error-msg="Please provide a valid Data Upload Interval in Seconds" placeholder="Data Upload Interval in Seconds" class="do-not-clear"/>
+							</div>
+						</div>
+                        
+						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						<div class="ui-grid-a invt">
+							<div class="ui-block-a" >
+								<label style=" padding-top: 1em; font-size: 1.5em; font-family: Roboto Thin; text-shadow: none; color: white; " for="flip-checkbox-4">Frequency of Notifications</label>
+							</div>
+							<div class="ui-block-b" >
+								<select name="notification_frequency" id="notification_frequency-field" data-validate="text" required data-error-title="Invalid Frequency of Notification" data-error-msg="Provide a valid Frequency of Notification" class="do-not-clear">
+                                    <option value="per_transaction">Per Transaction</option>
+                                    <option value="per_day">Per Day</option>
+                                </select>
+							</div>
+						</div>
+						
 						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
 						<br>
 						<input type="submit" data-icon="check" data-theme="c" value="Update" />

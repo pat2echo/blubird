@@ -3,7 +3,7 @@
 <widget xmlns     = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
         id        = "ng.com.blubird.blubird"
-        version   = "1.0.102">
+        version   = "1.0.103">
 
     <name>Blubird</name>
 
@@ -19,6 +19,14 @@
         If you do not want any permissions to be added to your app, add the
         following tag to your config.xml; you will still have the INTERNET
         permission on your app, which PhoneGap requires.
+        
+        1.0.103
+        Restore Point Creation
+        Access Control
+        Role Switching
+        Push Notifications
+        Update Frequency
+        IndexedDB Implementation
     -->
     <!--<preference name="permissions"                value="none"/>-->
 

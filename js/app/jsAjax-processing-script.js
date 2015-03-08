@@ -16,12 +16,10 @@
 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 })(window,document,'script','js/app/analytics.js','ga');
 
-var storedObjectsA = amplify.store();
-
-//console.log('all',  storedObjectsA );
-
 var customUUIDkey = 'custom-uuid';
 var deviceIDkey = 'device-id';
+var restorePointsIDkey = 'restore-points-id';
+var lockIDkey = 'lock-id';
 var deviceID = '';
 var appUserID = '';
 var appUIDkey = 'app-user-id';
@@ -47,7 +45,15 @@ ga('send', 'pageview', {'page': '/started' , 'title': 'App Initialized' });
 window.addEventListener('load', function() {
     FastClick.attach(document.body);
 }, false);
-
+var appDB = new Dexie("blubird");
+appDB.version(1).stores({
+    restore_points: 'id,data,timestamp,size',
+    // ...add more stores (tables) here...
+});
+// Open it
+appDB.open();
+//appDB.delete();
+    
 document.addEventListener("deviceready", onDeviceReady, false);
 
 var months_of_year = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -55,7 +61,7 @@ var full_months_of_year = ['January','February','March','April','May','June','Ju
 var weekdays = [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ];
     
 var blubirdFileURL = '';
-var blubirdWebbased = 0;
+var blubirdWebbased = 1;
 
 var gfileSystem;
 
@@ -67,7 +73,9 @@ var appVATValue = 5;
 var appLowStockLevel = 25;
 var appPrinterCharacterLength = 24;
 var appPrinterSeperatorLength = 28;
+var appTimeToUploadData = 5;
 var appMode = 'retail'; // retail | restaurant
+var appNotificationFrequency = 'per_transaction'; // per_transaction | per_day
 
 var appVersionNumber = '1.1.0';
 var appSalter = '10839hxecd439adsaSD05a7dcNSCIVue7';
@@ -90,9 +98,10 @@ var tempCategoryHTML = new Array();
 
 var requestRetryCount = 0;
 
+var dataUploadTimerID;
 
 var pushNotification;
-var pushNotificationID = '';
+var pushNotificationID = 'default';
 
 function onDeviceReady(){
     window.requestFileSystem( LocalFileSystem.PERSISTENT, 0, initFileSystem, fail );
@@ -108,7 +117,7 @@ function onNotificationGCM(e) {
     case 'registered': if (e.regid.length > 0){ pushNotificationID = e.regid; } break;
     case 'message': 
         var launch_date = new Date();
-        var n = {'key': 'pn'+launch_date.getTime(), 'detailed_message':e.message, 'object':"notifications", 'store_id':currentStoreID, 'store_owner':currentStoreID, 'subtitle':e.message, 'title':e.message, 'page_id': "", 'send_email': "", 'status': "", 'target_user': "", 'timestamp': launch_date.getTime(), 'type': "", 'creationtimestamp':launch_date.getTime(), 'created_by':appUserID };
+        var n = {'key': 'pn'+launch_date.getTime(), 'detailed_message':e.message, 'object':"notifications", 'store_id':currentStoreID, 'store_owner':currentStoreID, 'subtitle':e.message, 'title':e.title, 'page_id': "", 'send_email': "", 'status': "", 'target_user': "", 'timestamp': launch_date.getTime(), 'type': "", 'creationtimestamp':launch_date.getTime(), 'created_by':appUserID };
         var notifications1 = getData( 'notifications' );
         if( ! notifications1 )notifications1 = {};
         notifications1[n.key] = n.key;
@@ -171,8 +180,14 @@ function test_for_active_user(){
         //check for registered user details
         var userInfo = get_user_info();
         if( userInfo ){
-            if( userInfo && userInfo.role ){
-                if( ! $('body').attr('data-user-role') )$('body').addClass(userInfo.role).attr('data-user-role',userInfo.role );
+            
+            if( ! $('body').attr('data-user-role') ){
+                var u = getData( appSwitchUserkey );
+                if( u && u.role ){ 
+                    $('body').addClass(u.role).attr('data-user-role',u.role );
+                }else{
+                    if( userInfo && userInfo.role )$('body').addClass(userInfo.role).attr('data-user-role',userInfo.role );
+                }
             }
             //registered
             //$('.app-user-name').text( 'Welcome ' + userInfo.name + '!' );
@@ -220,6 +235,7 @@ function cannot_initiate_app(){
             message_message: 'Please try signing in again. \nIf problem persists please contact our customer care',
             auto_close: 'no'
         };
+        clearData();
     }else{
         var settings = {
             message_title:'Invalid Device ID',
@@ -227,7 +243,6 @@ function cannot_initiate_app(){
             auto_close: 'no'
         };
     }
-	clearData();
 	display_popup_notice( settings );
     $.mobile.navigate( "#signup", { transition : "none" });
 };
@@ -934,7 +949,7 @@ function successful_submit_action( stored ){
 			var amount_owed = stored.total_amount - stored.total_amount_paid;
 			
 			var obj = {};
-			var uploadData = {};
+			var uploadDataset = {};
 			
 			if( ! storeObjects[ 'inventory_list' ] ){
 				storeObjects[ 'inventory_list' ] = {};
@@ -983,10 +998,10 @@ function successful_submit_action( stored ){
 			msg = "\nTotal Items: " + stored.total_items + "\nTotal Cost: " + formatNum( stored.total_amount.toFixed(2) ) + "\n\nTotal Amount Paid: " + formatNum( stored.total_amount_paid.toFixed(2) ) + " \nAmount Owed: " + formatNum( amount_owed.toFixed(2) );
 				
 			//yes - move newly added items to uploader object & clear new
-			queueUpload( uploadData );
+			queueUpload( uploadDataset );
 			tempStoreObjects = {};
 			newStock = {};
-			uploadData = {};
+			uploadDataset = {};
             
             ga( 'send' , 'pageview' , {'page': '/supply' , 'title': msg } );
 		}else{
@@ -1167,6 +1182,9 @@ function successful_submit_action( stored ){
 		
         title = 'Sold!';
         msg = "\n" + 'Sales ID: #' + stored.key + "\n" + 'Total Items: ' + stored.total_units + "\n" + 'Net Total: ' + appCurrencyText +' '+formatNum(stored.total_amount.toFixed(2));
+        
+        if( dataUploadTimerID )clearTimeout( dataUploadTimerID );
+        dataUploadTimerID = setTimeout( uploadData, appTimeToUploadData * 1000 );
         
         ga( 'send' , 'pageview' , {'page': '/sale' , 'title': '#'+stored.key } );
 	break;
@@ -2063,7 +2081,7 @@ $(document).on("pagecontainerbeforechange",function(e, data){
         if (from) from = '#' + from.attr('id');
         
         switch(to){
-        case '#signup': case '#login': case '#update-progress': case '#dashboard': case '#checkout': case '#switch-user': case '#settings': case '#my-profile': case '#general-settings':
+        case '#signup': case '#login': case '#update-progress': case '#dashboard': case '#checkout': case '#switch-user': case '#settings': case '#my-profile': case '#general-settings': case '#restore-points':
             return true;
         break;
         }
@@ -3951,6 +3969,148 @@ $( document ).on( "pagecreate", "#customers", function() {
     });
 });
 
+$( document ).on( "pagecreate", "#restore-points", function() {
+	test_for_active_user();
+	
+	$('#create-restore-points')
+	.on('click', function(){
+        create_restore_points(1);
+    });
+    
+	$('#clear-all-restore-points')
+	.on('click', function(){
+        appDB.restore_points.clear();
+        $('tbody#restore-points-list-container')
+        .html('');
+        
+        var settings = {
+            'message_title':'All Restore Points have been deleted!',
+            'message_message':'',
+        };
+        display_popup_notice( settings );
+    });
+});
+
+$( document ).on( "pageshow", "#restore-points", function() {
+    display_restore_points();
+});
+
+function create_restore_points( type ){
+    appDB.restore_points
+    .where('id').equals(2).each(function( res ){
+       appDB.restore_points
+        .put({
+            id: 3,
+            data: res.data,
+            timestamp: res.timestamp,
+            size: res.size
+        }); 
+    });
+    
+    appDB.restore_points
+    .where('id').equals(1).each(function( res ){
+       appDB.restore_points
+        .put({
+            id: 2,
+            data: res.data,
+            timestamp: res.timestamp,
+            size: res.size
+        }); 
+    });
+    
+    var d = new Date();
+    var sA = amplify.store();
+    var b = $.param( sA );
+    appDB.restore_points
+    .put({
+        id: 1,
+        data: sA,
+        timestamp: d.getTime(),
+        size: b.length,
+    }).then(function(){
+        return appDB.restore_points.get(1);
+    }).then(function( res ){
+        if( type ){
+            setTimeout( display_restore_points, 300 );
+            var settings = {
+                'message_title':'Restore Point Created!',
+                'message_message':'',
+            };
+            display_popup_notice( settings );
+        }
+    });
+};
+function display_restore_points(){
+    
+    appDB.restore_points
+    .orderBy("timestamp")
+    .reverse()
+    .toArray( function(res){
+        var html = '';
+        for(i=0; i<res.length; i++ ){
+            
+        var date = new Date( res[i].timestamp );
+        // hours part from the timestamp
+        var calendar_day = date.getDate();
+        var month = date.getMonth();
+        var year = date.getFullYear();
+        var day = year+'-'+months_of_year[ month ]+'-'+calendar_day;
+        var minutes = date.getMinutes();
+        
+        if( minutes < 10 )minutes = '0'+minutes;
+        var time = date.getHours() + ':' + minutes;
+        
+        html += '<tr id="'+res[i].id+'" timestamp="'+res[i].timestamp+'"><td>'+formatNum( ( res[i].size / (1024 ) ).toFixed(2) )+' KB</td><td>'+day+', '+time+'</td><td class="ui-table-priority-1"><a href="#" class="ui-btn ui-btn-inline ui-icon-refresh ui-btn-icon-notext ui-theme-a ui-corner-all restore-dataset-button">Restore</a></td></tr>';
+        }
+        $('tbody#restore-points-list-container')
+        .html(html);
+        
+        if( html ){
+            $('a.restore-dataset-button')
+            .on('click', function(){
+                var id = parseFloat( $(this).parents('tr').attr('id') );
+                
+                appDB.restore_points
+                .where('id')
+                .equals(id)
+                .each(function(res){
+                    var r = confirm('Do you want to restore to the selected dataset?\n\nNOTE: Restoration will wipeout your current dataset');
+                    if( r == true ){
+                        //perform backup
+                        //create_restore_points(1);
+                        
+                        clearData();
+                        $.each( res.data, function(k,v){
+                            switch(k){
+                            case 'custom-uuid':
+                            case 'last-compile-time':
+                            case 'device-id':
+                            case 'lock-id':
+                            break;
+                            default:
+                                putData( k, v );
+                            break;
+                            }
+                        });
+                        
+                        var settings = {
+                            'message_title':'Successful Data Restoration!',
+                            'message_message':'',
+                        };
+                        display_popup_notice( settings );
+                        
+                        //restore data on server during next upload
+                        
+                        //refresh
+                        document.location = document.location.origin + document.location.pathname;
+                    }
+                });
+            });
+        }
+    });
+    
+};
+
 $( document ).on( "pagecreate", "#mngcategory", function() {
 	test_for_active_user();
 	
@@ -3961,7 +4121,6 @@ $( document ).on( "pagecreate", "#mngcategory", function() {
 	update_category_list_on_category_page();
 	
 	activate_record_delete_button( "#mngcategory" );
-	activate_upload_queue_button();
 	
 	$('#category-select-box')
 	.on('change', function(){
@@ -4123,17 +4282,19 @@ function set_general_settings(){
         }else{
             var default_settings = {
                 created_by:customUUID,
-                currency:"&#8358;:::NGN",
-                discount_type:"percentage",
+                currency:appCurrency+":::"+appCurrencyText,
+                discount_type:appDiscountType,
                 error:false,
-                low_stock_level:"10",
+                low_stock_level:appLowStockLevel,
                 object:object,
                 table_records_display_length:"5",
-                printer_character_length:"24",
-                printer_line_seperator_length:"28",
+                printer_character_length:appPrinterCharacterLength,
+                printer_line_seperator_length:appPrinterSeperatorLength,
                 receipt_message:"Thank you for your patronage!",
                 app_mode:appMode,
-                vat:"5",
+                notification_frequency:appNotificationFrequency,
+                time_to_upload_data:appTimeToUploadData,
+                vat:appVATValue,
             };
             var stored = store_record( default_settings );
             if( stored.key ){
@@ -4185,6 +4346,12 @@ function configure_appsettings(){
             
         if( appSettings.app_mode )
             appMode = appSettings.app_mode;
+            
+        if( appSettings.notification_frequency )
+            appNotificationFrequency = appSettings.notification_frequency;
+            
+        if( appSettings.time_to_upload_data )
+            appTimeToUploadData = parseFloat( appSettings.time_to_upload_data );
     }
 };
 
@@ -4231,10 +4398,13 @@ $( document ).on( "pagecreate", "#settings", function() {
 });
 
 function signOutUser(){
-    clearSingleData( customUUIDkey );
-    clearData();
+    create_restore_points(0);
     
-    document.location = document.location.origin + document.location.pathname;
+    setTimeout( function(){
+        clearSingleData( customUUIDkey );
+        clearData();
+        document.location = document.location.origin + document.location.pathname;
+    }, 3000 );
 };
 
 $( document ).on( "pageshow", "#settings", function() {
@@ -7613,6 +7783,16 @@ function clearSingleData( key ){
 	amplify.store( key , null );
 };
 	
+function getAllData(){
+    var i = 0,
+    oJson = {},
+    sKey;
+    for (; sKey = window.localStorage.key(i); i++) {
+        oJson[sKey] = window.localStorage.getItem(sKey);
+    }
+    return oJson;
+};
+
 function clearData(){
 	var storedObjects = amplify.store();
 	
@@ -7624,6 +7804,7 @@ function clearData(){
 		case 'custom-uuid':
 		case 'last-compile-time':
         case 'device-id':
+        case 'lock-id':
 		break;
 		default:
 			amplify.store( key , null );
@@ -7726,7 +7907,7 @@ function ajax_send(){
             }
 		},
 		error: function(event, request, settings, ex) {
-			ajaxError( event, request, settings, ex );
+            ajaxError( event, request, settings, ex );
 		},
 		success: function(data){
 			ajaxSuccess( data , true );
@@ -7741,6 +7922,12 @@ function ajaxError( event, request, settings, ex ){
         .html( $('h1.uploading-data-title').attr('default-text') )
         .removeClass('uploading-data-title');
     }
+    function_click_process = 1;
+    var settings = {
+        'message_title':'Request Error',
+        'message_message':event.responseText,
+    };
+    display_popup_notice( settings );
 };
 
 var registration = false;
