@@ -16,14 +16,15 @@
 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 })(window,document,'script','js/app/analytics.js','ga');
 
+var storedObjectsA = amplify.store();
+
+//console.log('all',  storedObjectsA );
+
 var customUUIDkey = 'custom-uuid';
 var deviceIDkey = 'device-id';
-var restorePointsIDkey = 'restore-points-id';
-var lockIDkey = 'lock-id';
 var deviceID = '';
 var appUserID = '';
 var appUIDkey = 'app-user-id';
-var appSwitchUserkey = 'app-switched-user';
 
 var deviceID = getData( deviceIDkey );
 var customUUID = getData( customUUIDkey );
@@ -45,23 +46,15 @@ ga('send', 'pageview', {'page': '/started' , 'title': 'App Initialized' });
 window.addEventListener('load', function() {
     FastClick.attach(document.body);
 }, false);
-var appDB = new Dexie("blubird");
-appDB.version(1).stores({
-    restore_points: 'id,data,timestamp,size',
-    // ...add more stores (tables) here...
-});
-// Open it
-appDB.open();
-//appDB.delete();
-    
+
 document.addEventListener("deviceready", onDeviceReady, false);
 
-var months_of_year = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-var full_months_of_year = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-var weekdays = [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ];
-    
+function onDeviceReady(){
+    window.requestFileSystem( LocalFileSystem.PERSISTENT, 0, initFileSystem, fail );
+};
+
 var blubirdFileURL = '';
-var blubirdWebbased = 1;
+var blubirdWebbased = 0;
 
 var gfileSystem;
 
@@ -73,12 +66,9 @@ var appVATValue = 5;
 var appLowStockLevel = 25;
 var appPrinterCharacterLength = 24;
 var appPrinterSeperatorLength = 28;
-var appTimeToUploadData = 5;
 var appMode = 'retail'; // retail | restaurant
-var appNotificationFrequency = 'per_transaction'; // per_transaction | per_day
 
 var appVersionNumber = '1.1.0';
-var appSalter = '10839hxecd439adsaSD05a7dcNSCIVue7';
 
 var numOfStores = 1;
 var currentStoreID = '';
@@ -98,42 +88,10 @@ var tempCategoryHTML = new Array();
 
 var requestRetryCount = 0;
 
-var dataUploadTimerID;
-
-var pushNotification;
-var pushNotificationID = 'default';
-
-function onDeviceReady(){
-    window.requestFileSystem( LocalFileSystem.PERSISTENT, 0, initFileSystem, fail );
-    
-    pushNotification = window.plugins.pushNotification;   
-    pushNotification.register( function(){}, errorHandler, { 'senderID':'628773795445', 'ecb':'onNotificationGCM' });
-};
-
-function errorHandler(error) { alert('Push Notification Reg Error\n\n'+ error); };
-
-function onNotificationGCM(e) {
-    switch(e.event){ 
-    case 'registered': if (e.regid.length > 0){ pushNotificationID = e.regid; } break;
-    case 'message': 
-        var launch_date = new Date();
-        var n = {'key': 'pn'+launch_date.getTime(), 'detailed_message':e.message, 'object':"notifications", 'store_id':currentStoreID, 'store_owner':currentStoreID, 'subtitle':e.message, 'title':e.title, 'page_id': "", 'send_email': "", 'status': "", 'target_user': "", 'timestamp': launch_date.getTime(), 'type': "", 'creationtimestamp':launch_date.getTime(), 'created_by':appUserID };
-        var notifications1 = getData( 'notifications' );
-        if( ! notifications1 )notifications1 = {};
-        notifications1[n.key] = n.key;
-        putData( 'notifications', notifications1 );
-        putData( n.key, n );
-        prepare_notifications_for_display(0);
-    break;
-    case 'error': alert('Push Notification Msg Error\n\n'+ error); break;
-    default: alert('An unknown event was received'); break;
-    }
-};
-
 //var pagepointer = 'http://localhost/blubird/server/engine/';
 //var pagepointer = 'http://192.168.1.7/blubird/server/engine/';
-//var pagepointer = 'http://blubird.maybeachtech.com/engine/';
-var pagepointer = 'http://blubirdtest.maybeachtech.com/engine/';
+var pagepointer = 'http://blubird.maybeachtech.com/engine/';
+//var pagepointer = 'http://blubirdtest.maybeachtech.com/';
 
 var form_method = 'get';
 var ajax_data_type = 'json';
@@ -180,15 +138,6 @@ function test_for_active_user(){
         //check for registered user details
         var userInfo = get_user_info();
         if( userInfo ){
-            
-            if( ! $('body').attr('data-user-role') ){
-                var u = getData( appSwitchUserkey );
-                if( u && u.role ){ 
-                    $('body').addClass(u.role).attr('data-user-role',u.role );
-                }else{
-                    if( userInfo && userInfo.role )$('body').addClass(userInfo.role).attr('data-user-role',userInfo.role );
-                }
-            }
             //registered
             //$('.app-user-name').text( 'Welcome ' + userInfo.name + '!' );
             /*
@@ -210,24 +159,7 @@ function test_for_active_user(){
 		cannot_initiate_app();
 	}
 };
-
-bind_shortcut_keys();
-function bind_shortcut_keys(){
-    $(document)
-    .bind('keydown',function(e){
-        switch(e.keyCode){
-        case 117:	//F6
-            e.preventDefault();
-            $.mobile.navigate( "#switch-user", { transition : "none" });
-        break;
-        case 118:	//F7
-            e.preventDefault();
-        break;
-        }
-        
-    });
-};
-
+	
 function cannot_initiate_app(){
 	if( deviceID ){
         var settings = {
@@ -235,7 +167,6 @@ function cannot_initiate_app(){
             message_message: 'Please try signing in again. \nIf problem persists please contact our customer care',
             auto_close: 'no'
         };
-        clearData();
     }else{
         var settings = {
             message_title:'Invalid Device ID',
@@ -243,6 +174,7 @@ function cannot_initiate_app(){
             auto_close: 'no'
         };
     }
+	clearData();
 	display_popup_notice( settings );
     $.mobile.navigate( "#signup", { transition : "none" });
 };
@@ -433,8 +365,7 @@ function store_record( data ){
 			perm_storage = false;
 		break;
 		case 'supply':
-			data.store_id = currentStoreID;
-            perm_storage = false;
+			perm_storage = false;
 		break;
 		case 'transferstock':
 			perm_storage = false;
@@ -458,6 +389,7 @@ function store_record( data ){
             //use user key to identify records created by users
 			data.key = key;
 		}
+		
 		
 		data.timestamp = launch_date.getTime();
 		if( d && d.creationtimestamp ){
@@ -688,7 +620,6 @@ function successful_submit_action( stored ){
 	break;
 	case 'expenses':
 		var expenses_list = add_to_list_of_expenses( stored );
-        add_to_daily_cache( stored );
 		//update_expenses_list_on_expenses_page();
 		
 		var upload = {};
@@ -705,7 +636,7 @@ function successful_submit_action( stored ){
 	break;
 	case 'app_usersHOLD':
 		var users_list = add_to_list_of_users( stored );
-		update_users_list_on_users_page( "#mngusers" );
+		update_users_list_on_users_page();
 			
 		var upload = {};
 		upload[ stored.key ] = stored.key;
@@ -875,13 +806,11 @@ function successful_submit_action( stored ){
                         
                         //create expense
                         var tmp_expense_data = {
-                            key: 'e'+stored.key,
                             amount: parseFloat( stored.cost_price * stored.item_qty ),
                             date:current_date,
-                            description: "Procurement of "+inventory.item_desc+" "+parseFloat( stored.item_qty )+" unit(s)",
+                            description: "Purchase of "+inventory.item_desc+" "+parseFloat( stored.item_qty )+" unit(s)",
                             object:"expenses",
                             type:"purchase of goods",
-                            item_id:inventory.key,
                             store_id:stored.store_name,
                             store_name:stored.store_name,
                             temp:true,
@@ -900,7 +829,6 @@ function successful_submit_action( stored ){
                             newStock.total_items = 0;
                             newStock.total_amount = 0;
                             newStock.total_amount_paid = 0;
-                            newStock.stock = {};
                         }
                         
                         newStock.key = stored.supply;
@@ -908,7 +836,6 @@ function successful_submit_action( stored ){
                         newStock.total_items += parseFloat( stored.item_qty );
                         newStock.total_amount += ( stored.cost_price * stored.item_qty );
                         newStock.total_amount_paid = 0;
-                        newStock.stock[stored.key] = stored.key;
                         
                         updateSupplyFormFields( newStock );
                     }
@@ -924,32 +851,21 @@ function successful_submit_action( stored ){
             title = 'Invalid Store!';
             msg = 'Please select a store or create one if none exists';
         }
-		//console.log( 't', tempStoreObjects );
+		
 	break;
 	case 'supply':
 		if( newStock && Object.getOwnPropertyNames(newStock).length && tempStoreObjects && Object.getOwnPropertyNames(tempStoreObjects).length ){
 			
-            add_to_list_of_supply( stored );
-            add_to_daily_cache( stored );
-            
 			stored.total_amount = parseFloat( stored.total_amount );
             if( ! stored.total_amount )stored.total_amount = 0;
             
 			stored.total_amount_paid = parseFloat( stored.total_amount_paid );
             if( ! stored.total_amount_paid )stored.total_amount_paid = 0;
 			
-			stored.total_items = parseFloat( stored.total_items );
-            if( ! stored.total_items )stored.total_items = 0;
-			
-            if( newStock.stock )stored.stock = newStock.stock;
-            
-            if( tempStoreObjects[ stored.key ] )
-                tempStoreObjects[ stored.key ] = stored;
-            
 			var amount_owed = stored.total_amount - stored.total_amount_paid;
 			
 			var obj = {};
-			var uploadDataset = {};
+			var uploadData = {};
 			
 			if( ! storeObjects[ 'inventory_list' ] ){
 				storeObjects[ 'inventory_list' ] = {};
@@ -998,10 +914,10 @@ function successful_submit_action( stored ){
 			msg = "\nTotal Items: " + stored.total_items + "\nTotal Cost: " + formatNum( stored.total_amount.toFixed(2) ) + "\n\nTotal Amount Paid: " + formatNum( stored.total_amount_paid.toFixed(2) ) + " \nAmount Owed: " + formatNum( amount_owed.toFixed(2) );
 				
 			//yes - move newly added items to uploader object & clear new
-			queueUpload( uploadDataset );
+			queueUpload( uploadData );
 			tempStoreObjects = {};
 			newStock = {};
-			uploadDataset = {};
+			uploadData = {};
             
             ga( 'send' , 'pageview' , {'page': '/supply' , 'title': msg } );
 		}else{
@@ -1014,8 +930,6 @@ function successful_submit_action( stored ){
 	case 'damages':
         var error = true;
 		if( stored.item_barcode && stored.store_name ){
-            add_to_daily_cache( stored );
-            
             var inventory = getData( stored.item_barcode );
             
             if( inventory && inventory.store && inventory.store[stored.store_name] ){
@@ -1174,8 +1088,6 @@ function successful_submit_action( stored ){
 			}
 		});
 		
-        add_to_daily_cache( stored );
-        
 		newSale[ stored.key ] = stored.key;
 		queueUpload( newSale );
 		//storeObjects[ 'sales' ][ stored.key ] = stored;
@@ -1183,10 +1095,8 @@ function successful_submit_action( stored ){
         title = 'Sold!';
         msg = "\n" + 'Sales ID: #' + stored.key + "\n" + 'Total Items: ' + stored.total_units + "\n" + 'Net Total: ' + appCurrencyText +' '+formatNum(stored.total_amount.toFixed(2));
         
-        if( dataUploadTimerID )clearTimeout( dataUploadTimerID );
-        dataUploadTimerID = setTimeout( uploadData, appTimeToUploadData * 1000 );
-        
         ga( 'send' , 'pageview' , {'page': '/sale' , 'title': '#'+stored.key } );
+        
 	break;
 	}
 	
@@ -1196,27 +1106,6 @@ function successful_submit_action( stored ){
 		auto_close: 'yes'
 	};
 	display_popup_notice( settings );
-};
-
-function add_to_daily_cache( data ){
-    if( data && data.object && data.timestamp && data.key ){
-        var date = new Date( data.timestamp );
-        // hours part from the timestamp
-        var day = date.getDate();
-        var month = date.getMonth();
-        var year = date.getFullYear();
-        
-        if( day < 10 )day = '0'+day;
-        var m2 = month + 1;
-        if(  m2 < 10 )var m1 = '0'+m2;
-        else var m1 = m2;
-        
-        var k = data.object + year + '-' + m1 + '-' + day;
-        var daily = getData( k );
-        if( ! daily )daily = {};
-        daily[ data.key ] = data.key;
-        putData( k , daily );
-    }
 };
 
 function leftandRight( text , txtRight ){
@@ -1487,16 +1376,6 @@ function add_to_list_of_suppliers( data ){
 	.prepend( get_supplier_html( data.key , data ) );
 };
 
-function add_to_list_of_supply( data ){
-	if( storeObjects[ 'supply' ] ){
-		storeObjects[ 'supply' ];
-	}else{
-		get_list_of_supply();
-	}
-	
-	storeObjects[ 'supply' ][ data.key ] = data;
-};
-
 function add_to_list_of_customers( data ){
 	if( storeObjects[ 'customers_list' ] ){
 		storeObjects[ 'customers_list' ];
@@ -1673,26 +1552,6 @@ function get_list_of_suppliers(){
 		
 	}
 	return storeObjects[ 'suppliers_list' ];
-};
-
-function get_list_of_supply(){
-	if( storeObjects[ 'suppply' ] ){
-		storeObjects[ 'supply' ];
-	}else{
-		var object = 'supply';
-		var keys = getData( object );
-		var suppliers_list = {};
-		
-		if( keys ){
-			$.each( keys , function( key , value ){
-				suppliers_list[ key ] = getData( key );
-			});
-		}
-		
-		storeObjects[ 'supply' ] = suppliers_list;
-		
-	}
-	return storeObjects[ 'supply' ];
 };
 
 function get_list_of_customers(){
@@ -1884,6 +1743,9 @@ function get_inventory_html( key , value ){
 	return html;
 };
 
+var months_of_year = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+var weekdays = [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ];
+
 function get_new_inventory_html( key , value ){
 	var date = new Date( value.timestamp );
 	
@@ -2014,10 +1876,9 @@ function get_users_html( key , value ){
     }else{
         var modified_date = '';
 	}
-    var role = '';
-	if( value.role )role = value.role.replace('-', ' ');
 	
-	return '<tr id="'+key+'" timestamp="'+value.timestamp+'"><td>'+value.name+'</td><td class="ui-table-priority-2">'+value.email+'</td><td class="ui-table-priority-1">'+role+'</td><td class="ui-table-priority-3">'+modified_date+'</td></tr>';
+	
+	return '<tr id="'+key+'" timestamp="'+value.timestamp+'"><td>'+value.name+'</td><td class="ui-table-priority-1">'+value.email+'</td><td class="ui-table-priority-2">'+modified_date+'</td></tr>';
 };
 
 function get_stores_html( key , value ){
@@ -2068,110 +1929,6 @@ $( document ).on( "pagecreate", "#dashboard", function() {
         e.preventDefault();
         document.location = document.location.origin + document.location.pathname + document.location.search;
     });
-    
-});
-
-$(document).on("pagecontainerbeforechange",function(e, data){
-    var to = data.toPage,
-        from = data.options.fromPage;
-
-    if (typeof to  === 'string') {
-        var u = $.mobile.path.parseUrl(to);
-        to = u.hash || '#' + u.pathname.substring(1);
-        if (from) from = '#' + from.attr('id');
-        
-        switch(to){
-        case '#signup': case '#login': case '#update-progress': case '#dashboard': case '#checkout': case '#switch-user': case '#settings': case '#my-profile': case '#general-settings': case '#restore-points':
-            return true;
-        break;
-        }
-        
-        var user = getData( appSwitchUserkey );
-        if( ! ( user && user.role ) )var user = get_user_info();
-        
-        if( ! ( user && user.role ) ){
-            $.mobile.navigate( "#signup", { transition : "none" } );
-            return true;
-        }
-        
-        switch( user.role ){
-        case 'sales-rep':
-            switch(to){
-            case '#sales':
-            break;
-            default:
-                e.preventDefault();
-                e.stopPropagation();
-                
-                // remove active status on buttons
-                var $active = $.mobile.activePage
-                .find('.ui-btn-active')
-                .removeClass('ui-btn-active');
-                
-                switch(from){
-                case '#sales': case '#dashboard': case '#checkout':
-                break;
-                default:
-                    $.mobile.navigate( "#dashboard", { transition : "none" } );
-                break;
-                }
-                
-                var settings = {
-                    message_title:'Unauthorized Access',
-                    message_message: 'You cannot access the selected resource',
-                };
-                display_popup_notice( settings );
-            break;
-            }
-        break;
-        case 'stock-keeper':
-            switch(to){
-            case '#inventory': case '#supplier': case '#notifications': case '#restock': case '#newInventory': case '#setPricing': case '#damages': case '#refunds': case '#mngcategory':
-            break;
-            default:
-                e.preventDefault();
-                e.stopPropagation();
-                
-                // remove active status on buttons
-                var $active = $.mobile.activePage
-                .find('.ui-btn-active')
-                .removeClass('ui-btn-active');
-                
-                switch(from){
-                case '#dashboard': case '#inventory': case '#supplier': case '#notifications': case '#restock': case '#newInventory': case '#setPricing': case '#damages': case '#refunds': case '#mngcategory':
-                break;
-                default:
-                    $.mobile.navigate( "#dashboard", { transition : "none" } );
-                break;
-                }
-                
-                var settings = {
-                    message_title:'Unauthorized Access',
-                    message_message: 'You cannot access the selected resource',
-                };
-                display_popup_notice( settings );
-            break;
-            }
-        break;
-        case 'manager':
-            switch(to){
-            case '#stores': case '#mngusers':
-                e.preventDefault();
-                e.stopPropagation();
-                
-                var settings = {
-                    message_title:'Unauthorized Access',
-                    message_message: 'You cannot access the selected resource',
-                };
-                display_popup_notice( settings );
-            break;
-            }
-        break;
-        case 'admin':
-        break;
-        }
-        
-    }
 });
 
 function initFileSystem( persistentFileSys ) {
@@ -2290,28 +2047,32 @@ $( document ).on( "pageshow", "#dashboard", function() {
                 value.week_day = weekdays[ date.getDay() ];
                 
                 if( value.day == today ){
-                    
+                    console.log('tday-sales', value );
                     today_total_days += parseFloat( value.total_amount );
                     today_cost_price_days += parseFloat( value.total_cost_price );
                     if( value.total_units )today_units += parseFloat( value.total_units );
                     
                     $.each( value.inventory , function( k, v){
-                        
-                        if( v.key && v.item_desc ){
+                        //console.log('piein', inventory );
+                        if( inventory[k] ){
                             if( most_selling[ k ] ){
-                                most_selling[ k ].units += parseFloat( v.unit_ordered );
-                                most_selling[ k ].total_amount += parseFloat( v.unit_ordered * v.unit_selling_price );
+                                var  ini = most_selling[ k ];
+                                most_selling[ k ] = {
+                                    units: parseFloat( v.unit_ordered ) + ini.units,
+                                    total_amount: parseFloat( v.unit_ordered * v.unit_selling_price ) + ini.total_amount,
+                                    id: k,
+                                    item_desc: inventory[k].item_desc
+                                }
                             }else{
                                 most_selling[ k ] = {
                                     units: parseFloat( v.unit_ordered ),
                                     total_amount: parseFloat( v.unit_ordered * v.unit_selling_price ),
                                     id: k,
-                                    item_desc: v.item_desc
+                                    item_desc: inventory[k].item_desc
                                 }
                             }
                         }
                     });
-                    
                 }
                 
                 if( value.timestamp > week_timestamp ){
@@ -2360,29 +2121,22 @@ $( document ).on( "pageshow", "#dashboard", function() {
 	
     var hidepiechart = true;
 	if( total_value ){
-        var maxs = new Array();
+        var max1 = max2 = max3 = max4 = max5 = i = 0;
         var maxs_html = new Array();
-        var ldataLimit = 6;
-        for( var i = 0; i < ldataLimit; i++ )
-            maxs[i] = 0;
         
         var dtset = new Array();
         $.each( most_selling, function( k , v ){
-            var sort_field = v.units;
-            for( var i = 0; i < ldataLimit; i++ ){
-                if( sort_field > maxs[i] ){
-                    var k = i + 1;
-                    for( var j = k; j < ldataLimit; j++ ){
-                        maxs[j] = maxs[j - 1];
-                        maxs_html[ ldataLimit - j ] = maxs_html[ ldataLimit - j - 1];
-                    }
-                    maxs[i] = parseFloat( sort_field );
-                    maxs_html[i] = [ v.item_desc + ' ( ' + appCurrencyText + v.total_amount+')' , v.units ];
-                    break;
-                }
+            if( v.units && ( v.units > max1 || v.units > max2 || v.units > max3 || v.units > max4 || v.units > max5 )  ){
+                max5 = max4;
+                max4 = max3;
+                max3 = max2;
+                max2 = max1;
+                max1 = v.units;
+                maxs_html[i++] = [ v.item_desc + ' ( ' + appCurrencyText + v.total_amount+')' , v.units ];
             }
         });
         dtset = maxs_html;
+        console.log(dtset);
         
 		if( dtset.length > 0 ){
             hidepiechart = false;
@@ -2430,57 +2184,11 @@ $( document ).on( "pageshow", "#dashboard", function() {
     }
 });
 
-$( document ).on( "pagecreate", "#refunds", function() {
+$( document ).on( "pagecreate", "#records", function() {
 	test_for_active_user();
-    activate_update_of_current_store( $("#refunds") );
+    activate_update_of_current_store( $("#records") );
     
-    $('select#filter-return-refund-type')
-    .on('change', function(){
-        $('#refunds-container').html( '' );
-        $('input#date-select-filter').change();
-    });
-    
-    $('input#date-select-filter')
-    .on('change', function(){
-        var date = $(this).val();
-        
-        if( ! date )return false;
-        
-        var type = $('select#filter-return-refund-type').val();
-        
-        var daily_record = getData( type+date );
-        
-        if( daily_record ){
-            var data = {};
-            $.each( daily_record, function(k, v){
-                data[k] = getData(k);
-            });
-            var html = get_refund_html( data );
-            
-            if( html ){
-                var d = date.split('-');
-                d[1] = (d[1]*1) - 1;
-                $('#date-filter-field-label')
-                .html( months_of_year[ d[1] ]+'-'+d[2]+'-'+d[0] );
-                
-                $('#refunds-container')
-                .html( html )
-                .trigger( "create")
-                .find('.ui-collapsible')
-                .tsort({attr:'timestamp', order:'desc'});
-                
-                activate_record_delete_button( "#refunds" );
-            }else{
-                //display no records msg
-                var settings = {
-                    message_title:'No Record was Found',
-                    message_message: 'NOTE: You cannot view previous year\'s records \n\nYou need to generate reports to view',
-                    auto_close: 'yes'
-                };
-                display_popup_notice( settings );
-            }
-        }
-    });
+    activate_panel_navigation( $("#records") );
     
     $('#popupRecords')
 	.on( "popupafteropen", function( event, ui ) {
@@ -2503,6 +2211,7 @@ $( document ).on( "pagecreate", "#refunds", function() {
                 if( sales_data.inventory ){
                     $.each( sales_data.inventory , function( k , s ){
                        // var inventory = getData( k );
+                        
                         html += get_item_row_for_sales_records( s );
                     });
                     
@@ -2557,37 +2266,6 @@ $( document ).on( "pagecreate", "#refunds", function() {
 	});
 });
 
-$( document ).on( "pagecreate", "#all-records", function() {
-	test_for_active_user();
-    activate_update_of_current_store( $("#all-records") );
-    
-    activate_panel_navigation( $("#all-records") );
-    
-    $('th.custom-button')
-    .on('click', function(e){
-        $('.subtotal-row')
-        .not( '.'+$(this).attr('data-format')+'-subtotal-row' )
-        .addClass('hidden');
-        
-        $('th.custom-button')
-        .find('a')
-        .removeClass('ui-icon-carat-u')
-        .addClass('ui-icon-carat-d');
-        
-        if( $('.'+$(this).attr('data-format')+'-subtotal-row').hasClass('hidden') ){
-            $('.'+$(this).attr('data-format')+'-subtotal-row').removeClass('hidden');
-            $(this).find('a')
-            .removeClass('ui-icon-carat-d')
-            .addClass('ui-icon-carat-u');
-        }else{
-            $('.'+$(this).attr('data-format')+'-subtotal-row').addClass('hidden');
-            $(this).find('a')
-            .removeClass('ui-icon-carat-u')
-            .addClass('ui-icon-carat-d');
-        }
-    });
-});
-
 function get_item_row_for_sales_records_summary( s ){
 	return '<tr><td><b>'+s.label+'</b></td><td><b>'+s.value+'</b></td></tr>';
 };
@@ -2596,18 +2274,10 @@ function get_item_row_for_sales_records( s ){
 	var a = s.unit_ordered*s.unit_selling_price;
 	
 	var desc = '';
-	var img_td = '';
 	if( s &&  s.item_desc )desc = s.item_desc;
 	else desc = 'product no longer exists';
 	
-    if( s.item_image ){
-        var img = blubirdFileURL+s.item_image;
-        if( blubirdWebbased ){
-            img = 'imagebank/'+s.item_image;
-        }
-        img_td = '<td style="padding:0; text-align:center; vertical-align:middle;"><img src="'+img+'" height="60" /></td>';
-    }
-	return '<tr>'+img_td+'<td>'+desc+'<b>&nbsp;('+s.unit_ordered+')</b></td><td><b>'+formatNum(a.toFixed(2))+'</b></td></tr>';
+	return '<tr><td>'+desc+'<b>&nbsp;('+s.unit_ordered+')</b></td><td><b>'+formatNum(a.toFixed(2))+'</b></td></tr>';
 };
 
 function get_item_row_for_sales_records_striped( s ){
@@ -2630,8 +2300,8 @@ function get_item_row_for_sales_records_stripedHTML( s ){
 	return leftandRightHTML( desc+' ('+s.unit_ordered+')' , appCurrency +' '+formatNum( a.toFixed(2) ) );
 };
 
-$( document ).on( "pageshow", "#all-records", function() {
-	populate_stores_select_box( $('#all-records').find('select.currently-active-store') );
+$( document ).on( "pageshow", "#records", function() {
+	populate_stores_select_box( $('#records').find('select.currently-active-store') );
     activate_menu();
     
 	var sales = get_sales();
@@ -2641,9 +2311,7 @@ $( document ).on( "pageshow", "#all-records", function() {
 	var total_vat = 0;
 	
 	var date = new Date();
-	var tday = date.getDate();
-    if( tday < 10 )tday = '0'+tday;
-	var today = date.getFullYear() + '-' + months_of_year[ date.getMonth() ] + '-' + tday;
+	var today = date.getFullYear() + '-' + months_of_year[ date.getMonth() ] + '-' + date.getDate();
 	var this_month = date.getFullYear() + '-' + months_of_year[ date.getMonth() ];
 	var this_year = date.getFullYear();
 	var this_week = date.getDay();
@@ -2657,19 +2325,91 @@ $( document ).on( "pageshow", "#all-records", function() {
 	var today_html_months = '';
 	var today_html_years = '';
 	
-    var records = {
-        'today':{},
-        'last24hours':{},
-        'last7days':{},
-        'thismonth':{},
-        'thisyear':{},
-    };
-
 	var one_day_html = '';
 	var two_day_html = '';
 	
-    var ini_var = {sales:{}, expenses:{}, stock:{}, damages:{} };
-    
+	var one_day_total = 0;
+	var two_day_total = 0;
+	
+	var today_total_days = 0;
+	var today_total_months = 0;
+	var today_total_years = 0;
+	
+    if( currentStoreID ){
+        $.each( sales , function( key , value ){
+            if( value && value.store_name == currentStoreID ){
+                
+                var date = new Date( value.timestamp );
+                // hours part from the timestamp
+                var day = date.getDate();
+                var month = date.getMonth();
+                var year = date.getFullYear();
+                var hours = date.getHours();
+                var minutes = date.getMinutes();
+                var seconds = date.getSeconds();
+                
+                value.day_only = day;
+                value.week_day = weekdays[ date.getDay() ];
+                
+                value.month = month;
+                value.day = year + '-' + months_of_year[ month ] + '-' + day;
+                value.time = hours + ':' + minutes;
+                
+                if( value.day == today ){
+                    today_html_days += get_sales_records_html( value , 0 );
+                    today_total_days += parseFloat( value.total_amount );
+                }else{
+                    if( value.timestamp > two_day ){
+                        one_day_html += get_sales_records_html( value , 1 );
+                        one_day_total += parseFloat( value.total_amount );
+                    }
+                }
+                
+                if( value.timestamp < two_day && value.timestamp > three_day ){
+                    two_day_html += get_sales_records_html( value , 1 );
+                    two_day_total += parseFloat( value.total_amount );
+                }
+                
+                if( this_month == year + '-' + months_of_year[ month ] ){
+                    today_html_months += get_sales_records_html( value , 1 );
+                    today_total_months += parseFloat( value.total_amount );
+                }
+            }
+        });
+	}
+	
+	$('#today-sales-records-days-total')
+	.html( appCurrency + formatNum( today_total_days.toFixed(2) ) );
+	
+	$('#today-sales-records-months-total')
+	.html( appCurrency + formatNum( today_total_months.toFixed(2) ) );
+	
+	$('#two-day-sales-total')
+	.html( appCurrency + formatNum( two_day_total.toFixed(2) ) );
+	
+	$('#one-day-sales-total')
+	.html( appCurrency + formatNum( one_day_total.toFixed(2) ) );
+	
+	if( one_day_html ){
+		$('#one-day-records')
+		.html( '<ul data-role="listview" >'+one_day_html+'</ul>' )
+		.trigger('create');
+	}
+	
+	if( two_day_html ){
+		$('#two-day-records')
+		.html( '<ul data-role="listview" >'+two_day_html+'</ul>' )
+		.trigger('create');
+	}
+	
+	$('#today-sales-records-months')
+	.html( '<ul data-role="listview" >'+today_html_months+'</ul>' )
+	.trigger('create');
+	
+	$('#today-sales-records')
+	.html( '<ul data-role="listview" >'+today_html_days +'</ul>')
+	.trigger('create');
+	
 	$('#sales-records-container')
 	.find('a.sales-reccord')
 	.on('click', function(e){
@@ -2681,9 +2421,30 @@ $( document ).on( "pageshow", "#all-records", function() {
 	});
 	
     var expenses = get_list_of_expenses();
-    var damages = get_list_of_damages();
-    var supply = get_list_of_supply();
     
+	var total_value = 0;
+	var total_items = 0;
+	var total_cost_price = 0;
+	var total_vat = 0;
+	
+	var date = new Date();
+	var today = date.getFullYear() + '-' + months_of_year[ date.getMonth() ] + '-' + date.getDate();
+	var this_month = date.getFullYear() + '-' + months_of_year[ date.getMonth() ];
+	var this_year = date.getFullYear();
+	var this_week = date.getDay();
+	
+	var current_timestamp = date.getTime();
+	var one_day = current_timestamp - (24*3600000);
+	var two_day = current_timestamp - (48*3600000);
+	var three_day = current_timestamp - (6*24*3600000);
+		
+	var today_html_days = '';
+	var today_html_months = '';
+	var today_html_years = '';
+	
+	var one_day_html = '';
+	var two_day_html = '';
+	
 	var one_day_total = 0;
 	var two_day_total = 0;
 	
@@ -2691,270 +2452,11 @@ $( document ).on( "pageshow", "#all-records", function() {
 	var today_total_months = 0;
 	var today_total_years = 0;
 	
-    var data = {
-        'sales':sales,
-        'expenses':expenses,
-        'damages':damages,
-        'stock':supply,
-    };
-    
     if( currentStoreID ){
-        $.each( data, function( k, v ){
-            var daily = {};
-            
-            var one_day_total = 0;
-            var two_day_total = 0;
-            
-            var today_total_days = 0;
-            var today_total_months = 0;
-            var today_total_years = 0;
-            
-            $.each( v , function( key , value ){
-                
-                switch( k ){
-                case 'stock':
-                    value.store_name = value.store_id;
-                break;
-                }
-                
-                if( value && value.store_name == currentStoreID ){
-                    
-                    var date = new Date( value.timestamp );
-                    // hours part from the timestamp
-                    var day = date.getDate();
-                    var month = date.getMonth();
-                    var year = date.getFullYear();
-                    var hours = date.getHours();
-                    var minutes = date.getMinutes();
-                    var seconds = date.getSeconds();
-                    
-                    if( day < 10 )day = '0'+day;
-                    value.day_only = day;
-                    value.week_day = weekdays[ date.getDay() ];
-                    
-                    value.month = month;
-                    value.day = year + '-' + months_of_year[ month ] + '-' + day;
-                    if( hours < 10 )hours = '0'+hours;
-                    if( minutes < 10 )minutes = '0'+minutes;
-                    value.hours = hours;
-                    value.time = hours + ':' + minutes;
-                    
-                    switch( k ){
-                    case 'expenses':
-                        value.total_amount = value.amount;
-                    break;
-                    case 'damages':
-                        value.total_amount = value.damage_qty;
-                    break;
-                    case 'stock':
-                        value.total_amount = value.total_items;
-                    break;
-                    case 'sales':
-                    break;
-                    }
-                    
-                    if( value.day == today ){
-                        if( ! records.today[ value.time ] )
-                            records.today[ value.time ] = $.extend(true, {}, ini_var );
-                        
-                        if( ! records.today[ value.time ][k].key ){
-                            records.today[ value.time ][k] = $.extend(true, {}, value );
-                        }else{
-                            records.today[ value.time ][k].key += ' '+value.key;
-                            records.today[ value.time ][k].total_amount = parseFloat( records.today[ value.time ][k].total_amount ) + parseFloat( value.total_amount );
-                        }
-                            
-                        today_total_days += parseFloat( value.total_amount );
-                    }else{
-                        if( value.timestamp > two_day ){
-                            if( ! records.last24hours[ value.hours ] )
-                                records.last24hours[ value.hours ] = $.extend(true, {}, ini_var );
-                            
-                            if( ! records.last24hours[ value.hours ][k].key ){
-                                records.last24hours[ value.hours ][k] = $.extend(true, {}, value );
-                            }else{
-                                records.last24hours[ value.hours ][k].key += ' '+value.key;
-                                records.last24hours[ value.hours ][k].total_amount = parseFloat( records.last24hours[ value.hours ][k].total_amount ) + parseFloat( value.total_amount );
-                            }
-                            
-                            one_day_total += parseFloat( value.total_amount );
-                        }
-                    }
-                    
-                    if( value.timestamp < two_day && value.timestamp > three_day ){
-                        if( ! records.last7days[ value.day ] )
-                            records.last7days[ value.day ] = $.extend(true, {}, ini_var );
-                            
-                        if( ! records.last7days[ value.day ][k].key ){
-                            records.last7days[ value.day ][k] = $.extend(true, {}, value );
-                        }else{
-                            records.last7days[ value.day ][k].key += ' '+value.key;
-                            records.last7days[ value.day ][k].total_amount = parseFloat( records.last7days[ value.day ][k].total_amount ) + parseFloat( value.total_amount );
-                        }
-                        
-                        two_day_total += parseFloat( value.total_amount );
-                    }
-                    
-                    if( this_month == year + '-' + months_of_year[ month ] ){
-                        if( ! records.thismonth[ value.day ] )
-                            records.thismonth[ value.day ] = $.extend(true, {}, ini_var );
-                        
-                        if( ! records.thismonth[ value.day ][k].key ){
-                            records.thismonth[ value.day ][k] =  $.extend(true, {}, value );
-                        }else{
-                            records.thismonth[ value.day ][k].key += ' '+value.key;
-                            records.thismonth[ value.day ][k].total_amount = parseFloat( records.thismonth[ value.day ][k].total_amount ) + parseFloat( value.total_amount );
-                        }
-                        
-                        today_total_months += parseFloat( value.total_amount );
-                    }
-                    
-                    if( this_year == year ){
-                        if( ! records.thisyear[ months_of_year[ month ] ] )
-                            records.thisyear[ months_of_year[ month ] ] = $.extend(true, {}, ini_var );
-                        
-                        if( ! records.thisyear[ months_of_year[ month ] ][k].key ){
-                            records.thisyear[ months_of_year[ month ] ][k] =  $.extend(true, {}, value );
-                        }else{
-                            records.thisyear[ months_of_year[ month ] ][k].key += ' '+value.key;
-                            records.thisyear[ months_of_year[ month ] ][k].total_amount = parseFloat( records.thisyear[ months_of_year[ month ] ][k].total_amount ) + parseFloat( value.total_amount );
-                        }
-                        today_total_years += parseFloat( value.total_amount );
-                    }
-                    
-                    switch( k ){
-                    case 'expenses':
-                    case 'damages':
-                    case 'stock':
-                    case 'sales':
-                        var m2 = month + 1;
-                        if(  m2 < 10 )var m1 = '0'+m2;
-                        else var m1 = m2;
-                        
-                        if( ! daily[ k + year + '-' + m1 + '-' + day ] )daily[ k + year + '-' + m1 + '-' + day ] = {};
-                        daily[ k + year + '-' + m1 + '-' + day ][ value.key ] = value.key;
-                    break;
-                    }
-               }
-            });
-            
-            var currency = '';
-            var suffix = '';
-            if(! today_total_days)today_total_days = 0;
-            if(! today_total_months)today_total_months = 0;
-            if(! today_total_years)today_total_years = 0;
-            if(! two_day_total)two_day_total = 0;
-            if(! one_day_total)one_day_total = 0;
-            
-            switch( k ){
-            case 'stock':
-            case 'sales':
-            case 'expenses':
-            case 'damages':
-                $.each( daily, function( k1 , v1 ){
-                    putData( k1, v1 );
-                });
-            break;
-            }
-            
-            switch( k ){
-            case 'expenses':
-            case 'sales':
-                currency = appCurrency;
-                today_total_days = today_total_days.toFixed(2);
-                today_total_months = today_total_months.toFixed(2);
-                today_total_years = today_total_years.toFixed(2);
-                two_day_total = two_day_total.toFixed(2);
-                one_day_total = one_day_total.toFixed(2);
-            break;
-            case 'stock':
-            case 'damages':
-                suffix = ' unit(s)';
-            break;
-            }
-            
-            $('#today-records-'+k+'-total')
-            .html( currency + formatNum( today_total_days ) + suffix );
-            
-            $('#thismonth-records-'+k+'-total')
-            .html( currency + formatNum( today_total_months ) + suffix );
-            
-            $('#thisyear-records-'+k+'-total')
-            .html( currency + formatNum( today_total_years ) + suffix );
-            
-            $('#last7days-records-'+k+'-total')
-            .html( currency + formatNum( two_day_total ) + suffix );
-            
-            $('#last24hours-records-'+k+'-total')
-            .html( currency + formatNum( one_day_total ) + suffix );
-        });
-    }
-	
-    $('#all-records-summary-table')
-    .find('tr.subtotal-row')
-    .remove();
-    
-    $.each( records, function(key,v1){
-        var html = '';
-        $.each(v1, function( time , v2 ){
-            v2.format = key;
-            html += get_sales_records_html_new( v2 );
-        });
-        if( html ){
-            $('#'+key+'-records')
-            .after(html);
-        }
-    });
-    
-    $('#all-records-summary-table')
-    .table('refresh');
-});
-
-$( document ).on( "pageshow", "#refunds", function() {
-	populate_stores_select_box( $('#refunds').find('select.currently-active-store') );
-    
-    var date = new Date();
-    
-    // hours part from the timestamp
-    var day = date.getDate();
-    var month = date.getMonth();
-    var year = date.getFullYear();
-    
-    if( day < 10 )day = '0'+day;
-    ++month;
-    if( month < 10 )month = '0'+month;
-    
-    $('input#date-select-filter')
-    .val(year + '-' + month + '-' + day)
-    .change();
-});
-
-function get_refund_html( data ){
-    var html = '';
-    var total = 0;
-    console.log( 'dd', data);
-    var cost_str = appCurrency;
-    
-    if( currentStoreID ){
-        $.each( data , function( key , value ){
-            if( ! value )return;
-            
-            switch(value.object){
-            case 'supply':
-                value.store_name = value.store_id;
-                value.total_items = parseFloat( value.total_items );
-            break;
-            case 'expenses':
-                value.total_amount = parseFloat( value.amount );
-            break;
-            case 'damages':
-                value.total_items = parseFloat( value.damage_qty );
-                value.total_amount = value.total_items;
-                cost_str = '';
-            break;
-            }
+        $.each( expenses , function( key , value ){
             
             if( value && value.store_name == currentStoreID ){
+                
                 var date = new Date( value.timestamp );
                 // hours part from the timestamp
                 var day = date.getDate();
@@ -2964,27 +2466,80 @@ function get_refund_html( data ){
                 var minutes = date.getMinutes();
                 var seconds = date.getSeconds();
                 
-                if( day < 10 )day = '0'+day;
                 value.day_only = day;
                 value.week_day = weekdays[ date.getDay() ];
                 
                 value.month = month;
                 value.day = year + '-' + months_of_year[ month ] + '-' + day;
-                if( hours < 10 )hours = '0'+hours;
-                if( minutes < 10 )minutes = '0'+minutes;
-                value.hours = hours;
                 value.time = hours + ':' + minutes;
                 
-                total += parseFloat( value.total_amount );
-                html += get_sales_records_html( value );
+                if( value.day == today ){
+                    today_html_days += get_expenses_records_html( value , 0 );
+                    today_total_days += parseFloat( value.amount );
+                }else{
+                    if( value.timestamp > two_day ){
+                        one_day_html += get_expenses_records_html( value , 1 );
+                        one_day_total += parseFloat( value.amount );
+                    }
+                }
+                
+                if( value.timestamp < two_day && value.timestamp > three_day ){
+                    two_day_html += get_expenses_records_html( value , 1 );
+                    two_day_total += parseFloat( value.amount );
+                }
+                
+                if( this_month == year + '-' + months_of_year[ month ] ){
+                    today_html_months += get_expenses_records_html( value , 1 );
+                    today_total_months += parseFloat( value.amount );
+                }
             }
         });
-    }
-    
-    $('#total-value-filter-field-label')
-    .html( cost_str + formatNum( total.toFixed(2) ) );
-    return html;
-};
+	}
+	
+	$('#today-expenses-records-days-total')
+	.html( appCurrency + formatNum( today_total_days.toFixed(2) ) );
+	
+	$('#today-expenses-records-months-total')
+	.html( appCurrency + formatNum( today_total_months.toFixed(2) ) );
+	
+	$('#two-day-expenses-total')
+	.html( appCurrency + formatNum( two_day_total.toFixed(2) ) );
+	
+	$('#one-day-expenses-total')
+	.html( appCurrency + formatNum( one_day_total.toFixed(2) ) );
+	
+	if( one_day_html ){
+		$('#expenses-one-day-records')
+		.html( '<ul data-role="listview" >'+one_day_html+'</ul>' )
+		.trigger('create');
+	}
+	
+	if( two_day_html ){
+		$('#expenses-two-day-records')
+		.html( '<ul data-role="listview" >'+two_day_html+'</ul>' )
+		.trigger('create');
+	}
+	
+	$('#today-expenses-records-months')
+	.html( '<ul data-role="listview" >'+today_html_months+'</ul>' )
+	.trigger('create');
+	
+	$('#today-expenses-records')
+	.html( '<ul data-role="listview" >'+today_html_days +'</ul>')
+	.trigger('create');
+	/*
+	$('#expenses-records-container')
+	.find('a.expenses-record')
+	.on('click', function(e){
+		e.preventDefault();
+		
+		$('#popupRecords')
+		.data( 'key' , $(this).attr('key') )
+		.data( 'type' , 'expenses' )
+		.popup('open', { positionTo: "window" });
+	});
+	*/
+});
 
 function get_expenses_records_html( data , format ){
 	var date = '';
@@ -2998,163 +2553,15 @@ function get_expenses_records_html( data , format ){
 	return '<li><h4>'+data.description+'</h4><p class="date">'+date+data.time+'</p><p class="amount">'+appCurrency+' '+ formatNum( a.toFixed(2) ) +'</p></li>';
 };
 
-function get_sales_records_html( data ){
-	var date = '', html = '', html1 = '', format = '';
+function get_sales_records_html( data , format ){
+	var date = '';
 	if( format ){
 		date = data.week_day+', '+data.day_only+' '+months_of_year[ data.month ]+' ';
 	}
 	if( ! parseFloat( data.total_amount ) ){
 		data.total_amount = 0;
 	}
-    if( ! parseFloat( data.total_items ) ){
-		data.total_items = 0;
-	}
-    if( data.inventory ){
-        $.each( data.inventory , function( k , s ){
-            //var inventory = getData( k );
-            html += get_item_row_for_sales_records( s );
-        });
-    }
-    if( data.stock ){
-        $.each( data.stock , function( k , s ){
-            var stock = getData( k );
-            if( stock ){
-                var item = getData( stock.item_barcode );
-                stock.item_desc = item.item_desc;
-                stock.format = 1;
-                //if( item.item_image )stock.item_image = item.item_image;
-                
-                html += get_last_supply_activity_html( stock );
-            }
-        });
-    }
-    
-    var cost_str = ' Cost'+': '+appCurrency;
-    if( data.object ){
-    switch(data.object){
-    case 'sales':
-        html1 += '<tr><td>Sub-total</td><td>'+formatNum(data.subtotal.toFixed(2))+'</td></tr>';
-        html1 += '<tr><td>VAT</td><td>'+formatNum(data.vat.toFixed(2))+'</td></tr>';
-        html1 += '<tr><td>Discount</td><td>'+formatNum(data.discount.toFixed(2))+'</td></tr>';
-        
-        html1 += '<tr><td><strong>Total Amount Due</strong></td><td><strong>'+formatNum(data.total_amount.toFixed(2))+'</strong></td></tr>';
-        
-        var change = data.total_amount_tendered - data.total_amount;
-        html1 += '<tr><td>Amount Paid</td><td>'+formatNum(data.total_amount_tendered.toFixed(2))+'</td></tr>';
-        html1 += '<tr><td>Change</td><td>'+formatNum(change.toFixed(2))+'</td></tr>';
-    break;
-    case 'supply':
-        html1 += '<tr><td><strong>Total Items Supplied</strong></td><td><strong>'+formatNum(data.total_items.toFixed(2))+'</strong></td></tr>';
-        html1 += '<tr><td><strong>Total Amount Due</strong></td><td><strong>'+formatNum(data.total_amount.toFixed(2))+'</strong></td></tr>';
-        
-        var change = data.total_amount - data.total_amount_paid;
-        html1 += '<tr><td>Amount Paid</td><td>'+formatNum(data.total_amount_paid.toFixed(2))+'</td></tr>';
-        html1 += '<tr><td>Outstanding Balance Owed</td><td>'+formatNum(change.toFixed(2))+'</td></tr>';
-    break;
-    case 'expenses':
-        html1 += '<tr><td>Date Incured</td><td><strong>'+data.date+'</strong></td></tr>';
-        html1 += '<tr><td>Type of Expense</td><td><strong>'+data.type+'</strong></td></tr>';
-        
-        html += '<tr><td>'+data.description+'</td></tr>';
-    break;
-    case 'damages':
-        cost_str = ' Units Damaged: ';
-        data.total_amount = data.total_items;
-        
-        html1 += '<tr><td>Description of Damage</td><td><strong>'+data.damage_desc+'</strong></td></tr>';
-        html1 += '<tr><td>Date Incured</td><td><strong>'+data.date+'</strong></td></tr>';
-        
-        var i = getData( data.item_barcode );
-        if( i && i.item_desc )
-            html += '<tr><td>'+i.item_desc+'</td><td>'+data.total_items+'</td></tr>';
-    break;
-    }
-    }
-    
-	return '<div data-role="collapsible" id="container-'+data.key+'" timestamp="'+data.timestamp+'"><h5><p style="float:right;"><strong>'+date+data.time+'</strong></p>Total'+cost_str+ formatNum( data.total_amount.toFixed(2) ) +'<p>#'+data.key+'</p></h5><p><div class="ui-grid-a invt" ><div class="ui-block-a" style="padding: 0 0.35em 0 0;"><table class="custom-more-details">'+html1+'</table><button class="delete-record" object="'+data.object+'" key="'+data.key+'" href="#" data-role="button" data-mini="true" data-theme="a" data-border="none" data-icon="delete" style="margin-top:2px;"><b>Delete</b></button></div> <div class="ui-block-b" style="padding: 0 0 0 0.35em;"><table class="custom-more-details">'+html+'</table></div></div></p></div>';
-};
-
-function get_sales_records_html_new( data ){
-	var date = '';
-    var sales = {total:'-', key:''};
-    var expenses = {total:'-', key:''};
-    var damages = {total:'-', key:''};
-    var stock = {total:'-', key:''};
-    var time, weekday, day, month, full_month, hours = '';
-    if( data.sales && data.sales.key ){
-        sales.total = formatNum( parseFloat( data.sales.total_amount ).toFixed(2) );
-        sales.key = data.sales.key;
-        if( data.sales.time ){
-            hours = data.sales.hours;
-            time = data.sales.time;
-            day = ' '+data.sales.day_only;
-            weekday = data.sales.week_day+', ';
-            month = months_of_year[ data.sales.month ];
-            full_month = full_months_of_year[ data.sales.month ];
-        }
-    }
-    if( data.expenses && data.expenses.key ){
-        expenses.total = formatNum( parseFloat( data.expenses.total_amount ).toFixed(2) );
-        expenses.key = data.expenses.key;
-        
-        if( data.expenses.time ){
-            hours = data.expenses.hours;
-            time = data.expenses.time;
-            day = ' '+data.expenses.day_only;
-            weekday = data.expenses.week_day+', ';
-            month = months_of_year[ data.expenses.month ];
-            full_month = full_months_of_year[ data.expenses.month ];
-        }
-    }
-    if( data.damages && data.damages.key ){
-        damages.total = formatNum( parseFloat( data.damages.total_amount ) );
-        damages.key = data.damages.key;
-        
-        if( data.damages.time ){
-            hours = data.damages.hours;
-            time = data.damages.time;
-            day = ' '+data.damages.day_only;
-            weekday = data.damages.week_day+', ';
-            month = months_of_year[ data.damages.month ];
-            full_month = full_months_of_year[ data.damages.month ];
-        }
-    }
-    if( data.stock && data.stock.key ){
-        stock.total = formatNum( parseFloat( data.stock.total_amount ) );
-        stock.key = data.stock.key;
-        
-        if( data.stock.time ){
-            hours = data.stock.hours;
-            time = data.stock.time;
-            day = ' '+data.stock.day_only;
-            weekday = data.stock.week_day+', ';
-            month = months_of_year[ data.stock.month ];
-            full_month = full_months_of_year[ data.stock.month ];
-        }
-    }
-    
-	switch( data.format ){
-    case 'today':
-        day = '';
-        weekday = '';
-        month = '';
-    break;
-    case 'last24hours':
-        time = ' - '+hours+':00';
-    break;
-    case 'thisyear':
-        time = '';
-        day = '';
-        weekday = '';
-        month = full_month;
-    break;
-    default:
-        time = '';
-    break;
-	}
-	date = weekday+month+day;
-    
-	return '<tr class="'+data.format+'-subtotal-row subtotal-row hidden"><th>'+date+time+'</th><td key="'+sales.key+'">'+ sales.total +'</td><td key="'+expenses.key+'">'+expenses.total+'</td><td>'+stock.total+'</td><td>'+ damages.total +'</td></tr>';
+	return '<li><a href="#" key="'+data.key+'" class="sales-reccord" style="font-weight: normal;">'+date+data.time+'  @ <b>'+ formatNum( data.total_amount.toFixed(2) ) +'</b> #'+data.key+'</a></li>';
 };
 
 function update_suppliers_list_on_suppliers_page(){
@@ -3343,42 +2750,33 @@ function update_category_list_on_category_page(){
 	.tsort();
 };
 
-function update_users_list_on_users_page( page ){
+function update_users_list_on_users_page(){
 	var category = get_list_of_users();
 	var html = '';
 	var html2 = '<option value="new"> - New User - </option>';
-	var html3 = '<option value=""> - Select User- </option>';
 	
 	$.each( category , function( key , value ){
         if( key != customUUID ){
             html2 += '<option value="'+key+'">'+value.name+' ('+value.email+')</option>';
         }
-        html3 += '<option value="'+key+'">'+value.name+' ('+value.email+')</option>';
         html += get_users_html( key , value );
+        
 	});
 	
-    switch( page ){
-    case '#mngusers':
-        $( page )
-        .find( '#users-list-container' )
-        .html( html )
-        .find('tr')
-        .tsort({attr:'timestamp', order:'desc'});
-        
-        $('#users-select-box')
-        .html( html2 )
-        .selectmenu("refresh")
-        .find('option')
-        .tsort();
-    break;
-    case '#switch-user':
-        $('#switch-user-id-field')
-        .html( html3 )
-        .selectmenu("refresh")
-        .find('option')
-        .tsort();
-    break;
-    }
+	$( '#users-list-container' )
+	.html( html )
+	.find('tr')
+	.tsort({attr:'timestamp', order:'desc'});
+	
+	$('#users-select-box')
+	.html( html2 );
+	/*
+	.prev('span')
+	.text( $('select[name="category"]').find('option:first').text() );*/
+	
+	$('#users-select-box')
+	.find('option')
+	.tsort();
 };
 
 function update_stores_list_on_stores_page(){
@@ -3478,16 +2876,12 @@ $( document ).on( "pagecreate", "#signup", function() {
 	}
 });
 
-$( document ).on( "swiperight", function(e){
-    $.mobile.navigate( "#switch-user", { transition : "none" });
-});
-
 $( document ).on( "pageshow", "#signup", function() {
-    $("#signup").find('input[name="push_notification_id"]').val( pushNotificationID );
-});
-
-$( document ).on( "pageshow", "#login", function() {
-    $("#login").find('input[name="push_notification_id"]').val( pushNotificationID );
+    /*
+    if( ! blubirdFileURL ){
+        window.requestFileSystem( LocalFileSystem.PERSISTENT, 0, initFileSystem, fail );
+    }
+    */
 });
 
 $( document ).on( "pagecreate", "#reports-page", function() {
@@ -3545,55 +2939,6 @@ $( document ).on( "pagecreate", "#login", function() {
 	}else{
 		cannot_initiate_app();
 	}
-});
-
-$( document ).on( "pagecreate", "#switch-user", function() {
-	if( customUUID ){
-		//bind events handlers
-		$('form#switch-user-form')
-        .on('submit', function(e){
-            e.preventDefault();
-            
-            var user_id = $('#switch-user-id-field').val();
-            if( user_id ){
-                var user_details = getData( user_id );
-                if( user_details && user_details.role && user_details.password ){
-                    if( user_details.password != md5( $('#switch-user-password-field').val()+appSalter ) && user_details.password != $('#switch-user-password-field').val() ){
-                        var settings = {
-                            message_title:'Invalid Password',
-                            message_message: 'Please provide a valid password',
-                            auto_close: 'yes'
-                        };
-                        display_popup_notice( settings );
-                        return false;
-                    }
-                    
-                    $('body')
-                    .removeClass( $('body').attr('data-user-role') )
-                    .addClass( user_details.role )
-                    .attr( 'data-user-role', user_details.role );
-                    
-                    putData( appSwitchUserkey , user_details );
-                    $.mobile.navigate( "#dashboard", { transition : "none" });
-                    $('#switch-user-password-field').val('');
-                    return false;
-                }
-            }
-            var settings = {
-                message_title:'Invalid Details',
-                message_message: 'Please select a valid account & provide a valid password ',
-                auto_close: 'yes'
-            };
-            display_popup_notice( settings );
-            return false;
-        });
-	}else{
-		cannot_initiate_app();
-	}
-});
-
-$( document ).on( "pageshow", "#switch-user", function() {
-	update_users_list_on_users_page( "#switch-user" );
 });
 
 $( document ).on( "pageshow", "#supplier", function() {
@@ -3969,148 +3314,6 @@ $( document ).on( "pagecreate", "#customers", function() {
     });
 });
 
-$( document ).on( "pagecreate", "#restore-points", function() {
-	test_for_active_user();
-	
-	$('#create-restore-points')
-	.on('click', function(){
-        create_restore_points(1);
-    });
-    
-	$('#clear-all-restore-points')
-	.on('click', function(){
-        appDB.restore_points.clear();
-        $('tbody#restore-points-list-container')
-        .html('');
-        
-        var settings = {
-            'message_title':'All Restore Points have been deleted!',
-            'message_message':'',
-        };
-        display_popup_notice( settings );
-    });
-});
-
-$( document ).on( "pageshow", "#restore-points", function() {
-    display_restore_points();
-});
-
-function create_restore_points( type ){
-    appDB.restore_points
-    .where('id').equals(2).each(function( res ){
-       appDB.restore_points
-        .put({
-            id: 3,
-            data: res.data,
-            timestamp: res.timestamp,
-            size: res.size
-        }); 
-    });
-    
-    appDB.restore_points
-    .where('id').equals(1).each(function( res ){
-       appDB.restore_points
-        .put({
-            id: 2,
-            data: res.data,
-            timestamp: res.timestamp,
-            size: res.size
-        }); 
-    });
-    
-    var d = new Date();
-    var sA = amplify.store();
-    var b = $.param( sA );
-    appDB.restore_points
-    .put({
-        id: 1,
-        data: sA,
-        timestamp: d.getTime(),
-        size: b.length,
-    }).then(function(){
-        return appDB.restore_points.get(1);
-    }).then(function( res ){
-        if( type ){
-            setTimeout( display_restore_points, 300 );
-            var settings = {
-                'message_title':'Restore Point Created!',
-                'message_message':'',
-            };
-            display_popup_notice( settings );
-        }
-    });
-};
-function display_restore_points(){
-    
-    appDB.restore_points
-    .orderBy("timestamp")
-    .reverse()
-    .toArray( function(res){
-        var html = '';
-        for(i=0; i<res.length; i++ ){
-            
-        var date = new Date( res[i].timestamp );
-        // hours part from the timestamp
-        var calendar_day = date.getDate();
-        var month = date.getMonth();
-        var year = date.getFullYear();
-        var day = year+'-'+months_of_year[ month ]+'-'+calendar_day;
-        var minutes = date.getMinutes();
-        
-        if( minutes < 10 )minutes = '0'+minutes;
-        var time = date.getHours() + ':' + minutes;
-        
-        html += '<tr id="'+res[i].id+'" timestamp="'+res[i].timestamp+'"><td>'+formatNum( ( res[i].size / (1024 ) ).toFixed(2) )+' KB</td><td>'+day+', '+time+'</td><td class="ui-table-priority-1"><a href="#" class="ui-btn ui-btn-inline ui-icon-refresh ui-btn-icon-notext ui-theme-a ui-corner-all restore-dataset-button">Restore</a></td></tr>';
-        }
-        $('tbody#restore-points-list-container')
-        .html(html);
-        
-        if( html ){
-            $('a.restore-dataset-button')
-            .on('click', function(){
-                var id = parseFloat( $(this).parents('tr').attr('id') );
-                
-                appDB.restore_points
-                .where('id')
-                .equals(id)
-                .each(function(res){
-                    var r = confirm('Do you want to restore to the selected dataset?\n\nNOTE: Restoration will wipeout your current dataset');
-                    if( r == true ){
-                        //perform backup
-                        //create_restore_points(1);
-                        
-                        clearData();
-                        $.each( res.data, function(k,v){
-                            switch(k){
-                            case 'custom-uuid':
-                            case 'last-compile-time':
-                            case 'device-id':
-                            case 'lock-id':
-                            break;
-                            default:
-                                putData( k, v );
-                            break;
-                            }
-                        });
-                        
-                        var settings = {
-                            'message_title':'Successful Data Restoration!',
-                            'message_message':'',
-                        };
-                        display_popup_notice( settings );
-                        
-                        //restore data on server during next upload
-                        
-                        //refresh
-                        document.location = document.location.origin + document.location.pathname;
-                    }
-                });
-            });
-        }
-    });
-    
-};
-
 $( document ).on( "pagecreate", "#mngcategory", function() {
 	test_for_active_user();
 	
@@ -4120,7 +3323,8 @@ $( document ).on( "pagecreate", "#mngcategory", function() {
 	//Display List of Suppliers
 	update_category_list_on_category_page();
 	
-	activate_record_delete_button( "#mngcategory" );
+	activate_record_delete_button();
+	activate_upload_queue_button();
 	
 	$('#category-select-box')
 	.on('change', function(){
@@ -4161,8 +3365,8 @@ $( document ).on( "pagecreate", "#mngusers", function() {
     handle_form_submission( $('form#app_users-form') );
     
     //Display List of Suppliers
-    update_users_list_on_users_page( "#mngusers" );
-    activate_record_delete_button( "#mngusers" );
+    update_users_list_on_users_page();
+    activate_record_delete_button();
     
     activate_upload_queue_button();
     
@@ -4282,19 +3486,17 @@ function set_general_settings(){
         }else{
             var default_settings = {
                 created_by:customUUID,
-                currency:appCurrency+":::"+appCurrencyText,
-                discount_type:appDiscountType,
+                currency:"&#8358;:::NGN",
+                discount_type:"percentage",
                 error:false,
-                low_stock_level:appLowStockLevel,
+                low_stock_level:"10",
                 object:object,
                 table_records_display_length:"5",
-                printer_character_length:appPrinterCharacterLength,
-                printer_line_seperator_length:appPrinterSeperatorLength,
+                printer_character_length:"24",
+                printer_line_seperator_length:"28",
                 receipt_message:"Thank you for your patronage!",
                 app_mode:appMode,
-                notification_frequency:appNotificationFrequency,
-                time_to_upload_data:appTimeToUploadData,
-                vat:appVATValue,
+                vat:"5",
             };
             var stored = store_record( default_settings );
             if( stored.key ){
@@ -4346,12 +3548,6 @@ function configure_appsettings(){
             
         if( appSettings.app_mode )
             appMode = appSettings.app_mode;
-            
-        if( appSettings.notification_frequency )
-            appNotificationFrequency = appSettings.notification_frequency;
-            
-        if( appSettings.time_to_upload_data )
-            appTimeToUploadData = parseFloat( appSettings.time_to_upload_data );
     }
 };
 
@@ -4398,13 +3594,10 @@ $( document ).on( "pagecreate", "#settings", function() {
 });
 
 function signOutUser(){
-    create_restore_points(0);
+    clearSingleData( customUUIDkey );
+    clearData();
     
-    setTimeout( function(){
-        clearSingleData( customUUIDkey );
-        clearData();
-        document.location = document.location.origin + document.location.pathname;
-    }, 3000 );
+    document.location = document.location.origin + document.location.pathname;
 };
 
 $( document ).on( "pageshow", "#settings", function() {
@@ -4428,12 +3621,7 @@ $( document ).on( "pageshow", "#settings", function() {
 });
 
 function get_last_supply_activity_html( stock ){
-	if( stock.format ){
-        //for use in refunds/returns
-        return '<tr><td>'+stock.item_desc+'</td><td>'+stock.item_qty+'</td></tr>';
-    }
-    
-    var date = new Date(stock.creationtimestamp);
+	var date = new Date(stock.creationtimestamp);
 	// hours part from the timestamp
 	var day = date.getDate();
 	var month = date.getMonth();
@@ -4752,9 +3940,8 @@ function queueUploadImages( data ){
 
 function unQueueUpload( data ){
 	var upload = getData( uploadDataKey );
-	if( ! upload )upload = {};
-	if( upload && data.key ){
-		upload[data.key] = data;
+	if( upload && upload[data] ){
+		upload[data] = 'delete';
 	}
 	putData( uploadDataKey , upload );
 };
@@ -4771,7 +3958,6 @@ function uploadData(){
         return false;
     }
 	var a = getData( uploadDataKey );
-    
     if( a && Object.getOwnPropertyNames(a).length ){
         var b = '';
         var d = {};
@@ -4786,11 +3972,7 @@ function uploadData(){
         
         var x = 0;
         $.each( a , function( key , value ){
-            if( value["delete"] && value["delete"] == 'delete' )
-                d[ key ] = value;
-            else
-                d[ key ] = getData( key );
-                
+            d[ key ] = getData( key );
             ++x;
         });
         b = $.param( d );
@@ -5679,7 +4861,6 @@ function updateSupplyFormFields( data ){
 		$.each(data, function(key , val){
 			switch( key ){
 			case 'total_amount_paid':
-			case 'stock':
 			break;
 			default:
 				if( $('form#supply-form').find('input[name="'+key+'"]') ){
@@ -6574,7 +5755,7 @@ function gotListOfBluetoothDevices( devices ){
 
 var salesInventory = {};
 var salesInventoryOriginal = {};
-var salesDebounceTimeout;
+
 $( document ).on( "pagecreate", "#sales", function() {
 	test_for_active_user();
 	//activate_upload_queue_button();
@@ -6662,17 +5843,74 @@ $( document ).on( "pagecreate", "#sales", function() {
 	   );
 	});
     
-    $( "#sales-inventory-list-filter-form" )
-    .on('submit', function(e){
-        e.preventDefault();
+     $( "#sales-inventory-list" ).on( "filterablebeforefilter", function ( e, data ) {
+        var $ul = $( this ),
+        $input = $( data.input ),
+        v = $input.val(),
+        html = "";
+       
+        if( v.length > 5 ){
+            d = getData( v );
+            if( d && d.key ){
+                //add item to cart
+                addtocart( d.key );
+                
+                $input.val('');
+                return false;
+            }
+        }
+        
+        if ( v && v.length > 1 ) {
+            //Update inventory list
+            if( ! ( salesInventory && Object.getOwnPropertyNames(salesInventory).length ) ){
+                salesInventory = $.extend(true, {}, get_list_of_inventory() );
+            }
+            var html = '';
+            
+            if( currentStoreID ){
+                $.each( salesInventory , function( key , value ){
+                    if( value && value.store && value.store[ currentStoreID ] ){
+                        //test regular exp
+                        
+                        var t = new RegExp(v, "i");
+                        var vl = '';
+                        if( value.item_desc )vl = value.item_desc;
+                        
+                        if( ! ( t.test(vl) ) ){
+                            delete salesInventory[key];
+                            return;
+                        }
+                        
+                        value.key = key;
+                        html += get_sales_html_of_items( value );
+                    }
+                });
+            }
+            
+            $ul.html( html );
+            $ul.listview( "refresh" );
+            $ul.trigger( "updatelayout");
+            
+            if( html ){
+                $('#sales-inventory-list')
+                .find('a')
+                .on('click', function(e){
+                    e.preventDefault();
+                    addtocart( $(this).attr('key') );
+                });
+            }
+        }else{
+            salesInventory = $.extend(true, {}, get_list_of_inventory() );
+            
+            switch( appSettings.app_mode ){
+            case 'retail':
+            break;
+            case 'restaurant':
+                $ul.html( '' );
+            break;
+            }
+        }
     });
-    
-    $( "#sales-inventory-list-filter" )
-    .on( "keyup", function () {
-        if( salesDebounceTimeout )clearTimeout(salesDebounceTimeout);
-        salesDebounceTimeout = setTimeout( debounceSales, 200 );
-    })
-    .on('keypress', function(){ $( this ).keyup(); });
     
     $('#sales-inventory-list-container')
     .find('input')
@@ -6681,82 +5919,6 @@ $( document ).on( "pagecreate", "#sales", function() {
     });
     
 });
-
-function debounceSales(){
-    var $ul = $('#sales-inventory-list'),
-    
-    $input = $( "#sales-inventory-list-filter" ),
-    v = $input.val(),
-    html = "";
-   
-    if( v.length > 5 ){
-        d = getData( customUUID +''+ v );
-        if( d && d.key ){
-            //add item to cart
-            addtocart( d.key );
-            
-            $input.val('');
-            return false;
-        }
-    }
-    
-    if ( v && v.length > 1 ) {
-        //Update inventory list
-        var last_v = '';
-        if( $(this).data('last') )
-            last_v = $(this).data('last');
-            
-        $(this).data('last', v );
-        
-        if( ( ! ( salesInventory && Object.getOwnPropertyNames(salesInventory).length ) ) || last_v.length > $(this).data('last').length  ){
-            salesInventory = $.extend(true, {}, get_list_of_inventory() );
-        }
-        var html = '';
-        
-        if( currentStoreID ){
-            $.each( salesInventory , function( key , value ){
-                if( value && value.store && value.store[ currentStoreID ] ){
-                    //test regular exp
-                    
-                    var t = new RegExp(v, "i");
-                    var vl = '';
-                    if( value.item_desc )vl = value.item_desc;
-                    
-                    if( ! ( t.test(vl) ) ){
-                        delete salesInventory[key];
-                        return;
-                    }
-                    
-                    value.key = key;
-                    html += get_sales_html_of_items( value );
-                }
-            });
-        }
-        
-        $ul.html( html );
-        $ul.listview( "refresh" );
-        $ul.trigger( "updatelayout");
-        
-        if( html ){
-            $('#sales-inventory-list')
-            .find('a')
-            .on('click', function(e){
-                e.preventDefault();
-                addtocart( $(this).attr('key') );
-            });
-        }
-    }else{
-        salesInventory = $.extend(true, {}, get_list_of_inventory() );
-        
-        switch( appSettings.app_mode ){
-        case 'retail':
-        break;
-        case 'restaurant':
-            $ul.html( '' );
-        break;
-        }
-    }
-};
 
 function get_sales_html_of_items( value ){
     var storeStock = value.store[ currentStoreID ];
@@ -7123,7 +6285,7 @@ function calculate_total_sales(){
 		$('#sales-table-body')
 		.find('tr.item-for-sale')
 		.each(function(){
-			var key = $(this).attr('id');
+			var key = parseFloat( $(this).attr('id') );
 			items[ key ] = {
 				key: key,
 				item_desc: $(this).find('td.label').html(),
@@ -7523,9 +6685,8 @@ function get_notifications_short_html( n ){
         return ' &nbsp;&nbsp;|&nbsp;&nbsp; '+n.subtitle;
 };
 
-function activate_record_delete_button( page_id ){
-    $(page_id)
-	.find('.delete-record')
+function activate_record_delete_button(){
+	$('.delete-record')
 	.on('click', function(e){
 		e.preventDefault();
 		if( $(this).attr('key') && $(this).attr('object') ){
@@ -7534,229 +6695,27 @@ function activate_record_delete_button( page_id ){
 			
 			var r = confirm('Do you want to delete the selected record');
 			if( r == true ){
-				var settings = {
-                    message_title:'Successful Delete',
-                    message_message: '',
-                    auto_close: 'yes'
-                };
-                
-                switch( object ){
-                case 'category':
-                case 'users':
-                    $('#'+key)
-                    .remove();
-                    
-                    $('option[value="'+key+'"]')
-                    .remove();
-                    
-                    $('form#'+object+'-form')
-                    .find('input')
-                    .val('');
-                break;
-                case 'sales':
-                    var data = getData( key );
-                    if( data && data.key ){
-                        //restock inventory
-                        $.each( data.inventory , function( k , v ){
-                            var inventory = getData( k );
-                            if( data.store_name && inventory && inventory.store && inventory.store[ data.store_name ] ){
-                                var tmp_store_data = inventory.store[ data.store_name ];
-                                
-                                if( tmp_store_data.sales ){
-                                    delete tmp_store_data.sales[ key ];
-                                }
-                                
-                                if( tmp_store_data.item_sold ){
-                                    tmp_store_data.item_sold -= parseFloat( v.unit_ordered );
-                                    tmp_store_data.income -= (parseFloat(v.unit_ordered) * parseFloat( v.unit_selling_price ));
-                                }else{
-                                    tmp_store_data.item_sold = 0;
-                                    tmp_store_data.income = 0;
-                                }
-                                
-                                inventory.store[ data.store_name ] = tmp_store_data;
-                                putData( k , inventory );
-                                storeObjects[ 'inventory_list' ][ k ] = inventory;
-                            }
-                        });
-                        //hours part from the timestamp
-                        if( data.timestamp ){
-                            var date = new Date( data.timestamp );
-                            var day = date.getDate();
-                            var month = date.getMonth();
-                            var year = date.getFullYear();
-                            
-                            if( day < 10 )day = '0'+day;
-                            if( month < 10 )month = '0'+month;
-                            var cache_key = object + year + '-' + month + '-' + day;
-                            
-                            var cache = getData( cache_key );
-                            if( cache && cache[ key ] )
-                                delete cache[ key ];
-                                
-                            putData( cache_key , cache );
-                        }
-                    }
-                    $('#container-'+key).remove();
-                    settings.message_message = 'Sales record have been successfully deleted and items re-stocked';
-                break;
-                case 'damages':
-                    var data = getData( key );
-                    if( data && data.key ){
-                        var inventory = getData( data.item_barcode );
-                        if( inventory && inventory.store && inventory.store[data.store_name] ){
-                            var tmp_store_data = inventory.store[ data.store_name ];
-                            
-                            if( tmp_store_data && tmp_store_data.damages ){
-                                delete tmp_store_data.damages[ key ];
-                            }
-                            
-                            if( tmp_store_data.item_damaged ){
-                                tmp_store_data.item_damaged -= parseFloat( data.damage_qty );
-                            }else{
-                                tmp_store_data.item_damaged = 0;
-                            }
-                            
-                            inventory.store[ data.store_name ] = tmp_store_data;
-                            putData( data.item_barcode , inventory );
-                            storeObjects[ 'inventory_list' ][ data.item_barcode ] = inventory;
-                        }
-                        //hours part from the timestamp
-                        if( data.timestamp ){
-                            var date = new Date( data.timestamp );
-                            var day = date.getDate();
-                            var month = date.getMonth();
-                            var year = date.getFullYear();
-                            
-                            if( day < 10 )day = '0'+day;
-                            if( month < 10 )month = '0'+month;
-                            var cache_key = object + year + '-' + month + '-' + day;
-                            
-                            var cache = getData( cache_key );
-                            if( cache && cache[ key ] )
-                                delete cache[ key ];
-                                
-                            putData( cache_key , cache );
-                        }
-                        
-                        if( storeObjects && storeObjects[ 'damages_list' ] && storeObjects[ 'damages_list' ][ data.key ] )
-                            delete storeObjects[ 'damages_list' ][ data.key ];
-                            
-                        $('#damages')
-                        .find( 'tbody#damages-list-container' )
-                        .find('#'+data.key)
-                        .remove();
-                    }
-                    $('#container-'+key).remove();
-                    settings.message_message = 'The record have been successfully deleted';
-                break;
-                case 'expenses':
-                    var data = getData( key );
-                    if( data && data.key ){
-                        //hours part from the timestamp
-                        if( data.timestamp ){
-                            var date = new Date( data.timestamp );
-                            var day = date.getDate();
-                            var month = date.getMonth();
-                            var year = date.getFullYear();
-                            
-                            if( day < 10 )day = '0'+day;
-                            if( month < 10 )month = '0'+month;
-                            var cache_key = object + year + '-' + month + '-' + day;
-                            
-                            var cache = getData( cache_key );
-                            if( cache && cache[ key ] )
-                                delete cache[ key ];
-                                
-                            putData( cache_key , cache );
-                        }
-                    }
-                    $('#container-'+key).remove();
-                    settings.message_message = 'The record have been successfully deleted';
-                break;
-                case 'supply':
-                    var data = getData( key );
-                    if( ( ! data.store_name ) && data.store_id )data.store_name = data.store_id;
-                    
-                    if( data && data.key && data.stock ){
-                        //restock inventory
-                        $.each( data.stock , function( k , v ){
-                            var stock = getData( k );
-                            if( stock ){
-                                var inventory = getData( stock.item_barcode );
-                                if( data.store_name && inventory && inventory.store && inventory.store[ data.store_name ] ){
-                                    var tmp_store_data = inventory.store[ data.store_name ];
-                                    
-                                    if( tmp_store_data.stock ){
-                                        delete tmp_store_data.stock[ key ];
-                                    }
-                                    
-                                    if( tmp_store_data.item_qty ){
-                                        tmp_store_data.item_qty -= parseFloat( stock.item_qty );
-                                        
-                                        tmp_store_data.item_available = tmp_store_data.item_qty;
-                                        if( tmp_store_data.item_sold )
-                                            tmp_store_data.item_available -= tmp_store_data.item_sold;
-                                    }else{
-                                        tmp_store_data.item_qty = 0;
-                                        tmp_store_data.item_available = 0;
-                                    }
-                                    
-                                    inventory.store[ data.store_name ] = tmp_store_data;
-                                    putData( stock.item_barcode , inventory );
-                                    if( ! storeObjects[ 'inventory_list' ] )storeObjects[ 'inventory_list' ] = {};
-                                    storeObjects[ 'inventory_list' ][ stock.item_barcode ] = inventory;
-                                }
-                                clearSingleData( k );
-                                var obj1 = getData( stock.object );
-                                if( obj1[ k ] ){
-                                    delete obj1[ k ];
-                                }
-                                putData( stock.object , obj1 );
-                                unQueueUpload( {key:k, object:stock.object, "delete":"delete" } );
-                                
-                                clearSingleData( 'e'+k );
-                                var obj1 = getData( 'expenses' );
-                                if( obj1[ 'e'+k ] ){
-                                    delete obj1[ 'e'+k ];
-                                }
-                                putData( 'expenses' , obj1 );
-                                unQueueUpload( {key:'e'+k, object:'expenses', "delete":"delete" } );
-                            }
-                        });
-                        //hours part from the timestamp
-                        if( data.timestamp ){
-                            var date = new Date( data.timestamp );
-                            var day = date.getDate();
-                            var month = date.getMonth();
-                            var year = date.getFullYear();
-                            
-                            if( day < 10 )day = '0'+day;
-                            if( month < 10 )month = '0'+month;
-                            var cache_key = 'stock' + year + '-' + month + '-' + day;
-                            
-                            var cache = getData( cache_key );
-                            if( cache && cache[ key ] )
-                                delete cache[ key ];
-                                
-                            putData( cache_key , cache );
-                        }
-                    }
-                    $('#container-'+key).remove();
-                    settings.message_message = 'Supply record have been successfully deleted and items removed from stocked';
-                break;
-                }
-                
-                clearSingleData( key );
+				clearSingleData( key );
+				
 				var obj = getData( object );
 				if( obj[ key ] ){
 					delete obj[ key ];
 				}
 				putData( object , obj );
 				
-				unQueueUpload( {key:key, object:object, "delete":"delete" } );
-                
-                display_popup_notice( settings );
+				unQueueUpload( key );
+				
+				$('form#'+object+'-form')
+				.find('input')
+				.val('');
+				
+				$('#'+key)
+				.remove();
+				
+				$('option[value="'+key+'"]')
+				.remove();
+				
+				unQueueUpload( key );
 			}
 		}else{
 			var settings = {
@@ -7783,16 +6742,6 @@ function clearSingleData( key ){
 	amplify.store( key , null );
 };
 	
-function getAllData(){
-    var i = 0,
-    oJson = {},
-    sKey;
-    for (; sKey = window.localStorage.key(i); i++) {
-        oJson[sKey] = window.localStorage.getItem(sKey);
-    }
-    return oJson;
-};
-
 function clearData(){
 	var storedObjects = amplify.store();
 	
@@ -7804,7 +6753,6 @@ function clearData(){
 		case 'custom-uuid':
 		case 'last-compile-time':
         case 'device-id':
-        case 'lock-id':
 		break;
 		default:
 			amplify.store( key , null );
@@ -7907,7 +6855,7 @@ function ajax_send(){
             }
 		},
 		error: function(event, request, settings, ex) {
-            ajaxError( event, request, settings, ex );
+			ajaxError( event, request, settings, ex );
 		},
 		success: function(data){
 			ajaxSuccess( data , true );
@@ -7922,12 +6870,6 @@ function ajaxError( event, request, settings, ex ){
         .html( $('h1.uploading-data-title').attr('default-text') )
         .removeClass('uploading-data-title');
     }
-    function_click_process = 1;
-    var settings = {
-        'message_title':'Request Error',
-        'message_message':event.responseText,
-    };
-    display_popup_notice( settings );
 };
 
 var registration = false;
@@ -8020,10 +6962,8 @@ function ajaxSuccess( data , store ){
 				var stored = store_record( tempData );
 				successful_submit_action( stored );
 				
-                if( stored && stored.role )$('body').addClass(stored.role).attr('data-user-role', stored.role );
-                
 				var users_list = add_to_list_of_users( stored );
-				update_users_list_on_users_page( "#mngusers" );
+				update_users_list_on_users_page();
 				
 				tempData = {};
 				//console.log( 'user created' , stored );
@@ -8053,8 +6993,6 @@ function ajaxSuccess( data , store ){
                     tempData = data.user_details;
                     
                     var stored = store_record( tempData );
-                    
-                    if( stored && stored.role )$('body').addClass(stored.role).attr('data-user-role', stored.role );
                     
                     if( data.begin_download ){
                         registration = true;
@@ -8135,10 +7073,8 @@ function ajaxSuccess( data , store ){
 					if( a[key] )delete a[key];
 					
 					var d = getData( key );
-					if( d.key && d.id ){
-                        d.id = id;
-                        putData( key , d );
-                    }
+					if( d.key )d.id = id;
+					putData( key , d );
 				});
 				
 				putData( uploadDataKey , a );
@@ -8187,6 +7123,11 @@ function ajaxSuccess( data , store ){
 			}
 		break;
 		}
+	}
+	
+	//CHECK FOR NOTIFICATION
+	if(data.notification){
+		check_for_and_display_notifications(data.notification);
 	}
 	
 };

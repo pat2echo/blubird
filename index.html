@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<!--<html manifest="manifest1420990250123456.appcache">-->
+<!--<html manifest="manifest1420990250123.appcache">-->
 <head>
 	<title>Blubird</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,18 +12,16 @@
 	<script src="js/iscroll.js" ></script>
 	<script src="js/jquery.mobile.iscrollview.js" ></script>
 	
-	<!--version 1.0.90-->
+	<!--version 1.0.88-->
 	<script src="js/app/amplify.min.js"></script>
-	<script src="js/app/dexie.min.js"></script>
 	<script src="js/app/md5.js"></script>
 	<script src="js/app/fastclick.js"></script>
 	<script src="js/app/jquery.tinysort.min.js"></script>
 	<script src="js/app/jsAjax-processing-script.js"></script>
-    
 	<!-- ./commit -->
+	
 	<script type="text/javascript" src="cordova.js"></script>
-	<script type="text/javascript" src="PushNotification.js"></script>
-    
+	
     <link rel="stylesheet" href="css/jquery.mobile-1.4.4.css" rel="stylesheet" type="text/css"/>
 	<link href="css/hack.css" media="screen" rel="stylesheet" type="text/css" />
 	<link href="css/jquery.mobile.iscrollview.css" media="screen" rel="stylesheet" type="text/css" />
@@ -58,10 +56,9 @@
 			position: relative;
 			display: inline-table;
 			float:left;
-			margin-right: 2%;
-            width: 23%;
-            margin-top: 2%;
-			height: 11em;
+			width: 8em !important; /* 33.3333% incl. 2 x 1.2% margin */
+			height: 11em; /* 232p */
+			margin: 0.5em;
 		}
 		.products .ui-listview li > .ui-btn {
 			-webkit-box-sizing: border-box; /* include padding and border in height so we can set it to 100% */
@@ -253,42 +250,24 @@
         text-overflow:ellipsis;
         white-space:nowrap;
     }
-    
-    body.manager #settings .users-stores-manager,
-    body.stock-keeper #settings .reports-manager,
-    body.stock-keeper #settings .users-stores-manager,
-    body.stock-keeper #menupanel .sales-menu-link,
-    body.stock-keeper #menupanel .records-menu-link,
-    body.stock-keeper #menupanel .expenses-menu-link,
-    body.stock-keeper #menupanel .customers-menu-link,
-    body.sales-rep #settings .reports-manager,
-    body.sales-rep #settings .users-stores-manager,
-    body.sales-rep #menupanel .inventory-menu-link,
-    body.sales-rep #menupanel .records-menu-link,
-    body.sales-rep #menupanel .supplier-menu-link,
-    body.sales-rep #menupanel .expenses-menu-link,
-    body.sales-rep #menupanel .customers-menu-link,
-    body.sales-rep #menupanel .notifications-menu-link{
-        display:none;
-    }
 	</style>
 	
 </head>
-<body class="">
+<body>
 
-<div data-role="panel" id="menupanel" data-position="left" data-display="overlay" data-theme="b" style="background-color: #fff;">
+<div data-role="panel" id="menupanel" data-position="left" data-display="overlay" data-theme="b" style="background-color: #fff;  ">
 
         <ul data-role="listview" data-theme="b">
               
-            <li class="lidec dashboard-menu-link"><a class="ui-btn ui-icon-home ui-btn-icon-left" href="#dashboard" data-transition="none"><b>Dashboard</b></a></li>
-            <li class="lidec inventory-menu-link"><a class="ui-btn ui-icon-info ui-btn-icon-left" href="#inventory"data-transition="none"><b>Inventory</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
-            <li class="lidec sales-menu-link"><a class="ui-btn ui-icon-shop ui-btn-icon-left" href="#sales" data-transition="none"><b>Sales</b></a></li>
-            <li class="lidec records-menu-link"><a class="ui-btn ui-icon-calendar ui-btn-icon-left" href="#all-records"data-transition="none"><b>Records</b></a></li>
-            <li class="lidec supplier-menu-link"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier" data-transition="none"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
-            <li class="lidec expenses-menu-link"><a class="ui-btn ui-icon-action ui-btn-icon-left" href="#expenses" data-transition="none"><b>Expenses</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
-            <li class="lidec customers-menu-link"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#customers" data-transition="none"><b>Customers</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
-            <li class="lidec notifications-menu-link"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notifications" data-transition="none"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
-            <li class="lidec settings-menu-link"><a class="ui-btn ui-icon-gear ui-btn-icon-left" data-transition="none" href="#settings" data-transition="none"><b>Settings</b></a></li>
+            <li class="lidec"><a class="ui-btn ui-icon-home ui-btn-icon-left" href="#dashboard" data-transition="none"><b>Dashboard</b></a></li>
+            <li  class="lidec"><a class="ui-btn ui-icon-info ui-btn-icon-left" href="#inventory"data-transition="none"><b>Inventory</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
+            <li class="lidec"><a class="ui-btn ui-icon-shop ui-btn-icon-left" href="#sales" data-transition="none"><b>Sales</b></a></li>
+            <li class="lidec"><a class="ui-btn ui-icon-calendar ui-btn-icon-left" href="#records"data-transition="none"><b>Records</b></a></li>
+            <li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#supplier" data-transition="none"><b>Supplier</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
+            <li class="lidec"><a class="ui-btn ui-icon-action ui-btn-icon-left" href="#expenses" data-transition="none"><b>Expenses</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
+            <li class="lidec"><a class="ui-btn ui-icon-user ui-btn-icon-left" href="#customers" data-transition="none"><b>Customers</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
+            <li class="lidec"><a class="ui-btn ui-icon-alert ui-btn-icon-left" href="#notifications" data-transition="none"><b>Notifications</b><span class="ui-li-count ui-btn-corner-all"></span></a></li>
+            <li class="lidec"><a class="ui-btn ui-icon-star ui-btn-icon-left" data-transition="none" href="#settings" data-transition="none"><b>Settings</b></a></li>
     
         </ul>
     <div>
@@ -312,11 +291,12 @@
                     <a href="#" class="update-server-button ui-btn ui-shadow ui-corner-all ui-icon-forward ui-btn-icon-notext">Update Server</a>
                 </div>
                 
-                <div class="ui-grid-a currently-active-store-container hidden">
+                <div class="ui-grid-a currently-active-store-container hidden" >
                     <select class="currently-active-store" data-mini="true">
                         <option></option>
                     </select>
                 </div>
+				<br /><br />
                 <div class="ui-grid-a dash" >
                     <div class="ui-block-a">
                         <div class="panl">
@@ -513,84 +493,9 @@
 		
 	</div><!-- /page -->	
 
-<div data-role="page" id="all-records">
-	
-	<div data-role="header" data-theme="b" data-tap-toggle="false"  data-position="fixed" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);">	
-		<a href="#menupanel" data-rel="panel" class="open-panel ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
-		
-        <h1 class="notifications-title" default-title="All Records">All Records</h1>
-            
-	</div><!-- /header -->
-    <div class="progress-bar-container"></div>
-		
-	<div data-role="content" style="background-color: #f1f1f1;">
-		<div style="background-color: #43a2c4 !important; border-radius: 5px; padding: 1em;">
-        <div class="ui-grid-a currently-active-store-container hidden" >
-            <select class="currently-active-store" data-mini="true">
-                <option></option>
-            </select>
-            <br>
-        </div>
-        <table data-role="table" id="all-records-summary-table" data-mode="columntoggle" class="ui-responsive table-stroke">
-     <thead>
-       <tr>
-         <th width="25%"> </th>
-         <th data-priority="1">Sales</th>
-         <th data-priority="2">Expenses</th>
-         <th data-priority="3">Stock</th>
-         <th data-priority="4">Damages</th>
-       </tr>
-     </thead>
-     <tbody>
-       <tr class="total-row" id="today-records">
-         <th class="custom-button" data-format="today"><a class="ui-icon-carat-d">Today</a></th>
-         <td id="today-records-sales-total"> - </td>
-         <td id="today-records-expenses-total"> - </td>
-         <td id="today-records-stock-total"> - </td>
-         <td id="today-records-damages-total"> - </td>
-       </tr>
-       
-       <tr class="total-row" id="last24hours-records">
-         <th class="custom-button" data-format="last24hours"><a class="ui-icon-carat-d">24 hours ago</a></th>
-         <td id="last24hours-records-sales-total"> - </td>
-         <td id="last24hours-records-expenses-total"> - </td>
-         <td id="last24hours-records-stock-total"> - </td>
-         <td id="last24hours-records-damages-total"> - </td>
-       </tr>
-       <tr class="total-row" id="last7days-records">
-         <th class="custom-button" data-format="last7days"><a class="ui-icon-carat-d">Last seven days</a></th>
-         <td id="last7days-records-sales-total"> - </td>
-         <td id="last7days-records-expenses-total"> - </td>
-         <td id="last7days-records-stock-total"> - </td>
-         <td id="last7days-records-damages-total"> - </td>
-       </tr>
-       <tr class="total-row" id="thismonth-records">
-         <th class="custom-button" data-format="thismonth"><a class="ui-icon-carat-d">This month</a></th>
-         <td id="thismonth-records-sales-total"> - </td>
-         <td id="thismonth-records-expenses-total"> - </td>
-         <td id="thismonth-records-stock-total"> - </td>
-         <td id="thismonth-records-damages-total"> - </td>
-       </tr>
-       <tr class="total-row" id="thisyear-records">
-         <th class="custom-button" data-format="thisyear"><a class="ui-icon-carat-d">This year</a></th>
-         <td id="thisyear-records-sales-total"> - </td>
-         <td id="thisyear-records-expenses-total"> - </td>
-         <td id="thisyear-records-stock-total"> - </td>
-         <td id="thisyear-records-damages-total"> - </td>
-       </tr>
-     </tbody>
-   </table>
-   </div>
-   
-        <br />
-        <br />
-	</div>
-
-</div><!--./records-page-->
-
 <div data-role="page" id="records">
-	
-	<div data-role="header" data-theme="b" data-tap-toggle="false"  data-position="fixed" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);">	
+	<div data-role="header" id="hd" data-theme="b" style="height: 4em;">
+		
 		<a href="#menupanel" data-rel="panel" class="open-panel ui-btn ui-shadow ui-corner-all ui-icon-bars ui-btn-icon-notext">Menu</a>
 		
         <h1 class="notifications-title" default-title="Records">Records</h1>
@@ -803,14 +708,15 @@
 		<div class="progress-bar-container">
 		
 		</div>
-				<br>
+				
+					
+					<br>
+									
+					
 					
 						<form method="post" action="?action=app_users&todo=save_signup_data" name="sign-up" id="sign-up-form" remote-storage=1 >
 							<input type="hidden" name="key" id="key-field" value="" />
-							<input type="hidden" name="push_notification_id" id="push_notification_id-field" value="" />
-                            
-                            <input name="role" id="role-field" value="admin" type="hidden" />
-                            
+							
 							<input type="text" name="name" id="name-field" placeholder="Your Full Name" required data-validate="text" data-error-title="Invalid Name" data-error-msg="Provide a valid name" />
 							
 							<input type="email" name="email" id="email-field" placeholder="Your Email Address" required data-validate="email" data-error-title="Invalid Email" data-error-msg="Provide a valid email" />
@@ -818,7 +724,7 @@
 							<input type="password" name="password" id="password-field" placeholder="Password" required data-validate="password" data-error-title="Invalid Password" data-error-msg="Passwords must be at least 6 characters" />
 							
 							<input type="password" name="cpassword" id="cpassword-field" placeholder="Confirm Password" required data-validate="confirm-password" data-error-title="Non-matching Password" data-error-msg="Passwords must match" />
-                            
+							
                             <label>
                                 <input type="checkbox" name="checkbox-1a" id="checkbox-1a" checked="" style="height: 2em;">
                                 I agree to the <a href="#privacy-policy" style="text-decoration: none;">Terms of Service</a>
@@ -859,20 +765,20 @@
 		
 		<form method="post" action="?action=app_users&todo=login" name="login" id="login-form" remote-storage=1 >
 			<input type="hidden" name="key" id="key-field" value="" />
-			<input type="hidden" name="push_notification_id" id="push_notification_id-field" value="" />
-            
+			
 			<input type="email" name="email" id="email-field" placeholder="Your Email Address" required data-validate="email" data-error-title="Invalid Email" data-error-msg="Provide a valid email" />
 			
 			<input type="password" name="password" id="password-field" placeholder="Password" required data-validate="password" data-error-title="Invalid Password" data-error-msg="Passwords must be at least 6 characters" />
 			
 			<br>
+		
 			
 			<div class="ui-grid-a invt">
-			<div class="ui-block-a" style="padding:0 0.7em 0 0;">
+			<div class="ui-block-a">
 				<input type="submit" value="Login" data-theme="c" />
 			</div>
 			
-			<div class="ui-block-b" style="padding:0 0 0 0.7em;">
+			<div class="ui-block-b">
                 <a href="#signup" data-transition="none" data-role="button" data-theme="b" >Sign Up</a>
 			</div>
 		</div>
@@ -888,54 +794,12 @@
 	
 </div><!-- /page -->
 
-<div data-role="page" id="switch-user">
-	<div data-role="header" id="hd" data-position="fixed" data-tap-toggle="false" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  >
-			
-		<h1>Switch User</h1>
-		
-	</div><!-- /header -->
-	<div role="main" class="ui-content" style="background-color: #f1f1f1;">
-		
-		<div class="progress-bar-container">
-            
-		</div>
-		<br>
-        <form id="switch-user-form">
-            <select id="switch-user-id-field" required>
-                
-            </select>
-            
-			<input type="password" id="switch-user-password-field" placeholder="Password" required />
-			
-			<br>
-		
-			<div class="ui-grid-a invt">
-			<div class="ui-block-a" style="padding:0 0.7em 0 0;">
-				<input type="submit" value="Switch User" data-theme="c" />
-			</div>
-			
-			<div class="ui-block-b" style="padding:0 0 0 0.7em;">
-                <a href="#dashboard" data-transition="none" data-role="button" data-theme="b"  style="font-family: Roboto Thin; background-color: #d11141; border: red; font-weight: normal !important; text-shadow: none;"><b>Cancel</b></a>
-			</div>
-		</div>
-		
-		</form>	
-        
-		<br>
-		<br>
-		<br>
-		<br>
-		<br>
-	</div><!-- /content -->
-	
-</div><!-- /page -->
-
 <div data-role="page" id="update-progress">
 	
 	<div role="main" class="ui-content" style="background-color: #fff;">
 		
 		<p style="text-align:center">
-			<img align="center" src="css/images/icon.png" />
+			<img align="center" src="css/images/icon2.png" />
 		</p>
 		<h1 style="color: rgb(112,112,112); text-align: center;">Data Transfer Progress...</h1>
 		<div class="progress-bar-container"></div>
@@ -1039,85 +903,6 @@
 				<br>
 				
 			</div>
-		</div>
-	
-<div data-role="page" id="refunds" >
-		
-		<div data-role="header" id="hd" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);" >
-            <a href="#inventory" data-transition="none" class="upload-queue ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext">Menu</a>
-			<h1 class="notifications-title" default-title="Returns / Refunds">Returns / Refunds</h1>
-		
-	</div><!-- /header -->
-    <div class="progress-bar-container"></div>
-    
-	<div data-role="content" style="background-color: #f1f1f1; ">
-				
-				<div style="background-color: #43a2c4 !important; border-radius: 5px; ">
-					<div style="padding: 1em 1em 1em 1em;">
-					
-                    <div class="ui-grid-a currently-active-store-container hidden">
-                        <select class="currently-active-store" data-mini="true">
-                            <option></option>
-                        </select>
-                        <br />
-                    </div>
-                            
-                    <div class="ui-grid-a invt">
-						<div class="ui-block-a" style="padding: 0 0.35em 0 0;">
-							<label style="font-family: 'Roboto Thin'; color:#fff; font-size: 1.5em; margin:0;" id="date-filter-field-label"></label>
-						</div>
-						<div class="ui-block-b" style="padding: 0 0 0 0.35em; ">
-							<label style="float:right; font-family: 'Roboto Thin'; color:#fff; font-size: 1.5em; margin:0;" id="total-value-filter-field-label">0.00</label>
-						</div>
-					</div><!-- /grid-a -->
-                    
-					<div class="ui-grid-a invt" >
-                        <div class="ui-block-a" style="padding:0 0.7em 0 0;" id="search-item-desc-barcode">
-                            <input type="date" id="date-select-filter" />
-                        </div>
-                        
-                        <div class="ui-block-b" style="padding:0;">
-                            <div class="ui-grid-a invt" >
-                                <div class="ui-block-a" style="padding:0;">
-                                    
-                                    <div data-filter="true" data-filter-placeholder="Search by ID">
-                                        
-                                    </div>
-                                </div>
-                                <div class="ui-block-b" style="padding:0 0 0 0.7em;">
-                                    
-                                    <select id="filter-return-refund-type">
-                                        <option value="damages">Damages</option>
-                                        <option value="expenses">Expenses</option>
-                                        <option value="stock">Supplied Stock Returns</option>
-                                        <option value="sales">Sales Refunds</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    
-                    </div>
-						
-					</div>
-				
-				</div>
-				
-			</div>
-            <style type="text/css">
-                table.custom-more-details{
-                    width:100%;
-                }
-                table.custom-more-details tr td{
-                    padding:1em;
-                }
-            </style>
-            <div style="margin:0 0.36em;">
-            <div id="refunds-container" data-role="collapsible-set" data-theme="b" data-content-theme="a" data-collapsed-icon="carat-d" data-expanded-icon="carat-u" >
-                
-            </div>
-            </div>
-
-            
 		</div>
 	
 <div data-role="page" id="newInventory">
@@ -1282,8 +1067,7 @@
                 
                     <form method="post" action="" name="damages" id="damages-form">
                         <input type="hidden" name="key" id="key-field" value="" data-validate="text" />
-                            
-                            <label for="item_barcode-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Item:</label>
+                        
                             <select name="item_barcode" id="item_barcode-field" required data-validate="text" data-error-title="Invalid Item" data-error-msg="Please select a valid item">
                                 <option style="text-shadow: none !important;">- Select Item -</option>
                             </select>
@@ -1577,36 +1361,26 @@
                 </div>
                 <br>
                 
-				<div style="background-color: #43a2c4 !important; padding: 1em 1em 0 1em ; border-radius: 5px;">
+				<div style="background-color: #43a2c4 !important; padding: 1em ; border-radius: 5px;">
+					<div >
+					<br>
+						
 					<select name="supplier" id="supplier-select-box">
 						<option value="new">Add New Supplier</option>
 					</select>
 					<br>
-                    
-                    <div style="" data-role="collapsible" data-theme="b" data-content-theme="a" data-inset="false">
-                        <h5 style="font-weight: 100 !important;">New Supplier Form</h5>
-                        <div>
-					<br>
-						
+							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+						<br>
 					<form method="post" action="" name="suppliers" id="suppliers-form">
 						<input type="hidden" name="key" id="key-field" value="" data-validate="text" />
-                        
-						<div class="ui-grid-a invt">
-							<div class="ui-block-a" >
-                                <label for="supplier-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Supplier Name:</label>
-                                <input type="text" name="supplier" id="supplier-field" placeholder="Supplier Name" required data-validate="text" data-error-title="Invalid supplier" data-error-msg="Provide a valid Supplier Name" />
-                            </div>
-							
-							<div class="ui-block-b" >
-                                <label for="location-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Supplier Location:</label>
-                                <input type="text" name="location" id="location-field" placeholder="Supplier Location" required data-validate="text" data-error-title="Invalid Supplier Location" data-error-msg="Provide a valid supplier location" />
-                            </div>
-						</div>
-                        
+                        <label for="supplier-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Supplier Name:</label>
+						<input type="text" name="supplier" id="supplier-field" placeholder="Supplier Name" required data-validate="text" data-error-title="Invalid supplier" data-error-msg="Provide a valid Supplier Name" />
+						<br>
+                        <label for="location-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Supplier Location:</label>
+						<input type="text" name="location" id="location-field" placeholder="Supplier Location" required data-validate="text" data-error-title="Invalid Supplier Location" data-error-msg="Provide a valid supplier location" />
 						<br>
 							<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
 						<br>
-                        
 						<div class="ui-grid-a invt">
 							<div class="ui-block-a" ><input type="tel" name="mobile" id="mobile-field" data-validate="tel" placeholder="Mobile" protocol="tel:"></div>
 							
@@ -1626,7 +1400,6 @@
 					</form>
 					<br>
 					
-					</div>
 					</div>
 					
 					
@@ -1712,7 +1485,7 @@
                             <form method="post" action="" name="supplierpayments" id="supplierpayments-form">
                                 <input type="hidden" name="key" id="key-field" value="" data-validate="text" />
                                 
-                                <div class="ui-grid-a invt">
+                                <div class="ui-grid-a">
                                     <div class="ui-block-a" style="padding-left:0;">
                                         <label for="amount_paid-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Amount Paid:</label>
                                         <input type="number" step="any" min="0" name="amount_paid" id="amount_paid-field" placeholder="Amount Paid" required data-validate="text" data-error-title="Invalid Amount Paid" data-error-msg="Provide a valid Amount Paid"/>
@@ -1729,7 +1502,7 @@
                                 <br>
                                     <p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
                                 <br>
-                                <div class="ui-grid-a invt">
+                                <div class="ui-grid-a">
                                     <div class="ui-block-a" style="padding-left:0;">
                                         <label for="date_of_payment-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Date of Payment:</label>
                                         <input type="date" name="date_of_payment" id="date_of_payment-field" data-validate="text" />
@@ -1973,7 +1746,7 @@
                         <br>
                     </div>
                     
-                    <div class="ui-grid-a invt" >
+                     <div class="ui-grid-a invt" >
 						<div class="ui-block-a" style="padding: 0 0.35em 0 0;">
 							<div class="panl">
 								<h3>Total Inventory C.P</h3>
@@ -2084,10 +1857,7 @@
                     <br>
 					<div class="ui-grid-a invt">
 						<div class="ui-block-a" style="padding: 0 0.35em 0 0;">
-                            <!--
 							<a href="#stockLevels" data-role="button" data-theme="b" data-icon="eye" data-transition="none" style="font-weight: normal !important; text-shadow: none; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>View Stock Levels</b></a>
-                            -->
-                            <a href="#refunds" data-role="button" data-theme="b" data-icon="minus" data-transition="none" style="font-weight: normal !important; text-shadow: none; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>Returns / Refunds</b></a>
 						</div>
 						<div class="ui-block-b" style="padding: 0 0 0 0.35em;">
 							<a href="#setPricing" data-role="button" data-theme="b" data-icon="tag" data-transition="none" style="font-weight: normal !important; text-shadow: none; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>Set Pricing</b></a>
@@ -2165,7 +1935,7 @@
 					#sales-table-body td.label{
 						cursor:pointer;
 					}
-                    @media (max-width: 620px){
+                    @media (max-width: 600px){
                         .invt-s .ui-block-b,
                         .invt-s .ui-block-a {
                         width: 100%;
@@ -2184,12 +1954,8 @@
                 
 				<div class="ui-grid-a invt-s">
                         <div class="ui-block-a" >
-                            <!--data-filter="true" data-filter-placeholder="Scan/Search Product" data-filter-theme="a"-->
-                            <form id="sales-inventory-list-filter-form">
-                                <input type="search" placeholder="Scan/Search Product" id="sales-inventory-list-filter" />
-                            </form>
                             <div  id="sales-inventory-list-container" class="products">
-                                <ul id="sales-inventory-list" data-role="listview" data-inset="true" ></ul>
+                                <ul id="sales-inventory-list" data-role="listview" data-inset="true" data-filter="true" data-filter-placeholder="Scan/Search Product" data-filter-theme="a"></ul>
                             </div>
                             
                             <div class="products-1" style="margin-top:-10px; clear:both;">
@@ -2342,11 +2108,11 @@
 								<div style="background-color: #43a2c4;padding: 10px; border-radius: 5px; text-shadow: none; color: white;">
 										<style type="text/css">
 											#checkout-table-body td{
-												font-size: 1.2em; font-weight: 600 ;
+												font-size: 1.2em; font-weight: bold ;
 												vertical-align:middle;
 											}
 											#checkout-table-column-toggle tfoot td{
-												font-size: 1.2em;
+												font-size: 1.2em; font-weight: bold ;
 											}
 											#checkout-table-body td:nth-child(2){
 												text-align:center;
@@ -2513,35 +2279,28 @@
 					
 					<div class="ui-grid-a invt" style="margin: 0.2em;">
 						<div class="ui-block-a" >
-                            <a href="#general-settings" data-role="button" data-theme="b" data-icon="gear" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>General Settings</b></a>
+							<a href="#mngusers" data-role="button" data-theme="b" data-icon="user" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>Manage Users</b></a>
+						</div>
+						<div class="ui-block-b">
+							<a href="#general-settings" data-role="button" data-theme="b" data-icon="gear" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>General Settings</b></a>
+						</div>
+					</div><!-- /grid-a -->
+					
+					<div class="ui-grid-a invt" style="margin: 0.2em;">
+						<div class="ui-block-a" >
+							<a href="#stores" data-role="button" data-theme="b" data-icon="home" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>My Store(s)</b></a>
 						</div>
 						<div class="ui-block-b">
 							<a href="#my-profile" data-role="button" data-theme="b" data-icon="gear" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>My Profile</b></a>
 						</div>
 					</div><!-- /grid-a -->
 					
-					<div class="ui-grid-a invt users-stores-manager" style="margin: 0.2em;">
-						<div class="ui-block-a" >
-							<a href="#stores" data-role="button" data-theme="b" data-icon="home" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>My Store(s)</b></a>
-						</div>
-						<div class="ui-block-b">
-							
-                            <a href="#mngusers" data-role="button" data-theme="b" data-icon="user" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>Manage Users</b></a>
-						</div>
-					</div><!-- /grid-a -->
-					
 					<div class="ui-grid-a invt" style="margin: 0.2em;">
-						<div class="ui-block-a reports-manager" >
+						<div class="ui-block-a" >
 							<a href="#reports-page" data-role="button" data-theme="b" data-icon="grid" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>Reports</b></a>
 						</div>
 						<div class="ui-block-b">
 							<a href="#" id="sign-out" data-role="button" data-theme="b" data-icon="gear" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>Sign Out</b></a>
-						</div>
-					</div><!-- /grid-a -->
-					
-					<div class="ui-grid-a invt" style="margin: 0.2em;">
-						<div class="ui-block-a" >
-							<a href="#restore-points" data-role="button" data-theme="b" data-icon="grid" data-transition="none" style="font-weight: normal !important; text-shadow: none; height: 1.5em; padding-top: 0.8em; font-size: 2em; font-family: Roboto Thin; background-color: #43a2c4 !important; color:#fff !important;"><b>Restore Points</b></a>
 						</div>
 					</div><!-- /grid-a -->
 					
@@ -2555,54 +2314,6 @@
 		</div><!-- /footer -->
 		
 </div><!-- /page -->
-
-<div data-role="page" id="restore-points">
-		
-		<div data-role="header" data-theme="b" style="height: 3.5em; -webkit-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); -moz-box-shadow: 0px 3px 11px 0px rgba(255,255,255,1); box-shadow: 0px 3px 11px 0px rgba(112,112,112,1);"  data-position="fixed">
-            <a href="#settings" class="ui-btn ui-shadow ui-corner-all ui-icon-arrow-l ui-btn-icon-notext" data-transition="none">Menu</a>
-            <h1>Restore Points</h1>
-	</div><!-- /header -->
-    <div class="progress-bar-container"></div>
-		
-		<div data-role="content" style="background: #f1f1f1;">
-		
-				<div style="background-color: #43a2c4 !important; border-radius: 5px; padding:0 1em;">
-					
-                    <div class="ui-grid-a invt">
-                        <div class="ui-block-a" style="padding-left:0;">
-                            <input type="button" id="create-restore-points" data-icon="check" data-theme="c" value="Create Restore Point" data-role="button" />
-                        </div>
-                        <div class="ui-block-b" style="padding-right:0;">
-                            <a href="#" id="clear-all-restore-points" data-role="button" data-theme="c" data-icon="delete" style="font-weight: normal !important; text-shadow: none;  background-color: #d11141; border: none; color: white;"><b>Clear All Restore Points</b></a>
-                        </div>
-                    </div>
-					
-			</div>
-		<br>
-				<div style="background-color: #43a2c4 !important; border-radius: 5px; padding:0 1em;">
-				<br>
-                    <table data-role="table1" id="restore-points-table-column-toggle" data-mode="columntoggle" class="ui-responsive inventory-table  ui-table ui-table-columntoggle">
-                      <thead>
-                        <tr>
-                          <th data-colstart="1">Size</th>
-                          <th data-colstart="2">Date</th>
-                          <th data-priority="1" data-colstart="3" class="ui-table-priority-1">Restore</th>
-                        </tr>
-                      </thead>
-                      <tbody id="restore-points-list-container">
-                        
-                      </tbody>
-                    </table>
-                    
-                    <br>
-				</div>
-		</div>
-		<div data-role="footer" >
-			
-		</div><!-- /footer -->
-		
-		
-		</div>
 
 <div data-role="page" id="mngcategory">
 		
@@ -2811,9 +2522,8 @@
                           <thead>
                             <tr>
                               <th data-colstart="1">Username</th>
-                              <th data-priority="2" data-colstart="2" class="ui-table-priority-2">Email</th>
-                              <th data-priority="1" data-colstart="3" class="ui-table-priority-1">Role</th>
-                              <th data-priority="3" data-colstart="4" class="ui-table-priority-3">Modified On</th>
+                              <th data-priority="1" data-colstart="2" class="ui-table-priority-1">Email</th>
+                              <th data-priority="2" data-colstart="3" class="ui-table-priority-2">Modified On</th>
                             </tr>
                           </thead>
                           <tbody id="users-list-container">
@@ -3064,29 +2774,6 @@
 						</div>
                         
 						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
-						<div class="ui-grid-a invt">
-							<div class="ui-block-a" >
-								<label style="padding-top: 1em; font-size: 1.5em; font-family: Roboto Thin; text-shadow: none; color: white; " for="flip-checkbox-4">Data Upload Interval in Seconds</label>
-							</div>
-							<div class="ui-block-b">
-								<input type="number" min="1" step="1" max="82800" name="time_to_upload_data" id="time_to_upload_data-field" required data-validate="number" data-error-title="Invalid Data Upload Interval in Seconds" data-error-msg="Please provide a valid Data Upload Interval in Seconds" placeholder="Data Upload Interval in Seconds" class="do-not-clear"/>
-							</div>
-						</div>
-                        
-						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
-						<div class="ui-grid-a invt">
-							<div class="ui-block-a" >
-								<label style=" padding-top: 1em; font-size: 1.5em; font-family: Roboto Thin; text-shadow: none; color: white; " for="flip-checkbox-4">Frequency of Notifications</label>
-							</div>
-							<div class="ui-block-b" >
-								<select name="notification_frequency" id="notification_frequency-field" data-validate="text" required data-error-title="Invalid Frequency of Notification" data-error-msg="Provide a valid Frequency of Notification" class="do-not-clear">
-                                    <option value="per_transaction">Per Transaction</option>
-                                    <option value="per_day">Per Day</option>
-                                </select>
-							</div>
-						</div>
-						
-						<p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
 						<br>
 						<input type="submit" data-icon="check" data-theme="c" value="Update" />
                         </form>
@@ -3194,10 +2881,8 @@
                     <a href="#" class="update-server-button ui-btn ui-shadow ui-corner-all ui-icon-forward ui-btn-icon-notext">Update Server</a>
                 </div>
                 <br>
-				<div style="background-color: #43a2c4 !important; padding: 0 1em ; border-radius: 5px;">
-					<div style="" data-role="collapsible" data-theme="b" data-content-theme="a" data-inset="false">
-                    <h5 style="font-weight: 100 !important;">Capture Expenses</h5>
-                    <div>
+				<div style="background-color: #43a2c4 !important; padding: 1em ; border-radius: 5px;">
+					<div>
 					
                     <br>
 					<form method="post" action="" name="expenses" id="expenses-form">
@@ -3252,7 +2937,6 @@
 					<br>
 					
 				</div>
-				</div>
 			</div>
 				
             <br><br>
@@ -3305,17 +2989,16 @@
         </div>
         <br>
         
-        <div style="background-color: #43a2c4 !important; padding: 1em 1em 0 1em; border-radius: 5px;">
+        <div style="background-color: #43a2c4 !important; padding: 1em ; border-radius: 5px;">
+            <div >
+            <br>
+                
             <select name="customers" id="customers-select-box">
                 <option value="new">Add New Customer</option>
             </select>
             <br>
-            <div style="" data-role="collapsible" data-theme="b" data-content-theme="a" data-inset="false">
-                <h5 style="font-weight: 100 !important;">New Customer Form</h5>
-                <div>
-            <br>
-            
-            <br>
+                    <p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+                <br>
             <form method="post" action="" name="customers" id="customers-form">
                 <input type="hidden" name="key" id="key-field" value="" data-validate="text" />
                 <label for="customer_name-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Customer Name:</label>
@@ -3346,7 +3029,6 @@
             </form>
             <br>
             
-            </div>
             </div>
         </div>
         
@@ -3386,7 +3068,7 @@
                         
                         <input type="hidden" name="customer" id="customer-field" class="do-not-clear" value="" data-validate="text" placeholder="Customer" required data-error-title="Invalid Customer" data-error-msg="Select a valid Customer" />
                         
-                        <div class="ui-grid-a invt">
+                        <div class="ui-grid-a">
                             <div class="ui-block-a" style="padding-left:0;">
                                 <label for="amount_paid-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Amount Paid:</label>
                                 <input type="number" step="any" min="0" name="amount_paid" id="amount_paid-field" placeholder="Amount Paid" required data-validate="text" data-error-title="Invalid Amount Paid" data-error-msg="Provide a valid Amount Paid"/>
@@ -3401,7 +3083,7 @@
                         <br>
                             <p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
                         <br>
-                        <div class="ui-grid-a invt">
+                        <div class="ui-grid-a">
                             <div class="ui-block-a" style="padding-left:0;">
                                 <label for="date_of_payment-field" style="font-size: 1.5em; font-family: Roboto Thin; color: white; text-shadow: none; ">Date of Payment:</label>
                                 <input type="date" name="date_of_payment" id="date_of_payment-field" data-validate="text" />
