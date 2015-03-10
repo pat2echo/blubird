@@ -167,6 +167,7 @@ function cannot_initiate_app(){
             message_message: 'Please try signing in again. \nIf problem persists please contact our customer care',
             auto_close: 'no'
         };
+        clearData();
     }else{
         var settings = {
             message_title:'Invalid Device ID',
@@ -174,7 +175,6 @@ function cannot_initiate_app(){
             auto_close: 'no'
         };
     }
-	clearData();
 	display_popup_notice( settings );
     $.mobile.navigate( "#signup", { transition : "none" });
 };
