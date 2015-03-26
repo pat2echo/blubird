@@ -6940,14 +6940,14 @@ $( document ).on( "pageshow", "#sales", function() {
                 
                 var c2 = $(this).attr('key');
                 var i = get_list_of_inventory()
+                
                 $.each( i , function( key , value ){
                     if( value && value.category && value.category == c2 ){
-                        if( value.key && value.store && value.store[ currentStoreID ] ){
+                        if( ( value.key && value.store && value.store[ currentStoreID ] ) || ( value.item_stock_type && value.item_stock_type == 'on' ) ){
                             html += get_sales_html_of_items( value );
                         }
                     }
                 });
-            
             }
             
             if( html ){
