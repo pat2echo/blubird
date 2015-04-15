@@ -1,5 +1,9 @@
 blubird
 =======
+1.0.107
+Hidden Total Gross Profit in Inventory Page,
+Displayed Total Selling Price & Changed Caption to Total Inventory Value on Inventory Page,
+
 1.0.106
 New Item default to Infinite item bug fix,
 Removal of total cp / sp in inventory manager,
