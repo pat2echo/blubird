@@ -31,6 +31,10 @@
     
 	
 	<style>
+        .additional-inventory-info,
+        #additional-inventory-info{
+            display:none;
+        }
         .text-size-2{
             font-size:1.2em;
         }
@@ -1192,7 +1196,7 @@
                         <a href="#" class="mobile-mode-only" id="capture-image-button" data-role="button" data-theme="c" data-icon="camera"  style="background-color:green; border: none; text-shadow: none; color: white !important; " >Take Picture</a>
                         
                         <input type="checkbox" id="infinite-item-checkbox" data-mini="true" value="on" /><label for="infinite-item-checkbox">Infinite Item (this item will always be in-stock e.g services / food items)</label>
-                        <input type="hidden" name="item_stock_type" id="item_stock_type-field" data-validate="text" value="on" />
+                        <input type="hidden" name="item_stock_type" id="item_stock_type-field" data-validate="text" value="" />
                     </div>
                 </div>
                 
@@ -1971,7 +1975,7 @@
                         <br>
                     </div>
                     
-                    <div class="ui-grid-a invt" >
+                    <div class="ui-grid-a invt" id="additional-inventory-info">
 						<div class="ui-block-a" style="padding: 0 0.35em 0 0;">
 							<div class="panl">
 								<h3>Total Inventory C.P</h3>
@@ -1987,8 +1991,7 @@
 						</div>
 						
 					</div>
-					
-                    <br />
+                    <br class="additional-inventory-info" />
                     
                     <div class="ui-grid-a invt" >
 						<div class="ui-block-a" style="padding: 0 0.35em 0 0;">

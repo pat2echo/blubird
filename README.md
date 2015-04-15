@@ -1,5 +1,10 @@
 blubird
 =======
+1.0.106
+New Item default to Infinite item bug fix,
+Removal of total cp / sp in inventory manager,
+Display barcode along side item description in restock select box,
+
 1.0.105
 Restaurant Mode Category Filter Bug Fix,
 

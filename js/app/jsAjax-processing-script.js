@@ -810,6 +810,13 @@ function successful_submit_action( stored ){
             queueUploadImages( uploadImages );
             uploadImages = {};
         }
+        
+        $('#newInventory')
+        .find('select#item-select-field')
+        .val('new')
+        .change()
+        .selectmenu('refresh');
+    
 	break;	
 	case 'stock':
 		//add - ! (item desc | barcode | cateogry | location ) to stock_level object 
@@ -4645,10 +4652,8 @@ $( document ).on( "pagecreate", "#newInventory", function() {
                 switch( key ){
                 case "item_stock_type":
                     var b = false;
-                    var b1 = 'ui-checkbox-off';
-                    var b2 = 'ui-checkbox-on';
                     if( value == 'on' ){
-                        b = true; b1 = 'ui-checkbox-on'; b2 = 'ui-checkbox-off';
+                        b = true;
                     }
                     
                     $('form#inventory-form')
@@ -4658,9 +4663,8 @@ $( document ).on( "pagecreate", "#newInventory", function() {
                     $('form#inventory-form')
                     .find('#infinite-item-checkbox')
                     .attr('checked', b )
-                    .prev('label')
-                    .removeClass(b2)
-                    .addClass(b1);
+                    .checkboxradio("refresh")
+                    .change();
                     
                 break;
                 case "item_image":
@@ -4693,6 +4697,9 @@ $( document ).on( "pagecreate", "#newInventory", function() {
             .find('#myImage')
             .attr( 'src' , img );
             
+            $('#newInventory')
+            .find('select[name="category"]')
+            .selectmenu('refresh');
 		}else{
 			$('form#inventory-form')
 			.find('input')
@@ -4706,6 +4713,21 @@ $( document ).on( "pagecreate", "#newInventory", function() {
             $('form#inventory-form')
             .find('#myImage')
             .attr( 'src' , 'icon.png' );
+            
+            $('#newInventory')
+            .find('select[name="category"]')
+            .val('')
+            .selectmenu('refresh');
+            
+            $('form#inventory-form')
+            .find('#item_stock_type-field')
+            .val('0');
+            
+            $('form#inventory-form')
+            .find('#infinite-item-checkbox')
+            .attr('checked', false )
+            .checkboxradio("refresh")
+            .change();
 		}
 	});
 	
@@ -6307,7 +6329,7 @@ $( document ).on( "pageshow", "#restock", function() {
 	var inventory = get_list_of_inventory();
 	var html = selectItemOption;
 	$.each( inventory , function( key , value ){
-		html += '<option value="'+key+'" class="'+value.category+'">'+value.item_desc+'</option>';
+		html += '<option value="'+key+'" class="'+value.category+'">'+value.item_desc+' ['+value.item_barcode+']</option>';
 	});
 	
 	if( html ){
