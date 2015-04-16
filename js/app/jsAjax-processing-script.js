@@ -1371,7 +1371,7 @@ function formatReceiptText( sales_data ){
         if( sales_data.inventory ){
             $.each( sales_data.inventory , function( k , s ){
                 store_details += get_item_row_for_sales_records_striped( s );
-                if( k )store_details += "\n"+k;
+                if( k )store_details += k+"\n";
             });
             
             store_details += space_single;
