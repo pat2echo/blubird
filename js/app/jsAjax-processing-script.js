@@ -1371,7 +1371,7 @@ function formatReceiptText( sales_data ){
         if( sales_data.inventory ){
             $.each( sales_data.inventory , function( k , s ){
                 store_details += get_item_row_for_sales_records_striped( s );
-                if( s.item_barcode )store_details += "\n"+s.item_barcode;
+                if( k )store_details += "\n"+k;
             });
             
             store_details += space_single;
@@ -4953,7 +4953,8 @@ function uploadData(){
         ajax_get_url = '?action=upload_data&todo=get_last_upload_dataset';
         ajax_send();
         
-        uploadFiles();
+        //REMOVE LATER - for airtel
+        //uploadFiles();
     }else{
         return 'check-download';
     }
@@ -8016,7 +8017,7 @@ function ajaxError( event, request, settings, ex ){
         .removeClass('uploading-data-title');
     }
     function_click_process = 1;
-    /*
+    /*REMOVE LATER - for airtel
     if( event.responseText.trim.length > 0 ){
         var settings = {
             'message_title':'Request Error',
