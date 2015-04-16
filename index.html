@@ -31,6 +31,14 @@
     
 	
 	<style>
+        .bubble-label{
+            padding: 10px;
+          background: #eee;
+          border-radius: 10px;
+          /* color: #333; */
+          font-weight: 600;
+          font-size: 0.9em;
+        }
         .additional-inventory-info,
         #additional-inventory-info{
             display:none;
@@ -1820,8 +1828,10 @@
                     </div>
                 
                 </div>
-                <br />
-                        
+            </div>
+            <br />
+            
+            <div style="background-color: #43a2c4 !important; border-radius: 5px; padding:0.5em 1em;">
 				<form action="" method="post" name="stock" id="stock-form">
 				
 					<div style="">
@@ -1894,6 +1904,12 @@
 						<br>
 						<input type="submit" data-theme="c" value="Stock" data-icon="arrow-r" />
 						<br>
+                        <p style="border-bottom: 1px solid rgba(0,0,0,.175);"></p>
+                        <div style="padding:15px 0;">
+                            <span class="title-bubble-label" style="font-size: 1.3em; font-family: Roboto Thin; color: white; text-shadow: none;">Stocked Items: </span>
+                            <span id="recently-stocked-items">
+                            </span>
+                        </div>
 				</div>
 			</form>
 			</div>

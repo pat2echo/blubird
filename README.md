@@ -1,5 +1,9 @@
 blubird
 =======
+1.0.108
+Dual Receipt Print-out,
+Recently Stocked Items List,
+
 1.0.107
 Hidden Total Gross Profit in Inventory Page,
 Displayed Total Selling Price & Changed Caption to Total Inventory Value on Inventory Page,

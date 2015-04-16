@@ -894,7 +894,6 @@ function successful_submit_action( stored ){
                         tempStoreObjects[ inventory.key ] = inventory;
                         //putData( inventory.key , inventory );
                         
-                        
                         if( supplier.stock && typeof supplier.stock === 'object' ){
                             var supplier_stock = supplier.stock;
                         }else{
@@ -930,7 +929,7 @@ function successful_submit_action( stored ){
                         storeObjects[ 'suppliers_list' ][ stored.supplier ] = supplier;
                         */
                         
-                        if( ! newStock.total_amount ){
+                        if( ! newStock.total_items ){
                             newStock.total_items = 0;
                             newStock.total_amount = 0;
                             newStock.total_amount_paid = 0;
@@ -945,6 +944,9 @@ function successful_submit_action( stored ){
                         newStock.stock[stored.key] = stored.key;
                         
                         updateSupplyFormFields( newStock );
+                        
+                        $('#recently-stocked-items')
+                        .append( '<span class="bubble-label">'+inventory.item_desc+' ('+stored.item_qty+')'+' ['+inventory.item_barcode+']</span> ' );
                     }
                 }else{
                     //delete stored data
@@ -959,6 +961,10 @@ function successful_submit_action( stored ){
             msg = 'Please select a store or create one if none exists';
         }
 		//console.log( 't', tempStoreObjects );
+        $('#stock-form')
+        .find('select#supplier-field')
+        .val('')
+        .selectmenu('refresh');
 	break;
 	case 'supply':
 		if( newStock && Object.getOwnPropertyNames(newStock).length && tempStoreObjects && Object.getOwnPropertyNames(tempStoreObjects).length ){
@@ -1044,6 +1050,9 @@ function successful_submit_action( stored ){
 			title = 'No Items were Supplied!';
 			msg = 'Please add items to stock first';
 		}
+        
+        $('#recently-stocked-items')
+        .html('');
 	break;
 	case 'damages':
         var error = true;
@@ -1362,6 +1371,7 @@ function formatReceiptText( sales_data ){
         if( sales_data.inventory ){
             $.each( sales_data.inventory , function( k , s ){
                 store_details += get_item_row_for_sales_records_striped( s );
+                if( s.item_barcode )store_details += "\n"+s.item_barcode;
             });
             
             store_details += space_single;
@@ -1901,7 +1911,7 @@ function get_inventory_html( key , value ){
         d_qty = '&#8734;';
     }
     
-	var html = '<tr id="'+key+'" class="'+value.category+low_stock_class+'" timestamp="'+value.timestamp+'"><td class="ui-table-priority-2 image-container"><img src="' + img + '" class="ui-li-thumb" /></td><td>'+value.item_desc+'</td><td class="ui-table-priority-1">'+d_qty+'</td><td class="ui-table-priority-3">'+formatNum( value.selling_price )+'</td>';
+	var html = '<tr id="'+key+'" class="'+value.category+low_stock_class+'" timestamp="'+value.timestamp+'"><td class="ui-table-priority-2 image-container"><img src="' + img + '" class="ui-li-thumb" /></td><td>'+value.item_desc+'<br /><span style="font-size:0.8em;">['+value.item_barcode+']</span></td><td class="ui-table-priority-1">'+d_qty+'</td><td class="ui-table-priority-3">'+formatNum( value.selling_price )+'</td>';
 	
     html += '<td class="ui-table-priority-4">';
 	if( value.supplier ){
@@ -1937,7 +1947,7 @@ function get_new_inventory_html( key , value ){
     if( blubirdWebbased ){
         img = 'imagebank/'+value.item_image;
     }
-	return '<tr id="'+key+'" class="'+value.category+'" timestamp="'+value.timestamp+'"><td class="ui-table-priority-1 image-container"><img src="'+ img +'" class="ui-li-thumb"></td><td>'+value.item_desc+'</td><td class="ui-table-priority-2">'+year+'-'+months_of_year[ month ]+'-'+day+' '+hours+':'+minutes+'</td></tr>';
+	return '<tr id="'+key+'" class="'+value.category+'" timestamp="'+value.timestamp+'"><td class="ui-table-priority-1 image-container"><img src="'+ img +'" class="ui-li-thumb"></td><td>'+value.item_desc+'<br /><span style="font-size:0.8em;">['+value.item_barcode+']</span></td><td class="ui-table-priority-2">'+year+'-'+months_of_year[ month ]+'-'+day+' '+hours+':'+minutes+'</td></tr>';
 };
 
 function get_inventory_set_pricing_html( key , value ){
@@ -1964,7 +1974,7 @@ function get_inventory_set_pricing_html( key , value ){
         d_qty = '&#8734;';
     }
     
-    return '<tr id="'+key+'" class="'+value.category+'" timestamp="'+value.timestamp+'"><td class="ui-table-priority-3 image-container"><img src="'+ img +'" class="ui-li-thumb"></td><td>'+value.item_desc+'</td><td class="ui-table-priority-2">'+d_qty+'</td><td class="ui-table-priority-4">'+formatNum( cp.toFixed(2) )+'</td><td class="ui-table-priority-1"><div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset"><input type="number" min="0" step="any" value="'+value.selling_price+'" default-value="'+value.selling_price+'" item="'+value.item_desc+'" class="inventory-pricing-input" key="'+key+'" cost-price="'+value.cost_price+'" /></div></td></tr>';
+    return '<tr id="'+key+'" class="'+value.category+'" timestamp="'+value.timestamp+'"><td class="ui-table-priority-3 image-container"><img src="'+ img +'" class="ui-li-thumb"></td><td>'+value.item_desc+'<br /><span style="font-size:0.8em;">['+value.item_barcode+']</span></td><td class="ui-table-priority-2">'+d_qty+'</td><td class="ui-table-priority-4">'+formatNum( cp.toFixed(2) )+'</td><td class="ui-table-priority-1"><div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset"><input type="number" min="0" step="any" value="'+value.selling_price+'" default-value="'+value.selling_price+'" item="'+value.item_desc+'" class="inventory-pricing-input" key="'+key+'" cost-price="'+value.cost_price+'" /></div></td></tr>';
 };
 
 function get_supplier_html( key , value ){
@@ -2654,7 +2664,7 @@ function get_item_row_for_sales_records_striped( s ){
 	if( s &&  s.item_desc )desc = s.item_desc;
 	else desc = 'product no longer exists';
 	
-	return leftandRight( desc+' ('+s.unit_ordered+'): ' , appCurrencyText +' '+formatNum( a.toFixed(2) ) );
+	return leftandRight( desc + ' ('+s.unit_ordered+'): ' , appCurrencyText + ' ' + formatNum( a.toFixed(2) ) );
 };
 
 function get_item_row_for_sales_records_stripedHTML( s ){
@@ -3477,7 +3487,7 @@ function update_inventory_list_on_inventory_page(){
                 max1 = value.timestamp;
                 html += get_new_inventory_html( key , value );
             }
-			html2 += '<option value="'+key+'" class="'+value.category+'">'+value.item_desc+'</option>';
+			html2 += '<option value="'+key+'" class="'+value.category+'">'+value.item_desc+' ['+value.item_barcode+']</option>';
 		}
 	});
 	
@@ -6224,7 +6234,7 @@ function display_table_on_inventory_page( inventory, $tbody, $page, include_summ
                     }
                 }
                 
-                html2 += '<option value="'+key+'" class="'+value.category+'">'+value.item_desc+'</option>';
+                html2 += '<option value="'+key+'" class="'+value.category+'">'+value.item_desc+' ['+value.item_barcode+']</option>';
             }
         });
         
@@ -6347,6 +6357,8 @@ $( document ).on( "pageshow", "#restock", function() {
 	populate_category_select_box( $('#restock').find('#filter-category-field') );
 	populate_suppliers_select_box( $('#stock-form').find('select[name="supplier"]') );
     populate_stores_select_box( $('#stock-form').find('select.currently-active-store') );
+    
+    $('#recently-stocked-items').html('');
 });
 
 $( document ).on( "pageshow", "#damages", function() {
@@ -6470,7 +6482,6 @@ $( document ).on( "pagecreate", "#checkout", function() {
                     $('#customer_mobile-field').val('');
                 }
                 
-                
                 //print receipt
                 if( desktopPrinter ){
                     msg = formatReceiptHTML( stored );
@@ -6481,8 +6492,9 @@ $( document ).on( "pagecreate", "#checkout", function() {
                     x.document.close();
                 }else{
                     msg = formatReceiptText( stored );
+                    var message = msg +''+ msg;
                     if( connectedDevice && bluetoothSerial ){
-                        bluetoothSerial.write( msg , function(){
+                        bluetoothSerial.write( message , function(){
                             //success
                         } );
                     }
@@ -8004,7 +8016,7 @@ function ajaxError( event, request, settings, ex ){
         .removeClass('uploading-data-title');
     }
     function_click_process = 1;
-    
+    /*
     if( event.responseText.trim.length > 0 ){
         var settings = {
             'message_title':'Request Error',
@@ -8012,6 +8024,7 @@ function ajaxError( event, request, settings, ex ){
         };
         display_popup_notice( settings );
     }
+    */
 };
 
 var registration = false;
@@ -8224,7 +8237,7 @@ function ajaxSuccess( data , store ){
 					if( a[key] )delete a[key];
 					
 					var d = getData( key );
-					if( d.key && d.id ){
+					if( d && d.key && d.id ){
                         d.id = id;
                         putData( key , d );
                     }
