@@ -820,150 +820,13 @@ function successful_submit_action( stored ){
 	break;	
 	case 'stock':
 		//add - ! (item desc | barcode | cateogry | location ) to stock_level object 
-		title = 'Stocked!';
-		msg = '';
-		
-        var date = new Date();
-	
-        var day = date.getDate();
-        var month = date.getMonth();
-        var year = date.getFullYear();
-        //var hours = date.getHours();
-        //var minutes = date.getMinutes();
+        var r = successful_submit_stock_form( stored );
+        if( r && r.title )title = r.title;
+        if( r && r.msg ) msg = r.msg;
         
-        var current_date = year+'-'+months_of_year[ month ]+'-'+day;
-    
-		if( stored.store_name ){
-            if( stored.supplier ){
-                if( tempStoreObjects[ stored.supplier ] ){
-                    var supplier = tempStoreObjects[ stored.supplier ];
-                }else{
-                    var supplier = getData( stored.supplier );
-                }
-                
-                if( supplier && typeof supplier === 'object' ){
-                    if( tempStoreObjects[ stored.item_barcode ] ){
-                        var inventory = tempStoreObjects[ stored.item_barcode ];
-                    }else{
-                        var inventory = getData( stored.item_barcode );
-                    }
-                    
-                    var tmp_store_data = {
-                        stock: {},
-                        selling_price:0,
-                        cost_price:0,
-                        item_qty:0,
-                        item_available:0,
-                        item_sold:0,
-                        item_damaged:0,
-                        income:0,
-                        damages:{},
-                        sales: {},
-                    };
-                    if( inventory ){
-                        if( ! inventory.store ){
-                            inventory.store = {};
-                        }else{
-                            if( inventory.store[ stored.store_name ] ){
-                                tmp_store_data = inventory.store[ stored.store_name ];
-                            }
-                        }
-                        
-                        //check stored data
-                        $.each( tmp_store_data, function( k , v ){
-                            if( k == 'stock' ){
-                                if( ! v )tmp_store_data[k] = {};
-                            }else{
-                                if( ! v )tmp_store_data[k] = 0;
-                            }
-                        });
-                        
-                        tmp_store_data.cost_price = parseFloat( stored.cost_price );
-                        tmp_store_data.selling_price = parseFloat( stored.selling_price );
-                        tmp_store_data.expiry_date = stored.expiry_date;
-                        
-                        tmp_store_data.item_qty += parseFloat( stored.item_qty );
-                        
-                        tmp_store_data.item_available = tmp_store_data.item_qty - tmp_store_data.item_sold;
-                        
-                        tmp_store_data.stock[ stored.key ] = stored.key;
-                        
-                        inventory.store[ stored.store_name ]  = tmp_store_data;
-                        tmp_store_data = {};
-                        
-                        tempStoreObjects[ inventory.key ] = inventory;
-                        //putData( inventory.key , inventory );
-                        
-                        if( supplier.stock && typeof supplier.stock === 'object' ){
-                            var supplier_stock = supplier.stock;
-                        }else{
-                            supplier.stock = {};
-                            var supplier_stock = {};
-                        }
-                        supplier_stock[ stored.key ] = stored.key;
-                        supplier.stock = supplier_stock;
-                        
-                        tempStoreObjects[ supplier.key ] = supplier;
-                        //putData( stored.supplier , supplier );
-                        
-                        //create expense
-                        var tmp_expense_data = {
-                            key: 'e'+stored.key,
-                            amount: parseFloat( stored.cost_price * stored.item_qty ),
-                            date:current_date,
-                            description: "Procurement of "+inventory.item_desc+" "+parseFloat( stored.item_qty )+" unit(s)",
-                            object:"expenses",
-                            type:"purchase of goods",
-                            item_id:inventory.key,
-                            store_id:stored.store_name,
-                            store_name:stored.store_name,
-                            temp:true,
-                        };
-                        store_record( tmp_expense_data );
-                        
-                        /*perform on save operation
-                        if( ! storeObjects[ 'suppliers_list' ] ){
-                            storeObjects[ 'suppliers_list' ] = {};
-                        }
-                        
-                        storeObjects[ 'suppliers_list' ][ stored.supplier ] = supplier;
-                        */
-                        
-                        if( ! newStock.total_items ){
-                            newStock.total_items = 0;
-                            newStock.total_amount = 0;
-                            newStock.total_amount_paid = 0;
-                            newStock.stock = {};
-                        }
-                        
-                        newStock.key = stored.supply;
-                        
-                        newStock.total_items += parseFloat( stored.item_qty );
-                        newStock.total_amount += ( stored.cost_price * stored.item_qty );
-                        newStock.total_amount_paid = 0;
-                        newStock.stock[stored.key] = stored.key;
-                        
-                        updateSupplyFormFields( newStock );
-                        
-                        $('#recently-stocked-items')
-                        .append( '<span class="bubble-label">'+inventory.item_desc+' ('+stored.item_qty+')'+' ['+inventory.item_barcode+']</span> ' );
-                    }
-                }else{
-                    //delete stored data
-                    delete tempStoreObjects[ stored.key ];
-                    
-                    title = 'Invalid Supplier!';
-                    msg = 'Please select a supplier or create one if none exists';
-                }
-            }
-        }else{
-            title = 'Invalid Store!';
-            msg = 'Please select a store or create one if none exists';
-        }
-		//console.log( 't', tempStoreObjects );
+        //console.log( 't', tempStoreObjects );
         $('#stock-form')
         .find('select#supplier-field')
-        .val('')
         .selectmenu('refresh');
 	break;
 	case 'supply':
@@ -1003,7 +866,7 @@ function successful_submit_action( stored ){
 			
 			//store temp object
 			$.each( tempStoreObjects, function ( key , val ){
-				uploadData[ key ] = key;
+				uploadDataset[ key ] = key;
 				putData( key , val );
 				if( val.object ){
 					if( ! obj[ val.object ] ){
@@ -1119,7 +982,7 @@ function successful_submit_action( stored ){
                     $.each( origin_stock, function( k , v ){
                         var stock = getData( k );
                         if( stock && stock.store_name && stock.store_name == stored.origin_store_name ){
-                            console.log('ost',stock);
+                            
                             stock.item_qty = parseFloat( stock.item_qty );
                             
                             if( stored.transfer_qty > stock.item_qty ){
@@ -1242,6 +1105,151 @@ function successful_submit_action( stored ){
 	display_popup_notice( settings );
 };
 
+function successful_submit_stock_form( stored ){
+    title = 'Stocked!';
+    msg = '';
+    
+    var date = new Date();
+
+    var day = date.getDate();
+    var month = date.getMonth();
+    var year = date.getFullYear();
+    //var hours = date.getHours();
+    //var minutes = date.getMinutes();
+    
+    var current_date = year+'-'+months_of_year[ month ]+'-'+day;
+
+    if( stored.store_name ){
+        if( stored.supplier ){
+            if( tempStoreObjects[ stored.supplier ] ){
+                var supplier = tempStoreObjects[ stored.supplier ];
+            }else{
+                var supplier = getData( stored.supplier );
+            }
+            
+            if( supplier && typeof supplier === 'object' ){
+                if( tempStoreObjects[ stored.item_barcode ] ){
+                    var inventory = tempStoreObjects[ stored.item_barcode ];
+                }else{
+                    var inventory = getData( stored.item_barcode );
+                }
+                
+                var tmp_store_data = {
+                    stock: {},
+                    selling_price:0,
+                    cost_price:0,
+                    item_qty:0,
+                    item_available:0,
+                    item_sold:0,
+                    item_damaged:0,
+                    income:0,
+                    damages:{},
+                    sales: {},
+                };
+                if( inventory ){
+                    if( ! inventory.store ){
+                        inventory.store = {};
+                    }else{
+                        if( inventory.store[ stored.store_name ] ){
+                            tmp_store_data = inventory.store[ stored.store_name ];
+                        }
+                    }
+                    
+                    //check stored data
+                    $.each( tmp_store_data, function( k , v ){
+                        if( k == 'stock' ){
+                            if( ! v )tmp_store_data[k] = {};
+                        }else{
+                            if( ! v )tmp_store_data[k] = 0;
+                        }
+                    });
+                    
+                    tmp_store_data.cost_price = parseFloat( stored.cost_price );
+                    tmp_store_data.selling_price = parseFloat( stored.selling_price );
+                    tmp_store_data.expiry_date = stored.expiry_date;
+                    
+                    tmp_store_data.item_qty += parseFloat( stored.item_qty );
+                    
+                    tmp_store_data.item_available = tmp_store_data.item_qty - tmp_store_data.item_sold;
+                    
+                    tmp_store_data.stock[ stored.key ] = stored.key;
+                    
+                    inventory.store[ stored.store_name ]  = tmp_store_data;
+                    tmp_store_data = {};
+                    
+                    tempStoreObjects[ inventory.key ] = inventory;
+                    //putData( inventory.key , inventory );
+                    
+                    if( supplier.stock && typeof supplier.stock === 'object' ){
+                        var supplier_stock = supplier.stock;
+                    }else{
+                        supplier.stock = {};
+                        var supplier_stock = {};
+                    }
+                    supplier_stock[ stored.key ] = stored.key;
+                    supplier.stock = supplier_stock;
+                    
+                    tempStoreObjects[ supplier.key ] = supplier;
+                    //putData( stored.supplier , supplier );
+                    
+                    //create expense
+                    var tmp_expense_data = {
+                        key: 'e'+stored.key,
+                        amount: parseFloat( stored.cost_price * stored.item_qty ),
+                        date:current_date,
+                        description: "Procurement of "+inventory.item_desc+" "+parseFloat( stored.item_qty )+" unit(s)",
+                        object:"expenses",
+                        type:"purchase of goods",
+                        item_id:inventory.key,
+                        store_id:stored.store_name,
+                        store_name:stored.store_name,
+                        temp:true,
+                    };
+                    store_record( tmp_expense_data );
+                    
+                    /*perform on save operation
+                    if( ! storeObjects[ 'suppliers_list' ] ){
+                        storeObjects[ 'suppliers_list' ] = {};
+                    }
+                    
+                    storeObjects[ 'suppliers_list' ][ stored.supplier ] = supplier;
+                    */
+                    
+                    if( ! newStock.total_items ){
+                        newStock.total_items = 0;
+                        newStock.total_amount = 0;
+                        newStock.total_amount_paid = 0;
+                        newStock.stock = {};
+                    }
+                    
+                    newStock.key = stored.supply;
+                    
+                    newStock.total_items += parseFloat( stored.item_qty );
+                    newStock.total_amount += ( stored.cost_price * stored.item_qty );
+                    newStock.total_amount_paid = 0;
+                    newStock.stock[stored.key] = stored.key;
+                    
+                    updateSupplyFormFields( newStock );
+                    
+                    $('#recently-stocked-items')
+                    .append( '<span class="bubble-label">'+inventory.item_desc+' ('+stored.item_qty+')'+' ['+inventory.item_barcode+']</span> ' );
+                }
+            }else{
+                //delete stored data
+                delete tempStoreObjects[ stored.key ];
+                
+                title = 'Invalid Supplier!';
+                msg = 'Please select a supplier or create one if none exists';
+            }
+        }
+    }else{
+        title = 'Invalid Store!';
+        msg = 'Please select a store or create one if none exists';
+    }
+	
+    return {title:title, msg:msg };
+};
+        
 function add_to_daily_cache( data ){
     if( data && data.object && data.timestamp && data.key ){
         var date = new Date( data.timestamp );
@@ -1313,6 +1321,7 @@ function leftandRightHTML( text , txtRight ){
 };
 
 function formatReceiptText( sales_data ){
+    
     var dash = "----------------------------";
     if( appPrinterSeperatorLength ){
         dash = "";
@@ -4522,7 +4531,7 @@ function get_customer_recent_purchases_html( sale ){
     var ta = parseFloat( sale.total_amount );
     var a_tendered = parseFloat( sale.total_amount_tendered );
     var ap = 0;
-    if( a_tendered < ta ){
+    if( a_tendered <= ta ){
         ap = a_tendered;
     }else{
         ap = a_tendered - ta;
@@ -4795,6 +4804,75 @@ $( document ).on( "pagecreate", "#newInventory", function() {
     .on('change', function(){
         if( $(this).is(':checked') )$('#newInventory').find('#item_stock_type-field').val('on');
         else $('#newInventory').find('#item_stock_type-field').val('0');
+    });
+    
+    $('#newInventory')
+    .find('#save-multiple-new-items')
+    .on('click', function( e ){
+        var key = $('form#inventory-form').find('input#key-field').val();
+        
+        if( ! key ){
+            var settings = {
+                message_title:'No Item Selected',
+                message_message: 'Select an existing Item to Duplicate',
+                auto_close: 'no'
+            };
+            display_popup_notice( settings );
+            return false;
+        }
+        
+        var item_details = getData( key );
+        if( ! ( item_details && item_details.key )  ){
+            var settings = {
+                message_title:'No Item Selected',
+                message_message: 'Select an existing Item to Duplicate',
+                auto_close: 'no'
+            };
+            display_popup_notice( settings );
+            return false;
+        }
+        
+        var upload = {};
+        var all_barcodes = prompt("Please enter a comma seperated list of barcodes E.g 231456,531458,736459", $('form#inventory-form').find( 'input#item_barcode-field' ).val() );
+        if ( ! all_barcodes ) {
+            var settings = {
+                message_title:'No Barcode Entered',
+                message_message: 'Please enter a comma seperated list of barcodes E.g 231456,531458,736459',
+                auto_close: 'no'
+            };
+            display_popup_notice( settings );
+            return false;
+        }
+        var barcodes = all_barcodes.split(',');
+        for( i = 0; i < barcodes.length; i++ ){
+            if( ! barcodes[i] )continue;
+            
+            if( $('form#inventory-form').find( 'input#item_barcode-field' ).val() != barcodes[i] ){
+                if( item_details.store )delete item_details['store'];
+            }
+            
+            item_details.item_barcode = barcodes[i];
+            var stored = store_record( item_details );
+            add_to_list_of_inventory( stored );
+            
+            upload[ stored.key ] = stored.key;
+        }
+        
+        update_inventory_list_on_inventory_page();
+        queueUpload( upload );
+        
+        $('#newInventory')
+        .find('select#item-select-field')
+        .val('new')
+        .change()
+        .selectmenu('refresh');
+        
+        var settings = {
+            message_title:'Duplicates Created!',
+            message_message: '',
+            auto_close: 'no'
+        };
+        display_popup_notice( settings );
     });
     
 	update_inventory_list_on_inventory_page();
@@ -5540,6 +5618,63 @@ $( document ).on( "pagecreate", "#restock", function() {
 		$(this).change();
 	});
 	
+    $('form#stock-form')
+    .find('#stock-multiple-items')
+    .on('click', function( e ){
+        var data = transform_data( $('form#stock-form') );
+		
+		if( data.error ){
+			//display error message
+			var settings = {
+				message_title:data.title,
+				message_message: data.message,
+				auto_close: 'no'
+			};
+			display_popup_notice( settings );
+            return false;
+		}else{
+            
+            var all_barcodes = prompt("Please enter a comma seperated list of keys E.g 231456,531458,736459", $('form#stock-form').find('select[name="item_barcode"]').val() );
+            if ( ! all_barcodes ) {
+                var settings = {
+                    message_title:'No Barcode Entered',
+                    message_message: 'Please enter a comma seperated list of barcodes E.g 231456,531458,736459',
+                    auto_close: 'no'
+                };
+                display_popup_notice( settings );
+                return false;
+            }
+            
+            data.object = "stock";
+            
+            var barcodes = all_barcodes.split(',');
+            for( i = 0; i < barcodes.length; i++ ){
+                if( ! barcodes[i] )continue;
+                
+                data.item_barcode = barcodes[i];
+                var stored = store_record( data );
+                console.log( barcodes[i] , stored );
+                successful_submit_stock_form( stored );
+            }
+        }
+        
+        $('#stock-form')
+        .find('input')
+        .not('.do-not-clear')
+        .val('');
+        
+        $('#stock-form')
+        .find('select#supplier-field')
+        .selectmenu('refresh');
+        
+        var settings = {
+            message_title:'Multiple Items Stocked!',
+            message_message: '',
+            auto_close: 'no'
+        };
+        display_popup_notice( settings );
+    });
+    
 	$('form#supply-form')
 	.find('#total_amount_paid-field')
 	.on('change', function(){
@@ -6426,8 +6561,10 @@ $( document ).on( "pagecreate", "#checkout", function() {
                 name = $('#customer_name-field').val();
             }
             
+            var ckey = 'c' + customUUID + $('#customer_mobile-field').val();
+            
             customers_data = {
-                'key':'c'+$('#customer_mobile-field').val(),
+                'key':ckey,
                 'customer_name':name,
                 'customer_mobile':$('#customer_mobile-field').val(),
                 'customer_email':'',
@@ -7097,7 +7234,7 @@ function addtocart( key ){
         }
         
         $('#sales-table-body')
-        .prepend( '<tr id="'+md5(d.key)+'" key="'+d.key+'" unit-price="'+amount+'" cost-price="'+cost+'" class="item-for-sale"><td class="label">'+d.item_desc+'</td><td class="input"><input type="number" min="1" step="1" infinity="'+infinity+'" max="'+qty+'" value="1" /></td><td class="price" total="'+amount+'" units="1"><span class="price-val">' + formatNum( amount.toFixed(2) ) + '</span></td><td class="ui-table-priority-2"><a href="#" class="ui-btn ui-btn-inline ui-icon-delete ui-btn-icon-notext ui-theme-a ui-corner-all remove-item-button">remove</a></td></tr>' );
+        .prepend( '<tr id="'+md5(d.key)+'" key="'+d.key+'" unit-price="'+amount+'" cost-price="'+cost+'" class="item-for-sale"><td class="label">'+d.item_desc+'<br /><span style="font-size:0.8em;">'+d.item_barcode+'</span></td><td class="input"><input type="number" min="1" step="1" infinity="'+infinity+'" max="'+qty+'" value="1" /></td><td class="price" total="'+amount+'" units="1"><span class="price-val">' + formatNum( amount.toFixed(2) ) + '</span></td><td class="ui-table-priority-2"><a href="#" class="ui-btn ui-btn-inline ui-icon-delete ui-btn-icon-notext ui-theme-a ui-corner-all remove-item-button">remove</a></td></tr>' );
         
         $('#sales-table-body')
         .find('tr#'+md5(d.key)+' input[type="number"]' )

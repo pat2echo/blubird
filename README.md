@@ -1,5 +1,12 @@
 blubird
 =======
+1.0.110
+FIX Customers Name in Sales Receipt Bug,
+Addition of Duplicate Items feature,
+Addition of Multi-Stock feature,
+Included Serials in Shopping Cart,
+Modification of Sign Out Button Caption to Delete Data,
+
 1.0.108
 Dual Receipt Print-out,
 Recently Stocked Items List,
