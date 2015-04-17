@@ -1380,7 +1380,7 @@ function formatReceiptText( sales_data ){
         if( sales_data.inventory ){
             $.each( sales_data.inventory , function( k , s ){
                 store_details += get_item_row_for_sales_records_striped( s );
-                if( k )store_details += k+"\n";
+                if( k )store_details += k + " \n";
             });
             
             store_details += space_single;
@@ -2667,7 +2667,7 @@ function get_item_row_for_sales_records( s ){
 };
 
 function get_item_row_for_sales_records_striped( s ){
-	var a = s.unit_ordered*s.unit_selling_price;
+	var a = s.unit_ordered * s.unit_selling_price;
 	
 	var desc = '';
 	if( s &&  s.item_desc )desc = s.item_desc;
@@ -4833,7 +4833,7 @@ $( document ).on( "pagecreate", "#newInventory", function() {
         }
         
         var upload = {};
-        var all_barcodes = prompt("Please enter a comma seperated list of barcodes E.g 231456,531458,736459", $('form#inventory-form').find( 'input#item_barcode-field' ).val() );
+        var all_barcodes = prompt("Please enter a comma seperated list of barcodes E.g 231456,531458,736459", $('form#inventory-form').find( 'input#item_barcode-field' ).val().trim() );
         if ( ! all_barcodes ) {
             var settings = {
                 message_title:'No Barcode Entered',
@@ -4847,11 +4847,11 @@ $( document ).on( "pagecreate", "#newInventory", function() {
         for( i = 0; i < barcodes.length; i++ ){
             if( ! barcodes[i] )continue;
             
-            if( $('form#inventory-form').find( 'input#item_barcode-field' ).val() != barcodes[i] ){
+            if( $('form#inventory-form').find( 'input#item_barcode-field' ).val().trim() != barcodes[i] ){
                 if( item_details.store )delete item_details['store'];
             }
             
-            item_details.item_barcode = barcodes[i];
+            item_details.item_barcode = barcodes[i].trim();
             var stored = store_record( item_details );
             add_to_list_of_inventory( stored );
             
@@ -5633,8 +5633,14 @@ $( document ).on( "pagecreate", "#restock", function() {
 			display_popup_notice( settings );
             return false;
 		}else{
+            var id = $('form#stock-form').find('select[name="item_barcode"]').val();
+            var new_id = '';
+            if( id ){
+                var new_id = id.replace(customUUID, '' );
+                new_id.trim();
+            }
             
-            var all_barcodes = prompt("Please enter a comma seperated list of keys E.g 231456,531458,736459", $('form#stock-form').find('select[name="item_barcode"]').val() );
+            var all_barcodes = prompt("Please enter a comma seperated list of keys E.g 231456,531458,736459", new_id );
             if ( ! all_barcodes ) {
                 var settings = {
                     message_title:'No Barcode Entered',
@@ -5651,9 +5657,8 @@ $( document ).on( "pagecreate", "#restock", function() {
             for( i = 0; i < barcodes.length; i++ ){
                 if( ! barcodes[i] )continue;
                 
-                data.item_barcode = barcodes[i];
+                data.item_barcode = customUUID +''+ barcodes[i].trim();
                 var stored = store_record( data );
-                console.log( barcodes[i] , stored );
                 successful_submit_stock_form( stored );
             }
         }
