@@ -132,8 +132,8 @@ function onNotificationGCM(e) {
 
 //var pagepointer = 'http://localhost/blubird/server/engine/';
 //var pagepointer = 'http://blubird.maybeachtech.com/engine/';
-//var pagepointer = 'http://blubirdtest.maybeachtech.com/engine/';
-var pagepointer = 'http://blubird104.maybeachtech.com/engine/';
+var pagepointer = 'http://blubirdtest.maybeachtech.com/engine/';
+//var pagepointer = 'http://blubird104.maybeachtech.com/engine/';
 
 var form_method = 'get';
 var ajax_data_type = 'json';
