@@ -1,5 +1,8 @@
 blubird
 =======
+1.0.112
+Implement Clear Stock
+
 1.0.110
 FIX Customers Name in Sales Receipt Bug,
 Addition of Duplicate Items feature,

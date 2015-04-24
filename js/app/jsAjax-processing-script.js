@@ -2256,7 +2256,7 @@ $( document ).on( "pageshow", "#dashboard", function() {
     
     if( currentStoreID ){
         $.each( inventory , function( key , value ){
-            if( ( value && value.store && value.store[ currentStoreID ] ) || ( value.item_stock_type && value.item_stock_type == 'on' ) ){
+            if( ( value && value.store && value.store[ currentStoreID ] ) || ( value && value.item_stock_type && value.item_stock_type == 'on' ) ){
                 value.item_qty = 0;
                 value.item_damaged = 0;
                 if( ! ( value.item_stock_type && value.item_stock_type == 'on' ) ){
@@ -2769,7 +2769,8 @@ $( document ).on( "pageshow", "#all-records", function() {
                 
                 switch( k ){
                 case 'stock':
-                    value.store_name = value.store_id;
+                    if( value && value.store_id )
+                        value.store_name = value.store_id;
                 break;
                 }
                 
@@ -3076,7 +3077,9 @@ function get_sales_records_html( data ){
             var stock = getData( k );
             if( stock ){
                 var item = getData( stock.item_barcode );
-                stock.item_desc = item.item_desc;
+                stock.item_desc = 'N/A';
+                if( item && item.item_desc )
+                    stock.item_desc = item.item_desc;
                 stock.format = 1;
                 //if( item.item_image )stock.item_image = item.item_image;
                 
@@ -5963,6 +5966,75 @@ $( document ).on( "pagecreate", "#inventory", function() {
     
     activate_update_of_current_store( $("#inventory") );
     activate_manual_upload_data_button_click_event( $("#inventory") );
+    
+    $('#clear-all-stock')
+    .on('click', function(e){
+        e.preventDefault();
+        
+        var settings = {
+            message_title:'Click ok & wait for data to be cleared',
+            message_message:'',
+            auto_close: 'yes'
+        };
+        display_popup_notice( settings );
+        
+        var supply = getData( 'supply' );
+        var suppliers = getData( 'suppliers' );
+        var stock = getData( 'stock' );
+        var inventory = getData( 'inventory' );
+        
+        $.each( suppliers, function(key, value){
+            var supplier = getData( key );
+            supplier.stock = {};
+            putData( key, supplier );
+            if( ! storeObjects[ 'suppliers_list' ] )storeObjects[ 'suppliers_list' ] = {};
+            storeObjects[ 'suppliers_list' ][ key ] = supplier;
+        });
+        
+        $.each( supply, function(key, value){
+            clearSingleData( key );
+            unQueueUpload( {key:key, object:'supply', "delete":"delete" } );
+        });
+        
+        $.each( stock, function(key, value){
+            clearSingleData( key );
+            unQueueUpload( {key:key, object:'stock', "delete":"delete" } );
+        });
+        
+        $.each( inventory, function(key, value){
+            clearSingleData( key );
+            unQueueUpload( {key:key, object:'inventory', "delete":"delete" } );
+        });
+        
+        storeObjects[ 'inventory_list' ] = {};
+        storeObjects[ 'expenses_list' ] = {};
+        
+        var settings = {
+            message_title:'Data has been successfully cleared!',
+            message_message:'',
+            auto_close: 'yes'
+        };
+        display_popup_notice( settings );
+        document.location = document.location.origin + document.location.pathname + document.location.search;
+        /*
+        if( data.timestamp ){
+            var date = new Date( data.timestamp );
+            var day = date.getDate();
+            var month = date.getMonth();
+            var year = date.getFullYear();
+            
+            if( day < 10 )day = '0'+day;
+            if( month < 10 )month = '0'+month;
+            var cache_key = 'stock' + year + '-' + month + '-' + day;
+            
+            var cache = getData( cache_key );
+            if( cache && cache[ key ] )
+                delete cache[ key ];
+                
+            putData( cache_key , cache );
+        }
+        */
+    });
 });
 
 $( document ).on( "pageshow", "#inventory", function() {
@@ -6275,7 +6347,7 @@ function display_table_on_inventory_page( inventory, $tbody, $page, include_summ
     
     if( currentStoreID ){
         $.each( inventory , function( key , value ){
-            if( ( value && value.store && value.store[ currentStoreID ] ) || ( value.item_stock_type && value.item_stock_type == 'on' ) ){
+            if( ( value && value.store && value.store[ currentStoreID ] ) || ( value && value.item_stock_type && value.item_stock_type == 'on' ) ){
                 
                 var storeStock = {cost_price:0, selling_price:0 };
                 if( value.store && value.store[ currentStoreID ] )
@@ -6480,7 +6552,9 @@ $( document ).on( "pageshow", "#restock", function() {
 	var inventory = get_list_of_inventory();
 	var html = selectItemOption;
 	$.each( inventory , function( key , value ){
-		html += '<option value="'+key+'" class="'+value.category+'">'+value.item_desc+' ['+value.item_barcode+']</option>';
+        if( value && value.item_barcode && value.category ){
+            html += '<option value="'+key+'" class="'+value.category+'">'+value.item_desc+' ['+value.item_barcode+']</option>';
+        }
 	});
 	
 	if( html ){
