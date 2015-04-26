@@ -6709,7 +6709,7 @@ $( document ).on( "pagecreate", "#checkout", function() {
                     x.document.close();
                 }else{
                     msg = formatReceiptText( stored );
-                    var message = msg +''+ msg;
+                    var message = msg;
                     if( connectedDevice && bluetoothSerial ){
                         bluetoothSerial.write( message , function(){
                             //success
