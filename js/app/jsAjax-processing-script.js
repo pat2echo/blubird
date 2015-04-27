@@ -132,8 +132,8 @@ function onNotificationGCM(e) {
 
 //var pagepointer = 'http://localhost/blubird/server/engine/';
 //var pagepointer = 'http://blubird.maybeachtech.com/engine/';
-var pagepointer = 'http://blubirdtest.maybeachtech.com/engine/';
-//var pagepointer = 'http://blubird104.maybeachtech.com/engine/';
+//var pagepointer = 'http://blubirdtest.maybeachtech.com/engine/';
+var pagepointer = 'http://blubird104.maybeachtech.com/engine/';
 
 var form_method = 'get';
 var ajax_data_type = 'json';
@@ -1085,8 +1085,8 @@ function successful_submit_action( stored ){
         
 		newSale[ stored.key ] = stored.key;
 		queueUpload( newSale );
-		storeObjects[ 'sales' ][ stored.key ] = stored;
-		
+        storeObjects[ 'sales' ][ stored.key ] = stored;
+        
         title = 'Sold!';
         msg = "\n" + 'Sales ID: #' + stored.key + "\n" + 'Total Items: ' + stored.total_units + "\n" + 'Net Total: ' + appCurrencyText +' '+formatNum(stored.total_amount.toFixed(2));
         
@@ -1857,10 +1857,12 @@ function get_list_of_inventory(){
 	return storeObjects[ 'inventory_list' ];
 };
 
+get_sales();
 function get_sales(){
 	if( storeObjects[ 'sales' ] ){
 		storeObjects[ 'sales' ];
 	}else{
+        
 		var object = 'sales';
 		var keys = getData( object );
 		var sales = {};
@@ -1871,22 +1873,13 @@ function get_sales(){
 				if( sales[ key ].timestamp ){
 					sales[ key ].timestamp = parseFloat( sales[ key ].timestamp );
 				}
-				/*
-				inventory_list[ key ].total_qty = 0;
-				if( inventory_list[ key ].stock ){
-					$.each( inventory_list[ key ].stock , function( k , v ){
-						var stock = getData( k );
-						inventory_list[ key ].total_qty += parseFloat( stock.item_qty );
-					} );
-				}
-				*/
 			});
-			
 		}
 		
 		storeObjects[ 'sales' ] = sales;
 	}
 	
+    console.log('se',storeObjects[ 'sales' ]);
 	return storeObjects[ 'sales' ];
 };
 
@@ -6709,7 +6702,7 @@ $( document ).on( "pagecreate", "#checkout", function() {
                     x.document.close();
                 }else{
                     msg = formatReceiptText( stored );
-                    var message = msg;
+                    var message = msg +''+ msg;
                     if( connectedDevice && bluetoothSerial ){
                         bluetoothSerial.write( message , function(){
                             //success
