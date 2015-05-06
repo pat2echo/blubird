@@ -489,7 +489,7 @@ function store_record( data ){
 		data.timestamp = launch_date.getTime();
 		if( d && d.creationtimestamp ){
 			$.each( data , function(k, v){
-                d[k] = v;
+                if( ! ( data.object == 'inventory' && k == 'store' ) )d[k] = v;
             });
             data = d;
 		}else{
@@ -6702,7 +6702,7 @@ $( document ).on( "pagecreate", "#checkout", function() {
                     x.document.close();
                 }else{
                     msg = formatReceiptText( stored );
-                    var message = msg;
+                    var message = msg +''+ msg;
                     if( connectedDevice && bluetoothSerial ){
                         bluetoothSerial.write( message , function(){
                             //success
