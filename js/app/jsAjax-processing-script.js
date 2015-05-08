@@ -2173,7 +2173,7 @@ $(document).on("pagecontainerbeforechange",function(e, data){
         break;
         case 'stock-keeper':
             switch(to){
-            case '#inventory': case '#supplier': case '#notifications': case '#restock': case '#newInventory': case '#setPricing': case '#damages': case '#refunds': case '#mngcategory':
+            case '#inventory': case '#supplier': case '#notifications': case '#restock': case '#newInventory': case '#setPricing': case '#damages': case '#refunds': case '#mngcategory': case '#sales':
             break;
             default:
                 e.preventDefault();
@@ -4052,6 +4052,8 @@ $( document ).on( "pageshow", "#restore-points", function() {
 });
 
 function create_restore_points( type ){
+    if( ! blubirdWebbased )return true;
+    
     appDB.restore_points
     .where('id').equals(2).each(function( res ){
        appDB.restore_points
@@ -4252,6 +4254,7 @@ $( document ).on( "pagecreate", "#mngusers", function() {
                 object: '',
             });
         }
+        $('form#app_users-form').find('select').selectmenu("refresh");
     });
     
 });
