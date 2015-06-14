@@ -1,5 +1,8 @@
 blubird
 =======
+1.0.122
+One Receipt Printout
+
 1.0.115
 Test Clear Stock Implementation
 
